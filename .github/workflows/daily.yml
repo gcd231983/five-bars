@@ -2,10 +2,10 @@ name: Daily deal update
 
 on:
   schedule:
-    - cron: "17 10 * * *"
-  workflow_dispatch:
+    - cron: "17 10 * * *"   # every day around 6:17 a.m. Eastern (10:17 UTC). GitHub may start it a few minutes late.
+  workflow_dispatch:         # "Run workflow" button for an update on demand
   push:
-    branches: [main]
+    branches: [main]         # redeploy the site whenever you change it
 
 permissions:
   contents: write
@@ -20,7 +20,7 @@ jobs:
   update:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,7 +38,7 @@ jobs:
           prompt: |
             Read scripts/UPDATE_INSTRUCTIONS.md and follow it exactly to update site/data/deals.json for today.
           claude_args: |
-            --max-turns 60
+            --max-turns 90
             --allowedTools "Read,Edit,Write,Glob,Grep,WebSearch,WebFetch,Bash(node scripts/deals.mjs check)"
 
       - name: Validate and stamp
