@@ -2,9 +2,19 @@
  "checked": "2026-10-18",
  "sources": [
   {
-   "name": "PrepaidCompare deals page",
+   "name": "PrepaidCompare deals",
    "url": "https://prepaidcompare.net/deals/",
-   "what": "Free-phone deals and prepaid promos (updated Oct 18, 2026)"
+   "what": "Daily list of prepaid promos and free-phone deals"
+  },
+  {
+   "name": "Clark.com new cell phone deals",
+   "url": "https://clark.com/cell-phones/new-cell-phone-deals/",
+   "what": "Monthly roundup of new carrier deals"
+  },
+  {
+   "name": "Clark.com best cell phone plans",
+   "url": "https://clark.com/cell-phones/best-cell-phone-plans-deals/",
+   "what": "Plan picks and current prices"
   },
   {
    "name": "BestPhonePlans",
@@ -12,19 +22,39 @@
    "what": "Plan specs: priority data, hotspot, video quality"
   },
   {
-   "name": "Clark.com cell phone deals",
-   "url": "https://clark.com/cell-phones/new-cell-phone-deals/",
-   "what": "Monthly roundup of new carrier deals"
+   "name": "US Mobile family plan guide",
+   "url": "https://www.usmobile.com/blog/family-phone-plans/",
+   "what": "Multi-line prices at 2 to 5 lines (written by a carrier, so cross-checked)"
   },
   {
-   "name": "US Mobile plan guides",
+   "name": "US Mobile prepaid plan guide",
    "url": "https://www.usmobile.com/blog/best-prepaid-phone-plans/",
-   "what": "Prepaid plan tiers and pricing"
+   "what": "Prepaid plan tiers and prices (written by a carrier, so cross-checked)"
   },
   {
-   "name": "WhistleOut and Tom’s Guide iPhone 18 Pro roundups",
-   "url": "https://www.tomsguide.com/phones/iphones/best-iphone-18-pro-and-pro-max-deals",
-   "what": "Big-three carrier iPhone deals"
+   "name": "Slickdeals cell phone service deals",
+   "url": "https://slickdeals.net/deals/cellphone-providers/",
+   "what": "Community-spotted carrier deals"
+  },
+  {
+   "name": "r/NoContract (Reddit)",
+   "url": "https://www.reddit.com/r/NoContract/new/.rss",
+   "what": "Fresh prepaid deal posts from the community"
+  },
+  {
+   "name": "Visible deals",
+   "url": "https://www.visible.com/m/deals",
+   "what": "Visible’s own current offers"
+  },
+  {
+   "name": "Verizon Prepaid deals",
+   "url": "https://www.verizon.com/prepaid/deals/",
+   "what": "Verizon Prepaid’s own current offers"
+  },
+  {
+   "name": "Boost Mobile deals",
+   "url": "https://www.boostmobile.com/deals",
+   "what": "Boost’s own current offers"
   }
  ],
  "plans": [
@@ -46,7 +76,13 @@
    "hot": "20GB hotspot",
    "video": "4K video",
    "extra": "Annual option: $199 for the first year. 30-day free trial with port-in.",
-   "url": "https://www.usmobile.com/plans"
+   "url": "https://www.usmobile.com/plans",
+   "family": {
+    "2": 25,
+    "3": 25,
+    "4": 25,
+    "5": 25
+   }
   },
   {
    "id": "usm-premium",
@@ -66,7 +102,13 @@
    "hot": "200GB hotspot",
    "video": "4K video",
    "extra": "Annual option: $299 for the first year.",
-   "url": "https://www.usmobile.com/plans"
+   "url": "https://www.usmobile.com/plans",
+   "family": {
+    "2": 44,
+    "3": 44,
+    "4": 44,
+    "5": 44
+   }
   },
   {
    "id": "visible",
@@ -87,7 +129,13 @@
    "pri": false,
    "hot": "Hotspot at 5 Mbps",
    "video": "480p video",
-   "url": "https://www.visible.com/m/deals"
+   "url": "https://www.visible.com/m/deals",
+   "family": {
+    "2": 25,
+    "3": 25,
+    "4": 25,
+    "5": 25
+   }
   },
   {
    "id": "visible-plus",
@@ -144,7 +192,25 @@
    "hot": "Hotspot at 5 Mbps",
    "video": "720p video",
    "extra": "One line, new activations only. $30 without autopay. Your phone can’t be from a Verizon brand.",
-   "url": "https://www.totalwireless.com/kyop"
+   "url": "https://www.totalwireless.com/kyop",
+   "maxLines": 1
+  },
+  {
+   "id": "total-max-family",
+   "carrier": "Total Wireless",
+   "plan": "Total MAX 5G",
+   "net": "vzw",
+   "unl": true,
+   "price": 60,
+   "family": {
+    "4": 28.75
+   },
+   "tax": true,
+   "pri": true,
+   "hot": "15GB hotspot per line",
+   "video": null,
+   "extra": "Regular multi-line pricing: $115/mo for 4 lines. 5-year price lock and Disney+ Premium included.",
+   "url": "https://www.totalwireless.com/plans"
   },
   {
    "id": "mint",
@@ -164,7 +230,13 @@
    "pri": false,
    "hot": "20GB hotspot",
    "video": "480p video",
-   "url": "https://www.mintmobile.com/plans/"
+   "url": "https://www.mintmobile.com/plans/",
+   "family": {
+    "2": 30,
+    "3": 30,
+    "4": 30,
+    "5": 30
+   }
   },
   {
    "id": "metro",
@@ -185,6 +257,24 @@
    "hot": null,
    "video": "480p video",
    "extra": "6-month option: $120 ($20/mo).",
+   "url": "https://www.metrobyt-mobile.com/phone-plans"
+  },
+  {
+   "id": "metro-premium",
+   "carrier": "Metro by T-Mobile",
+   "plan": "Unlimited Premium 5G Data",
+   "net": "tmo",
+   "unl": true,
+   "price": 65,
+   "family": {
+    "2": 47.5,
+    "4": 35
+   },
+   "tax": true,
+   "pri": null,
+   "hot": "25GB hotspot per line",
+   "video": null,
+   "extra": "$95/mo for 2 lines, $140/mo for 4.",
    "url": "https://www.metrobyt-mobile.com/phone-plans"
   },
   {
@@ -248,7 +338,11 @@
    "hot": "Hotspot included",
    "video": null,
    "extra": "The plan Cricket requires for most of its free phones. 14-day free trial.",
-   "url": "https://www.cricketwireless.com"
+   "url": "https://www.cricketwireless.com",
+   "family": {
+    "2": 45,
+    "4": 32.5
+   }
   },
   {
    "id": "tracfone",
@@ -358,7 +452,13 @@
    "pri": false,
    "hot": "Hotspot from plan data",
    "video": null,
-   "url": "https://tello.com"
+   "url": "https://tello.com",
+   "family": {
+    "2": 15,
+    "3": 15,
+    "4": 15,
+    "5": 15
+   }
   },
   {
    "id": "cc",
