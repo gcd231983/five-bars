@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Five Bars: phone plans and free-phone deals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#F1F4F7; --surface:#FFFFFF; --ink:#16202B; --muted:#586473; --line:#D7DDE4; --chip:#EDF1F5;
+  --accent:#0A6B62; --accent-ink:#FFFFFF;
+  --hi:#E9A800; --hi-soft:#FFF4D1; --hi-ink:#4A3600;
+  --bad:#B42318;
+  --vzw:#C8102E; --att:#0072B1; --tmo:#C8006A; --multi:#5B48B0;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --paper:#111921; --surface:#18232E; --ink:#E6EBF0; --muted:#9BA7B4; --line:#2A3743; --chip:#22303C;
+    --accent:#47BFB2; --accent-ink:#0B1A18;
+    --hi:#F2BE3A; --hi-soft:#3A3014; --hi-ink:#FBE7B0;
+    --bad:#FF8A80;
+    --vzw:#FF6476; --att:#56B6EC; --tmo:#FF5DB1; --multi:#A595F5;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --paper:#111921; --surface:#18232E; --ink:#E6EBF0; --muted:#9BA7B4; --line:#2A3743; --chip:#22303C;
+  --accent:#47BFB2; --accent-ink:#0B1A18;
+  --hi:#F2BE3A; --hi-soft:#3A3014; --hi-ink:#FBE7B0;
+  --bad:#FF8A80;
+  --vzw:#FF6476; --att:#56B6EC; --tmo:#FF5DB1; --multi:#A595F5;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 56px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.5;font-variant-numeric:tabular-nums}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+a{color:var(--accent)}
+button,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px}
+
+/* Hero */
+.hero{padding-top:30px;padding-bottom:20px}
+.brand{display:flex;align-items:flex-end;gap:14px}
+.brand h1{margin:0;font-size:clamp(2.3rem,9vw,3.6rem);font-weight:800;font-stretch:125%;letter-spacing:-.02em;line-height:.95}
+.bars{width:clamp(38px,8vw,52px);height:auto;flex:none;margin-bottom:4px}
+.bars rect{fill:var(--accent);transform-box:fill-box;transform-origin:bottom;animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+.bars rect:nth-child(2){animation-delay:.08s}.bars rect:nth-child(3){animation-delay:.16s}
+.bars rect:nth-child(4){animation-delay:.24s}.bars rect:nth-child(5){animation-delay:.32s}
+@keyframes rise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@media (prefers-reduced-motion: reduce){.bars rect{animation:none}}
+.tagline{color:var(--muted);margin:10px 0 0;max-width:54ch}
+.sentence{margin:22px 0 0;font-size:clamp(1.2rem,4.6vw,1.55rem);line-height:1.75;font-weight:500;max-width:34em}
+.sentence select{color:var(--accent);background:transparent;border:0;border-bottom:2px solid currentColor;border-radius:0;padding:0 2px;margin:0 1px;font-weight:700;appearance:none;-webkit-appearance:none;cursor:pointer;max-width:100%}
+.sentence select option{color:var(--ink);background:var(--surface)}
+.toggles{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.tog{font-size:.9rem;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer}
+.tog[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.fresh{font-size:.88rem;color:var(--muted);margin-top:16px}
+.fresh button{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer;font-size:inherit}
+
+/* Tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);z-index:5;border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.tab{background:none;border:0;padding:13px 10px 10px;color:var(--muted);font-weight:650;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--accent)}
+.tab .count{font-weight:500;margin-left:3px}
+
+/* Rows */
+.note{color:var(--muted);font-size:.88rem;margin:14px 0 0}
+.list{list-style:none;margin:0;padding:4px 0 48px}
+.row{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--net);border-radius:10px;padding:14px 14px 12px;margin:12px 0;display:grid;grid-template-columns:1fr auto;gap:2px 14px;transition:box-shadow .3s}
+.row.hl{box-shadow:0 0 0 3px var(--hi)}
+.who{min-width:0}
+.rank{color:var(--muted);font-size:.8rem;font-weight:600}
+.carrier{font-weight:750;font-size:1.08rem;line-height:1.25}
+.plan{color:var(--muted);line-height:1.3}
+.net{color:var(--net);font-weight:650;font-size:.84rem;margin-top:3px}
+.price{text-align:right;white-space:nowrap}
+.price .now{font-size:1.65rem;font-weight:800;font-stretch:88%;line-height:1}
+.price .per{font-size:.82rem;color:var(--muted);font-weight:500}
+.price .then,.price .was{font-size:.82rem;color:var(--muted)}
+.price .was s{opacity:.8}
+.facts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;padding:0;list-style:none}
+.facts li{font-size:.8rem;padding:3px 8px;border-radius:6px;background:var(--chip)}
+.facts li.new{background:var(--hi);color:#2A1E00;font-weight:700}
+.facts li.warn{background:transparent;border:1px solid var(--line)}
+.deal{grid-column:1/-1;margin-top:10px;font-size:.9rem;background:var(--hi-soft);color:var(--hi-ink);border-radius:6px;padding:7px 10px}
+.deal.off{background:transparent;color:var(--muted);border:1px dashed var(--line)}
+.deal b{font-weight:700}
+.extra{grid-column:1/-1;font-size:.86rem;color:var(--muted);margin-top:8px}
+.foot{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 14px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:.9rem}
+.foot .yr b{font-size:1.02rem}
+.empty{padding:28px 4px;color:var(--muted)}
+.empty button{margin-top:10px}
+
+/* Ask + sources */
+.panel{padding:18px 0 48px}
+.panel h2{font-size:1.35rem;font-stretch:110%;margin:0 0 6px}
+.panel h3{font-size:1.05rem;margin:22px 0 4px}
+.panel p{max-width:62ch}
+textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:12px;resize:vertical;line-height:1.45}
+.btn{border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.55;cursor:default}
+.actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.answer{margin-top:16px}
+.pick{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}
+.pick .carrier{font-size:1rem}
+.pick button{margin-top:8px;font-size:.88rem;background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer}
+.status{color:var(--muted);font-size:.92rem}
+.srcs{padding-left:1.1em}
+.srcs li{margin:6px 0}
+.small{font-size:.86rem;color:var(--muted)}
+[hidden]{display:none !important}
+@media (max-width:420px){
+  .row{padding:12px 12px 10px}
+  .price .now{font-size:1.45rem}
+}
+</style>
+</head>
+<body>
+
+<header class="hero wrap">
+  <div class="brand">
+    <svg class="bars" viewBox="0 0 50 44" aria-hidden="true">
+      <rect x="0" y="34" width="7" height="10" rx="1.5"/>
+      <rect x="10.5" y="26" width="7" height="18" rx="1.5"/>
+      <rect x="21" y="18" width="7" height="26" rx="1.5"/>
+      <rect x="31.5" y="9" width="7" height="35" rx="1.5"/>
+      <rect x="42" y="0" width="7" height="44" rx="1.5"/>
+    </svg>
+    <h1>Five Bars</h1>
+  </div>
+  <p class="tagline">Phone plans from the big carriers and the MVNOs that ride their networks, plus every free-phone deal worth knowing about. Promo math done for you.</p>
+
+  <p class="sentence">
+    I need
+    <select id="lines" aria-label="Number of lines">
+      <option value="1">1 line</option><option value="2">2 lines</option><option value="3">3 lines</option><option value="4">4 lines</option><option value="5">5 lines</option>
+    </select>
+    on
+    <select id="net" aria-label="Network">
+      <option value="any">any network</option>
+      <option value="vzw">Verizon’s network</option>
+      <option value="att">AT&amp;T’s network</option>
+      <option value="tmo">T-Mobile’s network</option>
+    </select>,
+    <select id="mode" aria-label="Phone">
+      <option value="byop">bringing my own phone</option>
+      <option value="phone">and want a free phone</option>
+    </select>.
+    Rank by
+    <select id="sort" aria-label="Rank by"></select>.
+  </p>
+
+  <div class="toggles" id="toggles" role="group" aria-label="Must-haves"></div>
+  <p class="fresh" id="fresh"></p>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="wrap" role="tablist">
+    <button class="tab" role="tab" data-tab="plans" id="t-plans">Plans<span class="count" id="c-plans"></span></button>
+    <button class="tab" role="tab" data-tab="phones" id="t-phones">Free phones<span class="count" id="c-phones"></span></button>
+    <button class="tab" role="tab" data-tab="ask" id="t-ask" hidden>Ask Claude</button>
+    <button class="tab" role="tab" data-tab="sources" id="t-sources">Sources &amp; refresh</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="p-plans" role="tabpanel" aria-labelledby="t-plans">
+    <p class="note" id="plans-note"></p>
+    <ol class="list" id="plans-list"></ol>
+  </section>
+
+  <section id="p-phones" role="tabpanel" aria-labelledby="t-phones" hidden>
+    <p class="note">Costs are per line. “Cash to walk away” is the least you pay before the phone is yours to keep on that plan. Most prepaid phones stay locked to the carrier for 12 months, so the first-year cost is the realistic number.</p>
+    <ol class="list" id="phones-list"></ol>
+  </section>
+
+  <section id="p-ask" class="panel" role="tabpanel" aria-labelledby="t-ask" hidden>
+    <h2>Ask Claude to pick for you</h2>
+    <p class="small">Describe your situation. Claude reads only the deals on this page and picks up to three. Uses your Claude account.</p>
+    <textarea id="ask-box" placeholder="Example: 2 lines in rural South Carolina, Verizon is strongest at my house, my son needs a free Android, I’d like to stay under $60 a month total."></textarea>
+    <div class="actions">
+      <button class="btn" id="ask-go">Find my best deal</button>
+      <button class="btn ghost" id="ask-stop" hidden>Stop</button>
+    </div>
+    <div class="answer" id="ask-out" aria-live="polite"></div>
+  </section>
+
+  <section id="p-sources" class="panel" role="tabpanel" aria-labelledby="t-sources" hidden>
+    <h2>Where these deals come from</h2>
+    <p id="src-date"></p>
+    <ul class="srcs" id="src-list"></ul>
+    <h3>How it stays fresh</h3>
+    <p>Every morning a scheduled job reads these sources and searches the web for new carrier promos. Claude turns what it finds into the deal list, a validator checks the result, and the site republishes. If a run looks wrong (too many deals vanish, bad prices), it’s rejected and yesterday’s list stays up.</p>
+    <p>Deals with an end date also watch themselves: once a promo expires, its discount drops out of the math and the deal is marked as ended.</p>
+  </section>
+</main>
+
+<script>
+const NET = {
+  vzw:  {name:"Verizon network",  c:"var(--vzw)"},
+  att:  {name:"AT&T network",     c:"var(--att)"},
+  tmo:  {name:"T-Mobile network", c:"var(--tmo)"},
+  multi:{name:"Your pick of Verizon, AT&T or T-Mobile", c:"var(--multi)"}
+};
+
+let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), CHANGES = null;
+
+/* ---------- state ---------- */
+const PLAN_TOGS = [
+  ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"]
+];
+const PHONE_TOGS = [
+  ["free","Free phones only"],["iphone","iPhone"],["android","Android"],["prepaid","No 36-month contracts"],["noport","Can’t move my number"]
+];
+const SORTS = {
+  byop:[["year","lowest 12-month cost"],["reg","lowest regular price"],["save","biggest intro savings"],["pri","priority data first"]],
+  phone:[["year","lowest first-year cost"],["walk","least cash to walk away"],["price","lowest phone price"]]
+};
+const state = {lines:1, net:"any", mode:"byop", sort:"year", tab:"plans", t:{unl:true}};
+try{
+  const saved = JSON.parse(localStorage.getItem("fivebars-prefs")||"null");
+  if(saved && typeof saved==="object"){Object.assign(state, saved); state.t = saved.t||{};}
+}catch(e){}
+function save(){ try{localStorage.setItem("fivebars-prefs", JSON.stringify(state));}catch(e){} }
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const money = n => "$" + (Math.round(n*100)/100).toLocaleString("en-US",{minimumFractionDigits:(n%1? 2:0), maximumFractionDigits:2});
+const whole = n => "$" + Math.round(n).toLocaleString("en-US");
+const today = (()=>{const d=new Date(); d.setHours(0,0,0,0); return d;})();
+function endInfo(ends){
+  if(!ends) return null;
+  const [y,m,d] = ends.split("-").map(Number);
+  const end = new Date(y, m-1, d);
+  const days = Math.round((end - today)/86400000);
+  const label = end.toLocaleDateString("en-US",{month:"short", day:"numeric"});
+  if(days < 0) return {expired:true, text:"Ended " + label};
+  if(days === 0) return {expired:false, text:"Ends today"};
+  if(days <= 14) return {expired:false, text:"Ends " + label + " (" + days + (days===1?" day":" days") + " left)"};
+  return {expired:false, text:"Ends " + label};
+}
+function el(tag, attrs, ...kids){
+  const n = document.createElement(tag);
+  if(attrs) for(const [k,v] of Object.entries(attrs)){
+    if(v==null || v===false) continue;
+    if(k==="class") n.className = v;
+    else if(k==="style") n.setAttribute("style", v);
+    else if(k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v);
+  }
+  for(const k of kids.flat()){ if(k==null||k===false) continue; n.append(k.nodeType? k : document.createTextNode(String(k))); }
+  return n;
+}
+
+/* ---------- plan math ---------- */
+function planCalc(p){
+  const L = state.lines;
+  let promo = p.promo || null, promoState = null;
+  if(promo){
+    const ei = endInfo(promo.ends);
+    if(ei && ei.expired) promoState = {off:true, why:ei.text + ". Recheck for a new offer."};
+    else if(state.t.noport && promo.req==="port") promoState = {off:true, why:"Intro price needs you to move your number."};
+    else promoState = {off:false, ends:ei};
+  }
+  const live = promo && promoState && !promoState.off;
+  const m = live ? Math.min(promo.months, 12) : 0;
+  const year1 = live ? promo.price*m + p.price*(12-m) : p.price*12;
+  return {
+    now: live ? promo.price : p.price,
+    year: year1*L,
+    reg: p.price,
+    save: (p.price*12 - year1)*L,
+    live, promoState
+  };
+}
+function planVisible(p){
+  if(state.net!=="any" && p.net!==state.net && p.net!=="multi") return false;
+  const t = state.t;
+  if(t.unl && !p.unl) return false;
+  if(t.pri && !p.pri) return false;
+  if(t.hot && !p.hot) return false;
+  if(t.tax && !p.tax) return false;
+  return true;
+}
+
+/* ---------- phone math ---------- */
+function phoneCalc(d){
+  const ei = endInfo(d.ends);
+  const eff = d.price - (d.rebate||0);
+  let walk = null, year = null;
+  if(d.bundle){ walk = d.price; year = d.price; }
+  else if(d.planPrice!=null){
+    const m = Math.max(d.prepay||1, d.stay||1);
+    walk = eff + d.planPrice*m;
+    year = eff + d.planPrice*12 - (d.credit ? d.credit*Math.min(12, d.creditMonths) : 0);
+  }
+  return {walk, year, eff, ei};
+}
+function phoneVisible(d){
+  const t = state.t;
+  if(state.net!=="any" && d.net!==state.net && d.net!=="multi") return false;
+  if(t.free && phoneCalc(d).eff > 0) return false;
+  if(t.iphone && !t.android && d.os!=="iphone") return false;
+  if(t.android && !t.iphone && d.os!=="android") return false;
+  if(t.prepaid && d.postpaid) return false;
+  if(t.noport && d.port) return false;
+  return true;
+}
+
+/* ---------- render: controls ---------- */
+const meas = document.createElement("span");
+meas.style.cssText = "position:absolute;visibility:hidden;white-space:pre;font-weight:700;pointer-events:none";
+function fit(sel){
+  const cs = getComputedStyle(sel);
+  meas.style.fontFamily = cs.fontFamily; meas.style.fontSize = cs.fontSize;
+  meas.style.fontWeight = cs.fontWeight; meas.style.fontStretch = cs.fontStretch; meas.style.letterSpacing = cs.letterSpacing;
+  meas.textContent = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : "";
+  if(!meas.isConnected) document.body.append(meas);
+  sel.style.width = Math.ceil(meas.getBoundingClientRect().width + 10) + "px";
+}
+function renderControls(){
+  $("#lines").value = String(state.lines);
+  $("#net").value = state.net;
+  $("#mode").value = state.mode;
+  const sorts = SORTS[state.mode];
+  if(!sorts.some(s=>s[0]===state.sort)) state.sort = sorts[0][0];
+  $("#sort").replaceChildren(...sorts.map(([v,t])=>el("option",{value:v},t)));
+  $("#sort").value = state.sort;
+  for(const id of ["#lines","#net","#mode","#sort"]) fit($(id));
+  const togs = state.mode==="byop" ? PLAN_TOGS : PHONE_TOGS;
+  $("#toggles").replaceChildren(...togs.map(([k,label])=>
+    el("button",{class:"tog", type:"button", "aria-pressed": String(!!state.t[k]), onclick:()=>{state.t[k]=!state.t[k]; update();}}, label)));
+  const d = new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"});
+  let summary = "";
+  if(CHANGES && CHANGES.date===CHECKED){
+    const parts = [];
+    if(CHANGES.added.length) parts.push(CHANGES.added.length + " new");
+    if(CHANGES.changed.length) parts.push(CHANGES.changed.length + " changed");
+    if(CHANGES.removed.length) parts.push(CHANGES.removed.length + " gone");
+    if(parts.length) summary = " Since the last update: " + parts.join(", ") + ".";
+  }
+  $("#fresh").replaceChildren("Updated every morning. Last update " + d + "." + summary + " ",
+    el("button",{type:"button", onclick:()=>showTab("sources")}, "Sources"));
+}
+
+/* ---------- render: plans ---------- */
+function renderPlans(){
+  const rows = PLANS.filter(planVisible).map(p=>({p, c:planCalc(p)}));
+  const by = {
+    year:(a,b)=>a.c.year-b.c.year,
+    reg:(a,b)=>a.c.reg-b.c.reg || a.c.year-b.c.year,
+    save:(a,b)=>b.c.save-a.c.save || a.c.year-b.c.year,
+    pri:(a,b)=>(b.p.pri-a.p.pri) || a.c.year-b.c.year
+  }[state.sort];
+  rows.sort(by);
+  $("#c-plans").textContent = rows.length;
+  const L = state.lines;
+  $("#plans-note").textContent = L>1
+    ? "12-month cost covers all " + L + " lines at the single-line price. Family discounts aren’t tracked yet."
+    : "12-month cost includes any intro price, then the regular price for the rest of the year.";
+  const list = $("#plans-list");
+  if(!rows.length){ list.replaceChildren(emptyState()); return; }
+  list.replaceChildren(...rows.map(({p,c},i)=>{
+    const n = NET[p.net];
+    const facts = [
+      p.unl ? "Unlimited data" : (p.data + " data"),
+      p.pri ? "Priority data" : (p.unl ? "Deprioritized when busy" : null),
+      p.hot || (p.unl ? "No hotspot listed" : null),
+      p.video,
+      p.tax ? "Taxes included" : "Plus taxes"
+    ].filter(Boolean);
+    let deal = null;
+    if(p.promo){
+      if(c.promoState.off) deal = el("div",{class:"deal off"}, p.promo.text + ". ", c.promoState.why);
+      else deal = el("div",{class:"deal"}, el("b",null,p.promo.text),
+        p.promo.req==="port" ? ". Bring your number." : ". New customers.",
+        c.promoState.ends ? " " + c.promoState.ends.text + "." : "");
+    }
+    return el("li",{class:"row", id:"r-"+p.id, style:"--net:"+n.c},
+      el("div",{class:"who"},
+        el("div",{class:"rank"}, "#" + (i+1)),
+        el("div",{class:"carrier"}, p.carrier),
+        el("div",{class:"plan"}, p.plan),
+        el("div",{class:"net"}, n.name)),
+      el("div",{class:"price"},
+        el("div",{class:"now"}, money(c.now), el("span",{class:"per"},"/mo")),
+        c.live ? el("div",{class:"then"}, "then " + money(c.reg)) : (p.priceNote ? el("div",{class:"then"}, p.priceNote) : null),
+        L>1 ? el("div",{class:"then"}, "per line") : null),
+      el("ul",{class:"facts"}, NEWIDS.has(p.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f))),
+      deal,
+      p.extra ? el("div",{class:"extra"}, p.extra) : null,
+      el("div",{class:"foot"},
+        el("span",{class:"yr"}, "12 months: ", el("b",null, whole(c.year)), L>1 ? " for " + L + " lines" : ""),
+        el("a",{href:p.url, target:"_blank", rel:"noopener"}, "See it at " + p.carrier))
+    );
+  }));
+}
+
+/* ---------- render: phones ---------- */
+function renderPhones(){
+  const rows = PHONES.filter(phoneVisible).map(d=>({d, c:phoneCalc(d)}));
+  const big = 1e9;
+  const by = {
+    year:(a,b)=>(a.c.year??big)-(b.c.year??big) || a.c.eff-b.c.eff,
+    walk:(a,b)=>(a.c.walk??big)-(b.c.walk??big) || a.c.eff-b.c.eff,
+    price:(a,b)=>a.c.eff-b.c.eff || (a.c.year??big)-(b.c.year??big)
+  }[state.sort];
+  rows.sort(by);
+  $("#c-phones").textContent = rows.length;
+  const list = $("#phones-list");
+  if(!rows.length){ list.replaceChildren(emptyState()); return; }
+  list.replaceChildren(...rows.map(({d,c},i)=>{
+    const n = NET[d.net];
+    const free = c.eff <= 0;
+    const facts = [
+      d.bundle ? "Includes " + d.bundle + " months of service" : (d.planPrice!=null ? "Needs a " + money(d.planPrice) + "/mo plan" : "Needs a premium unlimited plan"),
+      d.prepay>1 && !d.bundle && d.id!=="usm-p11" ? "Prepay " + d.prepay + " months" : null,
+      d.port ? "Must move your number" : "No number move needed",
+      d.store ? "In store only" : null,
+      d.postpaid ? "Postpaid contract" : "Prepaid",
+      d.lock ? (d.lock>=12 ? "Locked " + d.lock + " months" : "Unlocks after " + (d.lock*30) + " days") : "Sold unlocked"
+    ].filter(Boolean);
+    const ends = c.ei;
+    return el("li",{class:"row", id:"r-"+d.id, style:"--net:"+n.c},
+      el("div",{class:"who"},
+        el("div",{class:"rank"}, "#" + (i+1)),
+        el("div",{class:"carrier"}, d.phone),
+        el("div",{class:"plan"}, d.carrier),
+        el("div",{class:"net"}, n.name)),
+      el("div",{class:"price"},
+        el("div",{class:"now"}, free ? "Free" : money(d.price)),
+        d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
+        d.rebate ? el("div",{class:"was"}, money(d.rebate) + " rebate") : null),
+      el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null),
+      ends ? el("div",{class: ends.expired ? "deal off" : "deal"}, ends.expired ? ends.text + ". Recheck before you go." : ends.text + ".") : null,
+      d.note ? el("div",{class:"extra"}, d.note) : null,
+      el("div",{class:"foot"},
+        el("span",{class:"yr"},
+          c.walk!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Cash to walk away: ", el("b",null, whole(c.walk))) : null,
+          c.year!=null ? el("span",{style:"display:inline-block"}, "First year: ", el("b",null, whole(c.year))) : "Plan price varies by trade-in"),
+        el("a",{href:d.url, target:"_blank", rel:"noopener"}, "See it at " + d.carrier.replace(" at Walmart","")))
+    );
+  }));
+}
+
+function emptyState(){
+  return el("li",{class:"empty"},
+    el("div",null,"Nothing matches every must-have. Turn one off to see more."),
+    el("button",{class:"btn ghost", type:"button", onclick:()=>{state.t={}; state.net="any"; update();}}, "Clear filters"));
+}
+
+/* ---------- tabs ---------- */
+function showTab(t){
+  state.tab = t;
+  if(t==="plans") state.mode = "byop";
+  if(t==="phones") state.mode = "phone";
+  for(const b of document.querySelectorAll(".tab")) b.setAttribute("aria-selected", String(b.dataset.tab===t));
+  for(const id of ["plans","phones","ask","sources"]) $("#p-"+id).hidden = id!==t;
+  update(true);
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+
+function update(skipTab){
+  renderControls(); renderPlans(); renderPhones(); save();
+}
+
+$("#lines").addEventListener("change", e=>{state.lines=+e.target.value; update();});
+$("#net").addEventListener("change", e=>{state.net=e.target.value; update();});
+$("#sort").addEventListener("change", e=>{state.sort=e.target.value; update();});
+$("#mode").addEventListener("change", e=>{
+  state.mode=e.target.value; state.sort = SORTS[state.mode][0][0];
+  showTab(state.mode==="byop" ? "plans" : "phones");
+});
+
+/* ---------- sources ---------- */
+function renderSources(){
+$("#src-date").textContent = "Last update " + new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"}) + ". Always confirm on the carrier’s site before you buy; promos change weekly.";
+$("#src-list").replaceChildren(...SOURCES.map(s=>el("li",null, el("a",{href:s.url, target:"_blank", rel:"noopener"}, s.name), ": " + s.what)));
+}
+
+/* ---------- jump to a row ---------- */
+function jumpTo(id){
+  const isPlan = PLANS.some(p=>p.id===id);
+  state.t = {}; state.net = "any";
+  showTab(isPlan ? "plans" : "phones");
+  requestAnimationFrame(()=>{
+    const r = document.getElementById("r-"+id);
+    if(!r) return;
+    r.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+    r.classList.add("hl"); setTimeout(()=>r.classList.remove("hl"), 2600);
+  });
+}
+
+/* ---------- Ask Claude (sample capability) ---------- */
+(async ()=>{
+  let sample = null;
+  try{ sample = window.claude ? await window.claude.use("sample") : null; }catch(e){ sample = null; }
+  if(!sample) return;
+  $("#t-ask").hidden = false;
+  const go = $("#ask-go"), stop = $("#ask-stop"), out = $("#ask-out"), box = $("#ask-box");
+  let ctl = null;
+  stop.addEventListener("click", ()=>ctl && ctl.abort());
+  go.addEventListener("click", async ()=>{
+    const ask = box.value.trim();
+    if(!ask){ out.replaceChildren(el("p",{class:"status"},"Write a sentence or two about your situation first.")); box.focus(); return; }
+    const plans = PLANS.map(p=>{ const c = planCalc(p); return {id:p.id, carrier:p.carrier, plan:p.plan, network:NET[p.net].name, unlimited:p.unl, data:p.data||"unlimited", priority:p.pri, hotspot:p.hot||"none listed", taxesIncluded:p.tax, monthlyNow:c.now, regularMonthly:p.price, twelveMonthCostOneLine:c.year/state.lines, promo:p.promo? p.promo.text + (c.live?"":" (not available now)") : null, notes:p.extra||""}; });
+    const phones = PHONES.map(d=>{ const c = phoneCalc(d); return {id:d.id, carrier:d.carrier, phone:d.phone, os:d.os, network:NET[d.net].name, phonePrice:c.eff, requiredPlanMonthly:d.planPrice, mustMoveNumber:!!d.port, postpaid:!!d.postpaid, firstYearCost:c.year, cashToWalkAway:c.walk, notes:[d.note,d.warn,c.ei&&c.ei.text].filter(Boolean).join(" ")}; });
+    const prompt =
+      "You help a person in the United States choose a phone plan or a free-phone deal. Today is " + new Date().toDateString() + ".\n" +
+      "Use ONLY the deals in the data below; never invent carriers, prices or deals. Pick up to 3 that best fit what the person says, best first. " +
+      "Weigh network fit, total cost over a year, number of lines, and any must-haves they mention. If something they want is not in the data, say so in the note.\n\n" +
+      "What the person says:\n\"\"\"\n" + ask.slice(0, 2000) + "\n\"\"\"\n\n" +
+      "Reply with only JSON in this shape: {\"picks\":[{\"id\":\"<id from data>\",\"why\":\"<one or two plain sentences, under 40 words>\"}],\"note\":\"<one tip or caution, under 40 words>\"}\n\n" +
+      "PLANS:\n" + JSON.stringify(plans) + "\n\nPHONE DEALS:\n" + JSON.stringify(phones);
+    ctl = new AbortController();
+    go.disabled = true; stop.hidden = false;
+    out.replaceChildren(el("p",{class:"status"},"Thinking…"));
+    try{
+      const res = await sample.json(prompt, {signal: ctl.signal, cache:false});
+      const picks = (res && Array.isArray(res.picks) ? res.picks : []).filter(p=>p && typeof p.id==="string").slice(0,3);
+      const kids = picks.map(p=>{
+        const plan = PLANS.find(x=>x.id===p.id), ph = PHONES.find(x=>x.id===p.id);
+        if(!plan && !ph) return null;
+        const title = plan ? plan.carrier + ", " + plan.plan : ph.phone + " at " + ph.carrier;
+        return el("div",{class:"pick"},
+          el("div",{class:"carrier"}, title),
+          el("div",null, String(p.why||"")),
+          el("button",{type:"button", onclick:()=>jumpTo(p.id)}, "Show it in the list"));
+      }).filter(Boolean);
+      if(!kids.length) kids.push(el("p",{class:"status"},"Claude didn’t find a match in the current deals. Try loosening one requirement."));
+      if(res && res.note) kids.push(el("p",{class:"small"}, String(res.note)));
+      out.replaceChildren(...kids);
+    }catch(e){
+      const code = e && e.code;
+      const msg = {
+        cancelled:"Stopped.",
+        not_granted:"Claude isn’t allowed on this page. You can allow it from the artifact’s permissions menu.",
+        rate_limited:"Too many requests right now. Wait a minute, then try again.",
+        invalid_json:"Claude’s answer came back garbled. Press the button again.",
+        session_expired:"Sign in to Claude again, then retry."
+      }[code] || "Something went wrong reaching Claude. Try again.";
+      out.replaceChildren(el("p",{class:"status"}, msg));
+      if(code==="not_granted" || code==="sampling_disabled"){ $("#t-ask").hidden = true; if(state.tab==="ask") showTab("plans"); }
+    }finally{
+      go.disabled = false; stop.hidden = true; ctl = null;
+    }
+  });
+})();
+
+/* ---------- start ---------- */
+async function boot(){
+  try{
+    const r = await fetch("data/deals.json", {cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    const d = await r.json();
+    CHECKED = d.checked; SOURCES = d.sources || []; PLANS = d.plans || []; PHONES = d.phones || [];
+  }catch(e){
+    $("main").replaceChildren(el("p",{class:"empty"},"The deal list didn’t load. Refresh the page; if it keeps failing, check the latest run in GitHub Actions."));
+    return;
+  }
+  try{
+    const r = await fetch("data/changes.json", {cache:"no-store"});
+    if(r.ok){ CHANGES = await r.json(); if(CHANGES.date===CHECKED) NEWIDS = new Set(CHANGES.added||[]); }
+  }catch(e){}
+  renderSources();
+  if(state.tab==="ask") state.tab = "plans";
+  showTab(state.tab || "plans");
+  if(document.fonts) document.fonts.ready.then(()=>renderControls());
+}
+boot();
+</script>
+</body>
+</html>
