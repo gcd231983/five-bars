@@ -201,7 +201,7 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
     <p id="src-date"></p>
     <ul class="srcs" id="src-list"></ul>
     <h3>How it stays fresh</h3>
-    <p>Every morning a scheduled job reads these sources and searches the web for new carrier promos. Claude turns what it finds into the deal list, a validator checks the result, and the site republishes. If a run looks wrong (too many deals vanish, bad prices), it’s rejected and yesterday’s list stays up.</p>
+    <p>Every morning a scheduled job reads these sources and searches the web for new carrier promos. Community posts and carrier-written guides are treated as leads and confirmed with a second source before they’re added. Claude turns what it finds into the deal list, a validator checks the result, and the site republishes. If a run looks wrong (too many deals vanish, bad prices), it’s rejected and yesterday’s list stays up.</p>
     <p>Deals with an end date also watch themselves: once a promo expires, its discount drops out of the math and the deal is marked as ended.</p>
   </section>
 </main>
@@ -274,21 +274,29 @@ function planCalc(p){
     else promoState = {off:false, ends:ei};
   }
   const live = promo && promoState && !promoState.off;
+  const fam = L>1 && p.family ? p.family[String(L)] : null;
+  const reg = fam != null ? fam : p.price;
+  const promoPrice = live ? Math.min(promo.price, reg) : null;
   const m = live ? Math.min(promo.months, 12) : 0;
-  const year1 = live ? promo.price*m + p.price*(12-m) : p.price*12;
+  const year1 = live ? promoPrice*m + reg*(12-m) : reg*12;
+  const vals = p.family ? Object.values(p.family) : [];
   return {
-    now: live ? promo.price : p.price,
+    now: live ? promoPrice : reg,
     year: year1*L,
-    reg: p.price,
-    save: (p.price*12 - year1)*L,
-    live, promoState
+    reg,
+    save: (reg*12 - year1)*L,
+    live, promoState,
+    famKnown: L===1 || fam != null,
+    flat: vals.length===4 && vals.every(v=>v===p.price)
   };
 }
 function planVisible(p){
   if(state.net!=="any" && p.net!==state.net && p.net!=="multi") return false;
+  if(p.maxLines && state.lines > p.maxLines) return false;
   const t = state.t;
   if(t.unl && !p.unl) return false;
-  if(t.pri && !p.pri) return false;
+  if(t.pri && p.pri!==true) return false;
+  if(t.fam && state.lines>1 && !planCalc(p).famKnown) return false;
   if(t.hot && !p.hot) return false;
   if(t.tax && !p.tax) return false;
   return true;
@@ -338,7 +346,7 @@ function renderControls(){
   $("#sort").replaceChildren(...sorts.map(([v,t])=>el("option",{value:v},t)));
   $("#sort").value = state.sort;
   for(const id of ["#lines","#net","#mode","#sort"]) fit($(id));
-  const togs = state.mode==="byop" ? PLAN_TOGS : PHONE_TOGS;
+  const togs = state.mode==="byop" ? (state.lines>1 ? [...PLAN_TOGS.slice(0,4), ["fam","Multi-line price listed"], PLAN_TOGS[4]] : PLAN_TOGS) : PHONE_TOGS;
   $("#toggles").replaceChildren(...togs.map(([k,label])=>
     el("button",{class:"tog", type:"button", "aria-pressed": String(!!state.t[k]), onclick:()=>{state.t[k]=!state.t[k]; update();}}, label)));
   const d = new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"});
@@ -361,13 +369,13 @@ function renderPlans(){
     year:(a,b)=>a.c.year-b.c.year,
     reg:(a,b)=>a.c.reg-b.c.reg || a.c.year-b.c.year,
     save:(a,b)=>b.c.save-a.c.save || a.c.year-b.c.year,
-    pri:(a,b)=>(b.p.pri-a.p.pri) || a.c.year-b.c.year
+    pri:(a,b)=>((b.p.pri===true)-(a.p.pri===true)) || a.c.year-b.c.year
   }[state.sort];
   rows.sort(by);
   $("#c-plans").textContent = rows.length;
   const L = state.lines;
   $("#plans-note").textContent = L>1
-    ? "12-month cost covers all " + L + " lines at the single-line price. Family discounts aren’t tracked yet."
+    ? "12-month cost covers all " + L + " lines. Multi-line prices are used where the carrier lists them; otherwise it’s the single-line price times " + L + "."
     : "12-month cost includes any intro price, then the regular price for the rest of the year.";
   const list = $("#plans-list");
   if(!rows.length){ list.replaceChildren(emptyState()); return; }
@@ -375,7 +383,8 @@ function renderPlans(){
     const n = NET[p.net];
     const facts = [
       p.unl ? "Unlimited data" : (p.data + " data"),
-      p.pri ? "Priority data" : (p.unl ? "Deprioritized when busy" : null),
+      p.pri===true ? "Priority data" : (p.pri===false && p.unl ? "Deprioritized when busy" : null),
+      L>1 ? (c.flat ? "Same price for every line" : (c.famKnown ? money(c.reg) + "/line at " + L + " lines" : "Multi-line price not listed")) : null,
       p.hot || (p.unl ? "No hotspot listed" : null),
       p.video,
       p.tax ? "Taxes included" : "Plus taxes"
