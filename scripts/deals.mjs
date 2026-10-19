@@ -1,6 +1,6 @@
 // Five Bars data helper. Node 20+, no dependencies, no API calls.
 //
-//   node scripts/deals.mjs prep    back up today's list and download the deal pages to work/sources.txt
+//   node scripts/deals.mjs prep    back up today's list and download the deal pages to work/sources/
 //   node scripts/deals.mjs check   validate site/data/deals.json (Claude runs this to check its own work)
 //   node scripts/deals.mjs finish  stamp today's date, validate, write changes.json; restore the backup if invalid
 
@@ -11,13 +11,22 @@ const DATA = new URL("site/data/deals.json", root);
 const CHANGES = new URL("site/data/changes.json", root);
 const WORK = new URL("work/", root);
 const PREV = new URL("work/prev.json", root);
-const SOURCES = new URL("work/sources.txt", root);
+const SRC_DIR = new URL("work/sources/", root);
 
-// Pages downloaded every run. Add more here; keep it to pages that list current deals.
+// Pages downloaded every run. Add more here; keep it to pages that list current deals or prices.
+// If a page blocks the download, Claude tries it again with its own web tools during the run.
 const FEEDS = [
-  { name: "PrepaidCompare deals", url: "https://prepaidcompare.net/deals/" },
-  { name: "Clark.com new cell phone deals", url: "https://clark.com/cell-phones/new-cell-phone-deals/" },
-  { name: "BestPhonePlans", url: "https://www.bestphoneplans.net" },
+  { name: "PrepaidCompare deals", url: "https://prepaidcompare.net/deals/", what: "Daily list of prepaid promos and free-phone deals" },
+  { name: "Clark.com new cell phone deals", url: "https://clark.com/cell-phones/new-cell-phone-deals/", what: "Monthly roundup of new carrier deals" },
+  { name: "Clark.com best cell phone plans", url: "https://clark.com/cell-phones/best-cell-phone-plans-deals/", what: "Plan picks and current prices" },
+  { name: "BestPhonePlans", url: "https://www.bestphoneplans.net", what: "Plan specs: priority data, hotspot, video quality" },
+  { name: "US Mobile family plan guide", url: "https://www.usmobile.com/blog/family-phone-plans/", what: "Multi-line prices at 2 to 5 lines (written by a carrier, so cross-checked)" },
+  { name: "US Mobile prepaid plan guide", url: "https://www.usmobile.com/blog/best-prepaid-phone-plans/", what: "Prepaid plan tiers and prices (written by a carrier, so cross-checked)" },
+  { name: "Slickdeals cell phone service deals", url: "https://slickdeals.net/deals/cellphone-providers/", what: "Community-spotted carrier deals" },
+  { name: "r/NoContract (Reddit)", url: "https://www.reddit.com/r/NoContract/new/.rss", what: "Fresh prepaid deal posts from the community" },
+  { name: "Visible deals", url: "https://www.visible.com/m/deals", what: "Visible’s own current offers" },
+  { name: "Verizon Prepaid deals", url: "https://www.verizon.com/prepaid/deals/", what: "Verizon Prepaid’s own current offers" },
+  { name: "Boost Mobile deals", url: "https://www.boostmobile.com/deals", what: "Boost’s own current offers" },
 ];
 
 const NETS = ["vzw", "att", "tmo", "multi"];
@@ -38,6 +47,17 @@ function htmlToText(html) {
     .trim();
 }
 
+function rssToText(xml) {
+  const items = xml.match(/<(item|entry)[\s\S]*?<\/\1>/gi) || [];
+  return items.slice(0, 40).map((it) => {
+    const get = (tag) => (it.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i")) || [])[1] || "";
+    const link = (it.match(/<link[^>]*href="([^"]+)"/i) || [])[1] || get("link");
+    const date = get("updated") || get("pubDate");
+    const body = htmlToText((get("content") || get("description")).replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&"));
+    return `- ${htmlToText(get("title"))} (${date.trim()}) ${link.trim()}\n  ${body.slice(0, 600)}`;
+  }).join("\n");
+}
+
 async function fetchText(url) {
   try {
     const r = await fetch(url, {
@@ -45,7 +65,9 @@ async function fetchText(url) {
       signal: AbortSignal.timeout(30000),
     });
     if (!r.ok) throw new Error("HTTP " + r.status);
-    return htmlToText(await r.text()).slice(0, 40000);
+    const body = await r.text();
+    const text = /^\s*<\?xml|<rss|<feed/i.test(body) ? rssToText(body) : htmlToText(body);
+    return text.slice(0, 25000);
   } catch (e) {
     log("Could not fetch", url, "-", e.message);
     return null;
@@ -69,7 +91,17 @@ function validate(d, prev) {
     if (typeof p.unl !== "boolean") errs.push(at + ": unl must be true/false");
     if (!p.unl && typeof p.data !== "string") errs.push(at + ": limited plans need a data string like \"5GB\"");
     if (!isNum(p.price, 0, 200)) errs.push(at + ": bad price");
-    if (typeof p.tax !== "boolean" || typeof p.pri !== "boolean") errs.push(at + ": tax and pri must be true/false");
+    if (typeof p.tax !== "boolean") errs.push(at + ": tax must be true/false");
+    if (p.maxLines != null && (!Number.isInteger(p.maxLines) || p.maxLines < 1)) errs.push(at + ": maxLines must be a whole number");
+    if (p.pri !== null && typeof p.pri !== "boolean") errs.push(at + ": pri must be true, false, or null if unknown");
+    if (p.family != null) {
+      if (typeof p.family !== "object" || Array.isArray(p.family)) errs.push(at + ": family must be an object like {\"2\": 25, \"4\": 20}");
+      else for (const [k, v] of Object.entries(p.family)) {
+        if (!["2", "3", "4", "5"].includes(k)) errs.push(at + `: family key "${k}" must be 2, 3, 4 or 5`);
+        if (!isNum(v, 0, 200)) errs.push(at + `: family["${k}"] must be a per-line price`);
+        if (isNum(v, 0, 200) && isNum(p.price, 0, 200) && v > p.price) errs.push(at + `: family["${k}"] is more than the 1-line price; it should be the per-line price`);
+      }
+    }
     if (!isUrl(p.url)) errs.push(at + ": url must start with https://");
     if (p.promo) {
       if (!isNum(p.promo.price, 0, 200)) errs.push(at + ": bad promo.price");
@@ -126,15 +158,18 @@ async function readPrev() {
 }
 
 async function prep() {
-  await mkdir(WORK, { recursive: true });
+  await mkdir(SRC_DIR, { recursive: true });
   await copyFile(DATA, PREV);
-  const parts = [`Today is ${TODAY}.`];
-  for (const f of FEEDS) {
+  const index = [`Today is ${TODAY}. One file per source below. FAILED means the download was blocked; try that URL with WebFetch.`, ""];
+  let n = 0;
+  for (const [i, f] of FEEDS.entries()) {
     const text = await fetchText(f.url);
-    parts.push(`\n\n=== ${f.name} (${f.url}) ===\n` + (text || "(could not download this page today)"));
+    const file = String(i + 1).padStart(2, "0") + "-" + f.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".txt";
+    if (text) { n++; await writeFile(new URL(file, SRC_DIR), `${f.name}\n${f.url}\n\n${text}\n`); }
+    index.push(`${text ? "OK    " : "FAILED"} ${text ? "work/sources/" + file : ""}  ${f.name}  ${f.url}`);
   }
-  await writeFile(SOURCES, parts.join(""));
-  log(`Backed up the deal list and saved today's pages to work/sources.txt`);
+  await writeFile(new URL("INDEX.txt", SRC_DIR), index.join("\n") + "\n");
+  log(`Backed up the deal list; downloaded ${n}/${FEEDS.length} sources to work/sources/`);
 }
 
 async function check() {
@@ -157,7 +192,7 @@ async function finish() {
     process.exit(1);
   }
   next.checked = TODAY;
-  if (!Array.isArray(next.sources) || !next.sources.length) next.sources = prev.sources;
+  next.sources = FEEDS.map(({ name, url, what }) => ({ name, url, what }));
   const changes = diff(prev, next);
   await writeFile(DATA, JSON.stringify(next, null, 1) + "\n");
   await writeFile(CHANGES, JSON.stringify(changes, null, 1) + "\n");
