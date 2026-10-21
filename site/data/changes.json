@@ -1,1 +1,16 @@
-{"date":"2026-10-18","added":[],"removed":[],"changed":[]}
+{
+ "date": "2026-10-21",
+ "added": [
+  "boost-motog",
+  "boost-a17",
+  "boost-gplay",
+  "boost-stylus"
+ ],
+ "removed": [
+  "wm-st-16e"
+ ],
+ "changed": [
+  "boost",
+  "tmo-18pro"
+ ]
+}

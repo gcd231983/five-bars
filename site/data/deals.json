@@ -1,5 +1,5 @@
 {
- "checked": "2026-10-18",
+ "checked": "2026-10-21",
  "sources": [
   {
    "name": "PrepaidCompare deals",
@@ -286,8 +286,8 @@
    "price": 25,
    "promo": {
     "price": 10,
-    "months": 3,
-    "text": "$10/mo for your first 3 months",
+    "months": 6,
+    "text": "$10/mo for your first 6 months",
     "req": "new"
    },
    "tax": true,
@@ -648,6 +648,66 @@
    "warn": "Leave within 3 months and Boost can charge full retail. No cheaper plan for 12 months."
   },
   {
+   "id": "boost-motog",
+   "carrier": "Boost Mobile",
+   "phone": "Moto G 2026",
+   "os": "android",
+   "net": "att",
+   "price": 0,
+   "was": 299.99,
+   "planPrice": 60,
+   "stay": 3,
+   "port": true,
+   "lock": 12,
+   "url": "https://www.boostmobile.com/shop/moto-g-2026.html",
+   "warn": "Leave within 3 months and Boost can charge full retail. No cheaper plan for 12 months."
+  },
+  {
+   "id": "boost-a17",
+   "carrier": "Boost Mobile",
+   "phone": "Samsung Galaxy A17 5G",
+   "os": "android",
+   "net": "att",
+   "price": 0,
+   "was": 269.99,
+   "planPrice": 50,
+   "stay": 3,
+   "port": true,
+   "lock": 12,
+   "url": "https://www.boostmobile.com/shop/galaxy-a17-5g.html",
+   "warn": "Leave within 3 months and Boost can charge full retail."
+  },
+  {
+   "id": "boost-gplay",
+   "carrier": "Boost Mobile",
+   "phone": "Moto G Play 2026",
+   "os": "android",
+   "net": "att",
+   "price": 0,
+   "was": 249.99,
+   "planPrice": 50,
+   "stay": 3,
+   "port": true,
+   "lock": 12,
+   "url": "https://www.boostmobile.com/shop/moto-g-play-002722.html",
+   "warn": "Leave within 3 months and Boost can charge full retail."
+  },
+  {
+   "id": "boost-stylus",
+   "carrier": "Boost Mobile",
+   "phone": "Moto G Stylus 2025",
+   "os": "android",
+   "net": "att",
+   "price": 0,
+   "was": 299.99,
+   "planPrice": 50,
+   "stay": 3,
+   "port": true,
+   "lock": 12,
+   "url": "https://www.boostmobile.com/shop/moto-g-stylus-2025.html",
+   "warn": "Leave within 3 months and Boost can charge full retail."
+  },
+  {
    "id": "total-a17",
    "carrier": "Total Wireless",
    "phone": "Samsung Galaxy A17 5G",
@@ -762,22 +822,6 @@
    "note": "Activate in a Walmart store."
   },
   {
-   "id": "wm-st-16e",
-   "carrier": "Straight Talk at Walmart",
-   "phone": "iPhone 16e",
-   "os": "iphone",
-   "net": "vzw",
-   "price": 149,
-   "was": 349,
-   "planPrice": 45,
-   "port": false,
-   "lock": 12,
-   "store": true,
-   "ends": "2026-10-18",
-   "url": "https://www.walmart.com/ip/Straight-Talk-Apple-iPhone-16e-5G-128GB-Black-Prepaid-Smartphone-Locked-to-Straight-Talk/14822456361",
-   "note": "Activate in a Walmart store."
-  },
-  {
    "id": "wm-wfm-a16",
    "carrier": "Walmart Family Mobile",
    "phone": "Samsung Galaxy A16",
@@ -880,13 +924,13 @@
    "phone": "iPhone 18 Pro",
    "os": "iphone",
    "net": "tmo",
-   "price": 0,
+   "price": 199.99,
    "planPrice": null,
    "postpaid": true,
    "port": false,
    "lock": 36,
    "url": "https://www.t-mobile.com",
-   "note": "Up to $1,200 off with a trade-in in any condition or a line switch, on Experience Beyond. Paid back as bill credits over 36 months."
+   "note": "Credit was cut to up to $1,000 off, so about $200 remains. Needs a new line or trade-in on a $100+ plan. Paid back as bill credits over 36 months."
   },
   {
    "id": "vz-18pro",
