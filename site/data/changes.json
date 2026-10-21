@@ -1,16 +1,10 @@
 {
  "date": "2026-10-21",
  "added": [
-  "boost-motog",
-  "boost-a17",
-  "boost-gplay",
-  "boost-stylus"
+  "cricket-a37",
+  "att-pre-motog",
+  "wm-attpre-a17"
  ],
- "removed": [
-  "wm-st-16e"
- ],
- "changed": [
-  "boost",
-  "tmo-18pro"
- ]
+ "removed": [],
+ "changed": []
 }
