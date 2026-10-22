@@ -1,5 +1,5 @@
 {
- "checked": "2026-10-21",
+ "checked": "2026-10-22",
  "sources": [
   {
    "name": "PrepaidCompare deals",
@@ -686,6 +686,22 @@
    "lock": 12,
    "url": "https://www.boostmobile.com/shop/pixel-10a-002729.html",
    "warn": "Leave within 3 months and Boost can charge full retail. No cheaper plan for 12 months."
+  },
+  {
+   "id": "boost-razr",
+   "carrier": "Boost Mobile",
+   "phone": "Motorola razr 2025",
+   "os": "android",
+   "net": "att",
+   "price": 29.99,
+   "was": 599.99,
+   "planPrice": 60,
+   "prepay": 2,
+   "stay": 3,
+   "port": true,
+   "lock": 12,
+   "url": "https://www.boostmobile.com/shop/razr-2025.html",
+   "warn": "Leave within 3 months and Boost can charge full retail."
   },
   {
    "id": "boost-motog",
