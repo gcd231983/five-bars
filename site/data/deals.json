@@ -1,5 +1,5 @@
 {
- "checked": "2026-10-22",
+ "checked": "2026-10-23",
  "sources": [
   {
    "name": "PrepaidCompare deals",
@@ -846,6 +846,23 @@
    "lock": 12,
    "ends": "2027-01-31",
    "url": "https://www.verizon.com/prepaid/deals/"
+  },
+  {
+   "id": "vzpre-16e",
+   "carrier": "Verizon Prepaid",
+   "phone": "iPhone 16e",
+   "os": "iphone",
+   "net": "vzw",
+   "price": 349.99,
+   "was": 599.99,
+   "credit": 10,
+   "creditMonths": 10,
+   "planPrice": null,
+   "port": false,
+   "lock": 12,
+   "ends": "2027-01-31",
+   "url": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/",
+   "note": "Needs a new line on any Verizon Prepaid Unlimited phone plan. $100 comes back as $10/mo service credits over 10 months, starting in month 2."
   },
   {
    "id": "wm-vzpre-a17",
