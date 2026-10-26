@@ -1,9 +1,18 @@
 {
- "date": "2026-10-25",
- "added": [],
- "removed": [],
+ "date": "2026-10-26",
+ "added": [
+  "st-stylus",
+  "tracfone-a17"
+ ],
+ "removed": [
+  "wm-attpre-a17",
+  "wm-wfm-a16"
+ ],
  "changed": [
-  "metro-premium",
-  "cricket-supreme"
+  "usm-starter",
+  "usm-premium",
+  "fi",
+  "tello",
+  "cricket-16e"
  ]
 }

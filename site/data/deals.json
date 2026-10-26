@@ -1,5 +1,5 @@
 {
- "checked": "2026-10-25",
+ "checked": "2026-10-26",
  "sources": [
   {
    "name": "PrepaidCompare deals",
@@ -66,9 +66,9 @@
    "unl": true,
    "price": 25,
    "promo": {
-    "price": 10,
+    "price": 15,
     "months": 6,
-    "text": "$10/mo for your first 6 months",
+    "text": "$15/mo for your first 6 months with code SALE15",
     "req": "port"
    },
    "tax": true,
@@ -92,9 +92,9 @@
    "unl": true,
    "price": 44,
    "promo": {
-    "price": 20,
+    "price": 25,
     "months": 6,
-    "text": "$20/mo for your first 6 months",
+    "text": "$25/mo for your first 6 months with code SALE25",
     "req": "port"
    },
    "tax": true,
@@ -401,7 +401,12 @@
    "hot": null,
    "video": null,
    "extra": "The usual pick for international travel.",
-   "url": "https://fi.google.com"
+   "url": "https://fi.google.com",
+   "family": {
+    "2": 30,
+    "3": 26.67,
+    "4": 22.5
+   }
   },
   {
    "id": "usm-light",
@@ -449,7 +454,8 @@
     "price": 10,
     "months": 3,
     "text": "$10/mo for your first 3 months",
-    "req": "new"
+    "req": "new",
+    "ends": "2026-11-09"
    },
    "tax": false,
    "pri": false,
@@ -589,7 +595,7 @@
    "phone": "iPhone 16e",
    "os": "iphone",
    "net": "att",
-   "price": 9.99,
+   "price": 0,
    "planPrice": 60,
    "prepay": 3,
    "port": true,
@@ -646,21 +652,6 @@
    "lock": 12,
    "url": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html",
    "note": "New activation on the $45 plan required."
-  },
-  {
-   "id": "wm-attpre-a17",
-   "carrier": "AT&T Prepaid at Walmart",
-   "phone": "Samsung Galaxy A17 5G",
-   "os": "android",
-   "net": "att",
-   "price": 0,
-   "was": 79,
-   "planPrice": null,
-   "port": false,
-   "lock": 12,
-   "store": true,
-   "url": "https://www.walmart.com/ip/Samsung-A17-5G-Prepaid-Smartphone/18335669093",
-   "note": "Activate in a Walmart store."
   },
   {
    "id": "boost-16e",
@@ -898,21 +889,6 @@
    "note": "Activate in a Walmart store."
   },
   {
-   "id": "wm-wfm-a16",
-   "carrier": "Walmart Family Mobile",
-   "phone": "Samsung Galaxy A16",
-   "os": "android",
-   "net": "tmo",
-   "price": 0,
-   "was": 59.88,
-   "planPrice": 34.88,
-   "port": false,
-   "lock": 12,
-   "store": true,
-   "url": "https://www.walmart.com/ip/Walmart-Family-Mobile-Samsung-A16-128GB-5G-Bkack-Prepaid-Smartphone-Locked-to-Walmart-Famliy-Mobile/15178507679",
-   "note": "Activate in a Walmart store."
-  },
-  {
    "id": "st-a17",
    "carrier": "Straight Talk",
    "phone": "Samsung Galaxy A17 5G",
@@ -924,6 +900,34 @@
    "port": false,
    "lock": 12,
    "url": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid"
+  },
+  {
+   "id": "st-stylus",
+   "carrier": "Straight Talk",
+   "phone": "Motorola moto g stylus 2025",
+   "os": "android",
+   "net": "vzw",
+   "price": 0,
+   "was": 99.99,
+   "planPrice": 45,
+   "port": false,
+   "lock": 12,
+   "url": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid"
+  },
+  {
+   "id": "tracfone-a17",
+   "carrier": "Tracfone",
+   "phone": "Samsung Galaxy A17 5G",
+   "os": "android",
+   "net": "vzw",
+   "price": 0,
+   "was": 119.99,
+   "planPrice": 45,
+   "prepay": 3,
+   "port": false,
+   "lock": 12,
+   "url": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid",
+   "note": "Requires the $135 three-month plan."
   },
   {
    "id": "simple-a16",
