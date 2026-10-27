@@ -1,5 +1,5 @@
 {
- "checked": "2026-10-26",
+ "checked": "2026-10-27",
  "sources": [
   {
    "name": "PrepaidCompare deals",
@@ -69,7 +69,8 @@
     "price": 15,
     "months": 6,
     "text": "$15/mo for your first 6 months with code SALE15",
-    "req": "port"
+    "req": "port",
+    "ends": "2026-10-27"
    },
    "tax": true,
    "pri": false,
@@ -95,7 +96,8 @@
     "price": 25,
     "months": 6,
     "text": "$25/mo for your first 6 months with code SALE25",
-    "req": "port"
+    "req": "port",
+    "ends": "2026-10-27"
    },
    "tax": true,
    "pri": true,
@@ -220,12 +222,6 @@
    "unl": true,
    "price": 30,
    "priceNote": "on a 12-month prepay",
-   "promo": {
-    "price": 10,
-    "months": 6,
-    "text": "$60 for your first 6 months, any plan",
-    "req": "new"
-   },
    "tax": false,
    "pri": false,
    "hot": "20GB hotspot",
@@ -354,13 +350,6 @@
    "net": "vzw",
    "unl": true,
    "price": 45,
-   "promo": {
-    "price": 30,
-    "months": 30,
-    "text": "$30/mo for 30 months on a new line",
-    "req": "new",
-    "ends": "2026-10-26"
-   },
    "tax": false,
    "pri": false,
    "hot": null,
@@ -405,7 +394,8 @@
    "family": {
     "2": 30,
     "3": 26.67,
-    "4": 22.5
+    "4": 22.5,
+    "5": 22.6
    }
   },
   {
@@ -548,7 +538,7 @@
    "net": "att",
    "price": 0,
    "planPrice": 60,
-   "port": true,
+   "port": false,
    "lock": 12,
    "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue"
   },
@@ -572,7 +562,7 @@
    "net": "att",
    "price": 0,
    "planPrice": 60,
-   "port": true,
+   "port": false,
    "lock": 12,
    "url": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a17-5g-black"
   },
