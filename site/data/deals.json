@@ -1,5 +1,5 @@
 {
- "checked": "2026-10-27",
+ "checked": "2026-10-28",
  "sources": [
   {
    "name": "PrepaidCompare deals",
@@ -69,8 +69,7 @@
     "price": 15,
     "months": 6,
     "text": "$15/mo for your first 6 months with code SALE15",
-    "req": "port",
-    "ends": "2026-10-27"
+    "req": "port"
    },
    "tax": true,
    "pri": false,
@@ -96,8 +95,7 @@
     "price": 25,
     "months": 6,
     "text": "$25/mo for your first 6 months with code SALE25",
-    "req": "port",
-    "ends": "2026-10-27"
+    "req": "port"
    },
    "tax": true,
    "pri": true,
@@ -158,7 +156,11 @@
    "hot": "Hotspot at 10 Mbps",
    "video": "1080p video",
    "extra": "Includes calls and data in Mexico and Canada.",
-   "url": "https://www.visible.com/plans"
+   "url": "https://www.visible.com/plans",
+   "family": {
+    "2": 35,
+    "4": 35
+   }
   },
   {
    "id": "visible-pro",
@@ -253,7 +255,11 @@
    "hot": null,
    "video": "480p video",
    "extra": "6-month option: $120 ($20/mo).",
-   "url": "https://www.metrobyt-mobile.com/phone-plans"
+   "url": "https://www.metrobyt-mobile.com/phone-plans",
+   "family": {
+    "2": 25,
+    "3": 25
+   }
   },
   {
    "id": "metro-premium",
