@@ -1,5 +1,5 @@
 {
- "checked": "2026-10-28",
+ "checked": "2026-10-29",
  "sources": [
   {
    "name": "PrepaidCompare deals",
@@ -159,7 +159,9 @@
    "url": "https://www.visible.com/plans",
    "family": {
     "2": 35,
-    "4": 35
+    "3": 35,
+    "4": 35,
+    "5": 35
    }
   },
   {
@@ -181,7 +183,13 @@
    "hot": "Faster hotspot",
    "video": "HD video",
    "extra": "Calls to 85+ countries.",
-   "url": "https://www.visible.com/plans"
+   "url": "https://www.visible.com/plans",
+   "family": {
+    "2": 45,
+    "3": 45,
+    "4": 45,
+    "5": 45
+   }
   },
   {
    "id": "total-max",
