@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "generatedAt": null,
+  "scope": "Selected MVNO official plan headline price and billing period only; not full-terms verification.",
+  "method": "Awaiting first official scan",
+  "summary": {
+    "plansChecked": 0,
+    "headlineMatches": 0,
+    "priceMismatches": 0,
+    "missingOrAmbiguous": 0,
+    "sourceUnavailable": 0,
+    "observationsRecorded": 0,
+    "needReview": 0
+  },
+  "offers": {},
+  "alerts": []
+}
