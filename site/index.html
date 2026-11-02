@@ -213,6 +213,32 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
 .fb-watch-feedback{min-height:1.2em;color:var(--accent);font-weight:650;font-size:.86rem}
 #fb-watch-backup{display:block;margin-top:10px;width:100%;min-height:110px;font:13px monospace}
 .fb-watch-toggle[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+.fb-switch-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fb-switch-fields label{display:flex;flex-direction:column;font-weight:650;font-size:.86rem;gap:6px;min-width:0}
+.fb-switch-fields select,.fb-switch-fields input{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px;min-width:0;width:100%}
+.fb-switch-check{display:block;margin:14px 0;font-size:.9rem}
+.fb-switch-results{margin:22px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.fb-switch-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.fb-switch-metric{padding:11px;border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;gap:4px}
+.fb-switch-metric span{font-size:.79rem;color:var(--muted)}
+.fb-switch-metric strong{font-size:1.1rem}
+.fb-switch-highlight{font-weight:700}
+.fb-switch-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:18px 0}
+.fb-switch-table th,.fb-switch-table td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+.fb-switch-active{background:var(--chip)}
+.fb-switch-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,165px),1fr));gap:8px;margin:12px 0}
+.fb-switch-warnings{padding-left:22px;font-size:.86rem}
+.fb-switch-warnings li{margin:7px 0}
+.fb-switch-steps{margin:28px 0;font-size:.87rem}
+.fb-switch-steps li{margin:8px 0}
+#fb-switch-copy{display:block;width:100%;min-height:100px;margin-top:9px;font:12px monospace}
+.fb-footer{padding:25px 0 32px;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+.fb-footer nav{display:flex;flex-wrap:wrap;gap:9px 17px;margin-top:12px}
+@media(max-width:520px){.fb-switch-fields,.fb-switch-metrics{grid-template-columns:1fr}.fb-switch-table{font-size:.74rem}.fb-switch-table th,.fb-switch-table td{padding:7px 3px}}
+@media print{.hero,.tabs,.fb-switch-steps,.fb-footer,#fb-switch-form,.fb-switch-results .fb-card-actions{display:none!important}
+body{background:#fff!important;color:#000!important}.wrap{max-width:100%!important}
+#p-switch{display:block!important}#p-switch .fb-switch-results{border:0}
+#p-finder,#p-plans,#p-phones,#p-compare,#p-watchlist,#p-pricewatch,#p-sources{display:none!important}}
 [hidden]{display:none !important}
 @media (max-width:520px){
   .fb-form .fb-fields{grid-template-columns:1fr}
@@ -235,7 +261,7 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
     </svg>
     <h1>Five Bars</h1>
   </div>
-  <p class="tagline">Find affordable wireless plans and phone deals, see the real costs, and check the conditions before you switch. No account required.</p>
+  <p class="tagline">Find affordable wireless plans, compare estimated real costs, and check the conditions before you switch. No account required.</p>
 
   <p class="sentence">
     I need
@@ -272,11 +298,12 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
     <button class="tab" role="tab" data-tab="plans" id="t-plans" aria-controls="p-plans">Plans<span class="count" id="c-plans"></span></button>
     <button class="tab" role="tab" data-tab="phones" id="t-phones" aria-controls="p-phones">Phone deals<span class="count" id="c-phones"></span></button>
     <button class="tab" role="tab" data-tab="compare" id="t-compare" aria-controls="p-compare">Compare</button>
+    <button class="tab" role="tab" data-tab="switch" id="t-switch" aria-controls="p-switch">Switch &amp; save</button>
     <button class="tab" role="tab" data-tab="watchlist" id="t-watchlist" aria-controls="p-watchlist">My watchlist<span class="count" id="c-watchlist"></span></button>
     <button class="tab" role="tab" data-tab="pricewatch" id="t-pricewatch" aria-controls="p-pricewatch">Price watch</button>
     <button class="tab" role="tab" data-tab="sources" id="t-sources" aria-controls="p-sources">Sources &amp; refresh</button>
   </div>
-  <p class="fb-tab-swipe">Swipe sideways for Compare, My watchlist, Price watch and Sources.</p>
+  <p class="fb-tab-swipe">Swipe sideways for Compare, Switch &amp; save, My watchlist, Price watch and Sources.</p>
 </nav>
 
 <main class="wrap">
@@ -302,6 +329,12 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
     <div id="fb-compare-root" class="fb-tool"></div>
   </section>
 
+  <section id="p-switch" class="panel" role="tabpanel" aria-labelledby="t-switch" hidden>
+    <h2>Switch &amp; Save calculator</h2>
+    <p class="note">Compare your existing wireless spending with alternative offers over 12, 24 or 36 months. All results are indicative, not confirmed quotes, and your personal numbers stay on your device.</p>
+    <div id="fb-switch-root" class="fb-tool"></div>
+  </section>
+
   <section id="p-watchlist" class="panel" role="tabpanel" aria-labelledby="t-watchlist" hidden>
     <h2>My private watchlist</h2>
     <p class="note">Save specific phone deals, wireless plans, and providers. Set optional target prices and see matches when you visit. Everything is stored in this browser only, with no account or remote alerts.</p>
@@ -323,6 +356,18 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
     <p>Every morning, GitHub checks public sources and expires explicitly ended offers. Selected Boost Mobile promotions also receive strict partial checks against official advertised device prices, required plans, and number-transfer wording, with a visible observation history. Missing or conflicting evidence is flagged; no automatic price update or full-deal verification occurs. All other offers still require manual review. No AI or API keys are used.</p>
     <p>Deals with an end date also watch themselves: once a promo expires, its discount drops out of the math; ended phone offers are hidden.</p>
   </section>
+  <footer class="fb-footer">
+    <h3>Independent comparisons. Transparent limitations.</h3>
+    <p>Five Bars is an independent comparison and educational website, not a wireless carrier or checkout service. Prices are estimates from a curated catalog. Most listings have not undergone a recent complete terms review. Always confirm final costs, eligibility, coverage and unlocking directly with the carrier.</p>
+    <p>Five Bars currently identifies no paid placements or commission-based rankings. If referral relationships are introduced, we will disclose material compensation clearly near related links and preserve independent rankings.</p>
+    <nav aria-label="Website information">
+      <a href="editorial.html">How we review offers</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="disclosures.html">Disclosures</a>
+      <a href="switching-guide.html">Switching guide</a>
+      <a href="https://github.com/gcd231983/five-bars/issues/new" target="_blank" rel="noopener noreferrer">Report an issue (GitHub)</a>
+    </nav>
+  </footer>
 </main>
 
 <script>
@@ -660,7 +705,7 @@ function showTab(t){
     b.setAttribute("aria-selected", String(active));
     b.tabIndex=active ? 0 : -1;
   }
-  for(const id of ["finder","plans","phones","compare","watchlist","pricewatch","sources"]) $("#p-"+id).hidden = id!==t;
+  for(const id of ["finder","plans","phones","compare","switch","watchlist","pricewatch","sources"]) $("#p-"+id).hidden = id!==t;
   update(true);
 }
 document.querySelectorAll(".tab").forEach(b=>{
@@ -732,5 +777,6 @@ boot();
 </script>
 <script type="module" src="value-ui.mjs"></script>
 <script type="module" src="watchlist-ui.mjs"></script>
+<script type="module" src="switch-ui.mjs"></script>
 </body>
 </html>
