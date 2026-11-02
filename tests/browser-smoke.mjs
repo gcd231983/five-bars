@@ -54,6 +54,18 @@ try {
       'boost-a17':[{date:'2026-10-31',price:0,planPrice:50,source:'https://www.boostmobile.com/deals'},
         {date:'2026-11-02',price:19.99,planPrice:50,source:'https://www.boostmobile.com/deals'}]
     }};
+    const mvno={
+      schema:1,generatedAt:checkedAt,summary:{headlineMatches:2,priceMismatches:1,sourceUnavailable:0,needReview:1},
+      offers:{
+        'helium-air':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:15,observedUpfront:null,billingMonths:1,sourceUrl:'https://support.hellohelium.com/en/articles/17734883-plans-pricing',note:'Official plan rate matched; full terms NOT verified.'},
+        'helium-infinity':{state:'headline_mismatch',scope:'official_plan_rate_and_billing_term_headline',observedPrice:35,observedUpfront:null,billingMonths:1,sourceUrl:'https://support.hellohelium.com/en/articles/17734883-plans-pricing',note:'Official plan price differs from the catalog.'},
+        'good2go-annual1':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:5,observedUpfront:60,billingMonths:12,sourceUrl:'https://annualplans.good2gomobile.com/home-page',note:'Official annual payment $60 matches the listed monthly equivalent; full terms NOT verified.'}
+      }
+    };
+    const mvnoHistory={schema:1,offers:{
+      'helium-infinity':[{date:'2026-11-01',price:30,source:'https://support.hellohelium.com/en/articles/17734883-plans-pricing'},{date:'2026-11-02',price:35,source:'https://support.hellohelium.com/en/articles/17734883-plans-pricing'}],
+      'good2go-annual1':[{date:'2026-11-02',price:5,upfront:60,billingMonths:12,source:'https://annualplans.good2gomobile.com/home-page'}]
+    }};
     await page.route('**/data/status.json',async route=>{
       const response=await route.fetch();
       const saved=await response.json();
@@ -64,12 +76,22 @@ try {
         priceEvidenceState:'headline_mismatch',
         reviewRequired:true,
       };
+      saved.offers['helium-infinity']={
+        ...(saved.offers['helium-infinity']||{}),
+        state:'source_reachable',
+        mvnoPriceEvidenceState:'headline_mismatch',
+        reviewRequired:true,
+      };
       await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(saved)});
     });
     await page.route('**/data/price-evidence.json',route=>route.fulfill({
       status:200,contentType:'application/json',body:JSON.stringify(evidence)}));
     await page.route('**/data/price-history.json',route=>route.fulfill({
       status:200,contentType:'application/json',body:JSON.stringify(history)}));
+    await page.route('**/data/mvno-evidence.json',route=>route.fulfill({
+      status:200,contentType:'application/json',body:JSON.stringify(mvno)}));
+    await page.route('**/data/mvno-history.json',route=>route.fulfill({
+      status:200,contentType:'application/json',body:JSON.stringify(mvnoHistory)}));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
     await page.waitForFunction(()=>
@@ -135,6 +157,11 @@ try {
     await page.locator('#t-plans').click();
     assert.equal(await page.locator('#p-plans').isVisible(),true);
     assert.ok(await page.locator('#plans-list .fb-review').count()>0,'verification labels on plan rows');
+    const disputed=page.locator('#r-helium-infinity');
+    assert.match(await disputed.locator('.price .now').innerText(),/Price under review/);
+    assert.equal(await disputed.locator('.fb-compare-btn').count(),0,'disputed plan cannot be compared at stale price');
+    assert.match(await disputed.locator('[data-verification]').innerText(),/Official plan rate differs/);
+    assert.doesNotMatch(await disputed.locator('.foot').innerText(),/12 months \(est\.\)/);
     await page.locator('#plans-list .fb-compare-btn').first().click();
     assert.equal(await page.locator('#p-compare').isVisible(),true);
     await page.locator('#t-phones').click();
@@ -154,8 +181,13 @@ try {
       'Price-under-review row must not cause page overflow on '+view+': '+phoneOverflow);
     await page.locator('#t-pricewatch').click();
     assert.equal(await page.locator('#p-pricewatch').isVisible(),true);
-    assert.equal(await page.locator('#fb-price-watch-root .fb-watch-card').count(),2,
-      'Only tested offers are shown in price-watch fixture');
+    assert.equal(await page.locator('#fb-price-watch-root .fb-watch-card:not(.fb-mvno-card)').count(),2,
+      'Boost cards still appear in price-watch fixture');
+    assert.equal(await page.locator('#fb-price-watch-root .fb-mvno-card').count(),3,
+      'Three MVNO test records should appear under a separate group');
+    assert.match(await page.locator('#fb-price-watch-root').innerText(),/MVNO service-plan rate monitoring/);
+    assert.match(await page.locator('#fb-price-watch-root').innerText(),/\$60\.00 annual payment/);
+    assert.match(await page.locator('#fb-price-watch-root').innerText(),/\$35\.00\/mo/);
     assert.match(await page.locator('#fb-price-watch-root').innerText(),
       /A match never proves full eligibility/i);
     assert.ok(await page.locator('#fb-price-watch-root svg.fb-watch-chart').count()>0,

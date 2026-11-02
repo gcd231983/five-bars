@@ -101,7 +101,7 @@ test('scanner publishes review alerts without verified-price claims or catalog m
   try {
     await mkdir(join(fixture, 'scripts'));
     await mkdir(join(fixture, 'site/data'), { recursive: true });
-    for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs']) {
+    for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs', 'mvno-evidence.mjs']) {
       await copyFile(new URL('../scripts/' + name, import.meta.url), join(fixture, 'scripts', name));
     }
     const data = {
@@ -125,6 +125,8 @@ test('scanner publishes review alerts without verified-price claims or catalog m
     const status = JSON.parse(await readFile(join(fixture, 'site/data/status.json'), 'utf8'));
     const proof = JSON.parse(await readFile(join(fixture, 'site/data/price-evidence.json'), 'utf8'));
     const history = JSON.parse(await readFile(join(fixture, 'site/data/price-history.json'), 'utf8'));
+    const mvnoProof = JSON.parse(await readFile(join(fixture, 'site/data/mvno-evidence.json'), 'utf8'));
+    const mvnoHistory = JSON.parse(await readFile(join(fixture, 'site/data/mvno-history.json'), 'utf8'));
     assert.deepEqual(saved, data);
     assert.deepEqual(status.automaticChanges, []);
     assert.equal(status.summary.priceCandidatesForReview, 1);
@@ -134,6 +136,9 @@ test('scanner publishes review alerts without verified-price claims or catalog m
     assert.equal(proof.offers['boost-a17'].fullTermsVerified,false);
     assert.equal(proof.offers['boost-a17'].state,'not_found');
     assert.deepEqual(history.offers,{},'unmatched snippets cannot create price observations');
+    assert.equal(mvnoProof.summary.plansChecked,0);
+    assert.deepEqual(mvnoHistory.offers,{},'fixture has no scoped MVNO plans');
+    assert.equal(status.summary.mvnoHeadlineMatches,0);
     assert.equal(status.summary.pricesMatchedOnCarrierPage, undefined);
     assert.equal(status.offers['boost-a17'].state, 'source_reachable');
     assert.equal(status.offers['boost-a17'].priceEvidenceState,'not_found');

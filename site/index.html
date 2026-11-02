@@ -479,7 +479,9 @@ function renderPlans(){
     save:(a,b)=>b.c.save-a.c.save || a.c.year-b.c.year,
     pri:(a,b)=>((b.p.pri===true)-(a.p.pri===true)) || a.c.year-b.c.year
   }[state.sort];
-  rows.sort((a,b)=> state.lines>1 && a.c.famKnown!==b.c.famKnown ? (a.c.famKnown?-1:1) : by(a,b));
+  const priceUnderReview=p=>['headline_mismatch','ambiguous','unresolved_mismatch'].includes(AUTO_STATUS?.offers?.[p.id]?.mvnoPriceEvidenceState);
+  rows.sort((a,b)=> Number(priceUnderReview(a.p))-Number(priceUnderReview(b.p)) ||
+    (state.lines>1 && a.c.famKnown!==b.c.famKnown ? (a.c.famKnown?-1:1) : by(a,b)));
   $("#c-plans").textContent = rows.length;
   const L = state.lines;
   $("#plans-note").textContent = L>1
@@ -490,9 +492,11 @@ function renderPlans(){
   list.replaceChildren(...rows.map(({p,c},i)=>{
     const n = NET[p.net];
     const scan = AUTO_STATUS?.offers?.[p.id];
+    const priceDisputed=priceUnderReview(p);
     const facts = [
       p.unl ? "Unlimited data" : (p.data + " data"),
-      c.annualPrepaid ? "Pay "+money(c.upfrontDue)+" upfront for 12 months" : "Pay monthly",
+      priceDisputed ? (c.annualPrepaid?"Annual prepayment amount under review":"Plan rate under review") :
+        (c.annualPrepaid ? "Pay "+money(c.upfrontDue)+" upfront for 12 months" : "Pay monthly"),
       p.pri===true ? "Priority data" : (p.pri===false && p.unl ? "Deprioritized when busy" : null),
       L>1 ? (c.flat ? "Same price for every line" : (c.famKnown ? money(c.reg) + "/line at " + L + " lines" : "Multi-line price not listed")) : null,
       p.hot || (p.unl ? "No hotspot listed" : null),
@@ -513,19 +517,25 @@ function renderPlans(){
         el("div",{class:"plan"}, p.plan),
         el("div",{class:"net"}, n.name)),
       el("div",{class:"price"},
-        el("div",{class:"now"}, money(c.now), el("span",{class:"per"},c.annualPrepaid?"/mo eq.":"/mo")),
-        c.live ? el("div",{class:"then"}, "then " + money(c.reg)) : (p.priceNote ? el("div",{class:"then"}, p.priceNote) : null),
-        L>1 ? el("div",{class:"then"}, "per line") : (c.annualPrepaid ? el("div",{class:"then"},"Billed annually: "+money(c.upfrontDue)+" upfront") : null)),
-      el("ul",{class:"facts"}, NEWIDS.has(p.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), scan?.state==="source_unavailable" ? el("li",{class:"warn"},"Plan source could not be checked") : null,
-         c.promoFamilyUnconfirmed ? el("li",{class:"warn"},"Multi-line intro discount not verified") : null),
-      deal,
-      p.extra ? el("div",{class:"extra"}, p.extra) : null,
-      p.priceSourceDate ? el("div",{class:"fb-plan-source"},"Official carrier price listed as of "+p.priceSourceDate+". Full plan terms not independently verified.") : null,
+        priceDisputed ? el("div",{class:"now fb-under-review"},"Price under review") :
+          el("div",{class:"now"}, money(c.now), el("span",{class:"per"},c.annualPrepaid?"/mo eq.":"/mo")),
+        !priceDisputed && (c.live ? el("div",{class:"then"}, "then " + money(c.reg)) : (p.priceNote ? el("div",{class:"then"}, p.priceNote) : null)),
+        !priceDisputed ? (L>1 ? el("div",{class:"then"}, "per line") : (c.annualPrepaid ? el("div",{class:"then"},"Billed annually: "+money(c.upfrontDue)+" upfront") : null)) : null),
+      el("ul",{class:"facts"}, NEWIDS.has(p.id) ? el("li",{class:"new"},"New") : null,
+        facts.map(f=>el("li",null,f)),
+        scan?.state==="source_unavailable" ? el("li",{class:"warn"},"Plan source could not be checked") : null,
+        priceDisputed ? el("li",{class:"warn"},"Official plan-rate evidence conflicts; estimated costs are suppressed") : null,
+        c.promoFamilyUnconfirmed ? el("li",{class:"warn"},"Multi-line intro discount not verified") : null),
+      priceDisputed ? el("div",{class:"deal off"},"Advertised rate is under review. Check the provider before purchasing.") : deal,
+      !priceDisputed && p.extra ? el("div",{class:"extra"}, p.extra) : null,
+      p.priceSourceDate ? el("div",{class:"fb-plan-source"},"Catalog rate originally noted on "+p.priceSourceDate+"; no complete independent offer verification.") : null,
       el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
-        el("span",{class:"yr"}, "12 months (est.): ", el("b",null, whole(c.year)), L>1 ? " for " + L + " lines" : "", c.annualPrepaid ? "; paid upfront" : ""),
+        priceDisputed ? el("span",{class:"yr fb-watch-warning"},"First-year totals suppressed until the official rate conflict is resolved.") :
+          el("span",{class:"yr"}, "12 months (est.): ", el("b",null, whole(c.year)), L>1 ? " for " + L + " lines" : "", c.annualPrepaid ? "; paid upfront" : ""),
         el("a",{href:p.url, target:"_blank", rel:"noopener noreferrer"}, "See it at " + p.carrier),
-        el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("plan",p.id)},"Compare"))
+        priceDisputed ? el("span",{class:"fb-watch-warning"},"Compare after price review") :
+          el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("plan",p.id)},"Compare"))
     );
   }));
 }

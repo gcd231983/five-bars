@@ -5,6 +5,7 @@
 import { readFile, writeFile, rename } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { BOOST_SOURCE, evaluatePriceEvidence } from './price-evidence.mjs';
+import { evaluateMvnoEvidence } from './mvno-evidence.mjs';
 import {
   easternDate, expireKnownOffers, offerDiff,
   parseBoostCandidates, reviewBoostCandidates, safeSourceUrl,
@@ -16,6 +17,8 @@ const statusFile = new URL('site/data/status.json', root);
 const changesFile = new URL('site/data/changes.json', root);
 const priceEvidenceFile = new URL('site/data/price-evidence.json', root);
 const priceHistoryFile = new URL('site/data/price-history.json', root);
+const mvnoEvidenceFile = new URL('site/data/mvno-evidence.json', root);
+const mvnoHistoryFile = new URL('site/data/mvno-history.json', root);
 const dryRun = process.argv.includes('--dry-run');
 const concurrency = 5;
 const requestTimeoutMs = 12000;
@@ -131,6 +134,16 @@ const { report:priceEvidence, history:priceHistory } = evaluatePriceEvidence({
   previousHistory:oldHistory
 });
 alerts.push(...priceEvidence.alerts);
+// MVNO plan headline checks use exact official-plan labels, prices and billing
+// periods (not arbitrary nearby dollar amounts). Blocked/changed pages are
+// reported as unavailable or not found; no price edits are inferred.
+const oldMvnoHistory = await json(mvnoHistoryFile,{schema:1,offers:{}});
+const oldMvnoEvidence = await json(mvnoEvidenceFile,{schema:1,offers:{}});
+const {report:mvnoEvidence,history:mvnoHistory} = evaluateMvnoEvidence({
+  catalog:next, sources, checkedAt:now.toISOString(), day:today,
+  previousHistory:oldMvnoHistory,previousReport:oldMvnoEvidence,
+});
+alerts.push(...mvnoEvidence.alerts);
 
 // Check each known offer URL, but NEVER treat HTTP 200 as proof that a specific
 // price, promotion, or activation condition still exists.
@@ -153,6 +166,16 @@ for (const [id, proof] of Object.entries(priceEvidence.offers)) {
     offerStatuses[id].priceEvidenceScope = proof.scope;
     offerStatuses[id].priceEvidenceNote = proof.note;
     if (proof.state === 'headline_mismatch' || proof.state === 'ambiguous') {
+      offerStatuses[id].reviewRequired = true;
+    }
+  }
+}
+for (const [id,proof] of Object.entries(mvnoEvidence.offers)) {
+  if (offerStatuses[id]) {
+    offerStatuses[id].mvnoPriceEvidenceState = proof.state;
+    offerStatuses[id].mvnoPriceEvidenceScope = proof.scope;
+    offerStatuses[id].mvnoPriceEvidenceNote = proof.note;
+    if (['headline_mismatch','ambiguous','unresolved_mismatch'].includes(proof.state)) {
       offerStatuses[id].reviewRequired = true;
     }
   }
@@ -186,6 +209,10 @@ const status = {
     officialHeadlineMismatches: priceEvidence.summary.priceMismatches,
     officialHeadlineReviewAlerts: priceEvidence.summary.needReview,
     officialPriceObservations: priceEvidence.summary.observationsRecorded,
+    mvnoHeadlineMatches: mvnoEvidence.summary.headlineMatches,
+    mvnoHeadlineMismatches: mvnoEvidence.summary.priceMismatches,
+    mvnoReviewAlerts: mvnoEvidence.summary.needReview,
+    mvnoObservations: mvnoEvidence.summary.observationsRecorded,
     automaticChanges: automaticChanges.length, expiredPhoneDealsRemoved: expiredPhones.length,
     reviewAlerts: alerts.length,
   },
@@ -204,6 +231,8 @@ if (!dryRun) {
   await writeJson(statusFile, status);
   await writeJson(priceEvidenceFile, priceEvidence);
   await writeJson(priceHistoryFile, priceHistory);
+  await writeJson(mvnoEvidenceFile, mvnoEvidence);
+  await writeJson(mvnoHistoryFile, mvnoHistory);
 }
 console.log(JSON.stringify({
   date: today, dryRun,
@@ -213,6 +242,10 @@ console.log(JSON.stringify({
   officialHeadlineMatches: priceEvidence.summary.headlineMatches,
   officialHeadlineReviewAlerts: priceEvidence.summary.needReview,
   priceObservations: priceEvidence.summary.observationsRecorded,
+  mvnoHeadlineMatches: mvnoEvidence.summary.headlineMatches,
+  mvnoReviewAlerts: mvnoEvidence.summary.needReview,
+  mvnoPriceObservations: mvnoEvidence.summary.observationsRecorded,
+  mvnoStates: Object.fromEntries(Object.entries(mvnoEvidence.offers).map(([id,p])=>[id,p.state])),
   catalogChanges: diff,
   alerts: alerts.length,
   wroteFiles: !dryRun,

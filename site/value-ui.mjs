@@ -16,6 +16,8 @@ let reviews = {};
 let selected = [];
 let priceEvidence = null;
 let priceHistory = {offers:{}};
+let mvnoEvidence = null;
+let mvnoHistory = {offers:{}};
 const EVIDENCE_FRESH_MS = 48*60*60*1000;
 
 function element(tag, content, className) {
@@ -41,17 +43,20 @@ function linkTo(url,text) {
   } catch { return element('span','Source unavailable'); }
 }
 function priceProofFor(offer) {
-  const proof=priceEvidence?.offers?.[offer.id];
-  if(!proof || !priceEvidence?.generatedAt) return null;
-  const age=Date.now()-Date.parse(priceEvidence.generatedAt);
+  const forPlan=Object.hasOwn(mvnoEvidence?.offers||{},offer.id);
+  const report=forPlan?mvnoEvidence:priceEvidence;
+  const proof=report?.offers?.[offer.id];
+  if(!proof || !report?.generatedAt) return null;
+  const age=Date.now()-Date.parse(report.generatedAt);
   if(!Number.isFinite(age) || age<0 || age>EVIDENCE_FRESH_MS) {
     return {state:'outdated',note:'Last official headline scan is older than 48 hours. Refresh before trusting advertised prices.'};
   }
   // A successful headline match is NOT checkout or full-offer validation.
-  return proof;
+  return {...proof,isPlan:forPlan};
 }
 function officialHeadlineUnderReview(offer) {
-  return ['headline_mismatch','ambiguous'].includes(priceEvidence?.offers?.[offer?.id]?.state);
+  const state=mvnoEvidence?.offers?.[offer?.id]?.state || priceEvidence?.offers?.[offer?.id]?.state;
+  return ['headline_mismatch','ambiguous','unresolved_mismatch'].includes(state);
 }
 function statusNode(offer) {
   const s=verificationState(offer,reviews[offer.id]);
@@ -63,16 +68,17 @@ function statusNode(offer) {
   const proof=priceProofFor(offer);
   if(proof){
     const labels={
-      headline_matched:['Official headline matches · partial','fb-evidence-match'],
-      headline_mismatch:['Official headline differs','fb-evidence-warning'],
-      not_found:['Official headline not found','fb-evidence-warning'],
-      ambiguous:['Conflicting official headlines','fb-evidence-warning'],
-      source_unavailable:['Official source unavailable','fb-evidence-neutral'],
+      headline_matched:[proof.isPlan?'Official plan rate matches · partial':'Official headline matches · partial','fb-evidence-match'],
+      headline_mismatch:[proof.isPlan?'Official plan rate differs':'Official headline differs','fb-evidence-warning'],
+      not_found:[proof.isPlan?'Official plan price not found':'Official headline not found','fb-evidence-warning'],
+      ambiguous:['Conflicting official prices','fb-evidence-warning'],
+      unresolved_mismatch:['Previous price conflict unresolved','fb-evidence-warning'],
+      source_unavailable:['Official price source unavailable','fb-evidence-neutral'],
       outdated:['Price evidence scan is outdated','fb-evidence-neutral']
     };
     const [label,cls]=labels[proof.state]||['Official evidence requires review','fb-evidence-neutral'];
     const badge=element('span',label,'fb-status '+cls);
-    badge.title=proof.note || 'Only the advertised device price, required plan and porting wording were checked, not the complete deal';
+    badge.title=proof.note || 'Only selected public rate and billing headline fields were checked; full offer terms are not independently verified';
     wrapper.append(badge);
   }
   return wrapper;
@@ -95,12 +101,10 @@ function saveCompare() {
   } catch {}
 }
 function addToCompare(type,id) {
-  if(type==='phone'){
-    const d=catalog.phones.find(p=>p.id===id);
-    if(d && officialHeadlineUnderReview(d)){
-      window.alert('This promotion has conflicting official price evidence and is temporarily excluded from cost comparisons. Check Price watch.');
-      return;
-    }
+  const offer=(type==='phone'?catalog.phones:catalog.plans).find(p=>p.id===id);
+  if(offer && officialHeadlineUnderReview(offer)){
+    window.alert('This offer has conflicting official price evidence and is temporarily excluded from cost comparisons. Check Price watch.');
+    return;
   }
   if (!comparePrefs.fromFinder) {
     const selectedLines=Number(document.querySelector('#lines')?.value);
@@ -163,15 +167,18 @@ function renderFinder() {
     renderCompare();
     const recommendationCatalog={
       ...catalog,
+      plans:catalog.plans.filter(plan=>!officialHeadlineUnderReview(plan)),
       phones:catalog.phones.filter(phone=>!officialHeadlineUnderReview(phone))
     };
-    const suppressed=catalog.phones.length-recommendationCatalog.phones.length;
+    const suppressedPhones=catalog.phones.length-recommendationCatalog.phones.length;
+    const suppressedPlans=catalog.plans.length-recommendationCatalog.plans.length;
     const ranked = rankMatches(recommendationCatalog,prefs,localDay());
     const root = document.querySelector('#fb-finder-results');
     root.replaceChildren();
     root.append(element('h3','Matching options'));
     root.append(note('Estimated costs only, not a coverage guarantee or verified carrier quote. Promotions may have additional requirements.'));
-    if(suppressed)root.append(note(suppressed+' handset offer(s) with conflicting official price evidence are excluded from recommendations until reviewed. See Price watch.'));
+    if(suppressedPhones || suppressedPlans)root.append(note(
+      suppressedPlans+' plan(s) and '+suppressedPhones+' handset offer(s) with conflicting official price evidence have been excluded from recommendations. See Price watch.'));
     for(const msg of ranked.messages) root.append(note(msg));
     root.append(note(ranked.lines>1 ?
       'Plan results show known family prices first, then estimates; within each group the lowest 12-month cost ranks first.' :
@@ -222,6 +229,8 @@ function renderFinder() {
 function fieldValue(type,offer,key) {
   if(type==='plan' && offer.maxLines && comparePrefs.lines>offer.maxLines)
     return 'Not offered for '+comparePrefs.lines+' lines';
+  if(type==='plan' && officialHeadlineUnderReview(offer) &&
+      ['monthly','year','billing'].includes(key))return 'Price under review';
   if(type==='phone' && officialHeadlineUnderReview(offer) &&
       ['monthly','year','data','hotspot'].includes(key)) {
     return 'Price under review';
@@ -311,22 +320,22 @@ function renderCompare() {
   const links=element('tr'); const source=element('th','Carrier website');source.scope='row';links.append(source);
   for(const item of records){const cell=element('td');cell.append(linkTo(item.url,'View published offer'));links.append(cell);}
   body.append(links);table.append(body);wrap.append(table);compareRoot.append(wrap);
-  if(type==='phone' && records.some(officialHeadlineUnderReview)){
-    compareRoot.append(element('p','A selected handset offer has conflicting official price evidence; its dollar totals are suppressed pending review.','fb-watch-warning'));
+  if(records.some(officialHeadlineUnderReview)){
+    compareRoot.append(element('p','Selected offers with conflicting official price evidence have their dollar totals suppressed pending review.','fb-watch-warning'));
   }
   compareRoot.append(note(type==='plan' ?
     'Household estimates for '+comparePrefs.lines+' '+(comparePrefs.lines===1?'line':'lines')+'. Annual prepaid offers are paid upfront, not monthly; unavailable family tiers are marked. Unknown multi-line prices extrapolate one-line rates; unconfirmed family intro offers are excluded. Taxes and eligibility may change actual costs.' :
     'Device promotions are quoted per handset, NOT for the full household. Credits, delayed rebates, taxes and financing terms may alter estimated totals.'));
 }
 /* ---------- price evidence and observation history ---------- */
-function priceSparkline(rows) {
+function priceSparkline(rows,kind='advertised device') {
   const values=rows.filter(r=>Number.isFinite(r.price)).map(r=>r.price);
   if (!values.length)return null;
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.setAttribute('viewBox','0 0 300 72');
   svg.setAttribute('height','72');
   svg.setAttribute('role','img');
-  svg.setAttribute('aria-label','Official advertised device price history, '+values.length+' observation days. Values are NOT verified checkout amounts.');
+  svg.setAttribute('aria-label','Official '+kind+' rate history, '+values.length+' observation days. Values are NOT verified checkout amounts.');
   svg.classList.add('fb-watch-chart');
   const lo=Math.min(...values),hi=Math.max(...values);
   const xy=values.map((v,i)=>{
@@ -360,15 +369,81 @@ function reportOfferLink(id,offer){
   return linkTo('https://github.com/gcd231983/five-bars/issues/new?title='+
     encodeURIComponent(title)+'&body='+encodeURIComponent(body),'Report incorrect price (GitHub login)');
 }
+
+function appendMvnoWatch(root){
+  const section=element('section',null,'fb-mvno-watch');
+  const heading=element('h3','MVNO service-plan rate monitoring');
+  heading.id='fb-mvno-watch-title';
+  section.append(heading);
+  section.append(note('Strict partial monitoring currently covers selected Helium, MobileX, and Good2Go plans. Tello, H2O Wireless, and Red Pocket are NOT yet automatically price-validated; their official pages block or limit the automated checker. Carrier prices remain subject to taxes, activation, renewal and eligibility.'));
+  const checked=mvnoEvidence?.generatedAt;
+  if(!checked){
+    section.append(note('The first automatic MVNO price check has not published results yet. Check carrier websites before purchasing.'));
+    root.append(section);
+    return;
+  }
+  const age=Date.now()-Date.parse(checked);
+  const fresh=Number.isFinite(age)&&age>=0&&age<=EVIDENCE_FRESH_MS;
+  const stats=mvnoEvidence.summary||{};
+  section.append(element('p',
+    'MVNO official-page scan: '+new Date(checked).toLocaleString('en-US')+'. '+
+    (fresh?'Scan is recent.':'CAUTION: scan results are older than 48 hours.')+
+    ' '+(stats.headlineMatches||0)+' exact rate matches, '+(stats.priceMismatches||0)+
+    ' price conflicts (including unresolved), '+(stats.sourceUnavailable||0)+
+    ' source-unavailable items, '+(stats.needReview||0)+' review alerts.',
+    'fb-watch-meta'));
+  const grid=element('div',null,'fb-watch-grid');
+  const entries=Object.entries(mvnoEvidence.offers||{}).sort(([a],[b])=>a.localeCompare(b));
+  for(const [id,rec] of entries){
+    const original=catalog.plans.find(p=>p.id===id);
+    if(!original)continue;
+    const card=element('article',null,'fb-watch-card fb-mvno-card');
+    card.setAttribute('data-offer-id',id);
+    card.append(element('h3',original.carrier+' — '+original.plan));
+    card.append(statusNode(original));
+    card.append(element('p','Catalog effective rate: '+usd(original.price)+'/mo'+
+      (original.billingMonths===12?' · '+usd(original.billingUpfront)+' paid upfront for 12 months':'')));
+    if(Number.isFinite(rec.observedPrice)){
+      card.append(element('p','Official headline observation: '+usd(rec.observedPrice)+'/mo'+
+        (rec.billingMonths===12&&Number.isFinite(rec.observedUpfront) ?
+        ' · '+usd(rec.observedUpfront)+' annual payment':'')+'.','fb-watch-price'));
+    } else card.append(note('No trustworthy rate-and-billing headline found in this scan.'));
+    if(officialHeadlineUnderReview(original))
+      card.append(element('p','Do not rely on the catalog cost; this official price discrepancy remains unresolved.','fb-watch-warning'));
+    if(rec.note)card.append(note(rec.note));
+    const history=(mvnoHistory?.offers?.[id]||[]).filter(h=>h&&Number.isFinite(h.price))
+      .sort((a,b)=>a.date.localeCompare(b.date));
+    if(history.length){
+      const first=history[0],last=history[history.length-1];
+      card.append(note('Observed '+history.length+' day(s), '+first.date+' to '+last.date+
+        '. Latest monthly equivalent: '+usd(last.price)+
+        (Number.isFinite(last.upfront)?' ('+usd(last.upfront)+' upfront for one year)':'' )+'.'));
+      const chart=priceSparkline(history,'plan headline');
+      if(chart)card.append(chart);
+    }else card.append(note('No trustworthy price observations have been saved yet.'));
+    const actions=element('div',null,'fb-card-actions');
+    actions.append(linkTo(rec.sourceUrl||original.url,'Official plan source'));
+    actions.append(reportOfferLink(id,{phone:original.plan,url:original.url}));
+    card.append(actions);
+    grid.append(card);
+  }
+  if(grid.childElementCount)section.append(grid);
+  else section.append(note('No MVNO plan evidence is available yet.'));
+  section.append(element('p','A matched headline only checks a specific advertised plan price and billing period. It does NOT verify tax, autopay, device compatibility, hotspot, coverage, throttling, or eventual checkout totals. Conflicting offers are kept visible with costs suppressed until a trustworthy new official match.','fb-watch-detail'));
+  root.append(section);
+}
+
 function renderPriceWatch(){
   const root=document.querySelector('#fb-price-watch-root');
   if(!root)return;
   root.replaceChildren();
   const checked=priceEvidence?.generatedAt;
   if(!checked){
-    root.append(note('The first strict official-price scan has not published any observations yet. Listed prices still require carrier confirmation.'));
+    root.append(note('The first strict Boost device-price scan has not published any observations yet. Listed prices still require carrier confirmation.'));
+    appendMvnoWatch(root);
     return;
   }
+  root.append(element('h3','Boost Mobile device promotions'));
   const age=Date.now()-Date.parse(checked);
   const current=Number.isFinite(age)&&age>=0&&age<=EVIDENCE_FRESH_MS;
   root.append(element('p',
@@ -421,16 +496,19 @@ function renderPriceWatch(){
   if(group.childElementCount)root.append(group);
   else root.append(note('There are no scoped price observations in the latest report.'));
   root.append(element('p','History tracks selected device and required-plan headline prices from the official source. It is not a checkout receipt, price guarantee, or an assertion that every condition still applies. Prices on this website will not change automatically from these observations.','fb-watch-detail'));
+  appendMvnoWatch(root);
 }
 
 async function start() {
   renderFinder();
   try {
-    const [c,v,proof,history] = await Promise.all([
+    const [c,v,proof,history,mvnoProof,mvnoRecords] = await Promise.all([
       fetch('data/deals.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}),
       fetch('data/verifications.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
       fetch('data/price-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('data/price-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
+      fetch('data/mvno-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('data/mvno-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
     ]);
     catalog={plans:Array.isArray(c.plans)?c.plans:[],phones:Array.isArray(c.phones)?c.phones:[]};
     const providerSelect=finderRoot.querySelector('#fb-provider');
@@ -444,6 +522,8 @@ async function start() {
     reviews=v?.offers && typeof v.offers==='object'?v.offers:{};
     priceEvidence=proof?.schema===1 && typeof proof.offers==='object'?proof:null;
     priceHistory=history?.schema===1 && typeof history.offers==='object'?history:{offers:{}};
+    mvnoEvidence=mvnoProof?.schema===1 && typeof mvnoProof.offers==='object'?mvnoProof:null;
+    mvnoHistory=mvnoRecords?.schema===1 && typeof mvnoRecords.offers==='object'?mvnoRecords:{offers:{}};
     const submit=finderRoot.querySelector('#fb-finder-form button[type="submit"]');
     if(submit){submit.disabled=false;submit.removeAttribute('aria-busy');submit.textContent='Find matching options';}
     renderPriceWatch();
