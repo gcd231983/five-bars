@@ -120,7 +120,9 @@ function display(){
         '/mo standard published rate'+(official.publishedFirstMonthPrice!==undefined?
         '; '+usd(official.publishedFirstMonthPrice)+' first bill':'');
       info.append(create('p','Official published baseline: '+usd(official.publishedMonthly)+
-        basis+'. This is NOT a full-terms sign-off.'));
+        basis+(official.publishedPromoPrice!==undefined?'; eligible '+(official.publishedPromoRequirement==='new'?'new customers':'number transfers')+
+        ' may receive '+usd(official.publishedPromoPrice)+'/mo for '+official.publishedPromoMonths+' month(s); not assumed automatically':'')+
+        '. This is NOT a full-terms sign-off.'));
     }
     info.append(create('h4','Official published source links'));
     const sources=create('ul');

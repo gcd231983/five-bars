@@ -14,14 +14,14 @@ const ledger=JSON.parse(read('site/data/verifications.json'));
 const date='2026-11-02';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
-test('15 plan baselines plus 9 conditional device headlines do not certify checkout',()=>{
- assert.equal(Object.keys(research.records).length,24);
+test('28 plan baselines and 9 device headlines remain separate from full checkout verification',()=>{
+ assert.equal(Object.keys(research.records).length,37);
  const audit=build();
  assert.equal(audit.summary.offers,78);
- assert.equal(audit.summary.researched,24);
- assert.equal(audit.summary.notResearched,54);
+ assert.equal(audit.summary.researched,37);
+ assert.equal(audit.summary.notResearched,41);
  assert.equal(audit.summary.conflictingOrInvalid,0);
- assert.equal(audit.summary.publishedPriceMatches,24);
+ assert.equal(audit.summary.publishedPriceMatches,37);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  assert.equal(audit.summary.needingFullTerms,78);
  assert.ok(audit.offers.every(x=>x.manualReview!=='verified'));
@@ -49,7 +49,8 @@ test('official dated evidence is auditable, sourced with HTTPS, exact offer IDs,
     url.hostname.endsWith('mintmobile.com')||url.hostname.endsWith('cricketwireless.com')||
     url.hostname.endsWith('totalwireless.com')||url.hostname.endsWith('h2owireless.com')||
     url.hostname.endsWith('metrobyt-mobile.com')||
-    url.hostname.endsWith('boostmobile.com'),id+' unexpected domain');
+    url.hostname.endsWith('boostmobile.com')||url.hostname.endsWith('good2gomobile.com')||
+    url.hostname.endsWith('hellohelium.com')||url.hostname.endsWith('redpocket.com'),id+' unexpected domain');
    assert.ok(source.supports.length>20);
   }
   assert.equal(record.kind==='phone'?record.publishedDevicePrice:record.publishedMonthly,offer.price);
@@ -113,15 +114,17 @@ test('published source matches do not create human verification records',()=>{
  assert.equal(signed.status,'unverified');
  assert.equal(researchStatus(offer,research.records[offer.id],{today:date}).state,'published_match');
 });
-test('static public source audit prints 24 research cards and 54 unresearched offers',()=>{
+test('static public source audit prints 37 dated source cards and 41 unresearched offers',()=>{
  const html=renderResearchPage({catalog,ledger,research,today:date});
- assert.equal((html.match(/class="guide research-article"/g)||[]).length,24);
+ assert.equal((html.match(/class="guide research-article"/g)||[]).length,37);
  assert.match(html,/What our official sources actually confirm/);
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
  assert.match(html,/Not yet confirmed at checkout/);
  assert.match(html,/full-terms sign-offs/);
- assert.match(html,/54/);
+ assert.match(html,/41/);
+ assert.match(html,/\$10\.00\/mo for first 6 month\(s\) ONLY for eligible new customers/);
+ assert.match(html,/id="research-redpocket-plus"/);
  assert.match(html,/FULL RETAIL handset payment required; financing ineligible/);
  assert.match(html,/\$20\.00\/mo conditional service credits for 24 months NOT deducted/);
  assert.match(html,/Official conditional DEVICE HEADLINE \(not checkout\)/);
@@ -227,6 +230,27 @@ test('Boost razr prepaid service is documented without promoting an online headl
   scenario:{lines:1,currentMonthly:100,canPort:true,today:date,horizon:12}});
  assert.equal(report.chosen.upfrontDue,149.99);
  assert.equal(report.confidence,'indicative_not_fully_verified');
+});
+test('Metro first bill and optional new-line Boost/Red Pocket discounts are checked against official sources',()=>{
+ const metro=get('metro'),premium=get('metro-premium');
+ assert.equal(metro.firstMonthPrice,30);
+ assert.equal(planCost(metro,1,{today:date}).year,305);
+ assert.equal(planCost(premium,1,{today:date}).year,725);
+ assert.equal(researchStatus(metro,research.records.metro,{today:date}).state,'published_match');
+ assert.equal(researchStatus({...metro,firstMonthPrice:25},research.records.metro,{today:date}).state,'conflict');
+ for(const [id,regular,discounted] of [['boost',300,210],['redpocket-plus',240,230],['redpocket-premium',360,345]]){
+  const offer=get(id),r=research.records[id];
+  assert.equal(researchStatus(offer,r,{today:date}).state,'published_match');
+  assert.equal(planCost(offer,1,{today:date}).year,regular,'new-only discount is not automatic for '+id);
+  assert.equal(planCost(offer,1,{today:date,newCustomer:true}).year,discounted);
+  assert.equal(researchStatus({...offer,promo:{...offer.promo,req:'port'}},r,{today:date}).state,'conflict');
+ }
+ const report=simulateSwitch({catalog,type:'plan',id:'boost',researchEvidence:research,
+  scenario:{currentMonthly:80,lines:1,horizon:12,today:date,newCustomer:false}});
+ assert.equal(report.chosen.serviceTotal,300);
+ const newReport=simulateSwitch({catalog,type:'plan',id:'boost',researchEvidence:research,
+  scenario:{currentMonthly:80,lines:1,horizon:12,today:date,newCustomer:true}});
+ assert.equal(newReport.chosen.serviceTotal,210);
 });
 test('unrelated phone offers remain not researched; official source research does not sneak into signed ledger',()=>{
  assert.equal(Object.keys(ledger.offers).length,0);

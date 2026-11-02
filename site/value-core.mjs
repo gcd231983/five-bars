@@ -60,6 +60,7 @@ export function planCost(plan, count = 1, options = {}) {
     (typeof promo?.family?.[String(lines)] === 'number');
   const introAvailable = !!promo && !pastEnd(promo.ends,today) &&
     !(options.cannotPort && promo.req === 'port') &&
+    !(promo.req === 'new' && options.newCustomer !== true) &&
     promoAllowedLines && Number.isFinite(promo.price) && Number.isInteger(promo.months) && promo.months > 0;
   const intro = introAvailable && lines > 1 && promo.family && typeof promo.family[String(lines)] === 'number'
     ? promo.family[String(lines)] : promo?.price;
@@ -78,7 +79,8 @@ export function planCost(plan, count = 1, options = {}) {
     upfrontDue,firstMonthAdjusted,firstMonthDue,billingMonths:annual?12:1,annualPrepaid:annual,
     promoUsed:introAvailable,familyKnown,estimatedFamilyPrice:!familyKnown,
     promoFamilyUnconfirmed:lines>1 && !!promo && !promoAllowedLines,
-    promoSuppressedForNoPort:!!promo && !!options.cannotPort && promo.req==='port'};
+    promoSuppressedForNoPort:!!promo && !!options.cannotPort && promo.req==='port',
+    promoSuppressedForNotNew:!!promo && promo.req==='new' && options.newCustomer!==true};
 }
 export function phoneCost(phone) {
   const price=Number(phone.price);
@@ -128,7 +130,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
     .filter(p => networkOK(p.net,network) && (!preferences.provider || preferences.provider==='any' || p.carrier===preferences.provider) && (!p.maxLines || lines<=p.maxLines) &&
       (!preferences.priority || p.pri===true) && (!preferences.hotspot || !!p.hot))
     .map(p => {
-      const cost = planCost(p,lines,{today,cannotPort});
+      const cost = planCost(p,lines,{today,cannotPort,newCustomer:preferences.newCustomer===true});
       return cost && {type:'plan',id:p.id,offer:p,cost,year:cost.year,
         uncertain:cost.estimatedFamilyPrice};
     }).filter(Boolean)
@@ -156,6 +158,8 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
         ['Some plans have no published multi-line price. Those figures extrapolate the one-line rate.'] : []),
       ...(plans.some(x=>x.cost.promoFamilyUnconfirmed) ?
         ['Introductory discounts are excluded for multiple lines unless family eligibility is explicitly recorded.'] : []),
+      ...(plans.some(x=>x.cost.promoSuppressedForNotNew) ?
+        ['New-customer introductory discounts are excluded until you explicitly confirm eligibility.'] : []),
       ...(plans.some(x=>x.cost.annualPrepaid) ?
         ['Annual prepaid plans require the full year payment upfront. The advertised monthly figure is an effective equivalent, not monthly billing.'] : []),
       ...(plans.some(x=>x.cost.firstMonthAdjusted) ?

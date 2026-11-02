@@ -36,3 +36,10 @@ node scripts/auto-update.mjs --dry-run
 ```
 
 The GitHub Actions workflow runs the tests and data validator, checks updater syntax, then performs a real source scan. Deployment requires all checks to pass. A source requiring authentication or preventing automated access must not be bypassed; leave its offer unverified and investigate manually when possible.
+
+## New-customer promotions, first-month bills, and published research fields
+
+- A plan `promo.req: "new"` must **NOT** be included in a default calculator. Only calculate it when the visitor explicitly confirms new-customer eligibility. When unconfirmed, use `price` as the continuing monthly rate. The legacy plans screen uses the "I qualify as a new customer" toggle; the guided finder uses a checkbox; Switch & Save collects its own confirmation.
+- A documented one-line `firstMonthPrice` is counted once, separately from the ongoing `price`, even when the latter requires AutoPay. If the first-month amount for multiple lines has not been documented, restrict that selected offer to a single line with `maxLines: 1`; do not invent a family-wide initial charge.
+- Official research records can include `publishedPromoPrice`, `publishedPromoMonths` and `publishedPromoRequirement` ("new"/"port") as a **complete triple**. Material mismatches with `promo.price`, `promo.months` or `promo.req` must show a source conflict and pause comparisons. These represent advertised conditional terms and do not grant human full-terms verification.
+- Use official annual prepaid amounts (`billingMonths:12`, `billingUpfront`) and retain their actual upfront cash, distinct from effective monthly equivalents. Link each research observation directly to its official carrier URL; a reachable link is not checkout confirmation.

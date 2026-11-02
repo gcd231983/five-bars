@@ -31,7 +31,7 @@ function buildCashflow(offer,type,scenario,months){
       throw Error('This plan has not been quoted for '+L+' lines. Reduce your line count or choose another offer.');
     const requiresNew=offer.promo?.req==='new'&&!scenario.newCustomer;
     const cost=planCost(requiresNew?{...offer,promo:null}:offer,L,
-      {today:scenario.today,cannotPort:scenario.cannotPort||!scenario.canPort});
+      {today:scenario.today,cannotPort:scenario.cannotPort||!scenario.canPort,newCustomer:scenario.newCustomer});
     if(!cost)throw Error('This plan has no usable published service price.');
     if(cost.annualPrepaid){
       if(!Number.isFinite(offer.billingUpfront)||offer.billingUpfront<=0)
@@ -155,7 +155,10 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
        (published.billingMonths===12?
         offer.billingMonths!==12||!Number.isFinite(published.billingUpfront)||offer.billingUpfront!==published.billingUpfront:
         offer.billingMonths===12)||
-       (published.publishedFirstMonthPrice!==undefined&&offer.firstMonthPrice!==published.publishedFirstMonthPrice));
+       (published.publishedFirstMonthPrice!==undefined&&offer.firstMonthPrice!==published.publishedFirstMonthPrice)||
+       (published.publishedPromoPrice!==undefined&&
+        (offer.promo?.price!==published.publishedPromoPrice||offer.promo?.months!==published.publishedPromoMonths||
+         offer.promo?.req!==published.publishedPromoRequirement)));
     if(mismatch)throw Error('Official published-source research conflicts with this offer price or required payment terms. Switch estimates are paused pending review.');
   }
   const proof=evidenceStatus(id,type,opts);

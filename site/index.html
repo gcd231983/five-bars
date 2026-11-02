@@ -384,11 +384,11 @@ const NET = {
   multi:{name:"Your pick of Verizon, AT&T or T-Mobile", c:"var(--multi)"}
 };
 
-let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), CHANGES = null, AUTO_STATUS = null;
+let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), CHANGES = null, AUTO_STATUS = null, RESEARCH_AUDIT = null;
 
 /* ---------- state ---------- */
 const PLAN_TOGS = [
-  ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"]
+  ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"],["newcustomer","I qualify as a new customer"]
 ];
 const PHONE_TOGS = [
   ["free","$0 upfront device price"],["iphone","iPhone"],["android","Android"],["prepaid","Prepaid offers only"],["noport","Can’t move my number"]
@@ -442,6 +442,7 @@ function planCalc(p){
     const ei = endInfo(promo.ends);
     if(ei && ei.expired) promoState = {off:true, why:ei.text + ". Recheck for a new offer."};
     else if(state.t.noport && promo.req==="port") promoState = {off:true, why:"Intro price needs you to move your number."};
+    else if(promo.req==="new" && state.t.newcustomer!==true) promoState = {off:true, why:"New-customer pricing excluded until you confirm eligibility using the filter."};
     else promoState = {off:false, ends:ei};
   }
   const familyPromoEligible = L===1 || promo?.familyEligible===true ||
@@ -543,7 +544,7 @@ function renderControls(){
   $("#sort").replaceChildren(...sorts.map(([v,t])=>el("option",{value:v},t)));
   $("#sort").value = state.sort;
   for(const id of ["#lines","#net","#mode","#sort","#carrier"]) fit($(id));
-  const togs = state.mode==="byop" ? (state.lines>1 ? [...PLAN_TOGS.slice(0,4), ["fam","Multi-line price listed"], PLAN_TOGS[4]] : PLAN_TOGS) : PHONE_TOGS;
+  const togs = state.mode==="byop" ? (state.lines>1 ? [...PLAN_TOGS.slice(0,4), ["fam","Multi-line price listed"], ...PLAN_TOGS.slice(4)] : PLAN_TOGS) : PHONE_TOGS;
   $("#toggles").replaceChildren(...togs.map(([k,label])=>
     el("button",{class:"tog", type:"button", "aria-pressed": String(!!state.t[k]), onclick:()=>{state.t[k]=!state.t[k]; update();}}, label)));
   const d = new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"});
@@ -585,14 +586,15 @@ function renderPlans(){
     save:(a,b)=>b.c.save-a.c.save || a.c.year-b.c.year,
     pri:(a,b)=>((b.p.pri===true)-(a.p.pri===true)) || a.c.year-b.c.year
   }[state.sort];
-  const priceUnderReview=p=>['headline_mismatch','ambiguous','unresolved_mismatch'].includes(AUTO_STATUS?.offers?.[p.id]?.mvnoPriceEvidenceState);
+  const priceUnderReview=p=>['headline_mismatch','ambiguous','unresolved_mismatch'].includes(AUTO_STATUS?.offers?.[p.id]?.mvnoPriceEvidenceState)||
+    ['conflict','invalid'].includes(RESEARCH_AUDIT?.offers?.find(x=>x.id===p.id)?.researchState);
   rows.sort((a,b)=> Number(priceUnderReview(a.p))-Number(priceUnderReview(b.p)) ||
     (state.lines>1 && a.c.famKnown!==b.c.famKnown ? (a.c.famKnown?-1:1) : by(a,b)));
   $("#c-plans").textContent = rows.length;
   const L = state.lines;
   $("#plans-note").textContent = L>1
     ? "12-month cost covers all " + L + " lines. Annual prepaid plans without an explicit multi-line upfront quote are excluded. Other unknown multi-line prices are estimated from one-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
-    : "12-month cost includes introductory rates and documented first-month charges, then the regular price. Annual prepaid offers show a monthly EQUIVALENT but require full payment in advance.";
+    : "New-customer promotions are excluded unless you confirm eligibility using the filter. 12-month cost includes documented first-month charges and eligible intro rates, then the regular price. Annual prepaid offers show a monthly EQUIVALENT but require full payment in advance.";
   const list = $("#plans-list");
   if(!rows.length){ list.replaceChildren(emptyState()); return; }
   list.replaceChildren(...rows.map(({p,c},i)=>{
@@ -656,7 +658,8 @@ function renderPhones(){
     due:(a,b)=>(a.c.due??big)-(b.c.due??big) || (a.c.eff??big)-(b.c.eff??big),
     price:(a,b)=>(a.c.eff??big)-(b.c.eff??big) || (a.c.year??big)-(b.c.year??big)
   }[state.sort];
-  const underReview=d=>['headline_mismatch','ambiguous'].includes(AUTO_STATUS?.offers?.[d.id]?.priceEvidenceState);
+  const underReview=d=>['headline_mismatch','ambiguous','unresolved_mismatch'].includes(AUTO_STATUS?.offers?.[d.id]?.priceEvidenceState)||
+    ['conflict','invalid'].includes(RESEARCH_AUDIT?.offers?.find(x=>x.id===d.id)?.researchState);
   rows.sort((a,b)=>Number(underReview(a.d))-Number(underReview(b.d)) ||
     Number(!!a.d.postpaid)-Number(!!b.d.postpaid) || by(a,b));
   $("#c-phones").textContent = rows.length;
@@ -788,6 +791,10 @@ async function boot(){
   try{
     const r = await fetch("data/status.json", {cache:"no-store"});
     if(r.ok) AUTO_STATUS = await r.json();
+  }catch(e){}
+  try{
+    const r=await fetch('data/research-audit.json',{cache:'no-store'});
+    if(r.ok){const data=await r.json();if(data?.schema===1&&Array.isArray(data.offers))RESEARCH_AUDIT=data;}
   }catch(e){}
   renderSources();
   if(state.tab==="ask") state.tab = "plans";
