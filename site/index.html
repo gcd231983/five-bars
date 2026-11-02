@@ -156,6 +156,22 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
 .fb-swipe-hint{display:none}
 main section[role="tabpanel"]{scroll-margin-top:68px}
 @media (max-width:620px){.fb-swipe-hint{display:block}}
+/* Price evidence dashboard: compact responsive cards and a source-observation timeline. */
+.fb-watch-meta{margin:8px 0 18px;color:var(--muted)}
+.fb-watch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.fb-watch-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.fb-watch-card h3{margin:0 0 6px;font-size:1.04rem}
+.fb-watch-card p{margin:8px 0;font-size:.88rem}
+.fb-watch-pair{display:flex;flex-wrap:wrap;justify-content:space-between;gap:5px;font-size:.86rem}
+.fb-watch-pair strong{font-size:.97rem}
+.fb-watch-warning{color:var(--bad);font-weight:650}
+.fb-watch-chart{max-width:100%;height:72px;margin-top:8px;display:block}
+.fb-badges{display:inline-flex;gap:5px;flex-wrap:wrap}
+.fb-watch-detail{margin-top:16px;padding:12px 15px;border-radius:8px;background:var(--chip)}
+.fb-watch-price{color:var(--accent);font-weight:700}
+.fb-evidence-match{border-color:var(--accent);color:var(--accent)}
+.fb-evidence-warning{border-color:var(--bad);color:var(--bad)}
+.fb-evidence-neutral{color:var(--muted)}
 [hidden]{display:none !important}
 @media (max-width:520px){
   .fb-form .fb-fields{grid-template-columns:1fr}
@@ -210,6 +226,7 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
     <button class="tab" role="tab" data-tab="plans" id="t-plans" aria-controls="p-plans">Plans<span class="count" id="c-plans"></span></button>
     <button class="tab" role="tab" data-tab="phones" id="t-phones" aria-controls="p-phones">Phone deals<span class="count" id="c-phones"></span></button>
     <button class="tab" role="tab" data-tab="compare" id="t-compare" aria-controls="p-compare">Compare</button>
+    <button class="tab" role="tab" data-tab="pricewatch" id="t-pricewatch" aria-controls="p-pricewatch">Price watch</button>
     <button class="tab" role="tab" data-tab="sources" id="t-sources" aria-controls="p-sources">Sources &amp; refresh</button>
   </div>
 </nav>
@@ -237,13 +254,19 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
     <div id="fb-compare-root" class="fb-tool"></div>
   </section>
 
+  <section id="p-pricewatch" class="panel" role="tabpanel" aria-labelledby="t-pricewatch" hidden>
+    <h2>Official price evidence &amp; history</h2>
+    <p class="note">Partial checks on selected carrier promotions. A matched headline is not confirmation of checkout price, financing, fees, unlocking, or every condition.</p>
+    <div id="fb-price-watch-root" class="fb-tool" aria-live="polite"></div>
+  </section>
+
   <section id="p-sources" class="panel" role="tabpanel" aria-labelledby="t-sources" hidden>
     <h2>Where these deals come from</h2>
     <p id="src-date"></p>
     <p id="scan-status" class="note"></p>
     <ul class="srcs" id="src-list"></ul>
     <h3>How it stays fresh</h3>
-    <p>Every morning a scheduled job checks public source and offer links and removes explicitly expired deals. Scraped price candidates are flagged for manual review; they never change catalog prices or verify promotions automatically. No AI or API keys are used. Failed checks prevent publication, and a reachable link does not confirm the offer’s terms.</p>
+    <p>Every morning, GitHub checks public sources and expires explicitly ended offers. Selected Boost Mobile promotions also receive strict partial checks against official advertised device prices, required plans, and number-transfer wording, with a visible observation history. Missing or conflicting evidence is flagged; no automatic price update or full-deal verification occurs. All other offers still require manual review. No AI or API keys are used.</p>
     <p>Deals with an end date also watch themselves: once a promo expires, its discount drops out of the math; ended phone offers are hidden.</p>
   </section>
 </main>
@@ -548,7 +571,7 @@ function showTab(t){
     b.setAttribute("aria-selected", String(active));
     b.tabIndex=active ? 0 : -1;
   }
-  for(const id of ["finder","plans","phones","compare","sources"]) $("#p-"+id).hidden = id!==t;
+  for(const id of ["finder","plans","phones","compare","pricewatch","sources"]) $("#p-"+id).hidden = id!==t;
   update(true);
 }
 document.querySelectorAll(".tab").forEach(b=>{
