@@ -152,3 +152,27 @@ Five Bars now lists **38 wireless plans from 18 providers** across the major und
 New official carrier source links are part of `site/data/deals.json`. The no-AI daily scanner checks availability of those links, but this is not an automatic full-price revalidation for the newly added MVNOs. Automatic **partial price evidence** remains limited to the three explicitly supported Boost Mobile devices; expanding that safely is a separate workstream.
 
 Run `node --test tests/*.test.mjs` for pricing/provider/annual-billing checks, then review screenshots from the Chromium mobile and desktop PR workflow.
+
+## Automatic MVNO rate evidence — rollout November 2, 2026
+
+This upgrade extends the existing no-AI **Price watch** system beyond Boost device offers to **seven specific service plans** on public official carrier pages:
+
+| Provider | Scoped plans | Evidence scope |
+|---|---|---|
+| Helium Mobile | Air 10GB, Infinity Unlimited | Exact advertised monthly plan-rate heading |
+| MobileX | Basic Unlimited 10GB, Basic Unlimited 30GB | Exact advertised allowance and monthly price in the plan FAQ |
+| Good2Go Mobile | Annual 1GB, 3GB, 5GB | Exact **annual upfront payment**, matching data allowance, and 12-month equivalent |
+
+**Important:** These are *partial headline checks*, not checkout or full plan verification. Tax, fees, auto-pay requirements, throttling, new-customer terms, renewals, financing, coverage and phone compatibility are **not** independently verified by the parser. The three sources are allowlisted. Blocked or changed pages fail closed; they never trigger price guesses or automatic catalog edits.
+
+- Every successful daily scan stores `site/data/mvno-evidence.json` and `site/data/mvno-history.json` (up to **90 observation days** per supported plan).
+- Matching headlines display a clearly labeled **partial official-rate match** badge. Missing/unavailable official pages display review-needed messaging, not a success badge.
+- If the official price or annual amount **differs**, the site keeps the plan visible but **hides its advertised costs**, disables its comparison button, and removes it from finder recommendations.
+- A mismatch remains **unresolved** even if the next scan is blocked or the plan wording disappears. Only a fresh exact official headline match lifts the hold.
+- Automatic scans will **not modify `site/data/deals.json`** based on observed pricing. A human must review a new rate and its full plan terms.
+- **Tello, H2O Wireless and Red Pocket** remain in the main comparison catalog but are **not yet automatically rate-validated**: their official pricing pages have returned HTTP 403 to the scheduled scanner. This implementation will not bypass access controls.
+- Historical entries represent observed official **headline rates**, not guaranteed checkout prices or actual consumer transactions.
+
+Technical implementation: `scripts/mvno-evidence.mjs` implements strict extraction, allowlisted source provenance, conflicting-variant detection, mismatch persistence, and history limits. The no-AI update coordinator writes the files; the static site reads them; Node regression tests and Chromium mobile/desktop smoke checks cover the critical behavior.
+
+To inspect current evidence, open Five Bars → **Price watch**. To diagnose a run, open GitHub Actions → **Five Bars - no-AI deal checks and website**. Do not rely on ordinary HTTP 200 page availability as evidence of a specific price.
