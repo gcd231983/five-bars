@@ -100,6 +100,16 @@ test('price disputes are never presented as target matches even when advertised 
    mvnoEvidence:{offers:{'tello-starter':{state:'unresolved_mismatch'}}}});
  assert.equal(r.targetMatches.length,0);
 });
+test('manual review holds and malformed annual billing never trigger personal target matches',()=>{
+ const flagged=check({watches:[{kind:'phone',id:'metro-a17',target:5}]},{
+   status:{generatedAt:'2026-11-02T15:50:00Z',offers:{'metro-a17':{reviewRequired:true}}}
+ });
+ assert.equal(flagged.targetMatches.length,0);
+ const broken=structuredClone(catalog);
+ delete broken.plans.find(p=>p.id==='good2go-annual1').billingUpfront;
+ const plan=check({watches:[{kind:'plan',id:'good2go-annual1',target:5}]},{catalog:broken});
+ assert.equal(plan.targetMatches.length,0);
+});
 test('stale or absent source scan pauses target matches, not genuine saved watch entries',()=>{
  const r=check({watches:[{kind:'plan',id:'tello',target:20}]},{status:{generatedAt:'2026-10-25T15:00:00Z'}});
  assert.equal(r.fresh,false);
