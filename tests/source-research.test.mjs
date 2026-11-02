@@ -14,14 +14,14 @@ const ledger=JSON.parse(read('site/data/verifications.json'));
 const date='2026-11-02';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
-test('28 plan baselines and 9 device headlines remain separate from full checkout verification',()=>{
- assert.equal(Object.keys(research.records).length,37);
+test('36 plan baselines and 9 device headlines remain separate from checkout verification',()=>{
+ assert.equal(Object.keys(research.records).length,45);
  const audit=build();
  assert.equal(audit.summary.offers,78);
- assert.equal(audit.summary.researched,37);
- assert.equal(audit.summary.notResearched,41);
+ assert.equal(audit.summary.researched,45);
+ assert.equal(audit.summary.notResearched,33);
  assert.equal(audit.summary.conflictingOrInvalid,0);
- assert.equal(audit.summary.publishedPriceMatches,37);
+ assert.equal(audit.summary.publishedPriceMatches,45);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  assert.equal(audit.summary.needingFullTerms,78);
  assert.ok(audit.offers.every(x=>x.manualReview!=='verified'));
@@ -50,7 +50,10 @@ test('official dated evidence is auditable, sourced with HTTPS, exact offer IDs,
     url.hostname.endsWith('totalwireless.com')||url.hostname.endsWith('h2owireless.com')||
     url.hostname.endsWith('metrobyt-mobile.com')||
     url.hostname.endsWith('boostmobile.com')||url.hostname.endsWith('good2gomobile.com')||
-    url.hostname.endsWith('hellohelium.com')||url.hostname.endsWith('redpocket.com'),id+' unexpected domain');
+    url.hostname.endsWith('hellohelium.com')||url.hostname.endsWith('redpocket.com')||
+    url.hostname.endsWith('ultramobile.com')||url.hostname.endsWith('mymobilex.com')||
+    url.hostname.endsWith('fi.google.com')||url.hostname.endsWith('consumercellular.com')||
+    url.hostname.endsWith('tracfone.com')||url.hostname.endsWith('straighttalk.com'),id+' unexpected domain');
    assert.ok(source.supports.length>20);
   }
   assert.equal(record.kind==='phone'?record.publishedDevicePrice:record.publishedMonthly,offer.price);
@@ -114,15 +117,15 @@ test('published source matches do not create human verification records',()=>{
  assert.equal(signed.status,'unverified');
  assert.equal(researchStatus(offer,research.records[offer.id],{today:date}).state,'published_match');
 });
-test('static public source audit prints 37 dated source cards and 41 unresearched offers',()=>{
+test('static public source audit prints 45 dated source cards and 33 unresearched offers',()=>{
  const html=renderResearchPage({catalog,ledger,research,today:date});
- assert.equal((html.match(/class="guide research-article"/g)||[]).length,37);
+ assert.equal((html.match(/class="guide research-article"/g)||[]).length,45);
  assert.match(html,/What our official sources actually confirm/);
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
  assert.match(html,/Not yet confirmed at checkout/);
  assert.match(html,/full-terms sign-offs/);
- assert.match(html,/41/);
+ assert.match(html,/33/);
  assert.match(html,/\$10\.00\/mo for first 6 month\(s\) ONLY for eligible new customers/);
  assert.match(html,/id="research-redpocket-plus"/);
  assert.match(html,/FULL RETAIL handset payment required; financing ineligible/);
@@ -251,6 +254,52 @@ test('Metro first bill and optional new-line Boost/Red Pocket discounts are chec
  const newReport=simulateSwitch({catalog,type:'plan',id:'boost',researchEvidence:research,
   scenario:{currentMonthly:80,lines:1,horizon:12,today:date,newCustomer:true}});
  assert.equal(newReport.chosen.serviceTotal,210);
+});
+test('US Mobile selected port-in headline is never applied without confirmed eligible transfer',()=>{
+ for(const [id,regular,discounted] of [
+  ['usm-starter',300,240],['usm-premium',528,414]]){
+  const offer=get(id),record=research.records[id];
+  assert.equal(record.publishedPromoRequirement,'port');
+  assert.equal(researchStatus(offer,record,{today:date}).state,'published_match');
+  assert.equal(planCost(offer,1,{today:date}).year,regular);
+  assert.equal(planCost(offer,1,{today:date,canPort:true}).year,discounted);
+  const falsePromo={...offer,promo:{...offer.promo,price:1}};
+  assert.equal(researchStatus(falsePromo,record,{today:date}).state,'conflict');
+  const base=simulateSwitch({catalog,type:'plan',id,researchEvidence:research,
+   scenario:{lines:1,currentMonthly:80,horizon:12,today:date,canPort:false}});
+  assert.equal(base.chosen.serviceTotal,regular);
+  const eligible=simulateSwitch({catalog,type:'plan',id,researchEvidence:research,
+   scenario:{lines:1,currentMonthly:80,horizon:12,today:date,canPort:true}});
+  assert.equal(eligible.chosen.serviceTotal,discounted);
+  assert.equal(eligible.confidence,'indicative_not_fully_verified');
+ }
+ const html=renderResearchPage({catalog,ledger,research,today:date});
+ assert.match(html,/ONLY for eligible number transfers/);
+});
+test('Ultra 3/6/12-month prepaid options never appear as recurring intro discounts',()=>{
+ for(const [id,price,annual] of [['ultra',49,588],['ultra-4',19,228]]){
+  const offer=get(id),record=research.records[id];
+  assert.equal(offer.promo,undefined);
+  assert.equal(researchStatus(offer,record,{today:date}).state,'published_match');
+  const cost=planCost(offer,1,{today:date,newCustomer:true,canPort:true});
+  assert.equal(cost.year,annual);
+  assert.equal(cost.upfrontDue,price);
+  assert.equal(cost.promoUsed,false);
+ }
+ const page=renderResearchPage({catalog,ledger,research,today:date});
+ assert.match(page,/multi-month prepaid/);
+});
+test('remaining official source records never imply autopay or customer-specific extras were fully checked',()=>{
+ for(const id of ['mobilex-unlimited10','mobilex-unlimited30','fi','cc','tracfone','straighttalk']){
+  const o=get(id),record=research.records[id];
+  assert.equal(researchStatus(o,record,{today:date}).state,'published_match');
+  assert.ok(record.unresolved.length>=3);
+  assert.ok(record.sources.some(x=>x.url.startsWith('https://')));
+ }
+ assert.equal(get('fi').plan,'Unlimited Essentials');
+ assert.equal(get('straighttalk').price,25,'regular plan excludes optional BYOP AutoPay discount');
+ assert.equal(get('cc').price,20,'published AutoPay discounted rate requires confirmation');
+ assert.equal(get('tracfone').price,45,'published Auto-Refill rate requires confirmation');
 });
 test('unrelated phone offers remain not researched; official source research does not sneak into signed ledger',()=>{
  assert.equal(Object.keys(ledger.offers).length,0);
