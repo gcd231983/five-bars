@@ -5,14 +5,14 @@
 ## Current coverage and meanings
 
 - **Total catalog**: 78 items — 38 plans, 40 device promotions.
-- **15 published plan baselines researched**: original 12 plus Total Wireless MAX 5G BYO and H2O 10GB and Unlimited monthly plans.
+- **28 published plan-price baselines researched**: the previous 15 plus 13 additional official plan observations (Helium, Metro, Red Pocket, Boost, H2O annual and Good2Go annual).
 - **9 dated conditional handset headlines researched**: the original five plus Boost Pixel 10a, Boost Motorola razr 2025, Boost Moto G 2026 and Visible iPhone 18 Pro.
-- **54 entries remain without recorded official-publication research**: 23 other service plans and 31 phone offers. A matching conditional handset headline does not establish checkout eligibility.
+- **41 entries remain without recorded official-publication research**: 10 other service plans and 31 phone offers. A matching conditional handset headline does not establish checkout eligibility.
 - **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Official source research and a rate match do not change this.
 - **Research date**: 2026-11-02. The generator marks price-source observations aged after 21 days; the separately signed full-terms review expires after 14 days or a material data change.
 
 Public record: https://gcd231983.github.io/five-bars/source-research.html
-Underlying 24-item source file: `site/data/research-evidence.json`.
+Underlying 37-item source file: `site/data/research-evidence.json`.
 Machine-readable coverage report: `site/data/research-audit.json`.
 
 ## Confirmed public-rate baselines (not checkout)
@@ -98,3 +98,21 @@ The Visible benefit requires full retail purchase and eligible service throughou
 - https://www.t-mobile.com/support/new-to-tmobile/promotional-cards-credits-and-rebates
 
 These policy links explain risks; they do NOT verify any particular device promotion, new customer's eligibility, taxes or the actual monthly financed payment. Future work should collect device retail/MSRP, down payment, device installments, trade-in appraisal, plan, taxes, credit start/end and early-exit liability before any financed offer can receive a numerical quote.
+
+## Five Bars 3.5 — eligibility safeguards and broader official research (November 2, 2026)
+
+**Why this release matters:** Previous general plan calculators could apply a new-customer-only discount by default. The public listing, guided recommendations, comparison calculator, and Switch & Save now require the visitor to affirm new-customer eligibility before including those introductory discounts. Unconfirmed visitors see the normal published rate, not an invented promotional qualification. Number-transfer eligibility and multi-line pricing still require confirmation.
+
+**Metro pricing correction:** Official selected single-line bring-your-own-phone service is **$30 first month, then $25/month with eligible AutoPay**. Its premium single-line plan is **$65 first month, then $60 with eligible AutoPay**. An earlier unsourced $15/month for three-month Metro promotion has been removed. The previously stored multi-line prices for these selected options were removed from automatic calculations until separately verified. Official https://www.metrobyt-mobile.com/phone-plans
+
+**Boost Unlimited standard pricing:** Published $25/month recurring rate with AutoPay, taxes and fees extra; **$10/month for six months** is a conditional *new-customer* promotion and must not affect regular quotes unless eligibility is affirmed. Official https://www.boostmobile.com/plans
+
+**Red Pocket monthly pricing:** Essentials $10 for 3GB; Plus $20 for 20GB with a conditional eligible-new-line $10 first month; Premium $30 with 50GB premium data and a conditional eligible-new-line $15 first month. A public source match does not certify new-line eligibility or taxes. Official https://my.redpocket.com/plans
+
+**Helium monthly pricing:** Air $15 with 10GB including 5GB hotspot; Infinity $30 with 36GB high-speed and applicable data-speed management. Taxes and fees apply. Official https://support.hellohelium.com/en/articles/17734883-plans-pricing
+
+**H2O annual prepaid:** 10GB/high-speed equivalent $16/month means **$192 due upfront for 12 months**; 30GB equivalent $24/month means **$288 due upfront**. Neither is ordinary monthly billing; tax/regulatory charges may apply. Official https://www.h2owireless.com/plan/monthly
+
+**Good2Go annual prepaid:** 1GB $60 upfront ($5/month equivalent), 3GB $120 upfront ($10/month equivalent), 5GB $240 upfront ($20/month equivalent); always display cash paid annually. Official https://annualplans.good2gomobile.com/home-page
+
+The source ledger now records **37/78** dated public-source findings (28 service plans and nine device promotions); **41/78** remain unresearched at this level; **0/78** have complete human full-terms checkout sign-offs. Records retain open eligibility and tax questions. New documentary fields capture the *conditional introductory amount, number of promo months and required customer status* so material catalog mismatches pause savings. The site links directly from a plan or phone badge to its dated source record; a source badge says PARTIAL, not verified checkout.
