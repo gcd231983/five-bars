@@ -179,6 +179,16 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
 .fb-carrier-select select{padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);max-width:100%}
 .fb-carrier-hint{font-size:.78rem;color:var(--muted);flex-basis:100%}
 .fb-plan-source{margin-top:6px;color:var(--muted);font-size:.76rem}
+.fb-review-queue{margin-top:35px;padding-top:20px;border-top:1px solid var(--line)}
+.fb-review-queue h3{margin:0 0 9px}
+.fb-review-filter{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:.9rem;font-weight:650;margin:18px 0 12px}
+.fb-review-filter select{border:1px solid var(--line);padding:8px;border-radius:8px;background:var(--surface);color:var(--ink)}
+.fb-review-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:11px;margin-bottom:12px}
+.fb-review-item{padding:13px 15px;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow-wrap:anywhere}
+.fb-review-item h4{font-size:1rem;margin:0 0 6px}
+.fb-review-item p{font-size:.84rem;margin:5px 0;line-height:1.45}
+.fb-review-queue .fb-card-actions{margin-top:12px}
+.fb-review-queue .fb-compare-btn{margin:3px 0 14px}
 [hidden]{display:none !important}
 @media (max-width:520px){
   .fb-form .fb-fields{grid-template-columns:1fr}
@@ -466,8 +476,15 @@ function renderControls(){
       (n.reviewAlerts??0) + " alerts).";
     if(age>2) freshness += " CAUTION: automated checks are overdue.";
   } else freshness += " Automated source scan not yet available.";
+  const urgent=AUTO_STATUS?.summary?.highPriorityReviews;
+  if(Number.isFinite(urgent)&&urgent>0)freshness+=" "+urgent+" high-priority price review(s).";
   $("#fresh").replaceChildren(freshness + " ",
-    el("button",{type:"button", onclick:()=>showTab("sources")}, "Sources"));
+    el("button",{type:"button", onclick:()=>showTab("sources")}, "Sources"),
+    " ",
+    el("button",{type:"button", onclick:()=>{
+      showTab("pricewatch");
+      document.getElementById("fb-review-queue")?.scrollIntoView({block:"start",behavior:"smooth"});
+    }}, "Review prices"));
 }
 
 /* ---------- render: plans ---------- */

@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "generatedAt": null,
+  "today": null,
+  "scope": "Review priorities only; no automatic full-terms verification.",
+  "method": "Awaiting first scheduled scan",
+  "summary": {
+    "offers": 0,
+    "needAttention": 0,
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "routine": 0,
+    "withoutCurrentManualReview": 0,
+    "blockedProviders": 0
+  },
+  "blockedProviders": [],
+  "items": []
+}

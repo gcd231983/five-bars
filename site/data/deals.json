@@ -62,11 +62,6 @@
       "what": "Official monthly Tello tier prices and introductory plan conditions"
     },
     {
-      "name": "H2O Wireless monthly plans",
-      "url": "https://www.h2owireless.com/plan/monthly",
-      "what": "Official H2O standard plan prices, AutoPay alternatives and high-speed limits"
-    },
-    {
       "name": "Helium Mobile plan help",
       "url": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
       "what": "Official Helium Air and Infinity plan costs and data limits"
@@ -85,6 +80,16 @@
       "name": "Good2Go annual plans",
       "url": "https://annualplans.good2gomobile.com/home-page",
       "what": "Official prepaid annual cost and terms"
+    },
+    {
+      "name": "H2O Wireless official homepage rates",
+      "url": "https://www.h2owireless.com/",
+      "what": "Featured $20 10GB and $30 30GB-high-speed unlimited monthly plan cards; not annual plans or full terms"
+    },
+    {
+      "name": "Red Pocket official 2026 prepaid guide (background only)",
+      "url": "https://blog.redpocket.com/blog/2026-prepaid-cell-phone-plan-guide-costs-features-and-savings",
+      "what": "Official editorial pricing guide for context; NOT a live plan checkout or real-time validated rate"
     }
   ],
   "plans": [

@@ -22,6 +22,8 @@ jobs:
       - run: node --check scripts/auto-update.mjs
       - run: node --check scripts/price-evidence.mjs
       - run: node --check scripts/mvno-evidence.mjs
+      - run: node --check scripts/review-queue.mjs
       - run: node --check site/value-core.mjs
       - run: node --check site/value-ui.mjs
       - run: node scripts/review-offer.mjs audit
+

@@ -150,5 +150,6 @@ test('verification records are human-maintained and never populated by the sourc
   assert.equal(r.schema,1);
   assert.ok(r.offers && !Array.isArray(r.offers) && typeof r.offers === 'object');
   const scanner=readFileSync(new URL('../scripts/auto-update.mjs',import.meta.url),'utf8');
-  assert.doesNotMatch(scanner,/verifications\.json|review-offer\.mjs/);
+  assert.doesNotMatch(scanner,/writeJson\(manualReviewsFile|writeFile\(manualReviewsFile|review-offer\.mjs/);
+  assert.match(scanner,/json\(manualReviewsFile/,'the scanner may read manual evidence without modifying it');
 });

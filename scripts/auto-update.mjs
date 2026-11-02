@@ -6,6 +6,7 @@ import { readFile, writeFile, rename } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { BOOST_SOURCE, evaluatePriceEvidence } from './price-evidence.mjs';
 import { evaluateMvnoEvidence } from './mvno-evidence.mjs';
+import { buildReviewQueue } from './review-queue.mjs';
 import {
   easternDate, expireKnownOffers, offerDiff,
   parseBoostCandidates, reviewBoostCandidates, safeSourceUrl,
@@ -19,6 +20,8 @@ const priceEvidenceFile = new URL('site/data/price-evidence.json', root);
 const priceHistoryFile = new URL('site/data/price-history.json', root);
 const mvnoEvidenceFile = new URL('site/data/mvno-evidence.json', root);
 const mvnoHistoryFile = new URL('site/data/mvno-history.json', root);
+const reviewQueueFile = new URL('site/data/review-queue.json',root);
+const manualReviewsFile = new URL('site/data/verifications.json',root);
 const dryRun = process.argv.includes('--dry-run');
 const concurrency = 5;
 const requestTimeoutMs = 12000;
@@ -40,7 +43,7 @@ async function download(url) {
     const r = await fetch(url, {
       headers: {
         'user-agent': 'FiveBarsDealMonitor/2.0 (+https://github.com/gcd231983/five-bars)',
-        accept: 'text/html,application/xhtml+xml,application/xml,text/xml,text/plain;q=0.9',
+        accept: url==='https://www.h2owireless.com/' ? 'text/html,application/xhtml+xml,text/plain;q=0.9' : 'text/html,application/xhtml+xml,application/xml,text/xml,text/plain;q=0.9',
       },
       redirect: 'follow', signal: AbortSignal.timeout(requestTimeoutMs),
     });
@@ -98,7 +101,7 @@ if (!previous || !Array.isArray(previous.plans) || !Array.isArray(previous.phone
 const { next, changed: expiredPromos, removed: expiredPhones } = expireKnownOffers(previous, today);
 const previousStatus = await json(statusFile, {});
 const sourceInputs = (previous.sources || []).filter(s => s && safeSourceUrl(s.url));
-const sources = await mapped(sourceInputs, async s => {
+const scanSource = async s => {
   const result = await download(s.url);
   const hash = result.ok ? createHash('sha256').update(result.html.replace(/\s+/g, ' ').slice(0, 20000)).digest('hex') : null;
   return {
@@ -110,7 +113,17 @@ const sources = await mapped(sourceInputs, async s => {
     // transient raw content is only used for matching, not committed
     _html: result.ok ? result.html : null,
   };
-});
+};
+// Official H2O homepage is public but sensitive to concurrent requests.
+// Make one ordinary serial request after the other source checks; no retries,
+// challenge solving, altered identity, or access-control bypass.
+const homepage='https://www.h2owireless.com/';
+const generalSources=sourceInputs.filter(s=>s.url!==homepage);
+const homepageSources=sourceInputs.filter(s=>s.url===homepage);
+const sources=[
+  ...(await mapped(generalSources,scanSource)),
+  ...((await mapped(homepageSources,scanSource))),
+];
 const sourceSuccess = sources.filter(s => s.ok).length;
 if (sourceSuccess === 0) throw new Error('No source pages could be fetched; preserving previous data');
 
@@ -221,6 +234,14 @@ const status = {
   automaticChanges,
   alerts: alerts.slice(0, 100),
 };
+const manualReviews = await json(manualReviewsFile,{offers:{}});
+const reviewQueue = buildReviewQueue({
+  catalog:next, status, mvnoEvidence, phoneEvidence:priceEvidence,
+  manualRecords:manualReviews?.offers||{},
+  generatedAt:now.toISOString(),today
+});
+status.summary.offersNeedingReview=reviewQueue.summary.needAttention;
+status.summary.highPriorityReviews=reviewQueue.summary.critical+reviewQueue.summary.high;
 const newChanges = { date: today, ...diff };
 
 if (!dryRun) {
@@ -233,6 +254,7 @@ if (!dryRun) {
   await writeJson(priceHistoryFile, priceHistory);
   await writeJson(mvnoEvidenceFile, mvnoEvidence);
   await writeJson(mvnoHistoryFile, mvnoHistory);
+  await writeJson(reviewQueueFile, reviewQueue);
 }
 console.log(JSON.stringify({
   date: today, dryRun,
@@ -246,6 +268,7 @@ console.log(JSON.stringify({
   mvnoReviewAlerts: mvnoEvidence.summary.needReview,
   mvnoPriceObservations: mvnoEvidence.summary.observationsRecorded,
   mvnoStates: Object.fromEntries(Object.entries(mvnoEvidence.offers).map(([id,p])=>[id,p.state])),
+  reviewQueue: reviewQueue.summary,
   catalogChanges: diff,
   alerts: alerts.length,
   wroteFiles: !dryRun,

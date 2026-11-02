@@ -12,12 +12,15 @@ const fixture=()=>({
     {id:'good2go-annual1',carrier:'Good2Go Mobile',plan:'Annual 1GB',price:5,billingMonths:12,billingUpfront:60},
     {id:'good2go-annual3',carrier:'Good2Go Mobile',plan:'Annual 3GB',price:10,billingMonths:12,billingUpfront:120},
     {id:'good2go-annual5',carrier:'Good2Go Mobile',plan:'Annual 5GB',price:20,billingMonths:12,billingUpfront:240},
+    {id:'h2o-10gb',carrier:'H2O Wireless',plan:'10GB Monthly',price:20},
+    {id:'h2o-unlimited',carrier:'H2O Wireless',plan:'Unlimited (30GB high-speed)',price:30},
   ]
 });
 const mark={
  helium:'<html><main><h2>Plans & Pricing</h2><p>Air Plan $15/month</p><div>Infinity Plan $30/month</div></main></html>',
  mobilex:'<html><main><h2>MobileX FAQ</h2><p>Basic Unlimited 10GB: $14.88</p><p>Basic Unlimited 30GB: $24.88</p></main></html>',
  good2go:'<html><main><div>$60 Annual Payment Includes nationwide service and unlimited voice, 1GB high speed data per month</div><div>$120 Annual Payment Includes nationwide service and unlimited voice, 3GB high speed data per month</div><div>$240 Annual Payment Includes nationwide service and unlimited voice, 5GB high speed data per month</div></main></html>',
+ h2o:'<html><main>$18.00 with AutoPay $ 20 00 per month 10GB data 1 Speeds reduced after 10GB Plus: 2GB of mobile hotspot. NOW UNLIMITED! $ 30 00 per month Unlimited 3 Speeds reduced after 30GB Plus: 5GB mobile hotspot</main></html>',
 };
 const sources=(html=mark)=>Object.entries(MVNO_SOURCES).map(([key,url])=>({
   url,ok:true,finalUrl:url,_html:html[key],
@@ -46,12 +49,22 @@ test('Good2Go match includes exact upfront annual payment AND allowance, not a m
  assert.equal(p.observations['good2go-annual5'].upfront,240);
  assert.equal(p.observations['good2go-annual5'].price,20);
 });
+test('H2O homepage exact plan-card price and data allowance matches, while credits and unrelated dollars are ignored',()=>{
+ const p=parseMvnoHeadlines('h2o',mark.h2o);
+ assert.equal(p.observations['h2o-10gb'].price,20);
+ assert.equal(p.observations['h2o-unlimited'].price,30);
+ assert.equal(parseMvnoHeadlines('h2o','<p>10GB mobile data $20 with unrelated $30 promotion</p>').observations['h2o-10gb'],undefined);
+ const update=run(fixture(),{...mark,h2o:mark.h2o.replace('$ 30 00 per month','$ 35 00 per month')});
+ assert.equal(update.report.offers['h2o-unlimited'].state,'headline_mismatch');
+ assert.equal(update.report.offers['h2o-unlimited'].observedPrice,35);
+ assert.equal(update.report.offers['h2o-10gb'].state,'headline_matched');
+});
 test('all exact headline observations are explicitly partial and do not certify full conditions',()=>{
  const {report,history}=run();
- assert.equal(report.summary.plansChecked,7);
- assert.equal(report.summary.headlineMatches,7);
+ assert.equal(report.summary.plansChecked,9);
+ assert.equal(report.summary.headlineMatches,9);
  assert.equal(report.summary.needReview,0);
- assert.equal(report.summary.observationsRecorded,7);
+ assert.equal(report.summary.observationsRecorded,9);
  for(const [id,p] of Object.entries(report.offers)){
    assert.equal(p.state,'headline_matched',id);
    assert.equal(p.fullTermsVerified,false);
@@ -88,6 +101,7 @@ test('missing rate-bearing headings fail closed even if plan name and unrelated 
   helium:'<p>Air Plan</p><aside>$15 is an unrelated referral offer</aside>',
   mobilex:'<p>Basic Unlimited 10GB - learn more. Get $14.88 credit on a device</p>',
   good2go:'<p>$60 Annual Payment for 3GB high speed</p><p>$120 Annual Payment for 1GB high speed</p>',
+  h2o:'<p>10GB data $20 promotional credit</p><p>30GB speeds $30 accessory</p>',
  };
  const {report}=run(fixture(),source);
  assert.equal(report.summary.headlineMatches,0);
@@ -108,11 +122,12 @@ test('untrusted, failed or redirected sources never become price evidence',()=>{
  const fail=entries.find(x=>x.url===MVNO_SOURCES.helium);fail.ok=false;
  const spoof=entries.find(x=>x.url===MVNO_SOURCES.mobilex);spoof.finalUrl='https://mymobilex.com.evil.example/all-faqs/';
  const wrong=entries.find(x=>x.url===MVNO_SOURCES.good2go);wrong.finalUrl='http://annualplans.good2gomobile.com/home-page';
+ const spoofH2O=entries.find(x=>x.url===MVNO_SOURCES.h2o);spoofH2O.finalUrl='https://www.h2owireless.com.evil.example/';
  const {report,history}=evaluateMvnoEvidence({
    catalog:fixture(),sources:entries,day:'2026-11-02',checkedAt:'2026-11-02T14:00:00Z'
  });
  assert.equal(report.summary.headlineMatches,0);
- assert.equal(report.summary.sourceUnavailable,7);
+ assert.equal(report.summary.sourceUnavailable,9);
  assert.deepEqual(history.offers,{});
 });
 test('source outages preserve old evidence history but never claim a new match',()=>{
@@ -121,7 +136,7 @@ test('source outages preserve old evidence history but never claim a new match',
    catalog:fixture(),sources:sources().map(x=>({...x,ok:false})),
    checkedAt:'2026-11-03T14:00:00Z',day:'2026-11-03',previousHistory:before,
  });
- assert.equal(report.summary.sourceUnavailable,7);
+ assert.equal(report.summary.sourceUnavailable,9);
  assert.equal(report.summary.observationsRecorded,0);
  assert.deepEqual(history,before);
 });
@@ -160,13 +175,14 @@ test('one observation per day and 90 observation-day history limit',()=>{
  assert.equal(last.offers['good2go-annual1'].at(-1).upfront,60);
  assert.ok(last.offers['helium-air'].every(x=>!Object.hasOwn(x,'_html')));
 });
-test('source allowlist contains only the three independently scoped official carriers',()=>{
- assert.deepEqual(Object.keys(MVNO_SOURCES).sort(),['good2go','helium','mobilex']);
- assert.equal(Object.keys(MVNO_PLAN_RULES).length,7);
+test('source allowlist contains only the four scoped official carriers',()=>{
+ assert.deepEqual(Object.keys(MVNO_SOURCES).sort(),['good2go','h2o','helium','mobilex']);
+ assert.equal(Object.keys(MVNO_PLAN_RULES).length,9);
  const d=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
  for(const [key,url] of Object.entries(MVNO_SOURCES)){
    assert.ok(d.sources.some(x=>x.url===url),'source '+key+' absent from catalog');
  }
- assert.ok(!Object.values(MVNO_SOURCES).some(u=>u.includes('tello.com')||u.includes('h2owireless.com')),
+ assert.ok(!Object.values(MVNO_SOURCES).some(u=>u.includes('tello.com')||u.includes('redpocket.com')),
    'blocked carriers cannot be presented as automatically rate-validated');
+ assert.equal(MVNO_SOURCES.h2o,'https://www.h2owireless.com/');
 });
