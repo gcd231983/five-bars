@@ -77,11 +77,38 @@ try {
       {timeout:15000});
     await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
     await page.locator('#t-finder').click();
+    assert.equal(await page.locator('.fb-tab-swipe').isVisible(),view==='mobile',
+      'mobile navigation should offer a swipe hint');
     await page.locator('#t-finder').focus();
     await page.keyboard.press('ArrowRight');
     assert.equal(await page.locator('#p-plans').isVisible(),true,'Arrow key activates next tab');
     await page.keyboard.press('Home');
     assert.equal(await page.locator('#p-finder').isVisible(),true,'Home returns to first tab');
+    // MVNO expansion: find an exact provider, and verify annual billing on mobile and desktop.
+    await page.locator('#fb-net').selectOption('tmo');
+    await page.locator('#fb-provider').selectOption('Tello');
+    await page.locator('#fb-lines').selectOption('1');
+    await page.locator('#fb-budget').fill('');
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    assert.ok((await page.locator('#fb-finder-results .fb-result').count())>=3,
+      'Tello should appear with multiple official-priced tiers');
+    assert.ok((await page.locator('#fb-finder-results .fb-result').first().innerText()).includes('Tello'),
+      'provider filter should remove non-Tello plans');
+
+    await page.locator('#fb-net').selectOption('any');
+    await page.locator('#fb-provider').selectOption('Good2Go Mobile');
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    const annualText=await page.locator('#fb-finder-results').innerText();
+    assert.match(annualText,/\$60\.00 UPFRONT/i,'annual plan must expose $60 upfront');
+    assert.match(annualText,/not a monthly subscription/i);
+    assert.match(annualText,/Phone offers \(0 match the selected filters\)/,
+      'provider preference must exclude other carriers handset promotions');
+    await page.screenshot({path:join(output,view+'-mvno-annual.png'),fullPage:true});
+    await page.locator('#fb-finder-results .fb-result').first().getByRole('button',{name:'Compare'}).click();
+    assert.match(await page.locator('#fb-compare-root').innerText(),/Billing \/ upfront amount/i);
+    assert.match(await page.locator('#fb-compare-root').innerText(),/\$60\.00 upfront for 12 months/i);
+    await page.locator('#t-finder').click();
+    await page.locator('#fb-provider').selectOption('any');
     await page.locator('#fb-net').selectOption('att');
     await page.locator('#fb-lines').selectOption('2');
     await page.locator('#fb-budget').fill('80');

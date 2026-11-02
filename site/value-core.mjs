@@ -61,8 +61,11 @@ export function planCost(plan, count = 1, options = {}) {
   const introMonths = introAvailable ? Math.min(12,promo.months) : 0;
   const monthTotal = discounted * lines;
   const regularMonthTotal = regular * lines;
-  const year = (discounted * introMonths + regular * (12-introMonths)) * lines;
+  const annual = plan.billingMonths===12 && Number.isFinite(plan.billingUpfront) && plan.billingUpfront>0 && lines===1;
+  const year = annual ? plan.billingUpfront : (discounted * introMonths + regular * (12-introMonths)) * lines;
+  const upfrontDue = annual ? plan.billingUpfront : discounted * lines;
   return {lines,nowPerLine:discounted,regularPerLine:regular,monthTotal,regularMonthTotal,year,
+    upfrontDue,billingMonths:annual?12:1,annualPrepaid:annual,
     promoUsed:introAvailable,familyKnown,estimatedFamilyPrice:!familyKnown,
     promoFamilyUnconfirmed:lines>1 && !!promo && !promoAllowedLines,
     promoSuppressedForNoPort:!!promo && !!options.cannotPort && promo.req==='port'};
@@ -101,7 +104,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
   const network = preferences.network || 'any';
   const cannotPort = !!preferences.cannotPort;
   const plans = (catalog.plans || [])
-    .filter(p => networkOK(p.net,network) && (!p.maxLines || lines<=p.maxLines) &&
+    .filter(p => networkOK(p.net,network) && (!preferences.provider || preferences.provider==='any' || p.carrier===preferences.provider) && (!p.maxLines || lines<=p.maxLines) &&
       (!preferences.priority || p.pri===true) && (!preferences.hotspot || !!p.hot))
     .map(p => {
       const cost = planCost(p,lines,{today,cannotPort});
@@ -111,7 +114,9 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
     .filter(item=> !hasBudget || item.cost.regularMonthTotal <= budget)
     .sort(trustworthySort);
   const phones = (catalog.phones || [])
-    .filter(d => networkOK(d.net,network) && !pastEnd(d.ends,today) && !(cannotPort && d.port))
+    .filter(d => networkOK(d.net,network) &&
+      (!preferences.provider || preferences.provider==='any' || d.carrier===preferences.provider) &&
+      !pastEnd(d.ends,today) && !(cannotPort && d.port))
     .map(d => {
       const cost = phoneCost(d);
       return cost && {type:'phone',id:d.id,offer:d,cost,year:cost.year,
@@ -129,7 +134,9 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
       ...(plans.some(x=>x.cost.estimatedFamilyPrice) ?
         ['Some plans have no published multi-line price. Those figures extrapolate the one-line rate.'] : []),
       ...(plans.some(x=>x.cost.promoFamilyUnconfirmed) ?
-        ['Introductory discounts are excluded for multiple lines unless family eligibility is explicitly recorded.'] : [])
+        ['Introductory discounts are excluded for multiple lines unless family eligibility is explicitly recorded.'] : []),
+      ...(plans.some(x=>x.cost.annualPrepaid) ?
+        ['Annual prepaid plans require the full year payment upfront. The advertised monthly figure is an effective equivalent, not monthly billing.'] : [])
     ],
   };
 }
