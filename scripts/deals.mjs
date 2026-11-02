@@ -112,6 +112,8 @@ function validate(d, prev) {
       if (!isNum(p.promo.price, 0, 200)) errs.push(at + ": bad promo.price");
       if (!Number.isInteger(p.promo.months) || p.promo.months < 1 || p.promo.months > 60) errs.push(at + ": promo.months must be 1-60");
       if (typeof p.promo.text !== "string") errs.push(at + ": promo.text missing");
+      if (typeof p.promo.text === 'string' && /\b(prepay|prepaid\s+months|advance\s+payment|pay\s+upfront)\b/i.test(p.promo.text))
+        errs.push(at + ': prepaid service offer cannot be modeled as an ordinary monthly promotion; document billingUpfront and billing interval instead');
       if (p.promo.req != null && !["port", "new"].includes(p.promo.req)) errs.push(at + ": promo.req must be port or new");
       if (!isDate(p.promo.ends)) errs.push(at + ": promo.ends must be YYYY-MM-DD");
     }

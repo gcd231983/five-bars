@@ -62,10 +62,10 @@ test('family discount is not silently multiplied across every line',()=>{
   assert.equal(cost.promoFamilyUnconfirmed,true);
   assert.equal(cost.monthTotal,44);
   assert.equal(cost.year,528);
-  const solo=planCost(sample.plans[0],1,{today:'2026-11-01'});
+  const solo=planCost(sample.plans[0],1,{today:'2026-11-01',canPort:true});
   assert.equal(solo.promoUsed,true);
   assert.equal(solo.year,240);
-  const confirmed=planCost({...sample.plans[0],promo:{price:15,months:6,familyEligible:true}},2,{today:'2026-11-01'});
+  const confirmed=planCost({...sample.plans[0],promo:{price:15,months:6,familyEligible:true}},2,{today:'2026-11-01',canPort:true});
   assert.equal(confirmed.year,444);
 });
 test('new-customer discount needs active confirmation in shared calculator and guided finder',()=>{
@@ -84,6 +84,47 @@ test('new-customer discount needs active confirmation in shared calculator and g
  assert.ok(defaultRank.messages.some(x=>x.includes('New-customer introductory discounts')));
  const newRank=rankMatches(catalog,{network:'att',lines:1,newCustomer:true},'2026-11-02');
  assert.equal(newRank.plans[0].year,210);
+});
+test('port-in prices and phone promotions cannot rank as available without positive eligibility confirmation',()=>{
+ const portPlan=sample.plans[0],promoPhone=sample.phones[0];
+ const base=planCost(portPlan,1,{today:'2026-11-02'});
+ assert.equal(base.year,300);
+ assert.equal(base.promoUsed,false);
+ assert.equal(base.promoSuppressedForUnconfirmedPort,true);
+ const confirmed=planCost(portPlan,1,{today:'2026-11-02',canPort:true});
+ assert.equal(confirmed.promoUsed,true);
+ assert.equal(confirmed.year,240);
+ const contradictory=planCost(portPlan,1,{today:'2026-11-02',canPort:true,cannotPort:true});
+ assert.equal(contradictory.year,300);
+ const catalog={plans:[portPlan],phones:[promoPhone]};
+ const unconfirmed=rankMatches(catalog,{network:'att',lines:1},'2026-11-02');
+ assert.equal(unconfirmed.plans[0].year,300);
+ assert.equal(unconfirmed.phones.length,0);
+ assert.ok(unconfirmed.messages.some(x=>x.includes('Port-in introductory discounts')));
+ assert.ok(unconfirmed.messages.some(x=>x.includes('Port-in-only phone promotions')));
+ const eligible=rankMatches(catalog,{network:'att',lines:1,canPort:true},'2026-11-02');
+ assert.equal(eligible.plans[0].year,240);
+ assert.deepEqual(eligible.phones.map(x=>x.id),[promoPhone.id]);
+ const denied=rankMatches(catalog,{network:'att',lines:1,canPort:true,cannotPort:true},'2026-11-02');
+ assert.equal(denied.plans[0].year,300);
+ assert.equal(denied.phones.length,0);
+ const html=readFileSync(new URL('../site/index.html',import.meta.url),'utf8');
+ const fn=html.match(/^function planCalc\(p\)\{[\s\S]*?^\}/m)?.[0];
+ assert.ok(fn);
+ const c=(t)=>runInNewContext(fn+';planCalc(p);',{p:portPlan,state:{lines:1,t},endInfo:()=>null});
+ assert.equal(c({}).year,300);
+ assert.equal(c({canport:true}).year,240);
+ assert.equal(c({canport:true,noport:true}).year,300);
+});
+test('ultra multi-month promotional equivalents are not used as monthly payments',()=>{
+ const catalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ const unlimited=catalog.plans.find(x=>x.id==='ultra'), four=catalog.plans.find(x=>x.id==='ultra-4');
+ assert.equal(unlimited.promo,undefined);
+ assert.equal(four.promo,undefined);
+ assert.equal(planCost(unlimited,1,{today:'2026-11-02',newCustomer:true}).year,588);
+ assert.equal(planCost(four,1,{today:'2026-11-02',newCustomer:true}).year,228);
+ assert.equal(planCost(unlimited,1,{today:'2026-11-02'}).upfrontDue,49);
+ assert.equal(planCost(four,1,{today:'2026-11-02'}).upfrontDue,19);
 });
 test('unknown family rates are extrapolations, never called confirmed',()=>{
   const c=planCost(sample.plans[3],3,{today:'2026-11-01'});
