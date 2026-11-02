@@ -30,5 +30,7 @@ jobs:
       - run: node --check site/value-ui.mjs
       - run: node --check site/watchlist-core.mjs
       - run: node --check site/watchlist-ui.mjs
+      - run: node --check site/switch-core.mjs
+      - run: node --check site/switch-ui.mjs
       - run: node scripts/review-offer.mjs audit
 
