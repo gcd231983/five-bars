@@ -50,6 +50,9 @@ function priceProofFor(offer) {
   // A successful headline match is NOT checkout or full-offer validation.
   return proof;
 }
+function officialHeadlineUnderReview(offer) {
+  return ['headline_mismatch','ambiguous'].includes(priceEvidence?.offers?.[offer?.id]?.state);
+}
 function statusNode(offer) {
   const s=verificationState(offer,reviews[offer.id]);
   const wrapper=element('span',null,'fb-badges');
@@ -92,6 +95,13 @@ function saveCompare() {
   } catch {}
 }
 function addToCompare(type,id) {
+  if(type==='phone'){
+    const d=catalog.phones.find(p=>p.id===id);
+    if(d && officialHeadlineUnderReview(d)){
+      window.alert('This promotion has conflicting official price evidence and is temporarily excluded from cost comparisons. Check Price watch.');
+      return;
+    }
+  }
   if (!comparePrefs.fromFinder) {
     const selectedLines=Number(document.querySelector('#lines')?.value);
     if(Number.isInteger(selectedLines) && selectedLines>=1 && selectedLines<=5) comparePrefs.lines=selectedLines;
@@ -148,7 +158,15 @@ function renderFinder() {
     comparePrefs={lines:prefs.lines,cannotPort:prefs.cannotPort,fromFinder:true};
     saveCompare();
     renderCompare();
-    const ranked = rankMatches(catalog,prefs,localDay());
+    const recommendationCatalog={
+      ...catalog,
+      phones:catalog.phones.filter(phone=>!officialHeadlineUnderReview(phone))
+    };
+    const suppressed=catalog.phones.length-recommendationCatalog.phones.length;
+    if(suppressed){
+      root.append(note(suppressed+' handset offer(s) with conflicting official price evidence are excluded from these recommendations until reviewed. See Price watch.'));
+    }
+    const ranked = rankMatches(recommendationCatalog,prefs,localDay());
     const root = document.querySelector('#fb-finder-results');
     root.replaceChildren();
     root.append(element('h3','Matching options'));
@@ -200,6 +218,10 @@ function renderFinder() {
   });
 }
 function fieldValue(type,offer,key) {
+  if(type==='phone' && officialHeadlineUnderReview(offer) &&
+      ['monthly','year','data','hotspot'].includes(key)) {
+    return 'Price under review';
+  }
   if(type==='plan') {
     const c=planCost(offer,comparePrefs.lines,{cannotPort:comparePrefs.cannotPort});
     switch(key) {
@@ -284,6 +306,9 @@ function renderCompare() {
   const links=element('tr'); const source=element('th','Carrier website');source.scope='row';links.append(source);
   for(const item of records){const cell=element('td');cell.append(linkTo(item.url,'View published offer'));links.append(cell);}
   body.append(links);table.append(body);wrap.append(table);compareRoot.append(wrap);
+  if(type==='phone' && records.some(officialHeadlineUnderReview)){
+    compareRoot.append(element('p','A selected handset offer has conflicting official price evidence; its dollar totals are suppressed pending review.','fb-watch-warning'));
+  }
   compareRoot.append(note(type==='plan' ?
     'Household estimates for '+comparePrefs.lines+' '+(comparePrefs.lines===1?'line':'lines')+'. Unknown multi-line prices extrapolate one-line rates; unconfirmed family intro offers are excluded. Taxes and eligibility may change actual costs.' :
     'Device promotions are quoted per handset, NOT for the full household. Credits, delayed rebates, taxes and financing terms may alter estimated totals.'));
