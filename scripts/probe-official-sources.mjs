@@ -23,6 +23,7 @@ for (const [name,url] of candidates){
        'accept':'text/html,application/xhtml+xml,text/plain;q=0.9'}});
     const target=new URL(response.url);
     result.status=response.status;
+    result.contentType=response.headers.get('content-type')||null;
     result.officialHost=['redpocket.com','www.redpocket.com','my.redpocket.com',
       'tello.com','www.tello.com','blog.tello.com','h2owireless.com','www.h2owireless.com','blog.redpocket.com'].includes(target.hostname);
     result.finalUrl=response.url;
