@@ -11,6 +11,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write
 
 concurrency:
   group: five-bars
@@ -35,6 +36,10 @@ jobs:
         run: node --check scripts/mvno-evidence.mjs
       - name: Check review queue engine syntax
         run: node --check scripts/review-queue.mjs
+      - name: Check price alert engine syntax
+        run: node --check scripts/alert-engine.mjs
+      - name: Check GitHub Issues notification syntax
+        run: node --check scripts/issue-alerts.mjs
       - name: Check current data structure
         run: node scripts/deals.mjs check
       - name: Scan public sources and expire known offers (no AI)
@@ -45,11 +50,18 @@ jobs:
         run: |
           git config user.name 'five-bars-bot'
           git config user.email 'five-bars-bot@users.noreply.github.com'
-          git add site/data/deals.json site/data/changes.json site/data/status.json site/data/price-evidence.json site/data/price-history.json site/data/mvno-evidence.json site/data/mvno-history.json site/data/review-queue.json
+          git add site/data/deals.json site/data/changes.json site/data/status.json site/data/price-evidence.json site/data/price-history.json site/data/mvno-evidence.json site/data/mvno-history.json site/data/review-queue.json site/data/alerts.json
           if ! git diff --cached --quiet; then
             git commit -m "Source check $(date -u +%F) (no AI)"
             git push
           fi
+      - name: Open deduplicated GitHub Issues for actionable price alerts
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: node scripts/notify-issues.mjs
 
   deploy:
     needs: update
