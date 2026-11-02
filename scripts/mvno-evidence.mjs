@@ -25,7 +25,7 @@ function validSource(sourceKey, url) {
     const base=new URL(MVNO_SOURCES[sourceKey]);
     const u=new URL(url);
     return u.protocol==='https:' && u.origin===base.origin && !u.username && !u.password &&
-      !u.port && (u.pathname===base.pathname || u.pathname===base.pathname.replace(/\/$/,'') || u.pathname==='/home');
+      !u.port && (u.pathname===base.pathname || u.pathname===base.pathname.replace(/\/$/,''));
   } catch {return false;}
 }
 function visibleText(html){
@@ -124,7 +124,7 @@ function historyFrom(previous, observations, date){
   return {schema:1,description:'Official carrier headline rate and billing period observations, NOT full checkout or eligibility verification.',offers};
 }
 export function evaluateMvnoEvidence({catalog,sources,checkedAt=new Date().toISOString(),
-  day=checkedAt.slice(0,10),previousHistory=null}){
+  day=checkedAt.slice(0,10),previousHistory=null,previousReport=null}){
   if(!catalog || !Array.isArray(catalog.plans) || !Array.isArray(sources) ||
     !Number.isFinite(Date.parse(checkedAt)) || !validDay(day))
     throw Error('Invalid MVNO evidence input');
@@ -151,13 +151,21 @@ export function evaluateMvnoEvidence({catalog,sources,checkedAt=new Date().toISO
       !p.billingMonths || p.billingMonths===1;
     const same=parsed && parsed.price===expectedPrice &&
       (rule.months!==12 || parsed.upfront===expectedUpfront) && billingOK;
-    const state=!src.trusted?'source_unavailable':ambiguous?'ambiguous':
+    let state=!src.trusted?'source_unavailable':ambiguous?'ambiguous':
       !parsed?'not_found':same?'headline_matched':'headline_mismatch';
+    // A source outage must never erase a previously detected price conflict.
+    // Only a fresh, exact official-page match can clear that dispute.
+    const old=previousReport?.schema===1 ? previousReport.offers?.[id] : null;
+    if(['source_unavailable','not_found'].includes(state) &&
+       ['headline_mismatch','ambiguous','unresolved_mismatch'].includes(old?.state)) {
+      state='unresolved_mismatch';
+    }
     const note=state==='headline_matched'?
       'Official carrier page matches the advertised plan rate and billing term only. Taxes, checkout, and full terms NOT verified.':
       state==='source_unavailable'?'Official carrier page blocked or failed; no current price validation available.':
       state==='not_found'?'Required exact price-and-plan wording was not found; review before relying on the catalog rate.':
       state==='ambiguous'?'Carrier page contains conflicting plan prices; review required.':
+      state==='unresolved_mismatch'?'Earlier official price discrepancy remains unresolved. The latest source was unavailable or not found; do NOT restore cost estimates until a fresh official match.':
       'Advertised plan rate or billing period differs from the catalog; review before displaying cost estimates.';
     evidence[id]={
       state,scope:'official_plan_rate_and_billing_term_headline',
@@ -184,7 +192,8 @@ export function evaluateMvnoEvidence({catalog,sources,checkedAt=new Date().toISO
       summary:{
         plansChecked:values.length,
         headlineMatches:values.filter(x=>x.state==='headline_matched').length,
-        priceMismatches:values.filter(x=>x.state==='headline_mismatch').length,
+        priceMismatches:values.filter(x=>['headline_mismatch','unresolved_mismatch'].includes(x.state)).length,
+        unresolvedMismatches:values.filter(x=>x.state==='unresolved_mismatch').length,
         missingOrAmbiguous:values.filter(x=>['not_found','ambiguous'].includes(x.state)).length,
         sourceUnavailable:values.filter(x=>x.state==='source_unavailable').length,
         observationsRecorded:Object.keys(observations).length,
