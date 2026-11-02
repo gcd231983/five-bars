@@ -105,11 +105,21 @@ function display(){
   if(official){
     const info=create('details',null,'fb-research-evidence');
     info.append(create('summary','Official published-price research ('+official.observedOn+'; not checkout)'));
-    const basis=official.billingMonths===12&&Number.isFinite(official.billingUpfront)?
-      '/mo equivalent; '+usd(official.billingUpfront)+' due upfront for 12 months':
-      '/mo standard published rate';
-    info.append(create('p','Official published baseline: '+usd(official.publishedMonthly)+
-      basis+'. This is NOT a full-terms sign-off.'));
+    if(official.kind==='phone'){
+      info.append(create('p','Official conditional DEVICE HEADLINE (not checkout): '+usd(official.publishedDevicePrice)+
+        ' handset with '+usd(official.publishedPlanMonthly)+'/mo required service'+
+        (official.publishedFirstMonthPlanPrice!==undefined?'; '+usd(official.publishedFirstMonthPlanPrice)+' initial service bill':'')+
+        (official.publishedPrepayMonths?'; '+official.publishedPrepayMonths+' prepaid months':'')+
+        (official.publishedConditionalRebate!==undefined?'; '+usd(official.publishedConditionalRebate)+' conditional reward not deducted':'')+
+        '. No customer eligibility or full-terms sign-off.'));
+    }else{
+      const basis=official.billingMonths===12&&Number.isFinite(official.billingUpfront)?
+        '/mo equivalent; '+usd(official.billingUpfront)+' due upfront for 12 months':
+        '/mo standard published rate'+(official.publishedFirstMonthPrice!==undefined?
+        '; '+usd(official.publishedFirstMonthPrice)+' first bill':'');
+      info.append(create('p','Official published baseline: '+usd(official.publishedMonthly)+
+        basis+'. This is NOT a full-terms sign-off.'));
+    }
     info.append(create('h4','Official published source links'));
     const sources=create('ul');
     for(const src of official.sources||[]){
