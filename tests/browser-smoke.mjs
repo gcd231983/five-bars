@@ -370,7 +370,12 @@ try {
     await editor.locator('#fb-review-carrier').selectOption('Tello');
     const tello=editor.locator('.fb-review-offer');
     assert.ok(await tello.count()>=1,'Tello should be filterable for manual review');
-    await tello.first().locator('summary').click();
+    const published=tello.first().locator('.fb-research-evidence');
+    assert.ok(await published.count()===1,'Tello official publication research should appear separately from human signoff');
+    await published.locator('summary').click();
+    assert.match(await published.innerText(),/official published source links/i);
+    assert.match(await published.innerText(),/November 9, 2026|checkout review/i);
+    await tello.first().locator('details').last().locator('summary').click();
     assert.ok(await tello.first().locator('.fb-review-steps input[type="checkbox"]').count()>=8);
     await tello.first().locator('.fb-review-steps input[type="checkbox"]').first().check();
     assert.match(await tello.first().innerText(),/1 of 8 items checked/);
@@ -380,6 +385,38 @@ try {
     assert.ok(editorOverflow<=viewport.width+2,'Editor checklist must fit '+view+' viewport');
     await editor.screenshot({path:join(output,view+'-editor-review.png'),fullPage:true});
     await editor.close();
+
+    // Dated public official-source evidence: published baseline != human checkout review.
+    const research=await context.newPage();
+    research.on('pageerror',e=>errors.push(view+' source research: '+e.message));
+    await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
+    assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
+    assert.equal(await research.locator('.research-article').count(),12);
+    assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human full-terms sign-offs/i);
+    assert.match(await research.locator('main').innerText(),/66.*without documented official-source research/s);
+    const mint=research.locator('[data-offer-id="mint"]');
+    assert.match(await mint.innerText(),/\$360\.00 due upfront for 12 months/);
+    assert.match(await mint.innerText(),/\$180/);
+    assert.ok(await mint.locator('a[href*="mintmobile.com"]').count()>=2);
+    const researchOverflow=await research.evaluate(()=>document.documentElement.scrollWidth);
+    assert.ok(researchOverflow<=viewport.width+2,'Research audit should not overflow '+view+' width');
+    await research.screenshot({path:join(output,view+'-source-audit.png'),fullPage:true});
+    await research.close();
+
+    // Mint annual-plan cash must NEVER be disguised as ordinary month-to-month billing.
+    await page.locator('#t-plans').click();
+    await page.locator('#carrier').selectOption('Mint Mobile');
+    await page.locator('#lines').selectOption('1');
+    assert.match(await page.locator('#r-mint').innerText(),/Pay \$360\.00 upfront for 12 months/);
+    await page.locator('#lines').selectOption('2');
+    assert.equal(await page.locator('#r-mint').count(),0,'no fabricated multi-line monthly Mint quote');
+    await page.locator('#lines').selectOption('1');
+    await page.locator('#t-switch').click();
+    await page.locator('#fb-switch-type').selectOption('plan');
+    await page.locator('#fb-switch-offer').selectOption('mint');
+    await page.locator('#fb-switch-form button[type="submit"]').click();
+    assert.match(await page.locator('#fb-switch-results').innerText(),/\$360\.00/);
+    assert.match(await page.locator('#fb-switch-results').innerText(),/\$720\.00/);
     await context.close();
   }
   assert.deepEqual(errors,[],'no JavaScript page errors');
