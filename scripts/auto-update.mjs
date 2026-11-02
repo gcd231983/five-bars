@@ -101,7 +101,7 @@ if (!previous || !Array.isArray(previous.plans) || !Array.isArray(previous.phone
 const { next, changed: expiredPromos, removed: expiredPhones } = expireKnownOffers(previous, today);
 const previousStatus = await json(statusFile, {});
 const sourceInputs = (previous.sources || []).filter(s => s && safeSourceUrl(s.url));
-const sources = await mapped(sourceInputs, async s => {
+const scanSource = async s => {
   const result = await download(s.url);
   const hash = result.ok ? createHash('sha256').update(result.html.replace(/\s+/g, ' ').slice(0, 20000)).digest('hex') : null;
   return {
@@ -113,7 +113,17 @@ const sources = await mapped(sourceInputs, async s => {
     // transient raw content is only used for matching, not committed
     _html: result.ok ? result.html : null,
   };
-});
+};
+// Official H2O homepage is public but sensitive to concurrent requests.
+// Make one ordinary serial request after the other source checks; no retries,
+// challenge solving, altered identity, or access-control bypass.
+const homepage='https://www.h2owireless.com/';
+const generalSources=sourceInputs.filter(s=>s.url!==homepage);
+const homepageSources=sourceInputs.filter(s=>s.url===homepage);
+const sources=[
+  ...(await mapped(generalSources,scanSource)),
+  ...((await mapped(homepageSources,scanSource))),
+];
 const sourceSuccess = sources.filter(s => s.ok).length;
 if (sourceSuccess === 0) throw new Error('No source pages could be fetched; preserving previous data');
 
