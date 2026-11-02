@@ -22,6 +22,15 @@ const link=(url,label)=>{
 const button=(label,action)=>{
  const b=create('button',label);b.type='button';b.addEventListener('click',action);return b;
 };
+// Early beta review priorities chosen for coherent carrier comparisons and
+// accessible consumer-plan source locations. They are NOT verified or endorsed.
+export const BETA_REVIEW_IDS=[
+ 'usm-starter','usm-premium','usm-light',
+ 'visible','visible-plus','visible-pro',
+ 'tello','tello-starter','tello-power','tello-max',
+ 'mint','cricket-supreme'
+];
+const betaIds=new Set(BETA_REVIEW_IDS);
 const workSteps=[
  'Standard recurring plan/device price and applicable date',
  'Promotional rate, eligibility and expiration requirements',
@@ -54,11 +63,13 @@ function normalize(){
  }
 }
 function display(){
+ const scope=$('fb-review-scope').value;
  const priority=$('fb-review-priority').value;
  const carrier=$('fb-review-carrier').value;
  const kind=$('fb-review-kind').value;
  const state=$('fb-review-state').value;
  const results=queue.filter(item=>
+  (scope==='all'||betaIds.has(item.id))&&
   (priority==='all'||item.priority===priority)&&
   (carrier==='all'||item.carrier===carrier)&&
   (kind==='all'||item.kind===kind)&&
@@ -128,7 +139,8 @@ function display(){
  const more=$('fb-review-more');more.hidden=results.length<=limit;
  more.textContent='Show more items ('+(results.length-limit)+' remaining)';
  $('fb-review-summary').textContent=queue.length+' total catalog offers in the review queue; '+
-  results.length+' match your filters. '+results.filter(i=>fullStatus(i).status==='verified').length+
+  results.length+' match your filters ('+(scope==='shortlist'?'beta launch shortlist':'all offers')+'). '+
+  results.filter(i=>fullStatus(i).status==='verified').length+
   ' currently signed off among filtered items. Showing '+Math.min(limit,results.length)+'.';
 }
 async function copy(content,description){
@@ -144,7 +156,7 @@ async function copy(content,description){
   notice('Clipboard access blocked. Select and copy the text shown below.');
  }
 }
-for(const id of ['fb-review-priority','fb-review-carrier','fb-review-kind','fb-review-state']){
+for(const id of ['fb-review-scope','fb-review-priority','fb-review-carrier','fb-review-kind','fb-review-state']){
  $(id).addEventListener('change',()=>{limit=16;display();});
 }
 $('fb-review-more').addEventListener('click',()=>{limit+=16;display();});
