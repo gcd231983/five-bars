@@ -180,7 +180,7 @@ test('share URLs exclude financial inputs by default, are scoped to known catalo
  assert.equal(link.includes('payoff='),false);
  const restored=parseSwitchShare('?'+link,catalog);
  assert.deepEqual(restored,{type:'plan',id:'monthly',scenario:{
-  lines:1,horizon:12,cannotPort:false,canPort:true,newCustomer:false},hasFinancials:false});
+  lines:1,horizon:12,cannotPort:false,canPort:true,newCustomer:false,discountQualified:false},hasFinancials:false});
  const optin=switchShareParams('plan','monthly',scenario,{includeFinancials:true}).toString();
  assert.match(optin,/bill=50/);
  assert.equal(parseSwitchShare('?'+optin,catalog).scenario.currentMonthly,50);
