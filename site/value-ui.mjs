@@ -129,6 +129,9 @@ function renderFinder() {
         <label for="fb-net">Network preference
           <select id="fb-net" name="net"><option value="any">Help me compare all</option><option value="att">AT&amp;T</option><option value="vzw">Verizon</option><option value="tmo">T-Mobile</option></select>
         </label>
+        <label for="fb-provider">Preferred provider
+          <select id="fb-provider" name="provider"><option value="any">Any provider</option></select>
+        </label>
         <label for="fb-lines">How many lines?
           <select id="fb-lines" name="lines"><option value="1">1 line</option><option value="2">2 lines</option><option value="3">3 lines</option><option value="4">4 lines</option><option value="5">5 lines</option></select>
         </label>
@@ -152,7 +155,7 @@ function renderFinder() {
     const f = e.currentTarget;
     const data = new FormData(f);
     const prefs = {
-      network:data.get('net'),lines:Number(data.get('lines')),budget:data.get('budget'),
+      network:data.get('net'),provider:data.get('provider'),lines:Number(data.get('lines')),budget:data.get('budget'),
       cannotPort:data.has('cannotPort'),priority:data.has('priority'),hotspot:data.has('hotspot'),
     };
     comparePrefs={lines:prefs.lines,cannotPort:prefs.cannotPort,fromFinder:true};
@@ -183,8 +186,9 @@ function renderFinder() {
         const card = element('article',null,'fb-result');
         card.append(element('strong',(i+1)+'. '+p.carrier+' — '+p.plan));
         card.append(element('p',usd(c.year)+' estimated over 12 months for '+c.lines+' line(s); '+
-          usd(c.monthTotal)+'/mo at the modeled current rate.'));
+          usd(c.monthTotal)+(c.annualPrepaid?'/mo equivalent, PAID '+usd(c.upfrontDue)+' UPFRONT for 12 months.':'/mo at the modeled current rate.')));
         card.append(statusNode(p));
+        if (c.annualPrepaid) card.append(note('This is a prepaid ANNUAL plan, not a monthly subscription. Pay the full '+usd(c.upfrontDue)+' before service starts.'));
         if (c.promoFamilyUnconfirmed) card.append(note('Intro promo was NOT assumed for multiple lines; eligibility is unconfirmed.'));
         if (c.estimatedFamilyPrice) card.append(note('Multi-line price was not published in our catalog; this is a single-line extrapolation.'));
         const actions=element('div',null,'fb-card-actions');
@@ -216,6 +220,8 @@ function renderFinder() {
   });
 }
 function fieldValue(type,offer,key) {
+  if(type==='plan' && offer.maxLines && comparePrefs.lines>offer.maxLines)
+    return 'Not offered for '+comparePrefs.lines+' lines';
   if(type==='phone' && officialHeadlineUnderReview(offer) &&
       ['monthly','year','data','hotspot'].includes(key)) {
     return 'Price under review';
@@ -224,8 +230,9 @@ function fieldValue(type,offer,key) {
     const c=planCost(offer,comparePrefs.lines,{cannotPort:comparePrefs.cannotPort});
     switch(key) {
       case 'network':return offer.net==='multi'?'Choice of networks':offer.net==='att'?'AT&T':offer.net==='vzw'?'Verizon':'T-Mobile';
-      case 'monthly':return usd(c?.monthTotal)+' total'+(c?.estimatedFamilyPrice?' (estimate)':'');
+      case 'monthly':return usd(c?.monthTotal)+' total'+(c?.annualPrepaid?' /mo equivalent (annual upfront)':c?.estimatedFamilyPrice?' (estimate)':'');
       case 'year':return usd(c?.year)+' total'+(c?.estimatedFamilyPrice?' (estimate)':'');
+      case 'billing':return c?.annualPrepaid?usd(c.upfrontDue)+' upfront for 12 months':usd(c?.upfrontDue)+' estimated first month';
       case 'data':return offer.unl?'Unlimited (check limits)':(offer.data||'Not specified');
       case 'hotspot':return offer.hot||'Not specified';
       case 'priority':return offer.pri===true?'Listed priority':offer.pri===false?'Lower priority or variable':'Not specified';
@@ -277,7 +284,7 @@ function renderCompare() {
   }
   const records=selected.map(s=>(type==='plan'?catalog.plans:catalog.phones).find(p=>p.id===s.id)).filter(Boolean);
   const labels=type==='plan'
-    ? [['network','Network'],['monthly','Current rate ('+comparePrefs.lines+' lines)'],['year','12-month total ('+comparePrefs.lines+' lines)'],['data','Data'],['hotspot','Hotspot'],['priority','Data priority'],['taxes','Taxes'],['eligibility','Promo requirements']]
+    ? [['network','Network'],['monthly','Current rate ('+comparePrefs.lines+' lines)'],['billing','Billing / upfront amount'],['year','12-month total ('+comparePrefs.lines+' lines)'],['data','Data'],['hotspot','Hotspot'],['priority','Data priority'],['taxes','Taxes'],['eligibility','Promo requirements']]
     : [['network','Network'],['monthly','Required plan'],['year','Estimated 12-month cost'],['data','Due today (est.)'],['hotspot','Minimum commitment (est.)'],['priority','Carrier lock'],['taxes','Plan type'],['eligibility','Transfer requirement']];
   compareRoot.append(element('p','On a phone, swipe the table sideways to see every comparison.','fb-subtle fb-swipe-hint'));
   const wrap=element('div',null,'fb-table-wrap');
@@ -308,7 +315,7 @@ function renderCompare() {
     compareRoot.append(element('p','A selected handset offer has conflicting official price evidence; its dollar totals are suppressed pending review.','fb-watch-warning'));
   }
   compareRoot.append(note(type==='plan' ?
-    'Household estimates for '+comparePrefs.lines+' '+(comparePrefs.lines===1?'line':'lines')+'. Unknown multi-line prices extrapolate one-line rates; unconfirmed family intro offers are excluded. Taxes and eligibility may change actual costs.' :
+    'Household estimates for '+comparePrefs.lines+' '+(comparePrefs.lines===1?'line':'lines')+'. Annual prepaid offers are paid upfront, not monthly; unavailable family tiers are marked. Unknown multi-line prices extrapolate one-line rates; unconfirmed family intro offers are excluded. Taxes and eligibility may change actual costs.' :
     'Device promotions are quoted per handset, NOT for the full household. Credits, delayed rebates, taxes and financing terms may alter estimated totals.'));
 }
 /* ---------- price evidence and observation history ---------- */
@@ -426,6 +433,14 @@ async function start() {
       fetch('data/price-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
     ]);
     catalog={plans:Array.isArray(c.plans)?c.plans:[],phones:Array.isArray(c.phones)?c.phones:[]};
+    const providerSelect=finderRoot.querySelector('#fb-provider');
+    if(providerSelect) {
+      const options=[...new Set(catalog.plans.map(p=>p.carrier))].sort((a,b)=>a.localeCompare(b));
+      providerSelect.replaceChildren(
+        (()=>{const opt=element('option','Any provider');opt.value='any';return opt;})(),
+        ...options.map(name=>{const opt=element('option',name);opt.value=name;return opt;})
+      );
+    }
     reviews=v?.offers && typeof v.offers==='object'?v.offers:{};
     priceEvidence=proof?.schema===1 && typeof proof.offers==='object'?proof:null;
     priceHistory=history?.schema===1 && typeof history.offers==='object'?history:{offers:{}};
