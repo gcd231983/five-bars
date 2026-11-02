@@ -63,3 +63,35 @@ To use: open the Five Bars GitHub repository, select Actions, choose Five Bars -
 - A reachable page or matching promotional headline NEVER establishes full-terms verification. The workflow does not browse a carrier page or perform the human review for you. Do not enter private customer information in GitHub Actions.
 
 See BUSINESS_READINESS.md for remaining business launch and advertising conditions.
+
+## Five Bars 2.9 — Four evidence-labelled carrier comparisons and a review workbench
+
+The website now links to a static, search-friendly carrier-comparison hub: https://gcd231983.github.io/five-bars/carrier-comparisons.html. Its four deliberately curated editorial guides are:
+
+- US Mobile vs Visible: catalog regular pricing, underlying network choices and data/eligibility questions.
+- Tello vs Mint Mobile: monthly and introductory rates versus possible multi-month prepaid commitments.
+- Cricket vs H2O Wireless: AT&T-network choices, annual upfront billing and restricted handset promotions.
+- Visible vs Total Wireless: Verizon-network options and line/plan requirements.
+
+These are useful comparison starting points, NOT independently verified checkout quotes, best-deal awards, affiliate endorsements, or claims of exhaustive carrier analysis. Pages display catalog reference date, most recent source-scan date, official carrier links, full-term review status and partial evidence scope. A known official price conflict withholds the relevant catalog amount rather than silently publishing disputed savings.
+
+The generator at scripts/build-comparisons.mjs and editorial text source scripts/comparison-pages.mjs create complete static HTML pages with canonical URLs, descriptive metadata and a curated sitemap. The GitHub daily source scan re-generates them on each run. Price baselines omit promotional eligibility discounts and show full annual prepayment amounts. Only a deliberately edited guide configuration can add a new pair, which avoids mass-producing thin SEO pages.
+
+### Public read-only editor review workbench
+
+Reviewers may open https://gcd231983.github.io/five-bars/review-workbench.html from the Sources tab. The workbench is noindex and excluded from the sitemap. It loads the current ranked review queue, 78-offer catalog, and signed review ledger; supports priority, carrier, kind and verification-state filters; and links the official offer and the protected GitHub sign-off workflow.
+
+Each item includes a full-terms worksheet covering rate, promotion, tax, prepayment, financing, carrier network/phone compatibility, high-speed/hotspot/roaming and unlock requirements. A checked box is never a verification record. Copying a worksheet stores nothing on the server; official human attestation remains controlled by the existing GitHub Actions workflow and the human's actual inspection.
+
+### Running and testing
+
+- Run node scripts/build-comparisons.mjs to refresh editorial pages and the sitemap after catalog or verification updates.
+- Run node --test tests/*.test.mjs to exercise output safety, actual regular vs annual catalog pricing, conflict holds, review signature validity and sitemap inclusion.
+- GitHub PR browser checks automatically generate pages first and test mobile/desktop widths, no-JavaScript static HTML tables, official source links and editor filters.
+- GitHub Pages deployment still runs on main, without paid AI, a backend, visitor account, affiliate links or tracking pixels.
+
+Commercial readiness still depends on actual dated human full-terms reviews and documented partner agreements (see BUSINESS_READINESS.md). These pages should be used for beta testing and legitimate educational search discovery, not claims of verified promotions.
+
+## Real publisher programs researched (not activated)
+
+See AFFILIATE_PIPELINE.md for current official program references and application requirements. The published programs include Tello (CJ), US Mobile (Impact), and Mint Mobile (Impact). Mint lists traffic/follower criteria; none has approved this site. The commercial launch still requires business decisions and signed partner terms. No commission-bearing links or visitor tracking were added.
