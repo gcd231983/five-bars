@@ -1205,24 +1205,25 @@
       "kind": "phone",
       "carrier": "Metro by T-Mobile",
       "publishedDevicePrice": 0,
-      "publishedPlanMonthly": 55,
+      "publishedPlanMonthly": 60,
       "publishedPortRequired": true,
       "publishedFirstMonthPlanPrice": 60,
-      "term": "conditional_public_device_offer_not_checkout",
+      "term": "conditional_port_device_with_60_regular_plan_and_unmodeled_55_autopay",
       "sources": [
         {
           "url": "https://www.metrobyt-mobile.com/cell-phone/motorola-moto-g-2026",
-          "supports": "Carrier product selector displays $0 moto g 2026 for qualifying port-in; $55 per month with AutoPay and $60 first month"
+          "supports": "Official selected Moto G 2026: $0 with eligible transfer, $60 first and standard monthly service, $55/month only if eligible AutoPay is enabled"
         }
       ],
       "supportedFacts": [
-        "The selected Moto G 2026 promotional handset headline is $0 with a qualifying number transfer.",
-        "Carrier shows $55 monthly service with AutoPay, $60 first service month; an older $40 plan value was not supported."
+        "The selected Moto G 2026 promotional handset headline is $0 with qualifying number transfer; sales taxes and activation can still apply.",
+        "The carrier lists $55/month only when qualifying AutoPay enrollment is in effect, with $60 for the first month; Five Bars uses $60 monthly as its conservative unconfirmed default rather than assuming an AutoPay discount."
       ],
       "unresolved": [
         "Confirm that the selected $0 price and port-in qualify with this customer's IMEI/number",
         "Verify $60 first service payment, carrier/device taxes and any $25 store activation",
-        "Verify device locking, in-stock ZIP and how eligible AutoPay is established"
+        "Verify device locking, in-stock ZIP and how eligible AutoPay is established",
+        "Determine whether the visitor will receive the lower $55 recurring rate through eligible AutoPay; do not assume the recurring discount without confirmation."
       ],
       "observedOn": "2026-11-02"
     },
