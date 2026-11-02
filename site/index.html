@@ -391,7 +391,7 @@ const PLAN_TOGS = [
   ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"],["canport","I confirm eligible number transfer"],["newcustomer","I qualify as a new customer"],["discountqualified","I meet AutoPay / eBilling / Auto-Refill conditions"]
 ];
 const PHONE_TOGS = [
-  ["free","$0 upfront device price"],["iphone","iPhone"],["android","Android"],["prepaid","Prepaid offers only"],["noport","Can’t move my number"]
+  ["free","$0 upfront device price"],["iphone","iPhone"],["android","Android"],["prepaid","Prepaid offers only"],["noport","Can’t move my number"],["discountqualified","I meet AutoPay / eBilling / Auto-Refill conditions"]
 ];
 const SORTS = {
   byop:[["year","lowest 12-month cost"],["reg","lowest regular price"],["save","biggest intro savings"],["pri","priority data first"]],
@@ -503,16 +503,21 @@ function phoneCalc(d){
   if(d.availability==='out_of_stock')return {due:null,commitment:null,year:null,eff:null,ei,unavailable:true};
   if(d.postpaid===true)return {due:null,commitment:null,year:null,eff:null,ei,financingUncertain:true};
   const price=d.price;
-  const plan=d.planPrice==null?null:d.planPrice;
+  const conditional=Number.isFinite(d.undiscountedPlanPrice)&&d.planDiscountCondition==='autopay';
+  const qualified=typeof state!=='undefined'&&state.t?.discountqualified===true;
+  const plan=d.planPrice==null?null:(conditional&&!qualified?d.undiscountedPlanPrice:d.planPrice);
   const prepay=Math.max(0,d.prepay||0);
   const stay=Math.max(0,d.stay||0);
   const bundle=Math.max(0,d.bundle||0);
   const first=plan==null?null:(Number.isFinite(d.firstMonthPlanPrice)?d.firstMonthPlanPrice:plan);
-  const due=bundle?price:(plan==null?null:price+first+plan*(Math.max(1,prepay)-1));
-  const commitment=bundle?price:(plan==null?null:price+first+plan*(Math.max(1,prepay,stay)-1));
+  const prepaidMonths=Math.max(1,prepay);
+  const prepaidService=Number.isFinite(d.prepaidServiceTotal)?d.prepaidServiceTotal:
+    plan==null?null:first+plan*(prepaidMonths-1);
+  const due=bundle?price:(prepaidService==null?null:price+prepaidService);
+  const commitment=bundle?price:(plan==null?null:price+prepaidService+plan*(Math.max(1,prepay,stay)-prepaidMonths));
   const year=bundle?(bundle>=12?price:(plan==null?null:price+plan*(12-bundle))):
-    (plan==null?null:price+first+11*plan);
-  return {due,commitment,year,eff:price,ei};
+    (plan==null?null:price+prepaidService+plan*(12-prepaidMonths));
+  return {due,commitment,year,eff:price,ei,planPrice:plan,conditionalDiscountUnconfirmed:conditional&&!qualified};
 }
 function phoneVisible(d){
   const t = state.t;
@@ -686,8 +691,10 @@ function renderPhones(){
     const scan = AUTO_STATUS?.offers?.[d.id];
     const priceDisputed=underReview(d);
     const facts = [
-      d.bundle ? "Includes " + d.bundle + " months of service" : (d.planPrice!=null ? "Needs a " + money(d.planPrice) + "/mo plan" : "Needs a premium unlimited plan"),
+      d.bundle ? "Includes " + d.bundle + " months of service" : (c.planPrice!=null ? "Needs a " + money(c.planPrice) + "/mo plan" : "Needs a premium unlimited plan"),
+      c.conditionalDiscountUnconfirmed ? "AutoPay discount NOT assumed; advertised " + money(d.planPrice) + "/mo requires eligibility confirmation" : null,
       d.prepay>1 && !d.bundle && d.id!=="usm-p11" ? "Prepay " + d.prepay + " months" : null,
+      Number.isFinite(d.prepaidServiceTotal) ? money(d.prepaidServiceTotal) + " fixed service prepayment included upfront" : null,
       Number.isFinite(d.firstMonthPlanPrice) && d.firstMonthPlanPrice!==d.planPrice ? "First service bill " + money(d.firstMonthPlanPrice) + "; then " + money(d.planPrice) + "/mo subject to eligibility" : null,
       d.port ? "Must move your number" : "No number move needed",
       d.store ? "In store only" : null,

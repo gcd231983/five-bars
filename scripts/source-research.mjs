@@ -4,7 +4,8 @@ import {validDay,verificationState,usd,localDay} from '../site/value-core.mjs';
 
 export const BASE='https://gcd231983.github.io/five-bars/';
 export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired','publishedPromoPrice','publishedPromoMonths','publishedPromoRequirement',
-  'publishedUndiscountedPrice','publishedDiscountCondition','publishedKnownMonthlyFee','publishedKnownActivationFee','publishedAvailability'];
+  'publishedUndiscountedPrice','publishedDiscountCondition','publishedKnownMonthlyFee','publishedKnownActivationFee','publishedAvailability',
+  'publishedUndiscountedPlanPrice','publishedPlanDiscountCondition','publishedPrepaidServiceTotal'];
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'
 })[c]);
@@ -30,7 +31,11 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
  const validFields=kind==='phone'?
   num(record.publishedDevicePrice)&&num(record.publishedPlanMonthly)&&
   typeof record.publishedPortRequired==='boolean'&&
+  ((record.publishedUndiscountedPlanPrice===undefined&&record.publishedPlanDiscountCondition===undefined)||
+   (num(record.publishedUndiscountedPlanPrice)&&record.publishedUndiscountedPlanPrice>=record.publishedPlanMonthly&&record.publishedPlanDiscountCondition==='autopay'))&&
   (record.publishedFirstMonthPlanPrice===undefined||num(record.publishedFirstMonthPlanPrice))&&
+  (record.publishedPrepaidServiceTotal===undefined||(num(record.publishedPrepaidServiceTotal)&&
+    Number.isInteger(record.publishedPrepayMonths)&&record.publishedPrepayMonths>=2&&record.publishedPrepayMonths<=12))&&
   (record.publishedConditionalRebate===undefined||num(record.publishedConditionalRebate))&&
   ((record.publishedCreditMonthly===undefined&&record.publishedCreditMonths===undefined)||
     (num(record.publishedCreditMonthly)&&Number.isInteger(record.publishedCreditMonths)&&record.publishedCreditMonths>=1&&record.publishedCreditMonths<=36))&&
@@ -56,12 +61,17 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
    issues.push('advertised handset price differs from official conditional headline');
   if(offer.planPrice!==record.publishedPlanMonthly)
    issues.push('required monthly plan differs from official conditional headline');
+  if(record.publishedUndiscountedPlanPrice!==undefined&&
+    (offer.undiscountedPlanPrice!==record.publishedUndiscountedPlanPrice||offer.planDiscountCondition!==record.publishedPlanDiscountCondition))
+   issues.push('phone service AutoPay condition or undiscounted monthly rate differs from official source');
   if(offer.port!==record.publishedPortRequired)
    issues.push('number-transfer requirement differs from official conditional headline');
   if(record.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==record.publishedFirstMonthPlanPrice)
    issues.push('first-month service bill differs from official conditional headline');
   if(record.publishedPrepayMonths!==undefined&&offer.prepay!==record.publishedPrepayMonths)
    issues.push('prepaid service months differ from official conditional headline');
+  if(record.publishedPrepaidServiceTotal!==undefined&&offer.prepaidServiceTotal!==record.publishedPrepaidServiceTotal)
+   issues.push('fixed prepaid service total differs from official source');
   if(record.publishedConditionalRebate!==undefined&&offer.rebate!==record.publishedConditionalRebate)
    issues.push('conditional reward differs from official published terms');
   if(record.publishedCreditMonthly!==undefined&&offer.credit!==record.publishedCreditMonthly)
@@ -183,8 +193,10 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
   const rate=status==='conflict'||status==='invalid'?'Rate WITHHELD (mismatch)':
     isPhone?usd(record.publishedDevicePrice)+' advertised conditional handset price; needs '+
       usd(record.publishedPlanMonthly)+'/mo qualifying service'+
+      (record.publishedUndiscountedPlanPrice!==undefined?'; '+usd(record.publishedUndiscountedPlanPrice)+'/mo WITHOUT AutoPay; discount NOT assumed':'')+
       (record.publishedFirstMonthPlanPrice!==undefined?'; '+usd(record.publishedFirstMonthPlanPrice)+' first service bill':'')+
       (record.publishedPrepayMonths!==undefined?'; '+record.publishedPrepayMonths+' service months prepaid':'')+
+      (record.publishedPrepaidServiceTotal!==undefined?'; '+usd(record.publishedPrepaidServiceTotal)+' fixed upfront service total; later monthly service is a separate assumption':'')+
       (record.publishedPortRequired?'; qualifying number transfer':'')+
       (record.publishedConditionalRebate!==undefined?'; '+usd(record.publishedConditionalRebate)+' conditional later reward NOT deducted':'')+
       (record.publishedCreditMonthly!==undefined?'; '+usd(record.publishedCreditMonthly)+'/mo conditional service credits for '+record.publishedCreditMonths+' months NOT deducted':'')+

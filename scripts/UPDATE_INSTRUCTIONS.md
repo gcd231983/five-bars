@@ -86,3 +86,11 @@ The GitHub Actions workflow runs the tests and data validator, checks updater sy
 - `site/report-ui.mjs` generates a local-only draft and opens GitHub's public `offer-correction.yml` issue form. It must not call an automatic report submission API, use localStorage for report contents or claim that the site creates tickets without user confirmation.
 - The form's safety checks flag obvious personal data but are not perfect; the visitor and editor must inspect for private details before posting. Don't collect subscriber names, passwords, transfer PINs, IMEIs, account/order numbers or unredacted checkout screenshots.
 - **A submitted reader issue is not an official price observation or verified checkout.** The existing research ledger and source-conflict rules still require an attributable dated carrier source and manual review before catalog changes. Follow [CORRECTIONS_POLICY.md](../CORRECTIONS_POLICY.md).
+
+
+## Phone service discounts and fixed prepayments (4.1)
+
+- Keep `planPrice` as the advertised service headline. When that rate requires AutoPay, store the pair `undiscountedPlanPrice` and `planDiscountCondition: "autopay"`. The undiscounted rate must be finite and at least the advertised rate. Calculators default to it; only an explicit `discountQualified: true` enables the lower rate. Preserve the headline for automated source comparisons.
+- A published fixed service block may use `prepaidServiceTotal` alongside `prepay` (2–12 months). Charge that amount once initially; later modeled service uses the monthly plan rate. Do not infer a recurring monthly bill by dividing the initial block. Do not combine this field with `bundle`, `postpaid` or `firstMonthPlanPrice`. Clearly disclose the assumed later billing schedule and whether the selected device qualifies for that block.
+- Source records use `publishedUndiscountedPlanPrice` with `publishedPlanDiscountCondition`, and `publishedPrepaidServiceTotal` with `publishedPrepayMonths`. A material discrepancy must pause savings estimates. Source publication is not a human checkout review.
+- The anonymous checkout sign-off must cover both the device price and any fixed mandatory initial service amount; a lower observed quote requires reconciliation before sign-off.

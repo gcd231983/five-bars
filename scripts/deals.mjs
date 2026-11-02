@@ -143,7 +143,15 @@ function validate(d, prev) {
     if (!NETS.includes(p.net)) errs.push(at + ": net must be one of " + NETS.join(", "));
     if (!isNum(p.price, 0, 3000)) errs.push(at + ": bad price");
     if (p.planPrice != null && !isNum(p.planPrice, 0, 300)) errs.push(at + ": bad planPrice");
+    if (p.undiscountedPlanPrice!==undefined || p.planDiscountCondition!==undefined) {
+      if (!isNum(p.planPrice,0,300) || !isNum(p.undiscountedPlanPrice,p.planPrice,300) ||
+          p.planDiscountCondition!=='autopay' || p.bundle || p.postpaid)
+        errs.push(at + ': phone AutoPay discount requires a valid undiscounted monthly plan rate');
+    }
     if (p.postpaid != null && typeof p.postpaid !== 'boolean') errs.push(at + ': postpaid must be boolean');
+    if (p.prepaidServiceTotal!==undefined && (!isNum(p.prepaidServiceTotal,0,3600)||
+        !Number.isInteger(p.prepay)||p.prepay<2||p.prepay>12||p.bundle||p.postpaid||p.firstMonthPlanPrice!==undefined))
+      errs.push(at + ': fixed prepaid service total requires 2-12 prepaid months without a bundle, financing or separate first bill');
     if (p.availability!=null && !['out_of_stock'].includes(p.availability))
       errs.push(at + ': availability must be out_of_stock when an offer is known unavailable');
     if (p.availability==='out_of_stock' && !isDate(p.availabilityObservedOn))

@@ -30,6 +30,8 @@ test('site and tested phone-cost helper agree on sample checkout math', { skip }
   const browserCalc = runInNewContext(`const endInfo=()=>null; ${source}; phoneCalc;`);
   for (const deal of [
     { price: 49.99, planPrice: 60, stay: 3 },
+    { price: 29.99, planPrice: 60, undiscountedPlanPrice:65, planDiscountCondition:'autopay', prepay:2, stay:3 },
+    { price: 0, planPrice: 50, prepay:3, prepaidServiceTotal:135 },
     { price: 99.99, rebate: 100, planPrice: 50, firstMonthPlanPrice: 55, stay: 3 },
     { price: 29.99, planPrice: 60, prepay: 3 },
     { price: 579, bundle: 12 },

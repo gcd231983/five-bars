@@ -1,6 +1,6 @@
 // Five Bars Switch & Save: deterministic estimated cash-flow comparisons.
 // No network calls, API keys, browser storage, tracking, or checkout promises.
-import {planCost,verificationState,localDay,pastEnd,validDay} from './value-core.mjs';
+import {planCost,phoneCost,verificationState,localDay,pastEnd,validDay} from './value-core.mjs';
 
 export const SWITCH_HORIZONS=Object.freeze([12,24,36]);
 const conflicts=new Set(['headline_mismatch','ambiguous','unresolved_mismatch']);
@@ -86,7 +86,10 @@ function buildCashflow(offer,type,scenario,months){
     deviceUpfront=money(offer.price);
     const prepay=Math.max(1,Math.trunc(Number(offer.prepay)||0));
     const bundle=Math.max(0,Math.trunc(Number(offer.bundle)||0));
-    const base=offer.planPrice==null?null:Number(offer.planPrice);
+    const phoneEstimate=phoneCost(offer,{discountQualified:scenario.discountQualified});
+    const base=phoneEstimate?.planPrice??null;
+    if(phoneEstimate?.conditionalDiscountUnconfirmed)
+      note.push('Required phone service uses the published rate without AutoPay. The discounted rate applies only after you confirm AutoPay eligibility.');
     if((base===null||!Number.isFinite(base)||base<0) && bundle<months)
       throw Error('This phone deal has no reliable required monthly plan price for the selected horizon.');
     if(bundle){
@@ -99,13 +102,15 @@ function buildCashflow(offer,type,scenario,months){
       const billedNow=Math.min(months,prepay);
       const first=Number.isFinite(offer.firstMonthPlanPrice)?offer.firstMonthPlanPrice:base;
       if(first<0)throw Error('First-month service charge is invalid.');
-      service[0]=money(first+base*(billedNow-1));
+      service[0]=money(Number.isFinite(offer.prepaidServiceTotal)?offer.prepaidServiceTotal:first+base*(billedNow-1));
       for(let month=1;month<billedNow;month++)service[month]=0;
       serviceUpfront=service[0];
       if(first!==base)note.push('First service month is $'+money(first).toFixed(2)+
         '; remaining modeled service months are $'+money(base).toFixed(2)+
         ' with applicable AutoPay or other eligibility conditions.');
       if(prepay>1)note.push('The offer requires '+prepay+' month(s) of prepaid service, charged in the first modeled month.');
+      if(Number.isFinite(offer.prepaidServiceTotal))note.push('The first service block costs $'+money(offer.prepaidServiceTotal).toFixed(2)+
+        ' upfront. Later service assumes the listed monthly rate; confirm the actual renewal interval and price.');
     }
     if(offer.postpaid)note.push('Financed/postpaid terms and recurring device payments are not fully specified. The model assumes the listed device amount is paid upfront, so actual cash timing may differ.');
     if(Number(offer.rebate)>0||Number(offer.credit)>0)
@@ -155,8 +160,11 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
       (published.kind!=='phone'||!Number.isFinite(published.publishedDevicePrice)||
        offer.price!==published.publishedDevicePrice||
        offer.planPrice!==published.publishedPlanMonthly||
+       (published.publishedUndiscountedPlanPrice!==undefined&&
+        (offer.undiscountedPlanPrice!==published.publishedUndiscountedPlanPrice||offer.planDiscountCondition!==published.publishedPlanDiscountCondition))||
        offer.port!==published.publishedPortRequired||
        (published.publishedPrepayMonths!==undefined&&offer.prepay!==published.publishedPrepayMonths)||
+       (published.publishedPrepaidServiceTotal!==undefined&&offer.prepaidServiceTotal!==published.publishedPrepaidServiceTotal)||
        (published.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==published.publishedFirstMonthPlanPrice)||
        (published.publishedConditionalRebate!==undefined&&offer.rebate!==published.publishedConditionalRebate)||
        (published.publishedCreditMonthly!==undefined&&offer.credit!==published.publishedCreditMonthly)||
