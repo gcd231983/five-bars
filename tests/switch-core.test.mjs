@@ -100,7 +100,7 @@ test('new-customer discounts require explicit eligibility, otherwise standard ra
  const base={...scenario,newCustomer:false};
  const noneligible=simulateSwitch({catalog:c,type:'plan',id:'new-rate',scenario:base});
  assert.equal(noneligible.results[12].serviceTotal,420);
- assert.ok(noneligible.warnings.some(x=>x.includes('New-customer introductory pricing excluded')));
+ assert.ok(noneligible.warnings.some(x=>x.includes('New-customer/new-line introductory pricing excluded')));
  const eligible=simulateSwitch({catalog:c,type:'plan',id:'new-rate',scenario:{...base,newCustomer:true}});
  assert.equal(eligible.results[12].serviceTotal,351);
 });
