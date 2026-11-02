@@ -166,3 +166,12 @@ Official-publication source coverage now includes 15 wireless plan rates and fiv
 - The Mint Pixel 11's $579 *bundle* is now called out as **$399 device + $180 annual prepaid Unlimited**, not misrepresented as a $579 handset-only cost.
 - The official audit shows current inventory holds and a deterministic high-priority remaining-research list. Research priority is a workflow aid, NOT an affiliate ranking or proof of customer eligibility.
 - Next commercialization gates: inventory rechecks (with dated evidence), first/renewal billing by ZIP and channel, compulsory fee review, line-count eligibility, independent sign-offs with a responsible human and timestamp, complaint/price-reporting workflow, and clear affiliate/no-affiliate disclosures.
+
+## Five Bars 3.9 — structured, scenario-specific checkout sign-off (November 2, 2026)
+
+- A public carrier link and a typed attestation **no longer** earn a "manually checked" label. The GitHub owner workflow requires an actual carrier checkout/written quote, exact first and recurring cash totals including compulsory taxes/fees, renewal interval, minimum service commitment, eligibility and availability, plus ten manually checked material conditions.
+- Review records must be attributable to the authenticated GitHub Actions actor and include only anonymized enumerated evidence. Arbitrary free text and unknown JSON keys are rejected to reduce accidental exposure of customer information.
+- The public badge is explicitly tied to **one documented checkout scenario**; it is **not an all-customers eligibility claim**. A reviewed record expires after 14 days or on material catalog mutation; out-of-stock or expired offers are barred from sign-off.
+- Financed postpaid devices additionally require documented retail amount, installment total and duration, bill-credit duration and early-exit exposure. **The existing device calculator still withholds all incomplete financing totals even if some promotional fields were reviewed.**
+- Editors can prepare the checkout record from the read-only workbench, but **only** GitHub Actions with write access can save the ledger. No automated scan, local checklist, page visit, or generated sample can certify a deal.
+- Current verified scenario records remain **0/78**; 53/78 have dated *partial* public-source observations and 25 are still missing those. This release adds safeguards and operational readiness, not customer testimonials, sales or affiliate authorization.
