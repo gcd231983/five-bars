@@ -22,9 +22,13 @@ jobs:
       - run: node --check scripts/auto-update.mjs
       - run: node --check scripts/price-evidence.mjs
       - run: node --check scripts/mvno-evidence.mjs
+      - run: node --check scripts/review-queue.mjs
       - run: node --check site/value-core.mjs
       - run: node --check site/value-ui.mjs
       - run: node scripts/review-offer.mjs audit
+      - name: Temporary read-only live official source scan
+        if: github.ref == 'refs/heads/feature/official-sources-review-queue-20261102'
+        run: node scripts/auto-update.mjs --dry-run
       - name: Probe reachable official MVNO pages without changing catalog
         if: github.ref == 'refs/heads/feature/official-sources-review-queue-20261102'
         continue-on-error: true
