@@ -5,11 +5,11 @@
   "scope": "Public official pages and consumer labels only; NOT checkout validation, actual product eligibility, complete terms or guaranteed pricing.",
   "summary": {
     "offers": 78,
-    "researched": 20,
-    "publishedPriceMatches": 20,
+    "researched": 24,
+    "publishedPriceMatches": 24,
     "conflictingOrInvalid": 0,
     "aged": 0,
-    "notResearched": 58,
+    "notResearched": 54,
     "manuallyFullyReviewed": 0,
     "needingFullTerms": 78
   },
@@ -860,12 +860,14 @@
       "catalogPrice": 49.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.boostmobile.com/deals"
+      ]
     },
     {
       "id": "boost-razr",
@@ -875,12 +877,14 @@
       "catalogPrice": 29.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.boostmobile.com/deals"
+      ]
     },
     {
       "id": "boost-motog",
@@ -890,12 +894,14 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.boostmobile.com/deals"
+      ]
     },
     {
       "id": "boost-a17",
@@ -1192,12 +1198,15 @@
       "catalogPrice": 1199,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.visible.com/buy/phones/iphone-18-pro",
+        "https://www.visible.com/m/deals"
+      ]
     },
     {
       "id": "tmo-18pro",
