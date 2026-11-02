@@ -227,6 +227,8 @@ try {
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Official plan rate matches/);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Dated carrier source.*partial/i);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification] a').getAttribute('href'),/research-h2o-unlimited/);
+    // Consumer Cellular 1GB is excluded by the default Unlimited-only filter.
+    await page.getByRole('button',{name:'Unlimited data',exact:true}).click();
     await page.locator('#carrier').selectOption('Consumer Cellular');
     assert.match(await page.locator('#r-cc .price .now').innerText(),/\$25/);
     assert.match(await page.locator('#r-cc').innerText(),/Known carrier fees \$5\/mo included/);
@@ -234,6 +236,7 @@ try {
     assert.match(await page.locator('#r-cc .price .now').innerText(),/\$20/);
     await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
     assert.match(await page.locator('#r-cc .price .now').innerText(),/\$25/);
+    await page.getByRole('button',{name:'Unlimited data',exact:true}).click();
     await page.locator('#carrier').selectOption('Boost Mobile');
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/);
     await page.getByRole('button',{name:'I qualify as a new customer'}).click();
