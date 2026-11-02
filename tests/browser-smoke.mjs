@@ -451,7 +451,11 @@ try {
     await tello.first().locator('details').last().locator('summary').click();
     assert.ok(await tello.first().locator('.fb-review-steps input[type="checkbox"]').count()>=8);
     await tello.first().locator('.fb-review-steps input[type="checkbox"]').first().check();
-    assert.match(await tello.first().innerText(),/1 of 8 items checked/);
+    assert.match(await tello.first().innerText(),/1 of 10 items checked/);
+    assert.ok(await tello.first().getByRole('button',{name:'Copy structured checkout JSON for GitHub review'}).count()===1);
+    await tello.first().getByRole('button',{name:'Copy structured checkout JSON for GitHub review'}).click();
+    assert.match(await editor.locator('#fb-editor-notice').innerText(),/Complete real checkout evidence first/i);
+    assert.match(await editor.locator('#fb-editor-notice').innerText(),/no offer has been approved/i);
     assert.match(await editor.locator('main').innerText(),/NOT proof of verification/);
     assert.equal(await editor.locator('button').filter({hasText:/automatically verify/i}).count(),0);
     const editorOverflow=await editor.evaluate(()=>document.documentElement.scrollWidth);
@@ -465,7 +469,7 @@ try {
     await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
     assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
     assert.equal(await research.locator('.research-article').count(),53);
-    assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human full-terms sign-offs/i);
+    assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human checkout-scenario reviews/i);
     assert.match(await research.locator('main').innerText(),/25.*without documented official-source research/s);
     assert.match(await research.locator('main').innerText(),/Stock and checkout holds \(4\)/);
     const mint=research.locator('[data-offer-id="mint"]');

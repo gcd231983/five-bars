@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {GUIDES,renderGuide,renderHub,renderSitemap,escapeHtml,safeHttps} from '../scripts/comparison-pages.mjs';
-import {offerSignature} from '../site/value-core.mjs';
+import {checkoutRecord} from './helpers/checkout-fixtures.mjs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const data={
@@ -73,9 +73,9 @@ test('full term reviews are never invented and material changes invalidate the s
  const guide=GUIDES.find(g=>g.slug==='tello-vs-mint-mobile');
  const html=renderGuide(guide,fixture,fixed);
  assert.match(html,/Not independently verified/);
- fixture.ledger.offers[offer.id]={scope:'full_terms',verifiedAt:'2026-11-02',
-   evidenceUrl:'https://tello.com/buy/custom_plans',signature:offerSignature(offer)};
- assert.match(renderGuide(guide,fixture,fixed),/Manual full-terms check: 2026-11-02/);
+ fixture.ledger.offers[offer.id]=checkoutRecord(offer,'2026-11-02',
+  'https://tello.com/buy/custom_plans');
+ assert.match(renderGuide(guide,fixture,fixed),/Human checkout scenario reviewed: 2026-11-02/);
  fixture.catalog.plans.find(x=>x.id===offer.id).price=19;
  assert.match(renderGuide(guide,fixture,fixed),/Terms changed since manual review/);
 });

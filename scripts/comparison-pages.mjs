@@ -104,7 +104,7 @@ function statusFor(plan,{ledger,status,mvnoEvidence,research},today){
  const hold=proof||['headline_mismatch','ambiguous','unresolved_mismatch'].includes(flagged?.mvnoPriceEvidenceState)||
    ['conflict','invalid'].includes(sourceState.state);
  let detail='Not independently verified';
- if(checked.status==='verified')detail='Manual full-terms check: '+checked.verifiedAt;
+ if(checked.status==='verified')detail='Human checkout scenario reviewed: '+checked.verifiedAt+' (not universally applicable)';
  else if(checked.status==='stale')detail='Full-terms review expired';
  else if(checked.status==='changed')detail='Terms changed since manual review';
  if(raw==='headline_matched')detail+='; partial official rate matched';

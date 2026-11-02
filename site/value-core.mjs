@@ -28,6 +28,85 @@ export function offerSignature(offer) {
     'undiscountedPrice','discountCondition','knownMonthlyFee','knownActivationFee','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
+// Anonymous, scenario-specific carrier checkout evidence. Never store billing
+// credentials, subscriber details, transfer PINs or full checkout screenshots.
+export const CHECKOUT_REVIEW_CHECKS = Object.freeze([
+  'advertised_and_renewal_price',
+  'upfront_service_device_prepayment',
+  'all_mandatory_taxes_and_carrier_fees',
+  'activation_sim_and_shipping_charges',
+  'new_line_port_and_discount_eligibility',
+  'minimum_service_term_and_renewal',
+  'network_imei_esim_and_coverage',
+  'data_hotspot_speed_and_roaming',
+  'phone_lock_early_exit_and_credit_terms',
+  'availability_and_offer_expiration'
+]);
+const cents=x=>Number.isSafeInteger(x)&&x>=0&&x<=10000000;
+export function checkoutEvidenceIssues(offer,evidence,verifiedAt) {
+  const issues=[];
+  if(!offer||!evidence||typeof evidence!=='object'||Array.isArray(evidence))
+    return ['An anonymized checkout evidence object is required'];
+  const keys=['schema','channel','observedAt','lineCount','customerScenario','upfrontCents',
+    'renewalCents','billingMonths','requiredServiceMonths','taxesAndFeesIncluded',
+    'stockConfirmed','checks','financing'];
+  if(Object.keys(evidence).some(key=>!keys.includes(key)))issues.push('Unknown checkout fields (personal identifiers are not allowed)');
+  if(evidence.schema!==1)issues.push('Checkout evidence schema must be 1');
+  if(!['official_online_checkout','carrier_written_quote'].includes(evidence.channel))
+    issues.push('Select an official online checkout or written carrier quote');
+  if(!validDay(evidence.observedAt)||evidence.observedAt!==verifiedAt)
+    issues.push('Checkout observation date must match the manual review date');
+  if(!Number.isInteger(evidence.lineCount)||evidence.lineCount<1||evidence.lineCount>5)
+    issues.push('Line count must be 1 to 5');
+  if(offer.phone&&evidence.lineCount!==1)
+    issues.push('Phone quotes must describe one device, not an invented family bundle');
+  if(offer.maxLines&&evidence.lineCount>offer.maxLines)
+    issues.push('Selected line count exceeds the documented plan limit');
+  if(!['new_line_port','new_line_no_port','existing_customer','not_required'].includes(evidence.customerScenario))
+    issues.push('Specify the exact new-line/number-transfer customer scenario');
+  if((offer.port===true||offer.promo?.req==='port')&&evidence.customerScenario!=='new_line_port')
+    issues.push('The selected port promotion requires a matching port-in scenario');
+  if(offer.promo?.req==='new'&&!['new_line_port','new_line_no_port'].includes(evidence.customerScenario))
+    issues.push('New-customer promotion requires a new-line scenario');
+  if(!cents(evidence.upfrontCents)||!cents(evidence.renewalCents))
+    issues.push('Enter actual initial and recurring quote amounts as integer cents');
+  if(offer.billingMonths===12&&Number.isFinite(offer.billingUpfront)&&
+     cents(evidence.upfrontCents)&&evidence.upfrontCents<Math.round(offer.billingUpfront*100))
+    issues.push('A 12-month prepaid first payment cannot be below the catalog mandatory prepayment');
+  if(offer.phone&&offer.postpaid!==true&&Number.isFinite(offer.price)&&
+     cents(evidence.upfrontCents)&&evidence.upfrontCents<Math.round(offer.price*100))
+    issues.push('An upfront handset or bundle quote cannot be below the catalog required cash price');
+  if(![1,12].includes(evidence.billingMonths)||
+     (offer.billingMonths===12&&evidence.billingMonths!==12))
+    issues.push('Renewal billing period must match the selected monthly or annual service');
+  if(!Number.isInteger(evidence.requiredServiceMonths)||evidence.requiredServiceMonths<1||
+     evidence.requiredServiceMonths>60||
+     evidence.requiredServiceMonths<Math.max(1,Number(offer.prepay)||0,Number(offer.stay)||0,
+       offer.billingMonths===12?12:1))
+    issues.push('Document the full required prepaid or minimum service term');
+  if(evidence.taxesAndFeesIncluded!==true)
+    issues.push('All taxes and compulsory carrier charges must be included in the observed quote');
+  if(evidence.stockConfirmed!==true||offer.availability==='out_of_stock'||pastEnd(offer.ends,verifiedAt))
+    issues.push('Offer must have confirmed available inventory and not be expired or held out of stock');
+  if(!evidence.checks||typeof evidence.checks!=='object'||Array.isArray(evidence.checks)||
+     Object.keys(evidence.checks).length!==CHECKOUT_REVIEW_CHECKS.length||
+     CHECKOUT_REVIEW_CHECKS.some(key=>evidence.checks[key]!==true))
+    issues.push('Every material pricing, eligibility, device and early-exit checklist item must be checked');
+  if(offer.postpaid===true){
+    const f=evidence.financing;
+    if(!f||typeof f!=='object'||Array.isArray(f)||
+      Object.keys(f).sort().join(',')!=='creditMonths,earlyExitExposureCents,installmentMonths,retailDeviceCents,totalInstallmentsCents'||
+      !cents(f.retailDeviceCents)||!cents(f.totalInstallmentsCents)||
+      !cents(f.earlyExitExposureCents)||!Number.isInteger(f.installmentMonths)||
+      f.installmentMonths<1||f.installmentMonths>48||
+      !Number.isInteger(f.creditMonths)||f.creditMonths<0||f.creditMonths>48)
+      issues.push('Financed devices require explicit retail balance, installments, credit term and early-exit exposure');
+  }else if(evidence.financing!==undefined&&evidence.financing!==null){
+    issues.push('Do not attach postpaid financing fields to a non-financed offer');
+  }
+  return issues;
+}
+
 export function verificationState(offer, record, today = localDay()) {
   if (!record || typeof record !== 'object') return {status:'unverified',label:'Offer not independently verified'};
   if (record.scope !== 'full_terms') {
@@ -37,12 +116,16 @@ export function verificationState(offer, record, today = localDay()) {
     return {status:'changed',label:'Terms changed since last review'};
   }
   if (!validDay(record.verifiedAt) || record.verifiedAt > today || typeof record.evidenceUrl !== 'string' ||
-      !/^https:\/\//.test(record.evidenceUrl)) {
-    return {status:'unverified',label:'Review evidence incomplete'};
+      !/^https:\/\//.test(record.evidenceUrl) || record.method!=='anonymized_human_checkout_quote' ||
+      !/^[a-z0-9-]{1,39}$/i.test(record.reviewerActor||'') ||
+      checkoutEvidenceIssues(offer,record.checkout,record.verifiedAt).length) {
+    return {status:'unverified',label:'Structured checkout evidence incomplete'};
   }
   const age = Math.floor((Date.parse(today + 'T12:00:00Z') - Date.parse(record.verifiedAt + 'T12:00:00Z')) / DAY_MS);
   if (age > 14) return {status:'stale',label:'Last reviewed ' + record.verifiedAt + '; recheck pricing'};
-  return {status:'verified',label:'Manually checked ' + record.verifiedAt,verifiedAt:record.verifiedAt};
+  return {status:'verified',label:'Human checkout scenario reviewed ' + record.verifiedAt,
+    verifiedAt:record.verifiedAt,checkoutScenario:record.checkout.customerScenario,
+    lineCount:record.checkout.lineCount};
 }
 export function planCost(plan, count = 1, options = {}) {
   const lines = Math.max(1,Math.min(5,Math.trunc(Number(count)) || 1));

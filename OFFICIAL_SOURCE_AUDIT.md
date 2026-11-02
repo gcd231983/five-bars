@@ -5,14 +5,14 @@
 ## Current coverage and meanings
 
 - **Total catalog**: 78 items — 38 plans, 40 device promotions.
-- **36 dated plan-rate baselines researched**: the previous 28 plus Ultra Mobile (two plans), MobileX (two plans), Google Fi Essentials, Consumer Cellular 1GB, Tracfone Freedom and Straight Talk StraightSAVINGS.
-- **9 dated conditional handset headlines researched**: the original five plus Boost Pixel 10a, Boost Motorola razr 2025, Boost Moto G 2026 and Visible iPhone 18 Pro.
-- **33 entries remain without recorded official-publication research**: 2 other service plans and 31 phone offers. A matching conditional handset headline does not establish checkout eligibility.
+- **37 dated plan-rate baselines researched**: including the corrected Total ALL ACCESS single-line offer; earlier historical expansion notes below are retained for reference.
+- **16 dated conditional handset headlines researched**, including newer Metro, Cricket and Boost device observations; availability is only known at the recorded observation time.
+- **25 entries remain without recorded official-publication research**: 1 other service plan and 24 phone offers. A matching conditional handset headline does not establish checkout eligibility.
 - **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Official source research and a rate match do not change this.
 - **Research date**: 2026-11-02. The generator marks price-source observations aged after 21 days; the separately signed full-terms review expires after 14 days or a material data change.
 
 Public record: https://gcd231983.github.io/five-bars/source-research.html
-Underlying 45-item source file: `site/data/research-evidence.json`.
+Underlying 53-item source file: `site/data/research-evidence.json`.
 Machine-readable coverage report: `site/data/research-audit.json`.
 
 ## Confirmed public-rate baselines (not checkout)
@@ -185,3 +185,9 @@ The dated public-source register now covers **53 of 78** listings: **37 plan-rat
 - The majority of advertised phone deals lack a validated first-month service total, device tax, exact activation channel, number-transfer history, phone-unlock terms and actual availability.
 - Future research should document *required retail price and installment schedule* for postpaid offers before calculating any advertised $0 device as a real cash purchase.
 - Reconfirm inventory before restoring an unavailable offer. Do not automatically interpret an HTTP 200 response as in-stock status.
+
+## Five Bars 3.9 — human checkout evidence is an additional, separate gate
+
+The public research register contains dated *carrier-publication claims*, not a retailer checkout. In contrast, the new checkout sign-off requires a human to observe a specific carrier online checkout or receive a carrier written quote and separately document its initial payment, renewal charge, taxes/fees, line count, qualifying eligibility, required service duration, offer stock and ten material term groups. A GitHub workflow then validates the schema and stores an actor-attributed scenario record bound to exact current catalog terms. A single scenario review does not mean **everyone qualifies** or that the listed price will apply in other ZIPs, channels or customer circumstances.
+
+All current public records still have **zero completed checkout sign-offs**. Source links, scanner access, checkboxes, synthetic examples or AI summaries must never be converted into checkout verification. See [CHECKOUT_VERIFICATION.md](CHECKOUT_VERIFICATION.md).

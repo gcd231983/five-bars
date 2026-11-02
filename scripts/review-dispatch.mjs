@@ -11,6 +11,8 @@ const request=validateReviewRequest({
  id:process.env.REVIEW_ID,
  evidenceUrl:process.env.REVIEW_URL,
  attestation:process.env.REVIEW_ATTESTATION,
+ reviewDetails:process.env.REVIEW_DETAILS,
+ reviewerActor:process.env.GITHUB_ACTOR,
  catalog
 });
 console.log('Human review operation: '+request.operation);
@@ -18,10 +20,15 @@ console.log('Offer ID: '+request.id);
 console.log('Carrier: '+request.offer.carrier+' / '+(request.offer.plan||request.offer.phone));
 if(request.operation==='verify') {
  console.log('Evidence URL (supplied by reviewer): '+request.sourceUrl);
- console.log('Reminder: the human reviewer, not this workflow, is responsible for checking every material term.');
+ console.log('Review scenario: '+request.checkout.customerScenario+' / '+request.checkout.lineCount+' line(s).');
+ console.log('Initial due: '+(request.checkout.upfrontCents/100).toFixed(2)+
+  '; recurring quote: '+(request.checkout.renewalCents/100).toFixed(2)+
+  ' per '+request.checkout.billingMonths+' month(s).');
+ console.log('Reminder: this evidence documents one human-observed scenario, NOT universal checkout eligibility.');
 }
 const args=['scripts/review-offer.mjs',request.operation,request.id];
-if(request.operation==='verify')args.push(request.sourceUrl,'--full-terms-reviewed');
+if(request.operation==='verify')args.push(request.sourceUrl,'--full-terms-reviewed',
+ '--checkout-json',JSON.stringify(request.checkout),'--reviewer-actor',request.reviewerActor);
 const outcome=spawnSync(process.execPath,args,{stdio:'inherit',shell:false});
 if(outcome.error)throw outcome.error;
 if(outcome.status!==0)throw Error('Offer review script failed with exit status '+outcome.status);

@@ -67,7 +67,8 @@ function statusNode(offer) {
   const s=verificationState(offer,reviews[offer.id]);
   const wrapper=element('span',null,'fb-badges');
   const manual=element('span',s.label,'fb-status fb-'+s.status);
-  manual.title=s.status==='verified'?'Manually checked full terms; confirm again before purchase':
+  manual.title=s.status==='verified'?
+    'An attributed human checked one specific carrier checkout scenario, NOT a guaranteed price or eligibility for other visitors. Confirm your own checkout.':
     'The catalog price and all promotion terms have not been fully verified';
   wrapper.append(manual);
   if(offer.availability==='out_of_stock'){

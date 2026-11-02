@@ -22,6 +22,10 @@ on:
         description: 'Verify: I_HAVE_PERSONALLY_CHECKED_ALL_OFFER_TERMS; Invalidate: I_CONFIRM_THIS_REVIEW_MUST_BE_INVALIDATED'
         required: true
         type: string
+      review_details:
+        description: 'For verify: anonymized checkout JSON from reviewer workbench (amounts in cents, checked conditions, NO PII)'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -50,6 +54,7 @@ jobs:
           REVIEW_ID: ${{ inputs.offer_id }}
           REVIEW_URL: ${{ inputs.evidence_url }}
           REVIEW_ATTESTATION: ${{ inputs.attestation }}
+          REVIEW_DETAILS: ${{ inputs.review_details }}
         run: node scripts/review-dispatch.mjs
       - name: Audit verification signatures and catalog integrity
         run: |

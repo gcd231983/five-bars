@@ -1,5 +1,5 @@
 // Read-only editorial review dashboard. Browser-only, no tracking or write API.
-import {verificationState,localDay,usd} from './value-core.mjs';
+import {verificationState,localDay,usd,CHECKOUT_REVIEW_CHECKS,checkoutEvidenceIssues} from './value-core.mjs';
 
 const $=id=>document.getElementById(id);
 const create=(tag,text,cls)=>{
@@ -31,16 +31,19 @@ export const BETA_REVIEW_IDS=[
  'mint','cricket-supreme'
 ];
 const betaIds=new Set(BETA_REVIEW_IDS);
-const workSteps=[
- 'Standard recurring plan/device price and applicable date',
- 'Promotional rate, eligibility and expiration requirements',
- 'Taxes, regulatory fees, activation and full upfront payment',
- 'Annual renewal, minimum service, financing and conditional credits',
- 'Underlying network, IMEI/eSIM acceptance and activation rules',
- 'Hotspot, high-speed data, roaming and usage restrictions',
- 'Phone locking, unlocking and early-exit requirements (when relevant)',
- 'Official carrier Broadband Facts or matching detailed plan terms'
-];
+const stepLabels={
+ advertised_and_renewal_price:'Selected offer and renewal charges confirmed in the carrier quote',
+ upfront_service_device_prepayment:'First payment, device charge and required prepaid service confirmed',
+ all_mandatory_taxes_and_carrier_fees:'Mandatory state taxes, regulatory fees and carrier surcharges included',
+ activation_sim_and_shipping_charges:'Activation, physical SIM/eSIM and delivery costs included or confirmed zero',
+ new_line_port_and_discount_eligibility:'New line, transfer, AutoPay and all discounts qualify for THIS scenario',
+ minimum_service_term_and_renewal:'Prepayment, minimum service, renewal date and future full price checked',
+ network_imei_esim_and_coverage:'Selected network, compatible phone and actual coverage limitations checked',
+ data_hotspot_speed_and_roaming:'High-speed data, hotspot, speed management and roaming checked',
+ phone_lock_early_exit_and_credit_terms:'Unlock rules, financing, credits, payoff and cancellation checked or not applicable',
+ availability_and_offer_expiration:'Exact offer and device stock currently available; expiration checked'
+};
+const workSteps=CHECKOUT_REVIEW_CHECKS.map(key=>stepLabels[key]);
 let queue=[],catalog=null,status=null,ledger={offers:{}},research={records:{}},limit=16;
 const notice=message=>{$('fb-editor-notice').textContent=message;};
 async function load(path){
@@ -167,6 +170,79 @@ function display(){
     workSteps.length+' items checked in this browser. This does not create a verification record.';};
   controls.forEach(box=>box.addEventListener('change',update));
   details.append(statusText);
+  const quoteFields=create('div',null,'fb-review-steps');
+  const textInput=(label,type='text',attributes={})=>{
+   const wrapper=create('label');
+   wrapper.append(create('span',label));
+   const inp=create('input');inp.type=type;
+   for(const [key,value] of Object.entries(attributes))inp.setAttribute(key,String(value));
+   wrapper.append(inp);quoteFields.append(wrapper);return inp;
+  };
+  const drop=(label,items)=>{
+   const wrapper=create('label');wrapper.append(create('span',label));
+   const select=create('select');
+   const placeholder=create('option','Choose a reviewed condition');placeholder.value='';
+   select.append(placeholder);
+   for(const [value,label] of items){const o=create('option',label);o.value=value;select.append(o);}
+   wrapper.append(select);quoteFields.append(wrapper);return select;
+  };
+  const initial=textInput('Actual first payment INCLUDING taxes and fees ($)','text',{inputmode:'decimal',placeholder:'e.g. 45.20'});
+  const recurring=textInput('Confirmed recurring renewal payment INCLUDING taxes and fees ($)','text',{inputmode:'decimal',placeholder:'e.g. 30.00'});
+  const channel=drop('Where was the full checkout observed?',[
+   ['official_online_checkout','Official carrier checkout before payment'],
+   ['carrier_written_quote','Official written quote from carrier']
+  ]);
+  const scenario=drop('Eligibility scenario actually quoted',[
+   ['new_line_port','New line WITH eligible number transfer'],
+   ['new_line_no_port','New line WITHOUT number transfer'],
+   ['existing_customer','Existing carrier customer'],
+   ['not_required','No special eligibility']
+  ]);
+  const lines=textInput('Number of lines quoted','number',{min:1,max:5,step:1,value:1});
+  const recurringMonths=drop('Renewal billing cycle',[
+   ['1','One month'],['12','Twelve months paid upfront']
+  ]);
+  const minimum=textInput('Required minimum/prepaid service months','number',{min:1,max:60,step:1,placeholder:'e.g. 12'});
+  const taxConfirm=textInput('All taxes and compulsory fees included in BOTH quoted amounts','checkbox');
+  const inventoryConfirm=textInput('Selected offer/device confirmed available in this checkout','checkbox');
+  if(record.billingMonths===12)recurringMonths.value='12';
+  if(item.kind==='phone'){lines.value='1';lines.disabled=true;}
+  const finance={};
+  if(record.postpaid===true){
+   quoteFields.append(create('p','Financed device: enter the complete retail balance, installments, bill-credit term and potential early-exit liability. A headline of "$0" is insufficient.','fb-review-hint'));
+   finance.retail=textInput('Full device retail amount ($)','text',{inputmode:'decimal'});
+   finance.installments=textInput('Total of contractual installment payments ($)','text',{inputmode:'decimal'});
+   finance.exit=textInput('Possible early-exit device liability ($)','text',{inputmode:'decimal'});
+   finance.months=textInput('Installment months','number',{min:1,max:48,step:1});
+   finance.creditMonths=textInput('Promotional credit months (0 if none)','number',{min:0,max:48,step:1});
+  }
+  details.append(create('p','Step 2: Record only an anonymized, current customer scenario from an actual carrier checkout or written quote. NEVER enter a phone number, ZIP-specific subscriber identity, account, PIN or payment details.','fb-review-hint'));
+  details.append(quoteFields);
+  const exactCents=value=>{
+   const raw=String(value||'').trim();
+   return /^(?:0|[1-9]\d{0,5})(?:\.\d{1,2})?$/.test(raw)?Math.round(Number(raw)*100):null;
+  };
+  details.append(button('Copy structured checkout JSON for GitHub review',()=>{
+   const detail={
+    schema:1,channel:channel.value,observedAt:localDay(),lineCount:Number(lines.value),
+    customerScenario:scenario.value,upfrontCents:exactCents(initial.value),
+    renewalCents:exactCents(recurring.value),billingMonths:Number(recurringMonths.value),
+    requiredServiceMonths:Number(minimum.value),
+    taxesAndFeesIncluded:taxConfirm.checked,stockConfirmed:inventoryConfirm.checked,
+    checks:Object.fromEntries(CHECKOUT_REVIEW_CHECKS.map((name,i)=>[name,controls[i].checked]))
+   };
+   if(record.postpaid===true)detail.financing={
+    retailDeviceCents:exactCents(finance.retail.value),
+    totalInstallmentsCents:exactCents(finance.installments.value),
+    earlyExitExposureCents:exactCents(finance.exit.value),
+    installmentMonths:Number(finance.months.value),creditMonths:Number(finance.creditMonths.value)
+   };
+   const issues=checkoutEvidenceIssues(record,detail,localDay());
+   if(issues.length){notice('Complete real checkout evidence first: '+issues.join('; ')+
+     '. No offer has been approved.');return;}
+   copy(JSON.stringify(detail,null,2),'Anonymized checkout JSON (NOT an approval)');
+  }));
+  details.append(create('p','This produces only the REVIEW_DETAILS field for the manual GitHub Actions workflow. The workflow requires a separate official source URL, your own GitHub identity and exact human attestation. Checking this box or copying JSON does NOT verify the listing.','fb-review-hint'));
   details.append(button('Copy review worksheet',()=>{
    const text=['Five Bars manual review worksheet','Offer ID: '+item.id,
     'Carrier: '+item.carrier,'Catalog listing: '+(record.plan||record.phone),

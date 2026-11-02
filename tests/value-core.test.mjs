@@ -6,6 +6,7 @@ import {
   localDay, validDay, pastEnd, offerSignature, verificationState,
   planCost, phoneCost, rankMatches, normalizeCompare
 } from '../site/value-core.mjs';
+import {checkoutRecord} from './helpers/checkout-fixtures.mjs';
 
 const sample = {
   plans:[
@@ -26,8 +27,7 @@ test('verified annual prepay terms lose review status when amount or billing per
   const before={id:'yearly',carrier:'Example',plan:'Annual 1GB',price:5,
     billingMonths:12,billingUpfront:60,priceSourceDate:'2026-11-02',
     url:'https://example.org/annual'};
-  const record={scope:'full_terms',signature:offerSignature(before),
-    verifiedAt:'2026-11-02',evidenceUrl:'https://example.org/annual'};
+  const record=checkoutRecord(before,'2026-11-02','https://example.org/annual');
   assert.equal(verificationState(before,record,'2026-11-02').status,'verified');
   assert.equal(verificationState({...before,billingUpfront:120},record,'2026-11-02').status,'changed');
   assert.equal(verificationState({...before,billingMonths:1},record,'2026-11-02').status,'changed');
@@ -49,12 +49,28 @@ test('unreviewed offers never acquire a verified label from link checks',()=>{
 });
 test('manual full-terms verification requires matching exact terms and a fresh date',()=>{
   const offer=sample.plans[0];
-  const r={scope:'full_terms',signature:offerSignature(offer),verifiedAt:'2026-10-25',evidenceUrl:'https://example.com/offer'};
+  const r=checkoutRecord(offer,'2026-10-25','https://example.com/offer');
   assert.equal(verificationState(offer,r,'2026-11-01').status,'verified');
   assert.equal(verificationState({...offer,price:26},r,'2026-11-01').status,'changed');
   assert.equal(verificationState(offer,r,'2026-11-20').status,'stale');
   assert.equal(verificationState(offer,{...r,verifiedAt:'2026-11-20'},'2026-11-01').status,'unverified');
   assert.equal(verificationState(offer,{...r,evidenceUrl:'http://example.com'},'2026-11-01').status,'unverified');
+});
+test('a URL and attestation alone cannot create a scenario-specific verified label',()=>{
+ const offer=sample.plans[0];
+ const minimal={scope:'full_terms',signature:offerSignature(offer),verifiedAt:'2026-11-02',
+  evidenceUrl:'https://example.org/offer'};
+ assert.equal(verificationState(offer,minimal,'2026-11-02').status,'unverified');
+ const complete=checkoutRecord(offer,'2026-11-02','https://example.org/offer');
+ assert.equal(verificationState(offer,complete,'2026-11-02').status,'verified');
+ assert.match(verificationState(offer,complete,'2026-11-02').label,/checkout scenario/);
+ const forged={...complete,checkout:{...complete.checkout,checks:{
+  ...complete.checkout.checks,all_mandatory_taxes_and_carrier_fees:false}}};
+ assert.equal(verificationState(offer,forged,'2026-11-02').status,'unverified');
+ const PII={...complete,checkout:{...complete.checkout,accountNumber:'123456789'}};
+ assert.equal(verificationState(offer,PII,'2026-11-02').status,'unverified');
+ const wrongLines={...complete,checkout:{...complete.checkout,lineCount:6}};
+ assert.equal(verificationState(offer,wrongLines,'2026-11-02').status,'unverified');
 });
 test('family discount is not silently multiplied across every line',()=>{
   const cost=planCost(sample.plans[0],2,{today:'2026-11-01'});
@@ -86,8 +102,7 @@ test('documented provider fees and conditional payment discounts are counted wit
  assert.equal(confirmed.year,310);
  assert.equal(confirmed.conditionalDiscountUnconfirmed,false);
  const before={...plan,url:'https://www.consumercellular.com/shopping/choose/plan'};
- const record={scope:'full_terms',signature:offerSignature(before),verifiedAt:'2026-11-02',
-  evidenceUrl:before.url};
+ const record=checkoutRecord(before,'2026-11-02',before.url);
  assert.equal(verificationState(before,record,'2026-11-02').status,'verified');
  assert.equal(verificationState({...before,knownMonthlyFee:0},record,'2026-11-02').status,'changed');
  assert.equal(verificationState({...before,discountCondition:'autopay'},record,'2026-11-02').status,'changed');
@@ -197,9 +212,9 @@ test('out-of-stock device offers withhold pricing and cannot be placed in a vali
  const found=rankMatches({plans:[],phones:[stock]}, {lines:1,canPort:true},'2026-11-02');
  assert.equal(found.phoneMatches,0);
  assert.ok(found.messages.some(x=>x.includes('out of stock')));
- const reviewed={scope:'full_terms',signature:offerSignature(stock),verifiedAt:'2026-11-02',
-   evidenceUrl:'https://cricketwireless.com/shop'};
- assert.equal(verificationState(stock,reviewed,'2026-11-02').status,'verified');
+ const reviewed=checkoutRecord(stock,'2026-11-02','https://cricketwireless.com/shop');
+ assert.equal(verificationState(stock,reviewed,'2026-11-02').status,'unverified',
+   'a sold-out handset cannot be certified from a generic manual statement');
  assert.equal(verificationState({...stock,availability:undefined},reviewed,'2026-11-02').status,'changed');
 });
 test('unquoted financed-device promotions never return zero checkout or twelve-month cash',()=>{
@@ -219,7 +234,7 @@ test('unquoted financed-device promotions never return zero checkout or twelve-m
   price:1199,planPrice:45,credit:20,creditMonths:24,fullRetailRequired:true};
  assert.equal(phoneCost(retail).due,1244);
  assert.equal(phoneCost(retail).year,1739);
- const reviews={scope:'full_terms',signature:offerSignature(retail),verifiedAt:'2026-11-02',evidenceUrl:'https://visible.com/m/deals'};
+ const reviews=checkoutRecord(retail,'2026-11-02','https://visible.com/m/deals');
  assert.equal(verificationState(retail,reviews,'2026-11-02').status,'verified');
  assert.equal(verificationState({...retail,fullRetailRequired:false},reviews,'2026-11-02').status,'changed');
  const mixed={plans:[],phones:[retail,{id:'financed',carrier:'AT&T',phone:'Trade',net:'att',price:0,planPrice:80,postpaid:true}]};

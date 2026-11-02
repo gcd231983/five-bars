@@ -2,6 +2,12 @@
 
 Five Bars compares US phone plans and advertised phone offers. The website is a static GitHub Pages site. A scheduled GitHub Actions workflow checks public sources and publishes **conservative** updates without Claude, AI subscriptions, paid APIs, or external servers.
 
+## Latest review controls (Five Bars 3.9)
+
+As of November 2, 2026, the catalog contains **78 offers**; **53 have dated partial official source research** and **25 lack that first-level coverage**. No offer has a current human-recorded checkout scenario (**0 of 78**). Those figures are not real-time checkout verifications.
+
+**New manual sign-off gate:** a carrier URL and typed attestation alone are insufficient. Authorized reviewers must record a specific anonymized quote, the observed initial payment and renewal billing amount including mandatory fees, customer eligibility, service commitments, inventory, and ten checked material terms. The stored record is tied to a GitHub reviewer and exact catalog signature. See [Checkout verification protocol](CHECKOUT_VERIFICATION.md). A reviewed scenario never guarantees another customer's checkout price.
+
 ## What the automator can and cannot do
 
 Every day, it:
@@ -79,7 +85,7 @@ The new guided finder asks only about network, number of lines, service budget, 
 **The daily scanner cannot create or refresh verification records.** When you have personally checked an offer's device price, plan cost, signup requirements, number porting, financed installment terms, rebate timing, potential clawbacks and official source:
 
 1. Update the terms in `site/data/deals.json` first, using only the details you confirmed.
-2. Run `node scripts/review-offer.mjs verify OFFER_ID https://official-carrier-offer-page --full-terms-reviewed`.
+2. Complete a real carrier checkout/written quote and use the read-only reviewer workbench to generate anonymous structured evidence. Follow [CHECKOUT_VERIFICATION.md](CHECKOUT_VERIFICATION.md) to submit the manual GitHub Actions workflow.
 3. Review and commit both `site/data/deals.json` and `site/data/verifications.json`.
 4. The badge will say **Manually checked** for 14 days, provided the material offer fields and evidence still match. Changes to terms automatically invalidate the badge; older reviews become stale.
 5. Run `node scripts/review-offer.mjs audit` to check evidence consistency. Use `node scripts/review-offer.mjs invalidate OFFER_ID` to revoke a mistaken review.
@@ -125,7 +131,7 @@ A carrier changing its page template may cause the strict parser to find zero he
 
 ### Resolving a mismatch
 
-When a mismatch is reported, inspect the exact official carrier offer page and the terms of service, financing, eligibility and unlock rules. Correct `site/data/deals.json` **only after human review**; optionally record full-terms verification using `node scripts/review-offer.mjs verify OFFER_ID https://official-carrier-page --full-terms-reviewed`. The next daily scan will compare the corrected catalog against the newly advertised headline.
+When a mismatch is reported, inspect the exact official carrier offer page and the terms of service, financing, eligibility and unlock rules. Correct `site/data/deals.json` **only after human review**; record a scenario-specific human checkout review only through the protected GitHub workflow with detailed evidence per CHECKOUT_VERIFICATION.md. The next daily scan will compare the corrected catalog against the newly advertised headline.
 
 ### Automated test commands
 
@@ -187,7 +193,7 @@ The daily scanner also writes **`site/data/review-queue.json`**. Under **Price w
 - **Medium:** A monitored rate not found, an inaccessible carrier offer page, or a price reference older than 21 days.
 - **Routine:** A listed offer has no current *documented human full-terms review*. This is a transparency disclosure, **not an accusation** that the carrier's price is incorrect.
 
-Queue entries include the original carrier, the reason, a public carrier link, and a prefilled GitHub correction link. Flags are derived from **existing evidence and dates**; no AI, tracking of visitors, login, or automatic claim of review is involved. Reviewing an offer's source URL or seeing a matching headline does **not** create a manual full-terms review record. Only `node scripts/review-offer.mjs verify ID OFFICIAL_URL --full-terms-reviewed`, following direct human inspection, can record that step.
+Queue entries include the original carrier, the reason, a public carrier link, and a prefilled GitHub correction link. Flags are derived from **existing evidence and dates**; no AI, tracking of visitors, login, or automatic claim of review is involved. Reviewing an offer's source URL or seeing a matching headline does **not** create a manual full-terms review record. Only an explicitly initiated, attributed human workflow with structured quote details and direct carrier inspection can record that step.
 
 ### Official pages with access restrictions
 
@@ -281,7 +287,7 @@ The automated price checker cannot independently certify all carrier checkout co
 
 To use: open the Five Bars GitHub repository, select Actions, choose Five Bars - human offer terms sign-off, then Run workflow on main.
 
-- Verification: select operation verify, enter the exact ID from site/data/deals.json, an official carrier HTTPS source URL, and the exact attestation I_HAVE_PERSONALLY_CHECKED_ALL_OFFER_TERMS. Use this ONLY after personally checking the rate, taxes, fees, eligibility, prepayment, number transfer, rebates, financing and unlock terms.
+- Verification: select operation verify, enter the exact ID from site/data/deals.json, an official carrier HTTPS source URL, the anonymized structured JSON in `review_details`, and the exact attestation I_HAVE_PERSONALLY_CHECKED_ALL_OFFER_TERMS. Use this ONLY after personally checking the rate, taxes, fees, eligibility, prepayment, number transfer, rebates, financing and unlock terms.
 - Invalidation: select operation invalidate, enter the offer ID and the exact attestation I_CONFIRM_THIS_REVIEW_MUST_BE_INVALIDATED. No evidence URL is needed.
 - The workflow checks inputs and official carrier domain, runs tests, commits the signed review ledger and records the GitHub initiator in the commit history. That commit triggers normal site publication.
 - Full-terms verification becomes stale after 14 days and is invalidated by material price/term changes including annual upfront billing.
@@ -306,7 +312,7 @@ The generator at scripts/build-comparisons.mjs and editorial text source scripts
 
 Reviewers may open https://gcd231983.github.io/five-bars/review-workbench.html from the Sources tab. The workbench is noindex and excluded from the sitemap. It loads the current ranked review queue, 78-offer catalog, and signed review ledger; supports priority, carrier, kind and verification-state filters; and links the official offer and the protected GitHub sign-off workflow.
 
-Each item includes a full-terms worksheet covering rate, promotion, tax, prepayment, financing, carrier network/phone compatibility, high-speed/hotspot/roaming and unlock requirements. A checked box is never a verification record. Copying a worksheet stores nothing on the server; official human attestation remains controlled by the existing GitHub Actions workflow and the human's actual inspection.
+Each item includes a full-terms worksheet covering rate, promotion, tax, prepayment, financing, carrier network/phone compatibility, high-speed/hotspot/roaming and unlock requirements. A checked box or copied structured JSON is never a verification record. Copying a worksheet stores nothing on the server; official human attestation remains controlled by the existing GitHub Actions workflow and the human's actual inspection.
 
 ### Running and testing
 
@@ -331,3 +337,9 @@ A targeted public-source audit now records **twelve** plan rate baselines from o
 The static evidence report and edited carrier comparison pages refresh with existing no-AI GitHub Actions, but the November 2 observation date remains fixed until new carrier research is actually conducted. The report marks research **aged after 21 days** and flags catalog rates or annual prepayments that diverge from the dated official record. These public source matches are NOT final checkout validation. The editor workbench now shows each researched offer's official sources and outstanding customer-specific questions.
 
 Next: complete real checkout and human full-terms reviews before calling any offer fully verified, and expand the published-source audit beyond the first 12 plans. Do not apply affiliate tracking or claim paid-partner relationships until agreements and disclosures are approved.
+
+## Five Bars 3.9 — human checkout evidence, not a URL-only badge
+
+The read-only [reviewer workbench](https://gcd231983.github.io/five-bars/review-workbench.html) now helps authorized editors record all ten checkout questions, initial and renewal payments including mandatory taxes/fees, eligibility scenario, service period, inventory and optional postpaid finance terms. The copied JSON is reviewed by the manual GitHub Actions workflow, with the initiating GitHub user attributed in `verifications.json`. Incomplete, mismatched, held/out-of-stock and invalid data fail closed. A previously accepted checkout remains **scenario-specific**, expires after 14 days or a material catalog change, and does not make unverifiable postpaid costs safe to advertise.
+
+See [CHECKOUT_VERIFICATION.md](CHECKOUT_VERIFICATION.md) for exact steps. Live evidence count remains **0/78** until a person actually completes the workflow with real checkout information; automated scans never fabricate that evidence.
