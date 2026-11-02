@@ -687,7 +687,7 @@ function renderPhones(){
     const facts = [
       d.bundle ? "Includes " + d.bundle + " months of service" : (d.planPrice!=null ? "Needs a " + money(d.planPrice) + "/mo plan" : "Needs a premium unlimited plan"),
       d.prepay>1 && !d.bundle && d.id!=="usm-p11" ? "Prepay " + d.prepay + " months" : null,
-      Number.isFinite(d.firstMonthPlanPrice) ? "First service bill " + money(d.firstMonthPlanPrice) + "; then " + money(d.planPrice) + "/mo with eligible discount" : null,
+      Number.isFinite(d.firstMonthPlanPrice) && d.firstMonthPlanPrice!==d.planPrice ? "First service bill " + money(d.firstMonthPlanPrice) + "; then " + money(d.planPrice) + "/mo subject to eligibility" : null,
       d.port ? "Must move your number" : "No number move needed",
       d.store ? "In store only" : null,
       d.postpaid ? "Postpaid financing; total device cost unknown" : "Prepaid",
