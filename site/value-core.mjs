@@ -22,7 +22,8 @@ export function offerSignature(offer) {
   // Evidence is invalidated if any material deal condition changes.
   const fields = ['id','carrier','plan','phone','net','os','price','planPrice','priceNote','promo',
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
-    'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url'];
+    'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
+    'billingMonths','billingUpfront','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
 export function verificationState(offer, record, today = localDay()) {
