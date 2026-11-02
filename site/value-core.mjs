@@ -23,7 +23,7 @@ export function offerSignature(offer) {
   const fields = ['id','carrier','plan','phone','net','os','price','planPrice','priceNote','promo',
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
     'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
-    'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','priceSourceDate'];
+    'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','fullRetailRequired','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
 export function verificationState(offer, record, today = localDay()) {
@@ -85,6 +85,12 @@ export function phoneCost(phone) {
   if(!Number.isFinite(price)||price<0)return null;
   const plan=phone.planPrice==null?null:Number(phone.planPrice);
   const validPlan=Number.isFinite(plan)&&plan>=0?plan:null;
+  // A postpaid promotional headline can be net of years of bill credits.
+  // Without retail/installment/credit-loss terms a cash quote is misleading.
+  if(phone.postpaid===true)return {due:null,commitment:null,year:null,netDevice:null,
+    financingUncertain:true,planPrice:validPlan,firstMonthPlanPrice:null,
+    prepay:Math.max(0,Number(phone.prepay)||0),stay:Math.max(0,Number(phone.stay)||0),
+    conditionalRewardsExcluded:true};
   const prepay=Math.max(0,Number(phone.prepay)||0);
   const stay=Math.max(0,Number(phone.stay)||0);
   const bundle=Math.max(0,Number(phone.bundle)||0);

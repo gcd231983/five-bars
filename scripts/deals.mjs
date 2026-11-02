@@ -126,6 +126,9 @@ function validate(d, prev) {
     if (!NETS.includes(p.net)) errs.push(at + ": net must be one of " + NETS.join(", "));
     if (!isNum(p.price, 0, 3000)) errs.push(at + ": bad price");
     if (p.planPrice != null && !isNum(p.planPrice, 0, 300)) errs.push(at + ": bad planPrice");
+    if (p.postpaid != null && typeof p.postpaid !== 'boolean') errs.push(at + ': postpaid must be boolean');
+    if (p.fullRetailRequired != null && typeof p.fullRetailRequired !== 'boolean') errs.push(at + ': fullRetailRequired must be boolean');
+    if (p.fullRetailRequired===true && p.postpaid===true) errs.push(at + ': full retail promotion must not require financed postpaid purchase');
     if (p.firstMonthPlanPrice != null) {
       if (!isNum(p.firstMonthPlanPrice, 0, 300)) errs.push(at + ": invalid firstMonthPlanPrice");
       if (p.planPrice == null || p.bundle || (p.prepay != null && p.prepay > 1))

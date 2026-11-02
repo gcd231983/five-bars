@@ -492,6 +492,7 @@ function planVisible(p){
 /* ---------- phone math ---------- */
 function phoneCalc(d){
   const ei=endInfo(d.ends);
+  if(d.postpaid===true)return {due:null,commitment:null,year:null,eff:null,ei,financingUncertain:true};
   const price=d.price;
   const plan=d.planPrice==null?null:d.planPrice;
   const prepay=Math.max(0,d.prepay||0);
@@ -651,18 +652,19 @@ function renderPhones(){
   const rows = PHONES.filter(phoneVisible).map(d=>({d, c:phoneCalc(d)}));
   const big = 1e9;
   const by = {
-    year:(a,b)=>(a.c.year??big)-(b.c.year??big) || a.c.eff-b.c.eff,
-    due:(a,b)=>(a.c.due??big)-(b.c.due??big) || a.c.eff-b.c.eff,
-    price:(a,b)=>a.c.eff-b.c.eff || (a.c.year??big)-(b.c.year??big)
+    year:(a,b)=>(a.c.year??big)-(b.c.year??big) || (a.c.eff??big)-(b.c.eff??big),
+    due:(a,b)=>(a.c.due??big)-(b.c.due??big) || (a.c.eff??big)-(b.c.eff??big),
+    price:(a,b)=>(a.c.eff??big)-(b.c.eff??big) || (a.c.year??big)-(b.c.year??big)
   }[state.sort];
   const underReview=d=>['headline_mismatch','ambiguous'].includes(AUTO_STATUS?.offers?.[d.id]?.priceEvidenceState);
-  rows.sort((a,b)=>Number(underReview(a.d))-Number(underReview(b.d)) || by(a,b));
+  rows.sort((a,b)=>Number(underReview(a.d))-Number(underReview(b.d)) ||
+    Number(!!a.d.postpaid)-Number(!!b.d.postpaid) || by(a,b));
   $("#c-phones").textContent = rows.length;
   const list = $("#phones-list");
   if(!rows.length){ list.replaceChildren(emptyState()); return; }
   list.replaceChildren(...rows.map(({d,c},i)=>{
     const n = NET[d.net];
-    const free = c.eff <= 0;
+    const free = c.eff === 0;
     const scan = AUTO_STATUS?.offers?.[d.id];
     const priceDisputed=underReview(d);
     const facts = [
@@ -671,7 +673,8 @@ function renderPhones(){
       Number.isFinite(d.firstMonthPlanPrice) ? "First service bill " + money(d.firstMonthPlanPrice) + "; then " + money(d.planPrice) + "/mo with eligible discount" : null,
       d.port ? "Must move your number" : "No number move needed",
       d.store ? "In store only" : null,
-      d.postpaid ? "Postpaid contract" : "Prepaid",
+      d.postpaid ? "Postpaid financing; total device cost unknown" : "Prepaid",
+      d.fullRetailRequired ? "Full retail purchase required; financing excluded" : null,
       d.lock ? (d.lock>=12 ? "Locked " + d.lock + " months" : "Unlocks after " + (d.lock*30) + " days") : "Sold unlocked"
     ].filter(Boolean);
     const ends = c.ei;
@@ -682,16 +685,20 @@ function renderPhones(){
         el("div",{class:"plan"}, d.carrier),
         el("div",{class:"net"}, n.name)),
       el("div",{class:"price"},
-        el("div",{class:priceDisputed?"now fb-under-review":"now"}, priceDisputed ? "Price under review" : d.price===0 ? (d.postpaid ? "$0 advertised" : "Free") : money(d.price)),
+        el("div",{class:priceDisputed?"now fb-under-review":"now"},
+          priceDisputed ? "Price under review" : d.postpaid ? "Financing — quote required" :
+          d.price===0 ? "Free" : money(d.price)),
         !priceDisputed && d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
         !priceDisputed && d.rebate ? el("div",{class:"was"}, money(d.rebate) + " conditional later reward; NOT deducted") : null),
       el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null, scan?.state==="source_unavailable" ? el("li",{class:"warn"}, "Offer link could not be checked") : null, scan?.reviewRequired ? el("li",{class:"warn"}, "Price candidate needs manual review; listed terms are unverified") : null,
-      priceDisputed ? el("li",{class:"warn"},"Official price evidence conflicts with this listing; stale totals suppressed") : null),
+      priceDisputed ? el("li",{class:"warn"},"Official price evidence conflicts with this listing; stale totals suppressed") : null,
+      d.postpaid ? el("li",{class:"warn"},"A financed promotional phone is NOT guaranteed free at checkout. Retail balance, installments, credits and payoff need verification.") : null),
       ends ? el("div",{class: ends.expired ? "deal off" : "deal"}, ends.expired ? ends.text + ". Recheck before you go." : ends.text + ".") : null,
       d.note ? el("div",{class:"extra"}, d.note) : null,
       el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
         priceDisputed ? el("span",{class:"yr fb-watch-warning"},"Device cost and first-year totals are suppressed pending review of the official headline.") :
+          c.financingUncertain ? el("span",{class:"yr fb-watch-warning"},"Financed offer: upfront, commitment and first-year estimates withheld pending full carrier terms.") :
           el("span",{class:"yr"},
             c.due!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Due today (est.): ", el("b",null, money(c.due))) : "Upfront total: ask carrier. ",
             c.commitment!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Min. commitment: ", el("b",null, money(c.commitment))) : null,

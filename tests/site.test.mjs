@@ -37,11 +37,14 @@ test('site and tested phone-cost helper agree on sample checkout math', { skip }
     { price: 349, planPrice: null },
     { price: 1199, planPrice: 45, credit: 20, creditMonths: 24 },
     { price: 0, planPrice: 35, firstMonthPlanPrice: 40 },
+    { price: 0, planPrice: 80, postpaid: true },
+    { price: 199.99, planPrice: null, postpaid: true },
   ]) {
     const fromPage = browserCalc(deal), fromCore = phoneCosts(deal);
     assert.ok(fromPage.due === fromCore.dueToday || Math.abs(fromPage.due - fromCore.dueToday) < .001);
     assert.ok(fromPage.commitment === fromCore.minCommitment || Math.abs(fromPage.commitment - fromCore.minCommitment) < .001);
     assert.ok(fromPage.year === fromCore.firstYear || Math.abs(fromPage.year - fromCore.firstYear) < .001);
+    if(deal.postpaid){assert.equal(fromPage.eff,null);assert.equal(fromPage.financingUncertain,true);}
   }
 });
 

@@ -210,6 +210,10 @@ try {
       /Price under review/,'conflicting official price must never display as Free');
     assert.match(await page.locator('#r-boost-a17').innerText(),
       /stale totals suppressed/i);
+    const financed=page.locator('#r-vz-18pro');
+    assert.match(await financed.innerText(),/Financing.*quote required/i);
+    assert.match(await financed.innerText(),/first-year estimates withheld/i);
+    assert.doesNotMatch(await financed.innerText(),/Due today \(est\.\)|First year \(est\.\)/i);
     assert.equal(await page.locator('#r-boost-a17').getByRole('button',{name:'Compare',exact:true}).count(),0,
       'disputed offer cannot be compared at stale catalog price');
     const phoneOverflow=await page.evaluate(()=>document.documentElement.scrollWidth);
@@ -391,9 +395,9 @@ try {
     research.on('pageerror',e=>errors.push(view+' source research: '+e.message));
     await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
     assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
-    assert.equal(await research.locator('.research-article').count(),20);
+    assert.equal(await research.locator('.research-article').count(),24);
     assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human full-terms sign-offs/i);
-    assert.match(await research.locator('main').innerText(),/58.*without documented official-source research/s);
+    assert.match(await research.locator('main').innerText(),/54.*without documented official-source research/s);
     const mint=research.locator('[data-offer-id="mint"]');
     assert.match(await mint.innerText(),/\$360\.00 due upfront for 12 months/);
     assert.match(await mint.innerText(),/\$180/);
@@ -403,6 +407,11 @@ try {
     assert.match(await metro.innerText(),/\$100\.00 conditional later reward NOT deducted/);
     const stylus=research.locator('[data-offer-id="cricket-stylus"]');
     assert.match(await stylus.innerText(),/2 service months prepaid/);
+    const boostRazr=research.locator('[data-offer-id="boost-razr"]');
+    assert.match(await boostRazr.innerText(),/2 service months prepaid/);
+    const visible=research.locator('[data-offer-id="visible-18pro"]');
+    assert.match(await visible.innerText(),/FULL RETAIL handset payment required; financing ineligible/);
+    assert.match(await visible.innerText(),/conditional service credits for 24 months NOT deducted/);
     const researchOverflow=await research.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(researchOverflow<=viewport.width+2,'Research audit should not overflow '+view+' width');
     await research.screenshot({path:join(output,view+'-source-audit.png'),fullPage:true});

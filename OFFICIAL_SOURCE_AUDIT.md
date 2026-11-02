@@ -6,13 +6,13 @@
 
 - **Total catalog**: 78 items — 38 plans, 40 device promotions.
 - **15 published plan baselines researched**: original 12 plus Total Wireless MAX 5G BYO and H2O 10GB and Unlimited monthly plans.
-- **5 conditional handset headlines added**: Metro iPhone 16e, Total Wireless Galaxy A17, Cricket iPhone 16e, Cricket Moto G Stylus 2025 and Cricket Galaxy A17.
-- **58 entries remain without recorded official-publication research**: 23 other service plans and 35 phone offers. A matching conditional handset headline does not establish checkout eligibility.
+- **9 dated conditional handset headlines researched**: the original five plus Boost Pixel 10a, Boost Motorola razr 2025, Boost Moto G 2026 and Visible iPhone 18 Pro.
+- **54 entries remain without recorded official-publication research**: 23 other service plans and 31 phone offers. A matching conditional handset headline does not establish checkout eligibility.
 - **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Official source research and a rate match do not change this.
 - **Research date**: 2026-11-02. The generator marks price-source observations aged after 21 days; the separately signed full-terms review expires after 14 days or a material data change.
 
 Public record: https://gcd231983.github.io/five-bars/source-research.html
-Underlying 20-item source file: `site/data/research-evidence.json`.
+Underlying 24-item source file: `site/data/research-evidence.json`.
 Machine-readable coverage report: `site/data/research-audit.json`.
 
 ## Confirmed public-rate baselines (not checkout)
@@ -79,3 +79,22 @@ Five selected device offers have separate official publication records, distinct
 | Cricket Galaxy A17 | $0 on selected new-line port-in; $60 Supreme Unlimited plan and first service month due | https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a17-5g-black |
 
 Carrier offer pages may show different prices across customer types, locations, selected service tiers or revisions. In the daily site generator, aging evidence does not refresh its original observation date. A source conflict suppresses a savings calculation; it does not automatically edit a carrier promotion. Customer-specific checkout, taxes, early-exit conditions and full unlock policies still need human review. **20/78 public-source researched; 0/78 human checkout/full-terms reviewed.**
+
+## Five Bars 3.4 — financed devices and four more public device headlines (November 2, 2026)
+
+The consumer calculators now **withhold all unsubstantiated financed/trade-in phone cash totals** for three currently unmodelable postpaid promotions. A $0 promotional *net* phone price is not a verified device retail price, installment agreement or cash payable at checkout. Source-level research has expanded from 20 to **24 of 78 offers** (15 plan baselines; nine *conditional* handset headlines); **54 still lack first-level research** and **zero have signed full-terms checkout verification**.
+
+| Official published conditional offer | First-level publication evidence | Source |
+| --- | --- | --- |
+| Boost Pixel 10a | $49.99 selected online device headline with $60/mo Unlimited Premium and eligible number transfer; online prepayment and lock conditions not established | https://www.boostmobile.com/deals |
+| Boost Motorola razr 2025 | $29.99 selected device, $60 monthly qualifying plan, two prepaid months and eligible port-in; minimum documented device plus prepaid service $149.99 before fees | https://www.boostmobile.com/deals |
+| Boost Moto G 2026 | $0 selected online handset conditional on $60/mo plan and eligible number transfer; first checkout taxes/fees unknown | https://www.boostmobile.com/deals |
+| Visible iPhone 18 Pro | $1,199 full-retail handset; activation on $45/mo Visible+ Pro, $20/mo conditional service credits for 24 months ($480 maximum); **device financing excludes this specific promotion** | https://www.visible.com/m/deals and https://www.visible.com/buy/phones/iphone-18-pro |
+
+The Visible benefit requires full retail purchase and eligible service throughout the credit period. The base first-year estimate keeps the $1,199 handset and 12 months of $45 service gross; **no promised $240 first-year or $480 two-year credit is deducted from core savings**. Separately, mainstream postpaid financing rules from AT&T, Verizon and T-Mobile confirm that lost credits and installment balances create material early-exit risks:
+
+- https://offers.att.com/
+- https://www.verizon.com/support/device-payment-faqs/
+- https://www.t-mobile.com/support/new-to-tmobile/promotional-cards-credits-and-rebates
+
+These policy links explain risks; they do NOT verify any particular device promotion, new customer's eligibility, taxes or the actual monthly financed payment. Future work should collect device retail/MSRP, down payment, device installments, trade-in appraisal, plan, taxes, credit start/end and early-exit liability before any financed offer can receive a numerical quote.

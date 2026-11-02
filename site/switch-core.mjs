@@ -132,6 +132,8 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
   const config=normalizeScenario(scenario);
   const offer=sampleOffer(catalog,type,id);
   if(!offer)throw Error('The selected listing is not in the current catalog.');
+  if(type==='phone'&&offer.postpaid===true)
+    throw Error('Financed/trade-in phone promotion: no reliable savings without full device retail price, installment payments, qualifying service and credit-loss/payoff terms. Ask the carrier for its complete agreement first.');
   // A dated, manually researched public official price baseline may contradict
   // future catalog edits. Stop showing savings until the discrepancy is resolved.
   // A baseline match is NOT independent full checkout verification.
@@ -144,7 +146,10 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
        offer.port!==published.publishedPortRequired||
        (published.publishedPrepayMonths!==undefined&&offer.prepay!==published.publishedPrepayMonths)||
        (published.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==published.publishedFirstMonthPlanPrice)||
-       (published.publishedConditionalRebate!==undefined&&offer.rebate!==published.publishedConditionalRebate)):
+       (published.publishedConditionalRebate!==undefined&&offer.rebate!==published.publishedConditionalRebate)||
+       (published.publishedCreditMonthly!==undefined&&offer.credit!==published.publishedCreditMonthly)||
+       (published.publishedCreditMonths!==undefined&&offer.creditMonths!==published.publishedCreditMonths)||
+       (published.publishedFullRetailRequired!==undefined&&offer.fullRetailRequired!==published.publishedFullRetailRequired)):
       (!Number.isFinite(published.publishedMonthly)||
        Math.abs(offer.price-published.publishedMonthly)>0.0001||
        (published.billingMonths===12?

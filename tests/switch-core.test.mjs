@@ -42,6 +42,15 @@ test('Metro delayed gift reward is excluded and $55 first month / $50 renewal ar
  assert.equal(report.results[36].serviceTotal,1805);
  assert.ok(report.warnings.some(x=>x.includes('rebates')));
 });
+test('incomplete financed device promotions cannot show positive switch savings',()=>{
+ const financed={...catalog,phones:[...catalog.phones,{
+  id:'conditional',carrier:'Carrier',phone:'Promotional $0 phone',net:'att',
+  price:0,postpaid:true,planPrice:80,credit:30,creditMonths:36,
+  url:'https://example.org'
+ }]};
+ assert.throws(()=>simulateSwitch({catalog:financed,type:'phone',id:'conditional',scenario}),
+  /Financed\/trade-in phone promotion.*full device retail price/i);
+});
 test('monthly promotion first 3 months then regular service; accurate 12/24/36',()=>{
  const r=simulate('plan','monthly');
  assert.deepEqual(r.results[12],{

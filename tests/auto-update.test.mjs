@@ -188,6 +188,19 @@ test('bundled services and monthly credits do not double charge included months'
   assert.equal(phoneCosts({ price: 349, planPrice: null }).dueToday, null);
 });
 
+test('automatic device math withholds financing and trade-in cash totals',()=>{
+ for(const offer of [
+  {price:0,planPrice:80,postpaid:true,credit:25,creditMonths:36},
+  {price:199.99,planPrice:null,postpaid:true}
+ ]){
+  const c=phoneCosts(offer);
+  assert.equal(c.dueToday,null);
+  assert.equal(c.minCommitment,null);
+  assert.equal(c.firstYear,null);
+  assert.equal(c.netDevice,null);
+  assert.equal(c.financingUncertain,true);
+ }
+});
 test('catalog diff records expiry and price change, not mere last-check timestamps', () => {
   const before = original();
   const after = expireKnownOffers(before, '2026-11-01').next;

@@ -14,19 +14,20 @@ const ledger=JSON.parse(read('site/data/verifications.json'));
 const date='2026-11-02';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
-test('15 plan baselines plus 5 device headlines are researched without claiming full checkout',()=>{
- assert.equal(Object.keys(research.records).length,20);
+test('15 plan baselines plus 9 conditional device headlines do not certify checkout',()=>{
+ assert.equal(Object.keys(research.records).length,24);
  const audit=build();
  assert.equal(audit.summary.offers,78);
- assert.equal(audit.summary.researched,20);
- assert.equal(audit.summary.notResearched,58);
+ assert.equal(audit.summary.researched,24);
+ assert.equal(audit.summary.notResearched,54);
  assert.equal(audit.summary.conflictingOrInvalid,0);
- assert.equal(audit.summary.publishedPriceMatches,20);
+ assert.equal(audit.summary.publishedPriceMatches,24);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  assert.equal(audit.summary.needingFullTerms,78);
  assert.ok(audit.offers.every(x=>x.manualReview!=='verified'));
  assert.ok(audit.offers.some(x=>x.id==='tello'&&x.researchState==='published_match'));
- assert.ok(audit.offers.some(x=>x.id==='boost-motog'&&x.researchState==='not_researched'));
+ assert.ok(audit.offers.some(x=>x.id==='boost-motog'&&x.researchState==='published_match'));
+ assert.ok(audit.offers.some(x=>x.id==='visible-18pro'&&x.researchState==='published_match'));
  assert.ok(audit.offers.some(x=>x.id==='metro-16e'&&x.researchState==='published_match'));
  assert.ok(audit.offers.some(x=>x.id==='cricket-16e'&&x.researchState==='published_match'));
  assert.ok(audit.offers.some(x=>x.id==='total-a17'&&x.researchState==='published_match'));
@@ -47,7 +48,8 @@ test('official dated evidence is auditable, sourced with HTTPS, exact offer IDs,
     url.hostname.endsWith('visible.com')||url.hostname.endsWith('tello.com')||
     url.hostname.endsWith('mintmobile.com')||url.hostname.endsWith('cricketwireless.com')||
     url.hostname.endsWith('totalwireless.com')||url.hostname.endsWith('h2owireless.com')||
-    url.hostname.endsWith('metrobyt-mobile.com'),id+' unexpected domain');
+    url.hostname.endsWith('metrobyt-mobile.com')||
+    url.hostname.endsWith('boostmobile.com'),id+' unexpected domain');
    assert.ok(source.supports.length>20);
   }
   assert.equal(record.kind==='phone'?record.publishedDevicePrice:record.publishedMonthly,offer.price);
@@ -111,15 +113,17 @@ test('published source matches do not create human verification records',()=>{
  assert.equal(signed.status,'unverified');
  assert.equal(researchStatus(offer,research.records[offer.id],{today:date}).state,'published_match');
 });
-test('static public source audit prints 20 research cards, 58 unresearched offers and noncheckout warnings',()=>{
+test('static public source audit prints 24 research cards and 54 unresearched offers',()=>{
  const html=renderResearchPage({catalog,ledger,research,today:date});
- assert.equal((html.match(/class="guide research-article"/g)||[]).length,20);
+ assert.equal((html.match(/class="guide research-article"/g)||[]).length,24);
  assert.match(html,/What our official sources actually confirm/);
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
  assert.match(html,/Not yet confirmed at checkout/);
  assert.match(html,/full-terms sign-offs/);
- assert.match(html,/58/);
+ assert.match(html,/54/);
+ assert.match(html,/FULL RETAIL handset payment required; financing ineligible/);
+ assert.match(html,/\$20\.00\/mo conditional service credits for 24 months NOT deducted/);
  assert.match(html,/Official conditional DEVICE HEADLINE \(not checkout\)/);
  assert.match(html,/\$100\.00 conditional later reward NOT deducted/);
  assert.doesNotMatch(html,/100% verified|Guaranteed savings|affiliate commission available/);
@@ -189,6 +193,40 @@ test('published handset conditions do not certify checkout and changed terms blo
  assert.throws(()=>simulateSwitch({catalog:{...catalog,phones:catalog.phones.map(p=>p.id===old.id?wrong:p)},
   type:'phone',id:old.id,researchEvidence:research,
   scenario:{lines:1,currentMonthly:80,canPort:true,today:date,horizon:12}}),/official published-source research conflicts/i);
+});
+test('Visible retail-only $480 bill credit is noncash and materially checked against official publication',()=>{
+ const offer=catalog.phones.find(x=>x.id==='visible-18pro');
+ const record=research.records['visible-18pro'];
+ assert.equal(offer.fullRetailRequired,true);
+ assert.equal(record.publishedFullRetailRequired,true);
+ assert.equal(record.publishedCreditMonthly,20);
+ assert.equal(record.publishedCreditMonths,24);
+ assert.equal(researchStatus(offer,record,{today:date}).state,'published_match');
+ const report=simulateSwitch({catalog,type:'phone',id:offer.id,researchEvidence:research,
+  scenario:{lines:1,currentMonthly:80,canPort:false,today:date,horizon:12}});
+ assert.equal(report.chosen.upfrontDue,1244);
+ assert.equal(report.results[12].newTotal,1739);
+ assert.equal(report.results[24].newTotal,2279);
+ assert.ok(report.warnings.some(x=>x.includes('conditional device headline')));
+ assert.equal(report.confidence,'indicative_not_fully_verified');
+ for(const changed of [{credit:15},{creditMonths:12},{fullRetailRequired:false}]){
+  const wrong={...offer,...changed};
+  assert.equal(researchStatus(wrong,record,{today:date}).state,'conflict');
+  assert.throws(()=>simulateSwitch({catalog:{...catalog,phones:catalog.phones.map(x=>x.id===offer.id?wrong:x)},
+    type:'phone',id:offer.id,researchEvidence:research,
+    scenario:{lines:1,currentMonthly:80,today:date,horizon:12}}),/official published-source research conflicts/i);
+ }
+});
+test('Boost razr prepaid service is documented without promoting an online headline to a checkout sign-off',()=>{
+ const offer=catalog.phones.find(x=>x.id==='boost-razr');
+ const record=research.records[offer.id];
+ assert.equal(record.publishedPrepayMonths,2);
+ assert.equal(researchStatus(offer,record,{today:date}).state,'published_match');
+ assert.equal(researchStatus({...offer,prepay:1},record,{today:date}).state,'conflict');
+ const report=simulateSwitch({catalog,type:'phone',id:offer.id,researchEvidence:research,
+  scenario:{lines:1,currentMonthly:100,canPort:true,today:date,horizon:12}});
+ assert.equal(report.chosen.upfrontDue,149.99);
+ assert.equal(report.confidence,'indicative_not_fully_verified');
 });
 test('unrelated phone offers remain not researched; official source research does not sneak into signed ledger',()=>{
  assert.equal(Object.keys(ledger.offers).length,0);

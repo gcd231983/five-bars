@@ -100,6 +100,32 @@ test('conditional future rewards never lower guaranteed phone cashflow and diffe
   assert.equal(prepaid.due,180);
   assert.equal(prepaid.year,720);
 });
+test('unquoted financed-device promotions never return zero checkout or twelve-month cash',()=>{
+ for(const offer of [
+  {id:'v',carrier:'Verizon',phone:'Premium',net:'vzw',price:0,planPrice:80,postpaid:true},
+  {id:'a',carrier:'AT&T',phone:'Upgrade',net:'att',price:0,planPrice:null,postpaid:true},
+  {id:'t',carrier:'T-Mobile',phone:'Trade',net:'tmo',price:199.99,planPrice:105,postpaid:true}
+ ]){
+  const c=phoneCost(offer);
+  assert.equal(c.due,null);
+  assert.equal(c.year,null);
+  assert.equal(c.commitment,null);
+  assert.equal(c.netDevice,null);
+  assert.equal(c.financingUncertain,true);
+ }
+ const retail={id:'full',carrier:'Visible',phone:'iPhone 18 Pro',net:'vzw',
+  price:1199,planPrice:45,credit:20,creditMonths:24,fullRetailRequired:true};
+ assert.equal(phoneCost(retail).due,1244);
+ assert.equal(phoneCost(retail).year,1739);
+ const reviews={scope:'full_terms',signature:offerSignature(retail),verifiedAt:'2026-11-02',evidenceUrl:'https://visible.com/m/deals'};
+ assert.equal(verificationState(retail,reviews,'2026-11-02').status,'verified');
+ assert.equal(verificationState({...retail,fullRetailRequired:false},reviews,'2026-11-02').status,'changed');
+ const mixed={plans:[],phones:[retail,{id:'financed',carrier:'AT&T',phone:'Trade',net:'att',price:0,planPrice:80,postpaid:true}]};
+ const found=rankMatches(mixed,{lines:1},'2026-11-02');
+ assert.equal(found.phones[0].id,'full');
+ assert.equal(found.phones[1].cost.financingUncertain,true);
+ assert.equal(found.phones[1].year,null);
+});
 test('guided matching respects network, budget, port-in and needs',()=>{
   const r=rankMatches(sample,{lines:1,network:'att',budget:30,cannotPort:true,priority:true,hotspot:true},'2026-11-01');
   assert.deepEqual(r.plans.map(x=>x.id),['a']);

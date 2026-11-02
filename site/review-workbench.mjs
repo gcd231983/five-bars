@@ -111,6 +111,8 @@ function display(){
         (official.publishedFirstMonthPlanPrice!==undefined?'; '+usd(official.publishedFirstMonthPlanPrice)+' initial service bill':'')+
         (official.publishedPrepayMonths?'; '+official.publishedPrepayMonths+' prepaid months':'')+
         (official.publishedConditionalRebate!==undefined?'; '+usd(official.publishedConditionalRebate)+' conditional reward not deducted':'')+
+        (official.publishedCreditMonthly!==undefined?'; '+usd(official.publishedCreditMonthly)+'/mo future service credits for '+official.publishedCreditMonths+' months excluded from base totals':'')+
+        (official.publishedFullRetailRequired?'; FULL RETAIL handset payment required (financing ineligible)':'')+
         '. No customer eligibility or full-terms sign-off.'));
     }else{
       const basis=official.billingMonths===12&&Number.isFinite(official.billingUpfront)?

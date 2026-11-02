@@ -120,3 +120,11 @@ The Total Wireless MAX 5G BYO plan now models a $30 first bill and $20/month aft
 ## Five Bars 3.3 — researched conditional device headlines
 
 Official-publication source coverage now includes 15 wireless plan rates and five additional conditional device offers, for 20/78 recorded public-source findings (58 without first-level research). Documented handset rates, first bills, required prepaid service, number-transfer conditions and delayed rewards are audited separately. Switch & Save now pauses when a dated device-source finding conflicts with current catalog payment fields. These checks remain limited to conditional public advertisements. Human checkout/full-terms reviews are still 0/78, and no commercial partner approval or guaranteed savings are asserted.
+
+
+## Five Bars 3.4 — financing quote holds and stronger source coverage (November 2, 2026)
+
+- Three postpaid phone promotion records (T-Mobile, Verizon, AT&T) lack the device's gross retail balance/installment agreement. Their $0 or discounted *headline* is no longer turned into a bogus upfront or 12-, 24- or 36-month savings estimate in the legacy list, guided finder, comparison or Switch & Save.
+- The Visible iPhone 18 Pro program is annotated **full retail purchase required**, with $20 monthly conditional service credits for up to 24 months; those future credits remain outside guaranteed cost and savings totals. Material credit and payment-method conditions invalidate a matching published source record if edited.
+- Dated public source research includes three additional Boost online device headlines and the Visible retail-only offer: 24 of 78 research records (15 plans, nine devices). 54 still lack first-level research; all 78 still lack human checkout/full-term signatures.
+- Buyer-protection goal: require actual device retail price, installment term, down payment, plan requirement, credit schedule, trade-in eligibility and early-exit payoff before offering a numerical model on financed postpaid deals. No invented savings, affiliate proof or automatic promotion verification.
