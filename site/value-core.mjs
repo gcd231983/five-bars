@@ -114,7 +114,9 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
     .filter(item=> !hasBudget || item.cost.regularMonthTotal <= budget)
     .sort(trustworthySort);
   const phones = (catalog.phones || [])
-    .filter(d => networkOK(d.net,network) && !pastEnd(d.ends,today) && !(cannotPort && d.port))
+    .filter(d => networkOK(d.net,network) &&
+      (!preferences.provider || preferences.provider==='any' || d.carrier===preferences.provider) &&
+      !pastEnd(d.ends,today) && !(cannotPort && d.port))
     .map(d => {
       const cost = phoneCost(d);
       return cost && {type:'phone',id:d.id,offer:d,cost,year:cost.year,
