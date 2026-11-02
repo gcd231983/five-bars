@@ -23,7 +23,7 @@ const catalog={
    url:'https://example.org/missing'},
  ]
 };
-const scenario={currentMonthly:50,lines:1,horizon:12,today:'2026-11-02',payoff:0,switchFees:0,extraMonthly:0};
+const scenario={currentMonthly:50,lines:1,horizon:12,today:'2026-11-02',payoff:0,switchFees:0,extraMonthly:0,canPort:true,newCustomer:false};
 function simulate(type,id,opts={}) {
  const {scenario:sc,...rest}=opts;
  return simulateSwitch({catalog,type,id,scenario:{...scenario,...sc},...rest});
@@ -41,8 +41,25 @@ test('monthly promotion first 3 months then regular service; accurate 12/24/36',
  assert.equal(r.confidence,'indicative_not_fully_verified');
  assert.ok(r.warnings.some(s=>s.includes('NOT received')));
 });
+test('new-customer discounts require explicit eligibility, otherwise standard rate applies',()=>{
+ const c={plans:[{id:'new-rate',carrier:'New Co',plan:'Standard plan',price:35,
+   promo:{price:12,months:3,req:'new'},url:'https://example.org/new'}],phones:[]};
+ const base={...scenario,newCustomer:false};
+ const noneligible=simulateSwitch({catalog:c,type:'plan',id:'new-rate',scenario:base});
+ assert.equal(noneligible.results[12].serviceTotal,420);
+ assert.ok(noneligible.warnings.some(x=>x.includes('New-customer introductory pricing excluded')));
+ const eligible=simulateSwitch({catalog:c,type:'plan',id:'new-rate',scenario:{...base,newCustomer:true}});
+ assert.equal(eligible.results[12].serviceTotal,351);
+});
+test('number-transfer promotions default to full regular price without an explicit confirmed port',()=>{
+ const noConfirm=simulate('plan','monthly',{scenario:{canPort:false}});
+ assert.equal(noConfirm.results[12].serviceTotal,240);
+ const qualified=simulate('plan','monthly',{scenario:{canPort:true}});
+ assert.equal(qualified.results[12].serviceTotal,210);
+ assert.throws(()=>simulate('phone','prepay',{scenario:{canPort:false}}),/confirmed eligible number transfer/);
+});
 test('cannot port excludes port-only promotional price but keeps the full regular rate',()=>{
- const r=simulate('plan','monthly',{scenario:{cannotPort:true}});
+ const r=simulate('plan','monthly',{scenario:{cannotPort:true,canPort:false}});
  assert.equal(r.results[12].newTotal,240);
  assert.equal(r.results[12].upfrontDue,20);
  assert.match(r.warnings.join(' '),/Port-in intro discount excluded/);
@@ -68,7 +85,7 @@ test('device offer preserves qualifying required plan and true prepaid cash timi
  assert.equal(r.results[12].serviceTotal,480);
  assert.equal(r.results[12].savings,260);
  assert.ok(r.warnings.some(s=>s.includes('rebates')));
- assert.throws(()=>simulate('phone','prepay',{scenario:{cannotPort:true}}),/requires number transfer/);
+ assert.throws(()=>simulate('phone','prepay',{scenario:{cannotPort:true,canPort:false}}),/confirmed eligible number transfer/);
  assert.throws(()=>simulate('phone','prepay',{scenario:{lines:2}}),/per device/);
 });
 test('service bundle pays one-time upfront and renews only after covered months',()=>{
@@ -119,7 +136,7 @@ test('share URLs exclude financial inputs by default, are scoped to known catalo
  assert.equal(link.includes('payoff='),false);
  const restored=parseSwitchShare('?'+link,catalog);
  assert.deepEqual(restored,{type:'plan',id:'monthly',scenario:{
-  lines:1,horizon:12,cannotPort:false},hasFinancials:false});
+  lines:1,horizon:12,cannotPort:false,canPort:true,newCustomer:false},hasFinancials:false});
  const optin=switchShareParams('plan','monthly',scenario,{includeFinancials:true}).toString();
  assert.match(optin,/bill=50/);
  assert.equal(parseSwitchShare('?'+optin,catalog).scenario.currentMonthly,50);
