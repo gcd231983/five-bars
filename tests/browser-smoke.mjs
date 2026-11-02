@@ -72,6 +72,9 @@ try {
       status:200,contentType:'application/json',body:JSON.stringify(history)}));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
+    await page.waitForFunction(()=>
+      document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false,
+      {timeout:15000});
     await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
     await page.locator('#t-finder').click();
     await page.locator('#t-finder').focus();
@@ -84,7 +87,10 @@ try {
     await page.locator('#fb-budget').fill('80');
     await page.locator('#fb-finder-form button[type="submit"]').click();
     const options=page.locator('#fb-finder-results .fb-result');
-    assert.ok(await options.count()>0,'Finder should show options on '+view);
+    const optionCount=await options.count();
+    assert.ok(optionCount>0,'Finder should show options on '+view+
+      '. UI says: '+(await page.locator('#fb-finder-results').innerText())+
+      '. JavaScript errors: '+errors.join('; '));
     assert.match(await page.locator('#fb-finder-results').innerText(),/estimated/i);
     const width=await page.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(width<=viewport.width+2,'Finder causes unwanted document overflow on '+view+': '+width);
