@@ -85,7 +85,9 @@ export function checkWatchlist(data,{catalog,phoneEvidence={},mvnoEvidence={},
     // introductory, auto-pay, family pricing or final checkout price.
     // Phone target = sticker device price, excluding required plan, rebates and fees.
     if(watch.target===null)return;
-    if(!fresh || disputed(offer,kind,evidence))return;
+    if(!fresh || disputed(offer,kind,evidence) || status?.offers?.[offer.id]?.reviewRequired===true)return;
+    if(kind==='plan'&&offer.billingMonths===12 &&
+      !(Number.isFinite(offer.billingUpfront)&&offer.billingUpfront>0))return;
     if(kind==='phone'&&pastEnd(offer.ends,day))return;
     const price=Number(offer.price);
     if(!Number.isFinite(price)||price<0||price>watch.target)return;
