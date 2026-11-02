@@ -46,6 +46,8 @@ export function verificationState(offer, record, today = localDay()) {
 }
 export function planCost(plan, count = 1, options = {}) {
   const lines = Math.max(1,Math.min(5,Math.trunc(Number(count)) || 1));
+  // Direct callers cannot fabricate a family quote for a one-line-only offer.
+  if(plan.maxLines && lines>plan.maxLines)return null;
   const today = options.today || localDay();
   // Discounted catalog headlines are conditional, not the default price.
   const discountOffered=Number.isFinite(plan.undiscountedPrice)&&!!plan.discountCondition;
