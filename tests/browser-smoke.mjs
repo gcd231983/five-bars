@@ -41,6 +41,11 @@ try {
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
     await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
     await page.locator('#t-finder').click();
+    await page.locator('#t-finder').focus();
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('#p-plans').isVisible(),true,'Arrow key activates next tab');
+    await page.keyboard.press('Home');
+    assert.equal(await page.locator('#p-finder').isVisible(),true,'Home returns to first tab');
     await page.locator('#fb-net').selectOption('att');
     await page.locator('#fb-lines').selectOption('2');
     await page.locator('#fb-budget').fill('80');
