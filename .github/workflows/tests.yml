@@ -23,6 +23,8 @@ jobs:
       - run: node --check scripts/price-evidence.mjs
       - run: node --check scripts/mvno-evidence.mjs
       - run: node --check scripts/review-queue.mjs
+      - run: node --check scripts/review-gate.mjs
+      - run: node --check scripts/review-dispatch.mjs
       - run: node --check scripts/alert-engine.mjs
       - run: node --check scripts/issue-alerts.mjs
       - run: node --check scripts/notify-issues.mjs

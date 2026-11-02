@@ -49,3 +49,17 @@ Status on November 2, 2026: PRE-COMMERCIAL-LAUNCH. This is a checklist, not a st
 ## Do not overstate
 
 This project has not demonstrated a registered legal business, partner relationships, full independent verification of all listings, guaranteed customer savings, or advertising compliance certification. These require real-world evidence and/or owner decisions. The site can be a useful consumer beta without claiming those milestones.
+
+## Five Bars 2.8 — manually signed offer verification
+
+The automated price checker cannot independently certify all carrier checkout conditions. The new owner-only GitHub Actions workflow makes it easier to record real human reviews without opening a JSON editor.
+
+To use: open the Five Bars GitHub repository, select Actions, choose Five Bars - human offer terms sign-off, then Run workflow on main.
+
+- Verification: select operation verify, enter the exact ID from site/data/deals.json, an official carrier HTTPS source URL, and the exact attestation I_HAVE_PERSONALLY_CHECKED_ALL_OFFER_TERMS. Use this ONLY after personally checking the rate, taxes, fees, eligibility, prepayment, number transfer, rebates, financing and unlock terms.
+- Invalidation: select operation invalidate, enter the offer ID and the exact attestation I_CONFIRM_THIS_REVIEW_MUST_BE_INVALIDATED. No evidence URL is needed.
+- The workflow checks inputs and official carrier domain, runs tests, commits the signed review ledger and records the GitHub initiator in the commit history. That commit triggers normal site publication.
+- Full-terms verification becomes stale after 14 days and is invalidated by material price/term changes including annual upfront billing.
+- A reachable page or matching promotional headline NEVER establishes full-terms verification. The workflow does not browse a carrier page or perform the human review for you. Do not enter private customer information in GitHub Actions.
+
+See BUSINESS_READINESS.md for remaining business launch and advertising conditions.

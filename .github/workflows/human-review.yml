@@ -1,0 +1,71 @@
+name: Five Bars - human offer terms sign-off
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 'Verify reviewed offer or invalidate previous review'
+        required: true
+        type: choice
+        options:
+          - verify
+          - invalidate
+      offer_id:
+        description: 'Exact ID in site/data/deals.json (for example: usm-starter)'
+        required: true
+        type: string
+      evidence_url:
+        description: 'Official carrier URL for offer terms (required for verify)'
+        required: false
+        type: string
+      attestation:
+        description: 'Verify: I_HAVE_PERSONALLY_CHECKED_ALL_OFFER_TERMS; Invalidate: I_CONFIRM_THIS_REVIEW_MUST_BE_INVALIDATED'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: five-bars
+  cancel-in-progress: false
+
+jobs:
+  signoff:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run deterministic regression tests
+        run: node --test tests/*.test.mjs
+      - name: Validate human review attestation and update ledger
+        env:
+          REVIEW_OPERATION: ${{ inputs.operation }}
+          REVIEW_ID: ${{ inputs.offer_id }}
+          REVIEW_URL: ${{ inputs.evidence_url }}
+          REVIEW_ATTESTATION: ${{ inputs.attestation }}
+        run: node scripts/review-dispatch.mjs
+      - name: Audit verification signatures and catalog integrity
+        run: |
+          node scripts/review-offer.mjs audit
+          node scripts/deals.mjs check
+      - name: Commit human-signed verification record
+        env:
+          REVIEW_OPERATION: ${{ inputs.operation }}
+          REVIEW_ID: ${{ inputs.offer_id }}
+        run: |
+          git config user.name 'five-bars-human-review'
+          git config user.email 'five-bars-human-review@users.noreply.github.com'
+          git add site/data/verifications.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Human-reviewed terms: $REVIEW_OPERATION $REVIEW_ID (requested by $GITHUB_ACTOR)"
+            git push origin HEAD:main
+          else
+            echo "Review ledger unchanged; nothing to commit."
+          fi
