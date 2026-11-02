@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "generatedAt": null,
+  "source": "https://www.boostmobile.com/deals",
+  "scope": "Exact advertised device price, plan and porting headline only, not full offer terms.",
+  "method": "Awaiting first strict scan",
+  "summary": {
+    "offersChecked": 0,
+    "headlineMatches": 0,
+    "priceMismatches": 0,
+    "missingOrAmbiguous": 0,
+    "sourceUnavailable": 0,
+    "observationsRecorded": 0,
+    "needReview": 0
+  },
+  "offers": {},
+  "alerts": []
+}
