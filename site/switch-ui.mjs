@@ -21,7 +21,8 @@ const pageParts=[
 '<label>Current phone payoff ($)<input name="payoff" type="number" min="0" max="100000" step=".01" value="0" required></label>',
 '<label>Other one-time switching expenses ($)<input name="switchFees" type="number" min="0" max="100000" step=".01" value="0" required></label>',
 '<label>Additional estimated monthly fees ($)<input name="extraMonthly" type="number" min="0" max="1000" step=".01" value="0" required></label>',
-'</div><label class="fb-switch-check"><input type="checkbox" name="cannotPort" id="fb-switch-noport"> I cannot transfer my existing number</label>',
+'</div><label class="fb-switch-check"><input type="checkbox" name="canPort" id="fb-switch-canport"> I confirm I can transfer an eligible number to the new carrier</label>',
+'<label class="fb-switch-check"><input type="checkbox" name="newCustomer" id="fb-switch-newcustomer"> I am eligible for this carrier’s new-customer offer</label>',
 '<p class="fb-subtle">Conservative model: conditional credits, rebates, and hypothetical trade-in values are NOT counted as savings.</p>',
 '<button type="submit" class="btn" id="fb-switch-submit" disabled>Loading deals…</button></form>',
 '<p id="fb-switch-message" role="status" aria-live="polite"></p>',
@@ -163,7 +164,7 @@ form.addEventListener('submit',event=>{
         lines:Number(f.get('lines')||1),horizon:Number(f.get('horizon')||12),
         currentMonthly:f.get('currentMonthly'),payoff:f.get('payoff'),
         switchFees:f.get('switchFees'),extraMonthly:f.get('extraMonthly'),
-        cannotPort:f.has('cannotPort')
+        cannotPort:!f.has('canPort'),canPort:f.has('canPort'),newCustomer:f.has('newCustomer')
       },phoneEvidence,mvnoEvidence,status,verifications
     });
     render(report);notice('Estimated locally. Please review all assumptions and verify checkout terms with the carrier.');
@@ -184,11 +185,15 @@ function updateData(){
       pending={type:share.type,id:share.id};choose('type').value=share.type;
       choose('lines').value=String(share.scenario.lines);
       choose('horizon').value=String(share.scenario.horizon);
-      choose('noport').checked=share.scenario.cannotPort;
+      choose('canport').checked=share.scenario.canPort;
+      choose('newcustomer').checked=share.scenario.newCustomer;
       if(share.hasFinancials)for(const [key,field] of [
-        ['currentMonthly','current'],['payoff','payoff'],
-        ['switchFees','fees'],['extraMonthly','extra']
-      ])if(Number.isFinite(share.scenario[key]))form.elements[field].value=share.scenario[key];
+        ['currentMonthly','fb-switch-current'],['payoff','payoff'],
+        ['switchFees','switchFees'],['extraMonthly','extraMonthly']
+      ]){
+        const input=form.elements.namedItem(field)||document.getElementById(field);
+        if(input&&Number.isFinite(share.scenario[key]))input.value=share.scenario[key];
+      }
       window.showTab?.('switch');
     }else if(window.location.hash==='#switch-save')window.showTab?.('switch');
   }
