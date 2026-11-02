@@ -69,8 +69,7 @@ function refreshButtons(){
       if(!foot)continue;
       let b=foot.querySelector('.fb-watch-toggle');
       if(!b){
-        b=button('Watch','', 'fb-compare-btn fb-watch-toggle');
-        b.addEventListener('click',()=>watchOffer(kind,offer.id));
+        b=button('Watch',()=>watchOffer(kind,offer.id),'fb-compare-btn fb-watch-toggle');
         foot.append(b);
       }
       const watching=selected.has(kind+':'+offer.id);
