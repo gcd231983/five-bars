@@ -328,14 +328,14 @@ function renderCompare() {
     'Device promotions are quoted per handset, NOT for the full household. Credits, delayed rebates, taxes and financing terms may alter estimated totals.'));
 }
 /* ---------- price evidence and observation history ---------- */
-function priceSparkline(rows) {
+function priceSparkline(rows,kind='advertised device') {
   const values=rows.filter(r=>Number.isFinite(r.price)).map(r=>r.price);
   if (!values.length)return null;
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.setAttribute('viewBox','0 0 300 72');
   svg.setAttribute('height','72');
   svg.setAttribute('role','img');
-  svg.setAttribute('aria-label','Official advertised device price history, '+values.length+' observation days. Values are NOT verified checkout amounts.');
+  svg.setAttribute('aria-label','Official '+kind+' rate history, '+values.length+' observation days. Values are NOT verified checkout amounts.');
   svg.classList.add('fb-watch-chart');
   const lo=Math.min(...values),hi=Math.max(...values);
   const xy=values.map((v,i)=>{
@@ -369,15 +369,81 @@ function reportOfferLink(id,offer){
   return linkTo('https://github.com/gcd231983/five-bars/issues/new?title='+
     encodeURIComponent(title)+'&body='+encodeURIComponent(body),'Report incorrect price (GitHub login)');
 }
+
+function appendMvnoWatch(root){
+  const section=element('section',null,'fb-mvno-watch');
+  const heading=element('h3','MVNO service-plan rate monitoring');
+  heading.id='fb-mvno-watch-title';
+  section.append(heading);
+  section.append(note('Strict partial monitoring currently covers selected Helium, MobileX, and Good2Go plans. Tello, H2O Wireless, and Red Pocket are NOT yet automatically price-validated; their official pages block or limit the automated checker. Carrier prices remain subject to taxes, activation, renewal and eligibility.'));
+  const checked=mvnoEvidence?.generatedAt;
+  if(!checked){
+    section.append(note('The first automatic MVNO price check has not published results yet. Check carrier websites before purchasing.'));
+    root.append(section);
+    return;
+  }
+  const age=Date.now()-Date.parse(checked);
+  const fresh=Number.isFinite(age)&&age>=0&&age<=EVIDENCE_FRESH_MS;
+  const stats=mvnoEvidence.summary||{};
+  section.append(element('p',
+    'MVNO official-page scan: '+new Date(checked).toLocaleString('en-US')+'. '+
+    (fresh?'Scan is recent.':'CAUTION: scan results are older than 48 hours.')+
+    ' '+(stats.headlineMatches||0)+' exact rate matches, '+(stats.priceMismatches||0)+
+    ' price conflicts (including unresolved), '+(stats.sourceUnavailable||0)+
+    ' source-unavailable items, '+(stats.needReview||0)+' review alerts.',
+    'fb-watch-meta'));
+  const grid=element('div',null,'fb-watch-grid');
+  const entries=Object.entries(mvnoEvidence.offers||{}).sort(([a],[b])=>a.localeCompare(b));
+  for(const [id,rec] of entries){
+    const original=catalog.plans.find(p=>p.id===id);
+    if(!original)continue;
+    const card=element('article',null,'fb-watch-card fb-mvno-card');
+    card.setAttribute('data-offer-id',id);
+    card.append(element('h3',original.carrier+' — '+original.plan));
+    card.append(statusNode(original));
+    card.append(element('p','Catalog effective rate: '+usd(original.price)+'/mo'+
+      (original.billingMonths===12?' · '+usd(original.billingUpfront)+' paid upfront for 12 months':'')));
+    if(Number.isFinite(rec.observedPrice)){
+      card.append(element('p','Official headline observation: '+usd(rec.observedPrice)+'/mo'+
+        (rec.billingMonths===12&&Number.isFinite(rec.observedUpfront) ?
+        ' · '+usd(rec.observedUpfront)+' annual payment':'')+'.','fb-watch-price'));
+    } else card.append(note('No trustworthy rate-and-billing headline found in this scan.'));
+    if(officialHeadlineUnderReview(original))
+      card.append(element('p','Do not rely on the catalog cost; this official price discrepancy remains unresolved.','fb-watch-warning'));
+    if(rec.note)card.append(note(rec.note));
+    const history=(mvnoHistory?.offers?.[id]||[]).filter(h=>h&&Number.isFinite(h.price))
+      .sort((a,b)=>a.date.localeCompare(b.date));
+    if(history.length){
+      const first=history[0],last=history[history.length-1];
+      card.append(note('Observed '+history.length+' day(s), '+first.date+' to '+last.date+
+        '. Latest monthly equivalent: '+usd(last.price)+
+        (Number.isFinite(last.upfront)?' ('+usd(last.upfront)+' upfront for one year)':'' )+'.'));
+      const chart=priceSparkline(history,'plan headline');
+      if(chart)card.append(chart);
+    }else card.append(note('No trustworthy price observations have been saved yet.'));
+    const actions=element('div',null,'fb-card-actions');
+    actions.append(linkTo(rec.sourceUrl||original.url,'Official plan source'));
+    actions.append(reportOfferLink(id,{phone:original.plan,url:original.url}));
+    card.append(actions);
+    grid.append(card);
+  }
+  if(grid.childElementCount)section.append(grid);
+  else section.append(note('No MVNO plan evidence is available yet.'));
+  section.append(element('p','A matched headline only checks a specific advertised plan price and billing period. It does NOT verify tax, autopay, device compatibility, hotspot, coverage, throttling, or eventual checkout totals. Conflicting offers are kept visible with costs suppressed until a trustworthy new official match.','fb-watch-detail'));
+  root.append(section);
+}
+
 function renderPriceWatch(){
   const root=document.querySelector('#fb-price-watch-root');
   if(!root)return;
   root.replaceChildren();
   const checked=priceEvidence?.generatedAt;
   if(!checked){
-    root.append(note('The first strict official-price scan has not published any observations yet. Listed prices still require carrier confirmation.'));
+    root.append(note('The first strict Boost device-price scan has not published any observations yet. Listed prices still require carrier confirmation.'));
+    appendMvnoWatch(root);
     return;
   }
+  root.append(element('h3','Boost Mobile device promotions'));
   const age=Date.now()-Date.parse(checked);
   const current=Number.isFinite(age)&&age>=0&&age<=EVIDENCE_FRESH_MS;
   root.append(element('p',
@@ -430,16 +496,19 @@ function renderPriceWatch(){
   if(group.childElementCount)root.append(group);
   else root.append(note('There are no scoped price observations in the latest report.'));
   root.append(element('p','History tracks selected device and required-plan headline prices from the official source. It is not a checkout receipt, price guarantee, or an assertion that every condition still applies. Prices on this website will not change automatically from these observations.','fb-watch-detail'));
+  appendMvnoWatch(root);
 }
 
 async function start() {
   renderFinder();
   try {
-    const [c,v,proof,history] = await Promise.all([
+    const [c,v,proof,history,mvnoProof,mvnoRecords] = await Promise.all([
       fetch('data/deals.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}),
       fetch('data/verifications.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
       fetch('data/price-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('data/price-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
+      fetch('data/mvno-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('data/mvno-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
     ]);
     catalog={plans:Array.isArray(c.plans)?c.plans:[],phones:Array.isArray(c.phones)?c.phones:[]};
     const providerSelect=finderRoot.querySelector('#fb-provider');
@@ -453,6 +522,8 @@ async function start() {
     reviews=v?.offers && typeof v.offers==='object'?v.offers:{};
     priceEvidence=proof?.schema===1 && typeof proof.offers==='object'?proof:null;
     priceHistory=history?.schema===1 && typeof history.offers==='object'?history:{offers:{}};
+    mvnoEvidence=mvnoProof?.schema===1 && typeof mvnoProof.offers==='object'?mvnoProof:null;
+    mvnoHistory=mvnoRecords?.schema===1 && typeof mvnoRecords.offers==='object'?mvnoRecords:{offers:{}};
     const submit=finderRoot.querySelector('#fb-finder-form button[type="submit"]');
     if(submit){submit.disabled=false;submit.removeAttribute('aria-busy');submit.textContent='Find matching options';}
     renderPriceWatch();
