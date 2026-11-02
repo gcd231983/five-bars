@@ -661,6 +661,300 @@
         "Confirm sales taxes, carrier checkout total, unlocking terms and any separate financing selection"
       ],
       "observedOn": "2026-11-02"
+    },
+    "helium-air": {
+      "carrier": "Helium Mobile",
+      "publishedMonthly": 15,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+          "supports": "Official Helium Mobile page documents The Air plan is advertised at $15 per month before additional taxes and fees.; It includes 10GB of data, with up to 5GB hotspot counted against the same allotment; additional data is offered at $5/GB."
+        }
+      ],
+      "supportedFacts": [
+        "The Air plan is advertised at $15 per month before additional taxes and fees.",
+        "It includes 10GB of data, with up to 5GB hotspot counted against the same allotment; additional data is offered at $5/GB."
+      ],
+      "unresolved": [
+        "Confirm phone/eSIM compatibility and coverage with the actual network.",
+        "Check tax/fees, eligibility and exact checkout amount.",
+        "Verify hotspot/data top-up, roaming and renewal conditions."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "helium-infinity": {
+      "carrier": "Helium Mobile",
+      "publishedMonthly": 30,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+          "supports": "Official Helium Mobile page documents The Infinity plan is advertised at $30 monthly plus taxes and fees.; Unlimited-label service includes a 36GB high-speed allotment and possible reduced speed afterward; additional data boosts are available."
+        }
+      ],
+      "supportedFacts": [
+        "The Infinity plan is advertised at $30 monthly plus taxes and fees.",
+        "Unlimited-label service includes a 36GB high-speed allotment and possible reduced speed afterward; additional data boosts are available."
+      ],
+      "unresolved": [
+        "Check actual IMEI/eSIM and coverage.",
+        "Confirm hotspot limits and how post-36GB speed management works.",
+        "Confirm taxes, activation, roaming and any extra data fees."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "h2o-annual10": {
+      "carrier": "H2O Wireless",
+      "publishedMonthly": 16,
+      "term": "twelve_month_prepaid",
+      "sources": [
+        {
+          "url": "https://www.h2owireless.com/plan/monthly",
+          "supports": "Official H2O Wireless page documents Carrier 10GB 12-month plan is $16 per-month equivalent only when $192 is paid in advance.; After 10GB high-speed data speeds reduce, and the selected plan includes 2GB hotspot."
+        }
+      ],
+      "supportedFacts": [
+        "Carrier 10GB 12-month plan is $16 per-month equivalent only when $192 is paid in advance.",
+        "After 10GB high-speed data speeds reduce, and the selected plan includes 2GB hotspot."
+      ],
+      "unresolved": [
+        "Confirm renewal price, end of prepaid service and eligibility.",
+        "Check taxes, carrier regulatory fees and final checkout charge.",
+        "Confirm SIM/eSIM network/device support, hotspot and international rates."
+      ],
+      "observedOn": "2026-11-02",
+      "billingMonths": 12,
+      "billingUpfront": 192
+    },
+    "h2o-annual30": {
+      "carrier": "H2O Wireless",
+      "publishedMonthly": 24,
+      "term": "twelve_month_prepaid",
+      "sources": [
+        {
+          "url": "https://www.h2owireless.com/plan/monthly",
+          "supports": "Official H2O Wireless page documents Carrier's 30GB high-speed unlimited 12-month selection is $24 monthly equivalent with $288 paid upfront.; After 30GB high-speed data speed is reduced; 5GB hotspot is included."
+        }
+      ],
+      "supportedFacts": [
+        "Carrier's 30GB high-speed unlimited 12-month selection is $24 monthly equivalent with $288 paid upfront.",
+        "After 30GB high-speed data speed is reduced; 5GB hotspot is included."
+      ],
+      "unresolved": [
+        "Confirm 12-month term and subsequent renewal conditions.",
+        "Check taxes, regulatory surcharges and exact purchase price.",
+        "Confirm device network compatibility, roaming and speed management."
+      ],
+      "observedOn": "2026-11-02",
+      "billingMonths": 12,
+      "billingUpfront": 288
+    },
+    "good2go-annual1": {
+      "carrier": "Good2Go Mobile",
+      "publishedMonthly": 5,
+      "term": "twelve_month_prepaid",
+      "sources": [
+        {
+          "url": "https://annualplans.good2gomobile.com/home-page",
+          "supports": "Official Good2Go Mobile page documents Good2Go lists 1GB per month for a single $60 yearly prepaid payment.; The plan includes unlimited talk and text and advertises global calls to many destinations."
+        }
+      ],
+      "supportedFacts": [
+        "Good2Go lists 1GB per month for a single $60 yearly prepaid payment.",
+        "The plan includes unlimited talk and text and advertises global calls to many destinations."
+      ],
+      "unresolved": [
+        "Confirm taxes and any government surcharges at payment.",
+        "Check renewal price and whether auto-renewal is required.",
+        "Confirm which underlying network, SIM/eSIM and handset are supported."
+      ],
+      "observedOn": "2026-11-02",
+      "billingMonths": 12,
+      "billingUpfront": 60
+    },
+    "good2go-annual3": {
+      "carrier": "Good2Go Mobile",
+      "publishedMonthly": 10,
+      "term": "twelve_month_prepaid",
+      "sources": [
+        {
+          "url": "https://annualplans.good2gomobile.com/home-page",
+          "supports": "Official Good2Go Mobile page documents Good2Go lists 3GB monthly high-speed data with a $120 payment for 12 months.; The carrier advertises unlimited talk, text, and international calling to selected destinations."
+        }
+      ],
+      "supportedFacts": [
+        "Good2Go lists 3GB monthly high-speed data with a $120 payment for 12 months.",
+        "The carrier advertises unlimited talk, text, and international calling to selected destinations."
+      ],
+      "unresolved": [
+        "Confirm tax/fees and total checkout cash.",
+        "Check actual renewal price and data speed after the monthly allowance.",
+        "Confirm BYO device and network compatibility."
+      ],
+      "observedOn": "2026-11-02",
+      "billingMonths": 12,
+      "billingUpfront": 120
+    },
+    "good2go-annual5": {
+      "carrier": "Good2Go Mobile",
+      "publishedMonthly": 20,
+      "term": "twelve_month_prepaid",
+      "sources": [
+        {
+          "url": "https://annualplans.good2gomobile.com/home-page",
+          "supports": "Official Good2Go Mobile page documents Good2Go lists 5GB monthly high-speed data for a single $240 annual service payment.; The published plan also advertises unlimited talk and text and selected international calling."
+        }
+      ],
+      "supportedFacts": [
+        "Good2Go lists 5GB monthly high-speed data for a single $240 annual service payment.",
+        "The published plan also advertises unlimited talk and text and selected international calling."
+      ],
+      "unresolved": [
+        "Verify exact first checkout payment including taxes.",
+        "Check any renewal-rate increase or annual term change.",
+        "Confirm SIM/eSIM eligibility, network coverage and data-management terms."
+      ],
+      "observedOn": "2026-11-02",
+      "billingMonths": 12,
+      "billingUpfront": 240
+    },
+    "redpocket-essentials": {
+      "carrier": "Red Pocket Mobile",
+      "publishedMonthly": 10,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://my.redpocket.com/plans",
+          "supports": "Official Red Pocket Mobile page documents Red Pocket monthly Essentials is advertised at a $10 standard service rate.; The published plan includes 3GB premium data and unlimited talk and text."
+        }
+      ],
+      "supportedFacts": [
+        "Red Pocket monthly Essentials is advertised at a $10 standard service rate.",
+        "The published plan includes 3GB premium data and unlimited talk and text."
+      ],
+      "unresolved": [
+        "Confirm underlying network choice and phone acceptance.",
+        "Check taxes, activation and any discounted first month conditions.",
+        "Confirm renewal, hotspot and international usage policies."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "redpocket-plus": {
+      "carrier": "Red Pocket Mobile",
+      "publishedMonthly": 20,
+      "term": "monthly_with_optional_new_line_intro",
+      "sources": [
+        {
+          "url": "https://my.redpocket.com/plans",
+          "supports": "Official Red Pocket Mobile page documents Red Pocket Plus regular service costs $20 monthly; eligible new lines may pay $10 the first month.; The monthly offer includes 20GB of premium high-speed data; the new-customer discount is conditional."
+        }
+      ],
+      "supportedFacts": [
+        "Red Pocket Plus regular service costs $20 monthly; eligible new lines may pay $10 the first month.",
+        "The monthly offer includes 20GB of premium high-speed data; the new-customer discount is conditional."
+      ],
+      "unresolved": [
+        "Confirm selected new-line eligibility before applying a $10 first-month discount.",
+        "Verify taxes, activation and $20 renewal timing.",
+        "Confirm chosen network, SIM/eSIM and data-speed/hotspot rules."
+      ],
+      "observedOn": "2026-11-02",
+      "publishedPromoPrice": 10,
+      "publishedPromoMonths": 1,
+      "publishedPromoRequirement": "new"
+    },
+    "redpocket-premium": {
+      "carrier": "Red Pocket Mobile",
+      "publishedMonthly": 30,
+      "term": "monthly_with_optional_new_line_intro",
+      "sources": [
+        {
+          "url": "https://my.redpocket.com/plans",
+          "supports": "Official Red Pocket Mobile page documents Red Pocket Premium has a published $30 regular monthly rate and conditional $15 first month for qualifying new lines.; The published unlimited-labeled plan includes 50GB premium data and 10GB of premium hotspot."
+        }
+      ],
+      "supportedFacts": [
+        "Red Pocket Premium has a published $30 regular monthly rate and conditional $15 first month for qualifying new lines.",
+        "The published unlimited-labeled plan includes 50GB premium data and 10GB of premium hotspot."
+      ],
+      "unresolved": [
+        "Confirm qualifying new line and selected plan/SIM.",
+        "Check taxes, activation and when $30 renewals begin.",
+        "Verify eligible network, phone support and 50GB speed limits."
+      ],
+      "observedOn": "2026-11-02",
+      "publishedPromoPrice": 15,
+      "publishedPromoMonths": 1,
+      "publishedPromoRequirement": "new"
+    },
+    "metro": {
+      "carrier": "Metro by T-Mobile",
+      "publishedMonthly": 25,
+      "term": "single_line_byod_autopay",
+      "sources": [
+        {
+          "url": "https://www.metrobyt-mobile.com/phone-plans",
+          "supports": "Official Metro by T-Mobile page documents The carrier quotes $30 for the first month of the selected single-line bring-your-phone unlimited plan.; The ongoing advertised monthly service is $25 with eligible AutoPay and taxes included."
+        }
+      ],
+      "supportedFacts": [
+        "The carrier quotes $30 for the first month of the selected single-line bring-your-phone unlimited plan.",
+        "The ongoing advertised monthly service is $25 with eligible AutoPay and taxes included."
+      ],
+      "unresolved": [
+        "Confirm new BYOD service eligibility and correct activation channel.",
+        "Check whether AutoPay qualifies and initial checkout including any activation fees.",
+        "Confirm the selected single-line plan and IMEI/eSIM acceptance."
+      ],
+      "observedOn": "2026-11-02",
+      "publishedFirstMonthPrice": 30
+    },
+    "metro-premium": {
+      "carrier": "Metro by T-Mobile",
+      "publishedMonthly": 60,
+      "term": "single_line_premium_autopay",
+      "sources": [
+        {
+          "url": "https://www.metrobyt-mobile.com/phone-plans",
+          "supports": "Official Metro by T-Mobile page documents Metro Premium 5G single-line service is $65 first month, then $60 with eligible AutoPay.; This plan advertises 25GB mobile hotspot, taxes included and additional qualifying benefits."
+        }
+      ],
+      "supportedFacts": [
+        "Metro Premium 5G single-line service is $65 first month, then $60 with eligible AutoPay.",
+        "This plan advertises 25GB mobile hotspot, taxes included and additional qualifying benefits."
+      ],
+      "unresolved": [
+        "Confirm the actual single-line selected plan and AutoPay setup.",
+        "Check any activation cost, taxes and eligibility for premium features.",
+        "Confirm selected device, hotspot, network-priority and multi-line alternatives."
+      ],
+      "observedOn": "2026-11-02",
+      "publishedFirstMonthPrice": 65
+    },
+    "boost": {
+      "carrier": "Boost Mobile",
+      "publishedMonthly": 25,
+      "term": "monthly_with_conditional_new_intro",
+      "sources": [
+        {
+          "url": "https://www.boostmobile.com/plans",
+          "supports": "Official Boost Mobile page documents Boost Unlimited lists $25 per month with AutoPay after any eligible introductory period.; Qualifying new customers can receive a $10 monthly rate for six months, then $25; taxes and fees are additional."
+        }
+      ],
+      "supportedFacts": [
+        "Boost Unlimited lists $25 per month with AutoPay after any eligible introductory period.",
+        "Qualifying new customers can receive a $10 monthly rate for six months, then $25; taxes and fees are additional."
+      ],
+      "unresolved": [
+        "Confirm qualifying new customer and offer channel before assuming the $10 rate.",
+        "Check actual taxes, first payment and AutoPay enrollment.",
+        "Confirm 30GB speed-threshold behavior, hotspot and device compatibility."
+      ],
+      "observedOn": "2026-11-02",
+      "publishedPromoPrice": 10,
+      "publishedPromoMonths": 6,
+      "publishedPromoRequirement": "new"
     }
   }
 }
