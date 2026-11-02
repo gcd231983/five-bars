@@ -416,6 +416,144 @@
         "Confirm handset, underlying network and coverage"
       ],
       "observedOn": "2026-11-02"
+    },
+    "metro-16e": {
+      "kind": "phone",
+      "carrier": "Metro by T-Mobile",
+      "publishedDevicePrice": 99.99,
+      "publishedPlanMonthly": 50,
+      "publishedPortRequired": true,
+      "publishedFirstMonthPlanPrice": 55,
+      "publishedConditionalRebate": 100,
+      "term": "conditional_public_offer_selection_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.metrobyt-mobile.com/deals/apple",
+          "supports": "Official $99.99 handset, $55 first bill, $50 with AutoPay, conditional $100 virtual Mastercard"
+        },
+        {
+          "url": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e",
+          "supports": "Selected iPhone 16e purchase and service options"
+        }
+      ],
+      "supportedFacts": [
+        "Selected online price $99.99 plus qualifying new-line port-in and first service bill",
+        "Published $55 first month and eligible $50 AutoPay service after first bill",
+        "The $100 virtual Mastercard is only available after three paid months and claim form, with no cash access"
+      ],
+      "unresolved": [
+        "Check port eligibility and device stock, service and taxes in actual checkout",
+        "Verify $100 reward eligibility, claim process, time limit and account standing",
+        "Verify device lock terms, identity restrictions and carrier exclusions"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "total-a17": {
+      "kind": "phone",
+      "carrier": "Total Wireless",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 35,
+      "publishedPortRequired": true,
+      "publishedFirstMonthPlanPrice": 40,
+      "term": "conditional_public_offer_selection_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.totalwireless.com/buy/smartphones/samsung-galaxy-a17-5g-prepaid",
+          "supports": "Official Galaxy A17 selector shows a free switch price and Total STARTER $40 first month, $35 with AutoPay afterward"
+        }
+      ],
+      "supportedFacts": [
+        "Selected switching option advertises $0 Galaxy A17 with qualifying new activation",
+        "Total STARTER service requires $40 first month then $35 with eligible AutoPay",
+        "Other on-page purchase and plan combinations have distinct prices"
+      ],
+      "unresolved": [
+        "Check port eligibility, SIM/device compatibility and phone availability",
+        "Verify AutoPay and actual first payment, activation and taxes",
+        "Confirm locking, unlock rules and any plan changes"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "cricket-16e": {
+      "kind": "phone",
+      "carrier": "Cricket",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "publishedPrepayMonths": 3,
+      "term": "conditional_public_offer_selection_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/shop/smartphones/apple-iphone-16e-128gb-black",
+          "supports": "Selected $0 Cricket iPhone 16e option with three prepaid $60 months for a new account port-in"
+        },
+        {
+          "url": "https://www.cricketwireless.com/current-phone-and-plan-deals/all-deals",
+          "supports": "Official Cricket promotion restrictions and plan eligibility"
+        }
+      ],
+      "supportedFacts": [
+        "A selected $0 online iPhone 16e option requires a new-account number transfer",
+        "That offer requires three $60 service months paid in advance, at least $180 service cash initially",
+        "The device page also contains other customer selections with different price and prepay terms"
+      ],
+      "unresolved": [
+        "Confirm exact $0 offer still appears for selected number, customer and channel",
+        "Verify $180 service payment plus taxes, device tax and any extra fees in checkout",
+        "Confirm device unlocking, return and activation restrictions"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "cricket-stylus": {
+      "kind": "phone",
+      "carrier": "Cricket",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "publishedPrepayMonths": 2,
+      "term": "conditional_public_offer_selection_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea",
+          "supports": "Selected online $0 Motorola stylus plus two prepaid $60 service months and port-in"
+        }
+      ],
+      "supportedFacts": [
+        "A selected $0 online moto g stylus 2025 option requires opening an account and bringing a number",
+        "Two $60 service months due at sale imply at least $120 initial service cost",
+        "The device page also offers other selected handset-price options"
+      ],
+      "unresolved": [
+        "Confirm $0 handset eligibility, account type and online channel",
+        "Verify taxes, service first payment, device stock and actual checkout",
+        "Confirm device unlock policy and rate plan restrictions"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "cricket-a17": {
+      "kind": "phone",
+      "carrier": "Cricket",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "term": "conditional_public_offer_selection_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a17-5g-black",
+          "supports": "Official Galaxy A17 new-line transfer promotion at $0 with Supreme Unlimited and first service month due"
+        }
+      ],
+      "supportedFacts": [
+        "Selected $0 Galaxy A17 offer requires a new-line number transfer and Supreme Unlimited service",
+        "Carrier states first service month and applicable tax are due at sale",
+        "Broad catalog titles may differ from the more specific device selection"
+      ],
+      "unresolved": [
+        "Verify customer/new-line transfer eligibility and stock",
+        "Confirm tax, activation and actual checkout amount",
+        "Confirm unlock policy and any switch restrictions"
+      ],
+      "observedOn": "2026-11-02"
     }
   }
 }
