@@ -28,6 +28,11 @@
     <h2>Review priorities and filters</h2>
     <p id="fb-review-summary" role="status">Loading catalog and review queue…</p>
     <div class="fb-work-filters">
+      <label for="fb-review-scope">Review scope
+        <select id="fb-review-scope"><option value="shortlist">12-offer launch review shortlist</option>
+          <option value="all">All catalog offers</option>
+        </select>
+      </label>
       <label for="fb-review-priority">Priority
         <select id="fb-review-priority"><option value="all">All priorities</option>
           <option value="critical">Critical</option><option value="high">High</option>
@@ -49,7 +54,7 @@
         </select>
       </label>
     </div>
-    <p class="fb-review-hint">Official page access restrictions are ordinary review work, not evidence that a price changed. Items marked “critical” require investigation before a sign-off.</p>
+    <p class="fb-review-hint">The initial 12-offer shortlist is a practical batch for early beta review, NOT a ranking, recommendation, or verification. Switch to “All catalog offers” to review all 78. Official page access restrictions are ordinary review work, not evidence that a price changed. Items marked “critical” require investigation before a sign-off.</p>
     <div id="fb-review-results" aria-live="polite"></div>
     <button type="button" id="fb-review-more" hidden>Show more items</button>
     <p id="fb-editor-notice" role="status" aria-live="polite"></p>
