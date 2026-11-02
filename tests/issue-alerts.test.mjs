@@ -89,7 +89,7 @@ test('issue bodies never embed arbitrary HTML or raw carrier markdown input',()=
   description:'**surprise** <img src=x> [click here](https://evil.example)'};
  const body=issueBody(strange);
  assert.doesNotMatch(body,/<script>|<img/);
- assert.match(body,/\\\*\*surprise\\\*\*/);
+ assert.ok(body.includes('\\*\\*surprise\\*\\*'), 'carrier-marketing markdown must be escaped');
  assert.doesNotMatch(body,/https:\/\/evil\.example\)/);
  assert.match(body,/https:\/\/tello.com\/buy\/custom_plans/);
 });
