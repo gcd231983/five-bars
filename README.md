@@ -316,3 +316,18 @@ Each item includes a full-terms worksheet covering rate, promotion, tax, prepaym
 - GitHub Pages deployment still runs on main, without paid AI, a backend, visitor account, affiliate links or tracking pixels.
 
 Commercial readiness still depends on actual dated human full-terms reviews and documented partner agreements (see BUSINESS_READINESS.md). These pages should be used for beta testing and legitimate educational search discovery, not claims of verified promotions.
+
+## Five Bars 3.0 — Dated official-source research and catalog corrections (2026-11-02)
+
+A targeted public-source audit now records **twelve** plan rate baselines from official carrier pages and broadband labels, with real source URLs, observed standard rates, confirmed public facts and unresolved checkout questions. The 78-offer catalog has **66 offers without this first-level research** and **zero** documented independent human full-terms sign-offs. Nothing has been falsely marked verified.
+
+**Public evidence report:** https://gcd231983.github.io/five-bars/source-research.html
+**Research source ledger:** `site/data/research-evidence.json`
+**Generated coverage inventory:** `site/data/research-audit.json`
+**Detailed editorial report:** `OFFICIAL_SOURCE_AUDIT.md`
+
+**Important correctness fixes:** Mint Unlimited's $30 monthly equivalent requires **$360 prepaid annually** at the regular 12-month renewal price; an eligible new-customer $180 introductory annual offer is separate and is NOT assumed. Unverified multi-line annual plans no longer appear as if they were ordinary monthly family payments. US Mobile network-dependent hotspot and streaming caveats, Visible network-specific video/hotspot tiers, Tello's dated promotion restrictions and Cricket's in-store activation/AutoPay details are now described more accurately.
+
+The static evidence report and edited carrier comparison pages refresh with existing no-AI GitHub Actions, but the November 2 observation date remains fixed until new carrier research is actually conducted. The report marks research **aged after 21 days** and flags catalog rates or annual prepayments that diverge from the dated official record. These public source matches are NOT final checkout validation. The editor workbench now shows each researched offer's official sources and outstanding customer-specific questions.
+
+Next: complete real checkout and human full-terms reviews before calling any offer fully verified, and expand the published-source audit beyond the first 12 plans. Do not apply affiliate tracking or claim paid-partner relationships until agreements and disclosures are approved.
