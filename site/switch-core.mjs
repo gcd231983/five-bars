@@ -31,7 +31,7 @@ function buildCashflow(offer,type,scenario,months){
       throw Error('This plan has not been quoted for '+L+' lines. Reduce your line count or choose another offer.');
     const requiresNew=offer.promo?.req==='new'&&!scenario.newCustomer;
     const cost=planCost(requiresNew?{...offer,promo:null}:offer,L,
-      {today:scenario.today,cannotPort:scenario.cannotPort||!scenario.canPort});
+      {today:scenario.today,cannotPort:scenario.cannotPort||!scenario.canPort,newCustomer:scenario.newCustomer});
     if(!cost)throw Error('This plan has no usable published service price.');
     if(cost.annualPrepaid){
       if(!Number.isFinite(offer.billingUpfront)||offer.billingUpfront<=0)

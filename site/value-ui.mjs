@@ -10,7 +10,7 @@ const compareRoot = document.querySelector('#fb-compare-root');
 if (!finderRoot || !compareRoot) throw new Error('Five Bars comparison panels were not found');
 const STORAGE_KEY = 'fivebars-compare-v1';
 const COMPARE_PREFS_KEY = 'fivebars-household-compare-v1';
-let comparePrefs = {lines:1,cannotPort:false,fromFinder:false};
+let comparePrefs = {lines:1,cannotPort:false,newCustomer:false,fromFinder:false};
 let catalog = {plans:[],phones:[]};
 let reviews = {};
 let selected = [];
@@ -150,6 +150,7 @@ function renderFinder() {
       </div>
       <div class="fb-checks">
         <label><input name="cannotPort" type="checkbox"/> I cannot move my existing number</label>
+        <label><input name="newCustomer" type="checkbox"/> I qualify for a new-customer promotional rate</label>
         <label><input name="hotspot" type="checkbox"/> I need hotspot data</label>
         <label><input name="priority" type="checkbox"/> I want priority network data</label>
       </div>
@@ -162,9 +163,9 @@ function renderFinder() {
     const data = new FormData(f);
     const prefs = {
       network:data.get('net'),provider:data.get('provider'),lines:Number(data.get('lines')),budget:data.get('budget'),
-      cannotPort:data.has('cannotPort'),priority:data.has('priority'),hotspot:data.has('hotspot'),
+      cannotPort:data.has('cannotPort'),newCustomer:data.has('newCustomer'),priority:data.has('priority'),hotspot:data.has('hotspot'),
     };
-    comparePrefs={lines:prefs.lines,cannotPort:prefs.cannotPort,fromFinder:true};
+    comparePrefs={lines:prefs.lines,cannotPort:prefs.cannotPort,newCustomer:prefs.newCustomer,fromFinder:true};
     saveCompare();
     renderCompare();
     const recommendationCatalog={
@@ -248,7 +249,7 @@ function fieldValue(type,offer,key) {
     return 'Price under review';
   }
   if(type==='plan') {
-    const c=planCost(offer,comparePrefs.lines,{cannotPort:comparePrefs.cannotPort});
+    const c=planCost(offer,comparePrefs.lines,{cannotPort:comparePrefs.cannotPort,newCustomer:comparePrefs.newCustomer});
     switch(key) {
       case 'network':return offer.net==='multi'?'Choice of networks':offer.net==='att'?'AT&T':offer.net==='vzw'?'Verizon':'T-Mobile';
       case 'monthly':return usd(c?.monthTotal)+' total'+(c?.annualPrepaid?' /mo equivalent (annual upfront)':c?.estimatedFamilyPrice?' (estimate)':'');
@@ -259,6 +260,7 @@ function fieldValue(type,offer,key) {
       case 'priority':return offer.pri===true?'Listed priority':offer.pri===false?'Lower priority or variable':'Not specified';
       case 'taxes':return offer.tax?'Included':'Check carrier';
       case 'eligibility':return c?.promoFamilyUnconfirmed?'Multi-line intro not confirmed; excluded' :
+        c?.promoSuppressedForNotNew?'New-customer promo excluded until eligibility confirmed' :
         c?.promoSuppressedForNoPort?'Port-in promo excluded as requested' :
         offer.promo?.req==='port'?'Intro rate requires port-in':'Check current promo terms';
       default:return '—';
@@ -674,7 +676,8 @@ async function start() {
     try {
       const stored=JSON.parse(localStorage.getItem(COMPARE_PREFS_KEY)||'null');
       if(stored && Number.isInteger(stored.lines) && stored.lines>=1 && stored.lines<=5) {
-        comparePrefs={lines:stored.lines,cannotPort:stored.cannotPort===true,fromFinder:stored.fromFinder===true};
+        comparePrefs={lines:stored.lines,cannotPort:stored.cannotPort===true,
+          newCustomer:stored.newCustomer===true,fromFinder:stored.fromFinder===true};
       }
     }catch{}
     renderCompare();
