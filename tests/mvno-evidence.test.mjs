@@ -125,6 +125,29 @@ test('source outages preserve old evidence history but never claim a new match',
  assert.equal(report.summary.observationsRecorded,0);
  assert.deepEqual(history,before);
 });
+test('unresolved price conflict survives source outage and clears only on a fresh exact match',()=>{
+ const changed={...mark,helium:'Air Plan $19/month Infinity Plan $30/month'};
+ const disputed=run(fixture(),changed);
+ assert.equal(disputed.report.offers['helium-air'].state,'headline_mismatch');
+ const outage=evaluateMvnoEvidence({
+   catalog:fixture(),
+   sources:sources().map(r=>({...r,ok:r.url===MVNO_SOURCES.helium?false:r.ok})),
+   checkedAt:'2026-11-03T14:00:00Z',day:'2026-11-03',
+   previousHistory:disputed.history,previousReport:disputed.report,
+ });
+ assert.equal(outage.report.offers['helium-air'].state,'unresolved_mismatch');
+ assert.equal(outage.report.summary.unresolvedMismatches,1);
+ assert.match(outage.report.offers['helium-air'].note,/until a fresh official match/);
+ assert.equal(outage.history.offers['helium-air'].length,1,'source failure must not fabricate a new observation');
+ const recovered=evaluateMvnoEvidence({
+   catalog:fixture(),sources:sources(),day:'2026-11-04',checkedAt:'2026-11-04T14:00:00Z',
+   previousHistory:outage.history,previousReport:outage.report,
+ });
+ assert.equal(recovered.report.offers['helium-air'].state,'headline_matched');
+ assert.equal(recovered.report.summary.unresolvedMismatches,0);
+ assert.equal(recovered.history.offers['helium-air'].length,2);
+});
+
 test('one observation per day and 90 observation-day history limit',()=>{
  let last=run().history;
  assert.equal(run(fixture(),mark,last).history.offers['helium-air'].length,1);
