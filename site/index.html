@@ -388,7 +388,7 @@ let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), C
 
 /* ---------- state ---------- */
 const PLAN_TOGS = [
-  ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"],["canport","I confirm eligible number transfer"],["newcustomer","I qualify as a new customer"],["discountqualified","I meet AutoPay / eBilling / Auto-Refill conditions"]
+  ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"],["canport","I confirm eligible number transfer"],["newcustomer","I qualify for a new-customer or eligible new-line offer"],["discountqualified","I meet AutoPay / eBilling / Auto-Refill conditions"]
 ];
 const PHONE_TOGS = [
   ["free","$0 upfront device price"],["iphone","iPhone"],["android","Android"],["prepaid","Prepaid offers only"],["noport","Can’t move my number"],["discountqualified","I meet AutoPay / eBilling / Auto-Refill conditions"]
@@ -442,7 +442,7 @@ function planCalc(p){
     const ei = endInfo(promo.ends);
     if(ei && ei.expired) promoState = {off:true, why:ei.text + ". Recheck for a new offer."};
     else if(promo.req==="port" && (state.t.noport || state.t.canport!==true)) promoState = {off:true, why:state.t.noport?"Port-in promotion excluded: number transfer unavailable.":"Port-in promotion excluded until you confirm eligible number transfer."};
-    else if(promo.req==="new" && state.t.newcustomer!==true) promoState = {off:true, why:"New-customer pricing excluded until you confirm eligibility using the filter."};
+    else if(promo.req==="new" && state.t.newcustomer!==true) promoState = {off:true, why:"New-customer or new-line pricing excluded until you confirm carrier eligibility."};
     else promoState = {off:false, ends:ei};
   }
   const familyPromoEligible = L===1 || promo?.familyEligible===true ||
@@ -634,7 +634,7 @@ function renderPlans(){
     if(p.promo){
       if(c.promoState.off) deal = el("div",{class:"deal off"}, p.promo.text + ". ", c.promoState.why);
       else deal = el("div",{class:"deal"}, el("b",null,p.promo.text),
-        p.promo.req==="port" ? ". Bring your number." : ". New customers.",
+        p.promo.req==="port" ? ". Bring your number." : ". Confirm eligible new-line/customer terms.",
         c.promoState.ends ? " " + c.promoState.ends.text + "." : "");
     }
     return el("li",{class:"row", id:"r-"+p.id, style:"--net:"+n.c},
