@@ -1,0 +1,5 @@
+{
+  "schema": 1,
+  "notes": "Only manually reviewed full terms belong in offers. Never infer verification from a successful link scan.",
+  "offers": {}
+}
