@@ -156,12 +156,15 @@ test('Switch & Save refuses sourced rate or annual cash discrepancies but never 
 });
 test('Total BYO first month is modeled once across standalone and Switch & Save calculators',()=>{
  const p=get('total-max');
- const cost=planCost(p,1,{today:date});
+ const unconfirmed=planCost(p,1,{today:date});
+ assert.equal(unconfirmed.monthTotal,30);
+ assert.equal(unconfirmed.year,360);
+ const cost=planCost(p,1,{today:date,discountQualified:true});
  assert.equal(cost.monthTotal,20);
  assert.equal(cost.upfrontDue,30);
  assert.equal(cost.year,250);
  const report=simulateSwitch({catalog,type:'plan',id:'total-max',researchEvidence:research,
-  scenario:{lines:1,currentMonthly:60,horizon:12,today:date}});
+  scenario:{lines:1,currentMonthly:60,horizon:12,today:date,discountQualified:true}});
  assert.equal(report.chosen.upfrontDue,30);
  assert.equal(report.results[12].serviceTotal,250);
  assert.equal(report.results[24].serviceTotal,490);
@@ -171,7 +174,7 @@ test('Total BYO first month is modeled once across standalone and Switch & Save 
  const end=page.indexOf('function planVisible(p){',start);
  assert.ok(start>=0 && end>start,'legacy plan calculator must remain embedded in site');
  const calc=page.slice(start,end);
- const main=runInNewContext(calc+'; planCalc(p);',{p,state:{lines:1,t:{}},endInfo:()=>null});
+ const main=runInNewContext(calc+'; planCalc(p);',{p,state:{lines:1,t:{discountqualified:true}},endInfo:()=>null});
  assert.equal(main.upfrontDue,30);
  assert.equal(main.year,250);
  assert.ok(renderResearchPage({catalog,ledger,research,today:date}).includes('$30.00 first month'));
@@ -237,8 +240,10 @@ test('Boost razr prepaid service is documented without promoting an online headl
 test('Metro first bill and optional new-line Boost/Red Pocket discounts are checked against official sources',()=>{
  const metro=get('metro'),premium=get('metro-premium');
  assert.equal(metro.firstMonthPrice,30);
- assert.equal(planCost(metro,1,{today:date}).year,305);
- assert.equal(planCost(premium,1,{today:date}).year,725);
+ assert.equal(planCost(metro,1,{today:date}).year,360);
+ assert.equal(planCost(premium,1,{today:date}).year,780);
+ assert.equal(planCost(metro,1,{today:date,discountQualified:true}).year,305);
+ assert.equal(planCost(premium,1,{today:date,discountQualified:true}).year,725);
  assert.equal(researchStatus(metro,research.records.metro,{today:date}).state,'published_match');
  assert.equal(researchStatus({...metro,firstMonthPrice:25},research.records.metro,{today:date}).state,'conflict');
  for(const [id,regular,discounted] of [['boost',300,210],['redpocket-plus',240,230],['redpocket-premium',360,345]]){
@@ -300,6 +305,28 @@ test('remaining official source records never imply autopay or customer-specific
  assert.equal(get('straighttalk').price,25,'regular plan excludes optional BYOP AutoPay discount');
  assert.equal(get('cc').price,20,'published AutoPay discounted rate requires confirmation');
  assert.equal(get('tracfone').price,45,'published Auto-Refill rate requires confirmation');
+});
+test('published non-discount pricing and fixed provider charges are independently signed and cannot be altered silently',()=>{
+ for(const [id,standard,qualified] of [
+  ['metro',360,305],['metro-premium',780,725],['total-max',360,250],
+  ['cc',370,310],['tracfone',600,545]]){
+  const p=get(id),r=research.records[id];
+  assert.equal(researchStatus(p,r,{today:date}).state,'published_match',id);
+  assert.equal(planCost(p,1,{today:date}).year,standard,id+' standard');
+  assert.equal(planCost(p,1,{today:date,discountQualified:true}).year,qualified,id+' confirmed');
+  assert.equal(researchStatus({...p,undiscountedPrice:p.undiscountedPrice+5},r,{today:date}).state,'conflict');
+  assert.equal(researchStatus({...p,discountCondition:'invalid'},r,{today:date}).state,'conflict');
+ }
+ const cc=get('cc');
+ assert.equal(planCost(cc,1,{today:date}).upfrontDue,40);
+ assert.equal(planCost(cc,1,{today:date,discountQualified:true}).upfrontDue,35);
+ assert.equal(researchStatus({...cc,knownMonthlyFee:0},research.records.cc,{today:date}).state,'conflict');
+ assert.equal(researchStatus({...cc,knownActivationFee:0},research.records.cc,{today:date}).state,'conflict');
+ assert.match(renderResearchPage({catalog,ledger,research,today:date}),/\$5\.00\/mo documented provider fees added to estimates/);
+ const bad={...cc,knownMonthlyFee:0};
+ assert.throws(()=>simulateSwitch({catalog:{...catalog,plans:catalog.plans.map(x=>x.id===bad.id?bad:x)},
+  type:'plan',id:'cc',researchEvidence:research,scenario:{lines:1,currentMonthly:80,horizon:12,today:date}}),
+  /official published-source research conflicts/i);
 });
 test('unrelated phone offers remain not researched; official source research does not sneak into signed ledger',()=>{
  assert.equal(Object.keys(ledger.offers).length,0);

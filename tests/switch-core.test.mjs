@@ -51,6 +51,27 @@ test('incomplete financed device promotions cannot show positive switch savings'
  assert.throws(()=>simulateSwitch({catalog:financed,type:'phone',id:'conditional',scenario}),
   /Financed\/trade-in phone promotion.*full device retail price/i);
 });
+test('Switch & Save includes documented mandatory fees once and never grants AutoPay by default',()=>{
+ const cc={...catalog,plans:[...catalog.plans,{
+  id:'cc-fees',carrier:'Consumer Cellular',plan:'1GB',price:20,
+  undiscountedPrice:25,discountCondition:'autopay_ebilling',
+  knownMonthlyFee:5,knownActivationFee:10,maxLines:1,url:'https://example.org/cc'
+ }]};
+ const basic=simulateSwitch({catalog:cc,type:'plan',id:'cc-fees',scenario:{...scenario,discountQualified:false}});
+ assert.equal(basic.chosen.serviceTotal,370);
+ assert.equal(basic.chosen.upfrontDue,40);
+ assert.equal(basic.results[24].serviceTotal,730);
+ assert.equal(basic.results[36].serviceTotal,1090);
+ assert.ok(basic.warnings.some(x=>x.includes('documented fixed carrier provider fees')));
+ const qualified=simulateSwitch({catalog:cc,type:'plan',id:'cc-fees',scenario:{...scenario,discountQualified:true}});
+ assert.equal(qualified.chosen.upfrontDue,35);
+ assert.equal(qualified.results[12].serviceTotal,310);
+ assert.equal(qualified.results[24].serviceTotal,610);
+ assert.equal(qualified.results[36].serviceTotal,910);
+ const link=switchShareParams('plan','cc-fees',{...scenario,discountQualified:true}).toString();
+ assert.match(link,/discountqualified=1/);
+ assert.equal(parseSwitchShare('?'+link,cc).scenario.discountQualified,true);
+});
 test('monthly promotion first 3 months then regular service; accurate 12/24/36',()=>{
  const r=simulate('plan','monthly');
  assert.deepEqual(r.results[12],{
@@ -159,7 +180,7 @@ test('share URLs exclude financial inputs by default, are scoped to known catalo
  assert.equal(link.includes('payoff='),false);
  const restored=parseSwitchShare('?'+link,catalog);
  assert.deepEqual(restored,{type:'plan',id:'monthly',scenario:{
-  lines:1,horizon:12,cannotPort:false,canPort:true,newCustomer:false},hasFinancials:false});
+  lines:1,horizon:12,cannotPort:false,canPort:true,newCustomer:false,discountQualified:false},hasFinancials:false});
  const optin=switchShareParams('plan','monthly',scenario,{includeFinancials:true}).toString();
  assert.match(optin,/bill=50/);
  assert.equal(parseSwitchShare('?'+optin,catalog).scenario.currentMonthly,50);

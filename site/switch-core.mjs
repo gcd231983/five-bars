@@ -32,7 +32,8 @@ function buildCashflow(offer,type,scenario,months){
     const requiresNew=offer.promo?.req==='new'&&!scenario.newCustomer;
     const cost=planCost(requiresNew?{...offer,promo:null}:offer,L,
       {today:scenario.today,cannotPort:scenario.cannotPort||!scenario.canPort,
-        canPort:scenario.canPort,newCustomer:scenario.newCustomer});
+        canPort:scenario.canPort,newCustomer:scenario.newCustomer,
+        discountQualified:scenario.discountQualified});
     if(!cost)throw Error('This plan has no usable published service price.');
     if(cost.annualPrepaid){
       if(!Number.isFinite(offer.billingUpfront)||offer.billingUpfront<=0)
@@ -46,14 +47,21 @@ function buildCashflow(offer,type,scenario,months){
         throw Error('Annual prepaid plans cannot be quoted for multiple lines without an explicit family price.');
       const m=cost.promoUsed?Math.min(months,Math.max(0,Number(offer.promo?.months)||0)):0;
       for(let month=0;month<months;month++){
-        service[month]=money((month<m?cost.nowPerLine:cost.regularPerLine)*L);
+        service[month]=money((month<m?cost.nowPerLine:cost.regularPerLine)*L+cost.knownMonthlyFeeTotal);
       }
       if(cost.firstMonthAdjusted){
-        service[0]=money(cost.firstMonthDue);
+        service[0]=money(cost.firstMonthDue+cost.knownMonthlyFeeTotal);
         note.push('Published first service bill: $'+money(cost.firstMonthDue).toFixed(2)+
           ', with later bills modeled at the listed rate; confirm AutoPay and eligibility.');
       }
+      if(cost.knownActivationFeeTotal)service[0]=money(service[0]+cost.knownActivationFeeTotal);
       serviceUpfront=service[0];
+      if(cost.knownMonthlyFeeTotal||cost.knownActivationFeeTotal)
+        note.push('Includes documented fixed carrier provider fees $'+money(cost.knownMonthlyFeeTotal).toFixed(2)+
+          '/mo and activation $'+money(cost.knownActivationFeeTotal).toFixed(2)+
+          '; government taxes, other fees and price changes remain unknown.');
+      if(cost.conditionalDiscountUnconfirmed)
+        note.push('AutoPay/Auto-Refill/eBilling conditional rate not assumed: use published undiscounted base until eligibility is confirmed.');
       if(requiresNew)note.push('New-customer introductory pricing excluded because eligibility was not confirmed.');
       if(offer.promo?.req==='port'&&!scenario.canPort)
         note.push('Port-in introductory pricing excluded unless the visitor confirms an eligible number transfer.');
@@ -121,6 +129,7 @@ export function normalizeScenario(input={}){
   return {
     lines,horizon:h,today:day,cannotPort:!!input.cannotPort,
     canPort:input.canPort===true,newCustomer:input.newCustomer===true,
+    discountQualified:input.discountQualified===true,
     currentMonthly:amount('Current monthly bill',input.currentMonthly,5000),
     payoff:amount('Existing device payoff',input.payoff??0),
     switchFees:amount('One-time switching fees',input.switchFees??0),
@@ -157,6 +166,10 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
         offer.billingMonths!==12||!Number.isFinite(published.billingUpfront)||offer.billingUpfront!==published.billingUpfront:
         offer.billingMonths===12)||
        (published.publishedFirstMonthPrice!==undefined&&offer.firstMonthPrice!==published.publishedFirstMonthPrice)||
+       (published.publishedUndiscountedPrice!==undefined&&
+        (offer.undiscountedPrice!==published.publishedUndiscountedPrice||offer.discountCondition!==published.publishedDiscountCondition))||
+       (published.publishedKnownMonthlyFee!==undefined&&offer.knownMonthlyFee!==published.publishedKnownMonthlyFee)||
+       (published.publishedKnownActivationFee!==undefined&&offer.knownActivationFee!==published.publishedKnownActivationFee)||
        (published.publishedPromoPrice!==undefined&&
         (offer.promo?.price!==published.publishedPromoPrice||offer.promo?.months!==published.publishedPromoMonths||
          offer.promo?.req!==published.publishedPromoRequirement)));
@@ -249,6 +262,7 @@ export function switchShareParams(type,id,scenario,{includeFinancials=false}={})
   if(scenario.cannotPort||!scenario.canPort)params.set('noport','1');
   if(scenario.canPort)params.set('canport','1');
   if(scenario.newCustomer)params.set('newcustomer','1');
+  if(scenario.discountQualified)params.set('discountqualified','1');
   if(includeFinancials){
     // These values are intentionally omitted by default because links are
     // visible to anyone who receives them and may appear in browser history.
@@ -269,7 +283,7 @@ export function parseSwitchShare(search,catalog){
     horizon:SWITCH_HORIZONS.includes(Number(p.get('months')))?Number(p.get('months')):12,
     cannotPort:p.get('noport')==='1',
     canPort:p.get('canport')==='1'&&p.get('noport')!=='1',
-    newCustomer:p.get('newcustomer')==='1'
+    newCustomer:p.get('newcustomer')==='1',discountQualified:p.get('discountqualified')==='1'
   };
   for(const [key,field] of Object.entries(nums)){
     const v=p.get(field);

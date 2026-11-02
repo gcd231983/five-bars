@@ -3,7 +3,8 @@
 import {validDay,verificationState,usd,localDay} from '../site/value-core.mjs';
 
 export const BASE='https://gcd231983.github.io/five-bars/';
-export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired','publishedPromoPrice','publishedPromoMonths','publishedPromoRequirement'];
+export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired','publishedPromoPrice','publishedPromoMonths','publishedPromoRequirement',
+  'publishedUndiscountedPrice','publishedDiscountCondition','publishedKnownMonthlyFee','publishedKnownActivationFee'];
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'
 })[c]);
@@ -36,6 +37,11 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
   (record.publishedFullRetailRequired===undefined||typeof record.publishedFullRetailRequired==='boolean')&&
   (record.publishedPrepayMonths===undefined||(Number.isInteger(record.publishedPrepayMonths)&&record.publishedPrepayMonths>0)):
   num(record.publishedMonthly)&&(record.publishedFirstMonthPrice===undefined||num(record.publishedFirstMonthPrice))&&
+  ((record.publishedUndiscountedPrice===undefined&&record.publishedDiscountCondition===undefined)||
+   (num(record.publishedUndiscountedPrice)&&record.publishedUndiscountedPrice>=record.publishedMonthly&&
+     ['autopay','autopay_ebilling','auto_refill'].includes(record.publishedDiscountCondition)))&&
+  (record.publishedKnownMonthlyFee===undefined||num(record.publishedKnownMonthlyFee))&&
+  (record.publishedKnownActivationFee===undefined||num(record.publishedKnownActivationFee))&&
   ((record.publishedPromoPrice===undefined&&record.publishedPromoMonths===undefined&&record.publishedPromoRequirement===undefined)||
     (num(record.publishedPromoPrice)&&Number.isInteger(record.publishedPromoMonths)&&record.publishedPromoMonths>=1&&
      record.publishedPromoMonths<=12&&['new','port'].includes(record.publishedPromoRequirement)));
@@ -73,6 +79,14 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
    issues.push('catalog annual billing is not supported by official record');
   if(record.publishedFirstMonthPrice!==undefined&&offer.firstMonthPrice!==record.publishedFirstMonthPrice)
    issues.push('first-month plan charge differs from official source');
+  if(record.publishedUndiscountedPrice!==undefined&&
+     (offer.undiscountedPrice!==record.publishedUndiscountedPrice||
+      offer.discountCondition!==record.publishedDiscountCondition))
+   issues.push('AutoPay qualification or undiscounted price differs from official source');
+  if(record.publishedKnownMonthlyFee!==undefined&&offer.knownMonthlyFee!==record.publishedKnownMonthlyFee)
+   issues.push('published fixed provider monthly fees differ from official source');
+  if(record.publishedKnownActivationFee!==undefined&&offer.knownActivationFee!==record.publishedKnownActivationFee)
+   issues.push('published activation charge differs from official source');
   if(record.publishedPromoPrice!==undefined&&
      (offer.promo?.price!==record.publishedPromoPrice||offer.promo?.months!==record.publishedPromoMonths||
       offer.promo?.req!==record.publishedPromoRequirement))
@@ -173,6 +187,9 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
     usd(record.publishedMonthly)+(record.billingMonths===12?
       ' per-month equivalent; '+usd(record.billingUpfront)+' due upfront for 12 months':
       ' regular per month'+(record.publishedFirstMonthPrice!==undefined?'; '+usd(record.publishedFirstMonthPrice)+' first month':'')+
+      (record.publishedUndiscountedPrice!==undefined?'; '+usd(record.publishedUndiscountedPrice)+'/mo WITHOUT qualifying '+record.publishedDiscountCondition.replaceAll('_',' + ')+'; discount NOT assumed':'')+
+      (record.publishedKnownMonthlyFee!==undefined?'; '+usd(record.publishedKnownMonthlyFee)+'/mo documented provider fees added to estimates':'')+
+      (record.publishedKnownActivationFee!==undefined?'; '+usd(record.publishedKnownActivationFee)+' one-time activation added to estimates':'')+
       (record.publishedPromoPrice!==undefined?'; '+usd(record.publishedPromoPrice)+'/mo for first '+record.publishedPromoMonths+' month(s) ONLY for eligible '+(record.publishedPromoRequirement==='new'?'new customers':'number transfers')+'; not assumed without confirmation':''));
   sections.push('<article class="guide research-article" id="research-'+safe(id)+'" data-offer-id="'+safe(id)+'">'+
    '<h3>'+safe(item.carrier)+' — '+safe(item.offer)+'</h3>'+

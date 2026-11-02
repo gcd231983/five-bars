@@ -10,7 +10,7 @@ const compareRoot = document.querySelector('#fb-compare-root');
 if (!finderRoot || !compareRoot) throw new Error('Five Bars comparison panels were not found');
 const STORAGE_KEY = 'fivebars-compare-v1';
 const COMPARE_PREFS_KEY = 'fivebars-household-compare-v1';
-let comparePrefs = {lines:1,cannotPort:false,canPort:false,newCustomer:false,fromFinder:false};
+let comparePrefs = {lines:1,cannotPort:false,canPort:false,newCustomer:false,discountQualified:false,fromFinder:false};
 let catalog = {plans:[],phones:[]};
 let reviews = {};
 let selected = [];
@@ -168,6 +168,7 @@ function renderFinder() {
           <select name="portStatus" id="fb-port-status"><option value="unknown">Not sure / unconfirmed</option><option value="yes">Yes, I confirm I can transfer</option><option value="no">No, I cannot transfer</option></select>
         </label>
         <label><input name="newCustomer" type="checkbox"/> I qualify for a new-customer promotional rate</label>
+        <label><input name="discountQualified" id="fb-discount-qualified" type="checkbox"/> I meet the carrier’s AutoPay, Auto-Refill and/or eBilling conditions</label>
         <label><input name="hotspot" type="checkbox"/> I need hotspot data</label>
         <label><input name="priority" type="checkbox"/> I want priority network data</label>
       </div>
@@ -181,10 +182,11 @@ function renderFinder() {
     const prefs = {
       network:data.get('net'),provider:data.get('provider'),lines:Number(data.get('lines')),budget:data.get('budget'),
       cannotPort:data.get('portStatus')==='no',canPort:data.get('portStatus')==='yes',
-      newCustomer:data.has('newCustomer'),priority:data.has('priority'),hotspot:data.has('hotspot'),
+      newCustomer:data.has('newCustomer'),discountQualified:data.has('discountQualified'),
+      priority:data.has('priority'),hotspot:data.has('hotspot'),
     };
     comparePrefs={lines:prefs.lines,cannotPort:prefs.cannotPort,canPort:prefs.canPort,
-      newCustomer:prefs.newCustomer,fromFinder:true};
+      newCustomer:prefs.newCustomer,discountQualified:prefs.discountQualified,fromFinder:true};
     saveCompare();
     renderCompare();
     const recommendationCatalog={
@@ -198,7 +200,7 @@ function renderFinder() {
     const root = document.querySelector('#fb-finder-results');
     root.replaceChildren();
     root.append(element('h3','Matching options'));
-    root.append(note('Estimated costs only, not a coverage guarantee or verified carrier quote. Promotions may have additional requirements.'));
+    root.append(note('Estimated costs include recorded fixed carrier fees and one-time activation charges when available. Unknown taxes and fees are NOT estimated. Discounts require your eligibility confirmation. These are not checkout quotes.'));
     if(suppressedPhones || suppressedPlans)root.append(note(
       suppressedPlans+' plan(s) and '+suppressedPhones+' handset offer(s) with conflicting official price evidence have been excluded from recommendations. See Price watch.'));
     for(const msg of ranked.messages) root.append(note(msg));
@@ -218,7 +220,9 @@ function renderFinder() {
           usd(c.monthTotal)+(c.annualPrepaid?'/mo equivalent, PAID '+usd(c.upfrontDue)+' UPFRONT for 12 months.':'/mo at the modeled current rate.')));
         card.append(statusNode(p));
         if (c.annualPrepaid) card.append(note('This is a prepaid ANNUAL plan, not a monthly subscription. Pay the full '+usd(c.upfrontDue)+' before service starts.'));
-        if (c.firstMonthAdjusted) card.append(note('Published first bill '+usd(c.upfrontDue)+'; later estimated service '+usd(c.regularMonthTotal)+'/month. Included in first-year total; confirm eligibility and AutoPay.'));
+        if (c.firstMonthAdjusted) card.append(note('Estimated first payment '+usd(c.upfrontDue)+'; subsequent base service plus known recurring fees '+usd(c.regularMonthTotal)+'/month. Confirm all terms.'));
+        if (c.conditionalDiscountUnconfirmed) card.append(note('Payment-method discount NOT assumed. Check AutoPay, eBilling or Auto-Refill eligibility.'));
+        if (c.knownMonthlyFeeTotal||c.knownActivationFeeTotal) card.append(note('Includes '+usd(c.knownMonthlyFeeTotal)+'/mo published provider fees and '+usd(c.knownActivationFeeTotal)+' activation fee where documented; excludes taxes and unrecorded fees.'));
         if (c.promoFamilyUnconfirmed) card.append(note('Intro promo was NOT assumed for multiple lines; eligibility is unconfirmed.'));
         if (c.estimatedFamilyPrice) card.append(note('Multi-line price was not published in our catalog; this is a single-line extrapolation.'));
         const actions=element('div',null,'fb-card-actions');
@@ -269,7 +273,8 @@ function fieldValue(type,offer,key) {
   }
   if(type==='plan') {
     const c=planCost(offer,comparePrefs.lines,{cannotPort:comparePrefs.cannotPort,
-      canPort:comparePrefs.canPort,newCustomer:comparePrefs.newCustomer});
+      canPort:comparePrefs.canPort,newCustomer:comparePrefs.newCustomer,
+      discountQualified:comparePrefs.discountQualified});
     switch(key) {
       case 'network':return offer.net==='multi'?'Choice of networks':offer.net==='att'?'AT&T':offer.net==='vzw'?'Verizon':'T-Mobile';
       case 'monthly':return usd(c?.monthTotal)+' total'+(c?.annualPrepaid?' /mo equivalent (annual upfront)':c?.estimatedFamilyPrice?' (estimate)':'');
@@ -701,7 +706,8 @@ async function start() {
       if(stored && Number.isInteger(stored.lines) && stored.lines>=1 && stored.lines<=5) {
         comparePrefs={lines:stored.lines,cannotPort:stored.cannotPort===true,
           canPort:stored.canPort===true&&stored.cannotPort!==true,
-          newCustomer:stored.newCustomer===true,fromFinder:stored.fromFinder===true};
+          newCustomer:stored.newCustomer===true,discountQualified:stored.discountQualified===true,
+          fromFinder:stored.fromFinder===true};
       }
     }catch{}
     renderCompare();

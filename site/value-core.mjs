@@ -23,7 +23,8 @@ export function offerSignature(offer) {
   const fields = ['id','carrier','plan','phone','net','os','price','planPrice','priceNote','promo',
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
     'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
-    'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','fullRetailRequired','priceSourceDate'];
+    'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','fullRetailRequired',
+    'undiscountedPrice','discountCondition','knownMonthlyFee','knownActivationFee','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
 export function verificationState(offer, record, today = localDay()) {
@@ -45,8 +46,13 @@ export function verificationState(offer, record, today = localDay()) {
 export function planCost(plan, count = 1, options = {}) {
   const lines = Math.max(1,Math.min(5,Math.trunc(Number(count)) || 1));
   const today = options.today || localDay();
-  const regularSingle = Number(plan.price);
+  // Discounted catalog headlines are conditional, not the default price.
+  const discountOffered=Number.isFinite(plan.undiscountedPrice)&&!!plan.discountCondition;
+  const discountQualified=!discountOffered||options.discountQualified===true;
+  const regularSingle=Number(discountQualified?plan.price:plan.undiscountedPrice);
   if (!Number.isFinite(regularSingle) || regularSingle < 0) return null;
+  const knownMonthlyFee=Number.isFinite(plan.knownMonthlyFee)?plan.knownMonthlyFee:0;
+  const knownActivationFee=Number.isFinite(plan.knownActivationFee)?plan.knownActivationFee:0;
   // Annual-prepaid amounts are per recorded offer and must NEVER be treated as
   // monthly billing for an assumed multi-line household. Until a documented
   // family-wide annual prepayment exists, these offers are one-line quotes.
@@ -66,17 +72,23 @@ export function planCost(plan, count = 1, options = {}) {
     ? promo.family[String(lines)] : promo?.price;
   const discounted = introAvailable ? Math.min(regular,intro) : regular;
   const introMonths = introAvailable ? Math.min(12,promo.months) : 0;
-  const monthTotal = discounted * lines;
-  const regularMonthTotal = regular * lines;
+  const knownMonthlyFeeTotal=knownMonthlyFee*lines;
+  const knownActivationFeeTotal=knownActivationFee*lines;
+  const monthTotal=discounted*lines+knownMonthlyFeeTotal;
+  const regularMonthTotal=regular*lines+knownMonthlyFeeTotal;
   const annual = plan.billingMonths===12 && Number.isFinite(plan.billingUpfront) && plan.billingUpfront>0 && lines===1;
   // A documented first month is charged once, not as a recurring monthly rate.
   const firstMonthAdjusted=!annual && lines===1 && Number.isFinite(plan.firstMonthPrice) && plan.firstMonthPrice>=0;
   const firstMonthDue=firstMonthAdjusted?plan.firstMonthPrice:discounted;
-  const year=annual?plan.billingUpfront:(discounted*introMonths+regular*(12-introMonths))*lines +
-    (firstMonthAdjusted?firstMonthDue-discounted:0);
-  const upfrontDue=annual?plan.billingUpfront:(firstMonthAdjusted?firstMonthDue:discounted*lines);
+  const year=annual?plan.billingUpfront:(discounted*introMonths+regular*(12-introMonths))*lines+
+    (firstMonthAdjusted?firstMonthDue-discounted:0)+knownMonthlyFeeTotal*12+knownActivationFeeTotal;
+  const upfrontDue=annual?plan.billingUpfront:
+    (firstMonthAdjusted?firstMonthDue:discounted*lines)+knownMonthlyFeeTotal+knownActivationFeeTotal;
   return {lines,nowPerLine:discounted,regularPerLine:regular,monthTotal,regularMonthTotal,year,
     upfrontDue,firstMonthAdjusted,firstMonthDue,billingMonths:annual?12:1,annualPrepaid:annual,
+    knownMonthlyFeeTotal,knownActivationFeeTotal,discountQualified,
+    conditionalDiscountUnconfirmed:discountOffered&&!discountQualified,
+    discountCondition:plan.discountCondition||null,
     promoUsed:introAvailable,familyKnown,estimatedFamilyPrice:!familyKnown,
     promoFamilyUnconfirmed:lines>1 && !!promo && !promoAllowedLines,
     promoSuppressedForNoPort:!!promo && !!options.cannotPort && promo.req==='port',
@@ -134,7 +146,8 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
     .filter(p => networkOK(p.net,network) && (!preferences.provider || preferences.provider==='any' || p.carrier===preferences.provider) && (!p.maxLines || lines<=p.maxLines) &&
       (!preferences.priority || p.pri===true) && (!preferences.hotspot || !!p.hot))
     .map(p => {
-      const cost = planCost(p,lines,{today,cannotPort,canPort,newCustomer:preferences.newCustomer===true});
+      const cost = planCost(p,lines,{today,cannotPort,canPort,newCustomer:preferences.newCustomer===true,
+        discountQualified:preferences.discountQualified===true});
       return cost && {type:'plan',id:p.id,offer:p,cost,year:cost.year,
         uncertain:cost.estimatedFamilyPrice};
     }).filter(Boolean)
@@ -166,6 +179,10 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
         ['Port-in introductory discounts are excluded until you confirm you can transfer an eligible number.'] : []),
       ...(unconfirmedPhonePorts>0 ?
         ['Port-in-only phone promotions are excluded from recommendations until you confirm number-transfer eligibility. You can still browse them under Phone Deals.'] : []),
+      ...(plans.some(x=>x.cost.conditionalDiscountUnconfirmed)?
+        ['AutoPay, Auto-Refill or AutoPay + eBilling discounts are excluded until you confirm all required enrollment conditions.'] : []),
+      ...(plans.some(x=>x.cost.knownMonthlyFeeTotal>0||x.cost.knownActivationFeeTotal>0)?
+        ['Published fixed provider fees and activation costs are included where documented; government taxes and other unknown charges remain excluded.'] : []),
       ...(plans.some(x=>x.cost.promoSuppressedForNotNew) ?
         ['New-customer introductory discounts are excluded until you explicitly confirm eligibility.'] : []),
       ...(plans.some(x=>x.cost.annualPrepaid) ?

@@ -146,3 +146,13 @@ Official-publication source coverage now includes 15 wireless plan rates and fiv
 - Clarified Google Fi $35 as Essentials rather than Premium, Tracfone Auto-Refill/expired anniversary terms, Straight Talk regular $25 vs conditional $20 AutoPay offer, and Consumer Cellular recurring/activation extras.
 - Extended official-source research from 37 to **45 of 78 listings** (36 plan baselines, nine phone headlines); only two service plans and 31 phone offers lack a dated source record. All 78 still need independent full checkout and customer eligibility reviews.
 - Additional commercial readiness gate: model compulsory service fees and explicit AutoPay eligibility before calling estimates actual paid totals, or continue labeling them conservative **service-only** estimates. Do not monetize referrals as verified-price recommendations yet.
+
+
+## Five Bars 3.7 — first-payment accuracy, recurring fees and checkout readiness
+
+- Five selected one-line plans now have *conditional* payment-method rate fields. The default is each provider's documented non-discounted base price; selecting AutoPay/Auto-Refill/eBilling eligibility explicitly is required for the lower price. This is a **model assumption**, not verification of enrollment at checkout.
+- Consumer Cellular 1GB now includes its published $5.00/month fixed provider fee components and $10 per-line activation in first payment and 12/24/36-month Switch & Save cashflow. Location-dependent taxes and unknown charges remain separate, and the offer is restricted to one line until multi-line provider fee rules are confirmed.
+- Tracfone Freedom models $50 first month and $45 subsequent months only with documented eligible Auto-Refill, or $50 each cycle without it. Metro and Total distinct first-month bills continue to be counted once.
+- Corrected unsupported $20 AutoPay pricing language for Straight Talk StraightSAVINGS. The selected $25 BYOP offer explicitly says it does NOT stack AutoPay; $29.88 physical SIM starter bundle is conditional on purchase channel. No promised $50 delayed device credit is subtracted from guaranteed cash.
+- Official-source research count remains **45/78**, and **0/78** checkout/full-terms signatures are confirmed. This improvement corrects math/terms on dated sources; it does not claim comprehensive mandatory charges for other 73 listings or independently validated transactions.
+- For monetization readiness, future per-offer checklists must include state- and ZIP-specific taxes, complete carrier and payment-processing fees, SIM/eSIM charges, first-service discount timing, required funding methods, activation channel and renewal pricing. Never advertise service estimates as checkout totals.

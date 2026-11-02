@@ -388,7 +388,7 @@ let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), C
 
 /* ---------- state ---------- */
 const PLAN_TOGS = [
-  ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"],["canport","I confirm eligible number transfer"],["newcustomer","I qualify as a new customer"]
+  ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"],["canport","I confirm eligible number transfer"],["newcustomer","I qualify as a new customer"],["discountqualified","I meet AutoPay / eBilling / Auto-Refill conditions"]
 ];
 const PHONE_TOGS = [
   ["free","$0 upfront device price"],["iphone","iPhone"],["android","Android"],["prepaid","Prepaid offers only"],["noport","Can’t move my number"]
@@ -450,7 +450,12 @@ function planCalc(p){
   if(promo && L>1 && !familyPromoEligible) promoState = {off:true, why:"Intro rate for multiple lines has not been verified."};
   const live = promo && promoState && !promoState.off;
   const fam = L>1 && p.family ? p.family[String(L)] : null;
-  const reg = fam != null ? fam : p.price;
+  const conditional=Number.isFinite(p.undiscountedPrice)&&!!p.discountCondition;
+  const discountQualified=!conditional||state.t.discountqualified===true;
+  const regularSingle=discountQualified?p.price:p.undiscountedPrice;
+  const reg=fam!=null?fam:regularSingle;
+  const knownMonthlyFee=Number.isFinite(p.knownMonthlyFee)?p.knownMonthlyFee*L:0;
+  const knownActivationFee=Number.isFinite(p.knownActivationFee)?p.knownActivationFee*L:0;
   const introPerLine = L>1 && typeof promo?.family?.[String(L)]==="number" ? promo.family[String(L)] : promo?.price;
   const promoPrice = live ? Math.min(introPerLine, reg) : null;
   const m = live ? Math.min(promo.months, 12) : 0;
@@ -458,16 +463,18 @@ function planCalc(p){
   const annualPrepaid = p.billingMonths===12 && Number.isFinite(p.billingUpfront) && p.billingUpfront>0 && L===1;
   const firstMonthAdjusted=!annualPrepaid && L===1 && Number.isFinite(p.firstMonthPrice) && p.firstMonthPrice>=0;
   const firstMonthDue=firstMonthAdjusted?p.firstMonthPrice:(live?promoPrice:reg);
-  const year=annualPrepaid?p.billingUpfront:year1*L+(firstMonthAdjusted?firstMonthDue-(live?promoPrice:reg):0);
+  const year=annualPrepaid?p.billingUpfront:year1*L+(firstMonthAdjusted?firstMonthDue-(live?promoPrice:reg):0)+knownMonthlyFee*12+knownActivationFee;
   const vals = p.family ? Object.values(p.family) : [];
   return {
     now: live ? promoPrice : reg,
     year,
     annualPrepaid,
-    upfrontDue: annualPrepaid ? p.billingUpfront : (firstMonthAdjusted?firstMonthDue:(live?promoPrice:reg)*L),
+    upfrontDue: annualPrepaid ? p.billingUpfront : (firstMonthAdjusted?firstMonthDue:(live?promoPrice:reg)*L)+knownMonthlyFee+knownActivationFee,
     firstMonthAdjusted,
     reg,
-    save: (reg*12*L)-year,
+    knownMonthlyFee,knownActivationFee,
+    conditionalDiscountUnconfirmed:conditional&&!discountQualified,
+    save: (reg-(live?promoPrice:reg))*m*L,
     live, promoState,
     promoFamilyUnconfirmed: !!promo && L>1 && !familyPromoEligible,
     famKnown: L===1 || fam != null,
@@ -594,7 +601,7 @@ function renderPlans(){
   const L = state.lines;
   $("#plans-note").textContent = L>1
     ? "12-month cost covers all " + L + " lines. Annual prepaid plans without an explicit multi-line upfront quote are excluded. Other unknown multi-line prices are estimated from one-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
-    : "New-customer and port-in promotions are excluded until you confirm eligibility using the filters. 12-month cost includes documented first-month charges and eligible intro rates, then the regular price. Annual prepaid offers show a monthly EQUIVALENT but require full payment in advance.";
+    : "New-customer, port-in, and AutoPay/eBilling/Auto-Refill discounts are excluded until you confirm eligibility. Known carrier provider and activation fees are included only where documented. Taxes and unknown charges may add more. Annual prepaid amounts are due upfront.";
   const list = $("#plans-list");
   if(!rows.length){ list.replaceChildren(emptyState()); return; }
   list.replaceChildren(...rows.map(({p,c},i)=>{
@@ -605,12 +612,17 @@ function renderPlans(){
       p.unl ? "Unlimited data" : (p.data + " data"),
       priceDisputed ? (c.annualPrepaid?"Annual prepayment amount under review":"Plan rate under review") :
         (c.annualPrepaid ? "Pay "+money(c.upfrontDue)+" upfront for 12 months" :
-          (c.firstMonthAdjusted?"First bill "+money(c.upfrontDue)+"; then "+money(c.now)+"/mo":"Pay monthly")),
+          (c.firstMonthAdjusted||c.knownMonthlyFee||c.knownActivationFee?
+           "Estimated first payment "+money(c.upfrontDue)+"; recurring base "+money(c.now)+"/mo plus known fees":
+           "Pay monthly")),
       p.pri===true ? "Priority data" : (p.pri===false && p.unl ? "Deprioritized when busy" : null),
       L>1 ? (c.flat ? "Same price for every line" : (c.famKnown ? money(c.reg) + "/line at " + L + " lines" : "Multi-line price not listed")) : null,
       p.hot || (p.unl ? "No hotspot listed" : null),
       p.video,
-      p.tax ? "Taxes included" : "Plus taxes"
+      c.conditionalDiscountUnconfirmed?"Conditional payment-method discount NOT assumed; standard rate shown":null,
+      c.knownMonthlyFee?"Known carrier fees "+money(c.knownMonthlyFee)+"/mo included":null,
+      c.knownActivationFee?"Known activation fee "+money(c.knownActivationFee)+" due initially":null,
+      p.tax ? "Taxes included" : "Plus taxes and any unrecorded fees"
     ].filter(Boolean);
     let deal = null;
     if(p.promo){

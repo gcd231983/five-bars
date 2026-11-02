@@ -92,6 +92,21 @@ function validate(d, prev) {
     if (typeof p.unl !== "boolean") errs.push(at + ": unl must be true/false");
     if (!p.unl && typeof p.data !== "string") errs.push(at + ": limited plans need a data string like \"5GB\"");
     if (!isNum(p.price, 0, 200)) errs.push(at + ": bad price");
+    if (p.undiscountedPrice != null || p.discountCondition != null) {
+      if (!isNum(p.undiscountedPrice, 0, 200) || p.undiscountedPrice < p.price ||
+          !['autopay','autopay_ebilling','auto_refill'].includes(p.discountCondition))
+        errs.push(at + ': undiscountedPrice and discountCondition must document a valid conditional recurring rate');
+      if (p.billingMonths===12 || p.maxLines!==1)
+        errs.push(at + ': qualifying payment discount requires a one-line monthly quote until multi-line billing is documented');
+    }
+    if (p.knownMonthlyFee != null || p.knownActivationFee != null) {
+      if (p.knownMonthlyFee!=null && !isNum(p.knownMonthlyFee,0,100))
+        errs.push(at + ': invalid knownMonthlyFee');
+      if (p.knownActivationFee!=null && !isNum(p.knownActivationFee,0,300))
+        errs.push(at + ': invalid knownActivationFee');
+      if (p.billingMonths===12 || p.maxLines!==1)
+        errs.push(at + ': published provider/activation fee estimates require a one-line monthly plan');
+    }
     if (p.firstMonthPrice != null) {
       if (!isNum(p.firstMonthPrice, 0, 200)) errs.push(at + ": invalid firstMonthPrice");
       if (p.maxLines!==1 || p.billingMonths===12) errs.push(at + ": firstMonthPrice requires single-line monthly offer");
