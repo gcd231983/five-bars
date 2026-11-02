@@ -309,7 +309,8 @@ test('new HTML keeps legacy JS parseable and exposes accessible finder/compare p
 });
 test('pure client-side UI file contains no AI API or paid service dependency',()=>{
   const js=readFileSync(new URL('../site/value-ui.mjs',import.meta.url),'utf8');
-  new Script(js.replace(/^import\s*\{[\s\S]*?\}\s*from\s*'\.\/value-core\.mjs';/m,''));
+  new Script(js.replace(/^import\s*\{[\s\S]*?\}\s*from\s*'\.\/value-core\.mjs';/m,'')
+    .replace(/^import\s*\{reportLink\}\s*from\s*'\.\/report-core\.mjs';/m,''));
   assert.doesNotMatch(js,/anthropic|openai\.com|api\.key|claude\.use/i);
   assert.match(js,/aria-live="polite"/);
   assert.match(js,/localStorage/);
