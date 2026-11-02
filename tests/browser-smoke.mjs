@@ -505,10 +505,13 @@ try {
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$720\.00/);
     await page.locator('#t-plans').click();
     await page.locator('#carrier').selectOption('Total Wireless');
-    assert.match(await page.locator('#r-total-max').innerText(),/First bill \$30(?:\.00)?/i);
+    assert.match(await page.locator('#r-total-max').innerText(),/Estimated first payment \$30(?:\.00)?/i);
+    assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$360/);
+    await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
     assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$250/);
     await page.locator('#t-switch').click();
     await page.locator('#fb-switch-offer').selectOption('total-max');
+    await page.locator('#fb-switch-discountqualified').check();
     await page.locator('#fb-switch-form button[type="submit"]').click();
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$250\.00/);
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$490\.00/);
