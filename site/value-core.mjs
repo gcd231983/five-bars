@@ -59,7 +59,7 @@ export function planCost(plan, count = 1, options = {}) {
   const promoAllowedLines = lines === 1 || (promo?.familyEligible === true) ||
     (typeof promo?.family?.[String(lines)] === 'number');
   const introAvailable = !!promo && !pastEnd(promo.ends,today) &&
-    !(options.cannotPort && promo.req === 'port') &&
+    !(promo.req==='port' && (options.canPort!==true || options.cannotPort===true)) &&
     !(promo.req === 'new' && options.newCustomer !== true) &&
     promoAllowedLines && Number.isFinite(promo.price) && Number.isInteger(promo.months) && promo.months > 0;
   const intro = introAvailable && lines > 1 && promo.family && typeof promo.family[String(lines)] === 'number'
@@ -80,6 +80,8 @@ export function planCost(plan, count = 1, options = {}) {
     promoUsed:introAvailable,familyKnown,estimatedFamilyPrice:!familyKnown,
     promoFamilyUnconfirmed:lines>1 && !!promo && !promoAllowedLines,
     promoSuppressedForNoPort:!!promo && !!options.cannotPort && promo.req==='port',
+    promoSuppressedForUnconfirmedPort:!!promo && promo.req==='port' &&
+      (options.canPort!==true || options.cannotPort===true),
     promoSuppressedForNotNew:!!promo && promo.req==='new' && options.newCustomer!==true};
 }
 export function phoneCost(phone) {
@@ -126,11 +128,13 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
     preferences.budget !== undefined && Number.isFinite(budget) && budget >= 0;
   const network = preferences.network || 'any';
   const cannotPort = !!preferences.cannotPort;
+  const canPort = preferences.canPort===true && !cannotPort;
+  const unconfirmedPhonePorts=(catalog.phones||[]).filter(d=>d.port===true && !canPort).length;
   const plans = (catalog.plans || [])
     .filter(p => networkOK(p.net,network) && (!preferences.provider || preferences.provider==='any' || p.carrier===preferences.provider) && (!p.maxLines || lines<=p.maxLines) &&
       (!preferences.priority || p.pri===true) && (!preferences.hotspot || !!p.hot))
     .map(p => {
-      const cost = planCost(p,lines,{today,cannotPort,newCustomer:preferences.newCustomer===true});
+      const cost = planCost(p,lines,{today,cannotPort,canPort,newCustomer:preferences.newCustomer===true});
       return cost && {type:'plan',id:p.id,offer:p,cost,year:cost.year,
         uncertain:cost.estimatedFamilyPrice};
     }).filter(Boolean)
@@ -139,7 +143,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
   const phones = (catalog.phones || [])
     .filter(d => networkOK(d.net,network) &&
       (!preferences.provider || preferences.provider==='any' || d.carrier===preferences.provider) &&
-      !pastEnd(d.ends,today) && !(cannotPort && d.port))
+      !pastEnd(d.ends,today) && !(d.port && !canPort))
     .map(d => {
       const cost = phoneCost(d);
       return cost && {type:'phone',id:d.id,offer:d,cost,year:cost.year,
@@ -158,6 +162,10 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
         ['Some plans have no published multi-line price. Those figures extrapolate the one-line rate.'] : []),
       ...(plans.some(x=>x.cost.promoFamilyUnconfirmed) ?
         ['Introductory discounts are excluded for multiple lines unless family eligibility is explicitly recorded.'] : []),
+      ...(plans.some(x=>x.cost.promoSuppressedForUnconfirmedPort) ?
+        ['Port-in introductory discounts are excluded until you confirm you can transfer an eligible number.'] : []),
+      ...(unconfirmedPhonePorts>0 ?
+        ['Port-in-only phone promotions are excluded from recommendations until you confirm number-transfer eligibility. You can still browse them under Phone Deals.'] : []),
       ...(plans.some(x=>x.cost.promoSuppressedForNotNew) ?
         ['New-customer introductory discounts are excluded until you explicitly confirm eligibility.'] : []),
       ...(plans.some(x=>x.cost.annualPrepaid) ?
