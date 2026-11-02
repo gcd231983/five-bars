@@ -354,7 +354,7 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
     <p id="scan-status" class="note"></p>
     <ul class="srcs" id="src-list"></ul>
     <h3>How it stays fresh</h3>
-    <p>See the <a href="source-research.html">official-source evidence audit</a>: dated published-price findings, source URLs, checkout questions and the number of offers still awaiting research.</p>
+    <p>See the <a href="source-research.html">official-source evidence audit</a>: dated published-price findings, source URLs, checkout questions and the number of offers still awaiting research. If a listing looks wrong, use the <a href="report.html">reader correction page</a>; a report does not automatically alter any price.</p>
     <p>Every morning, GitHub checks public sources and expires explicitly ended offers. Selected Boost Mobile promotions also receive strict partial checks against official advertised device prices, required plans, and number-transfer wording, with a visible observation history. Missing or conflicting evidence is flagged; no automatic price update or full-deal verification occurs. All other offers still require manual review. No AI or API keys are used.</p>
     <p>Deals with an end date also watch themselves: once a promo expires, its discount drops out of the math; ended phone offers are hidden.</p>
     <p>Editorial maintainers: <a href="review-workbench.html">Open the read-only offer review workbench</a> to investigate unresolved offers and prepare human review notes. Only repository editors can submit signed verifications through GitHub.</p>
@@ -370,7 +370,7 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
       <a href="switching-guide.html">Switching guide</a>
       <a href="carrier-comparisons.html">Compare carriers</a>
       <a href="source-research.html">Official-source research</a>
-      <a href="https://github.com/gcd231983/five-bars/issues/new" target="_blank" rel="noopener noreferrer">Report an issue (GitHub)</a>
+      <a href="report.html">Report a correction</a>
     </nav>
   </footer>
 </main>
@@ -656,6 +656,7 @@ function renderPlans(){
         priceDisputed ? el("span",{class:"yr fb-watch-warning"},"First-year totals suppressed until the official rate conflict is resolved.") :
           el("span",{class:"yr"}, "12 months (est.): ", el("b",null, whole(c.year)), L>1 ? " for " + L + " lines" : "", c.annualPrepaid ? "; paid upfront" : ""),
         el("a",{href:p.url, target:"_blank", rel:"noopener noreferrer"}, "See it at " + p.carrier),
+        el("a",{href:"report.html?offer="+encodeURIComponent(p.id),class:"fb-report-link"}, "Report an issue"),
         priceDisputed ? el("span",{class:"fb-watch-warning"},"Compare after price review") :
           el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("plan",p.id)},"Compare"))
     );
@@ -726,6 +727,7 @@ function renderPhones(){
             c.commitment!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Min. commitment: ", el("b",null, money(c.commitment))) : null,
             c.year!=null ? el("span",{style:"display:inline-block"}, "First year (est.): ", el("b",null, money(c.year))) : "Plan price varies by trade-in"),
         el("a",{href:d.url, target:"_blank", rel:"noopener noreferrer"}, "See it at " + d.carrier.replace(" at Walmart","")),
+        el("a",{href:"report.html?offer="+encodeURIComponent(d.id),class:"fb-report-link"}, "Report an issue"),
         priceDisputed ? el("span",{class:"fb-watch-warning"},"Compare after price review") :
           c.unavailable ? el("span",{class:"fb-watch-warning"},"Compare after stock confirmation") :
           el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("phone",d.id)},"Compare"))
