@@ -59,7 +59,7 @@ test('legacy plan finder never silently applies new-only intro, even when it is 
  const testCalc=t=>runInNewContext(code+';planCalc(p);',{p,state:{lines:1,t},endInfo:()=>null});
  assert.equal(testCalc({}).year,300);
  assert.equal(testCalc({newcustomer:true}).year,210);
- assert.match(html,/I qualify as a new customer/);
+ assert.match(html,/I qualify for a new-customer or eligible new-line offer/);
 });
 test('legacy plan list estimates AutoPay and published provider fees like the shared model',()=>{
  const html=readFileSync(sitePath,'utf8');
