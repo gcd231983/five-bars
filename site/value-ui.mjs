@@ -14,6 +14,9 @@ let comparePrefs = {lines:1,cannotPort:false,fromFinder:false};
 let catalog = {plans:[],phones:[]};
 let reviews = {};
 let selected = [];
+let priceEvidence = null;
+let priceHistory = {offers:{}};
+const EVIDENCE_FRESH_MS = 48*60*60*1000;
 
 function element(tag, content, className) {
   const node = document.createElement(tag);
@@ -37,12 +40,42 @@ function linkTo(url,text) {
     return a;
   } catch { return element('span','Source unavailable'); }
 }
+function priceProofFor(offer) {
+  const proof=priceEvidence?.offers?.[offer.id];
+  if(!proof || !priceEvidence?.generatedAt) return null;
+  const age=Date.now()-Date.parse(priceEvidence.generatedAt);
+  if(!Number.isFinite(age) || age<0 || age>EVIDENCE_FRESH_MS) {
+    return {state:'outdated',note:'Last official headline scan is older than 48 hours. Refresh before trusting advertised prices.'};
+  }
+  // A successful headline match is NOT checkout or full-offer validation.
+  return proof;
+}
+function officialHeadlineUnderReview(offer) {
+  return ['headline_mismatch','ambiguous'].includes(priceEvidence?.offers?.[offer?.id]?.state);
+}
 function statusNode(offer) {
-  const s = verificationState(offer,reviews[offer.id]);
-  const n = element('span',s.label,'fb-status fb-' + s.status);
-  n.title = s.status==='verified' ? 'Evidence of a recent manual review; recheck before purchase' :
-    'The automated link scan does not verify the promotional price or restrictions';
-  return n;
+  const s=verificationState(offer,reviews[offer.id]);
+  const wrapper=element('span',null,'fb-badges');
+  const manual=element('span',s.label,'fb-status fb-'+s.status);
+  manual.title=s.status==='verified'?'Manually checked full terms; confirm again before purchase':
+    'The catalog price and all promotion terms have not been fully verified';
+  wrapper.append(manual);
+  const proof=priceProofFor(offer);
+  if(proof){
+    const labels={
+      headline_matched:['Official headline matches · partial','fb-evidence-match'],
+      headline_mismatch:['Official headline differs','fb-evidence-warning'],
+      not_found:['Official headline not found','fb-evidence-warning'],
+      ambiguous:['Conflicting official headlines','fb-evidence-warning'],
+      source_unavailable:['Official source unavailable','fb-evidence-neutral'],
+      outdated:['Price evidence scan is outdated','fb-evidence-neutral']
+    };
+    const [label,cls]=labels[proof.state]||['Official evidence requires review','fb-evidence-neutral'];
+    const badge=element('span',label,'fb-status '+cls);
+    badge.title=proof.note || 'Only the advertised device price, required plan and porting wording were checked, not the complete deal';
+    wrapper.append(badge);
+  }
+  return wrapper;
 }
 function decorateCards() {
   for (const item of [...catalog.plans,...catalog.phones]) {
@@ -62,6 +95,13 @@ function saveCompare() {
   } catch {}
 }
 function addToCompare(type,id) {
+  if(type==='phone'){
+    const d=catalog.phones.find(p=>p.id===id);
+    if(d && officialHeadlineUnderReview(d)){
+      window.alert('This promotion has conflicting official price evidence and is temporarily excluded from cost comparisons. Check Price watch.');
+      return;
+    }
+  }
   if (!comparePrefs.fromFinder) {
     const selectedLines=Number(document.querySelector('#lines')?.value);
     if(Number.isInteger(selectedLines) && selectedLines>=1 && selectedLines<=5) comparePrefs.lines=selectedLines;
@@ -104,7 +144,7 @@ function renderFinder() {
         <label><input name="hotspot" type="checkbox"/> I need hotspot data</label>
         <label><input name="priority" type="checkbox"/> I want priority network data</label>
       </div>
-      <button type="submit" class="btn">Find matching options</button>
+      <button type="submit" class="btn" disabled aria-busy="true">Loading deals...</button>
     </form>
     <div id="fb-finder-results" aria-live="polite" aria-atomic="false"></div>`;
   finderRoot.querySelector('form').addEventListener('submit', e => {
@@ -118,11 +158,17 @@ function renderFinder() {
     comparePrefs={lines:prefs.lines,cannotPort:prefs.cannotPort,fromFinder:true};
     saveCompare();
     renderCompare();
-    const ranked = rankMatches(catalog,prefs,localDay());
+    const recommendationCatalog={
+      ...catalog,
+      phones:catalog.phones.filter(phone=>!officialHeadlineUnderReview(phone))
+    };
+    const suppressed=catalog.phones.length-recommendationCatalog.phones.length;
+    const ranked = rankMatches(recommendationCatalog,prefs,localDay());
     const root = document.querySelector('#fb-finder-results');
     root.replaceChildren();
     root.append(element('h3','Matching options'));
     root.append(note('Estimated costs only, not a coverage guarantee or verified carrier quote. Promotions may have additional requirements.'));
+    if(suppressed)root.append(note(suppressed+' handset offer(s) with conflicting official price evidence are excluded from recommendations until reviewed. See Price watch.'));
     for(const msg of ranked.messages) root.append(note(msg));
     root.append(note(ranked.lines>1 ?
       'Plan results show known family prices first, then estimates; within each group the lowest 12-month cost ranks first.' :
@@ -170,6 +216,10 @@ function renderFinder() {
   });
 }
 function fieldValue(type,offer,key) {
+  if(type==='phone' && officialHeadlineUnderReview(offer) &&
+      ['monthly','year','data','hotspot'].includes(key)) {
+    return 'Price under review';
+  }
   if(type==='plan') {
     const c=planCost(offer,comparePrefs.lines,{cannotPort:comparePrefs.cannotPort});
     switch(key) {
@@ -254,19 +304,134 @@ function renderCompare() {
   const links=element('tr'); const source=element('th','Carrier website');source.scope='row';links.append(source);
   for(const item of records){const cell=element('td');cell.append(linkTo(item.url,'View published offer'));links.append(cell);}
   body.append(links);table.append(body);wrap.append(table);compareRoot.append(wrap);
+  if(type==='phone' && records.some(officialHeadlineUnderReview)){
+    compareRoot.append(element('p','A selected handset offer has conflicting official price evidence; its dollar totals are suppressed pending review.','fb-watch-warning'));
+  }
   compareRoot.append(note(type==='plan' ?
     'Household estimates for '+comparePrefs.lines+' '+(comparePrefs.lines===1?'line':'lines')+'. Unknown multi-line prices extrapolate one-line rates; unconfirmed family intro offers are excluded. Taxes and eligibility may change actual costs.' :
     'Device promotions are quoted per handset, NOT for the full household. Credits, delayed rebates, taxes and financing terms may alter estimated totals.'));
 }
+/* ---------- price evidence and observation history ---------- */
+function priceSparkline(rows) {
+  const values=rows.filter(r=>Number.isFinite(r.price)).map(r=>r.price);
+  if (!values.length)return null;
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 300 72');
+  svg.setAttribute('height','72');
+  svg.setAttribute('role','img');
+  svg.setAttribute('aria-label','Official advertised device price history, '+values.length+' observation days. Values are NOT verified checkout amounts.');
+  svg.classList.add('fb-watch-chart');
+  const lo=Math.min(...values),hi=Math.max(...values);
+  const xy=values.map((v,i)=>{
+    const x=values.length===1?150:8+i*284/(values.length-1);
+    const y=hi===lo?36:62-(v-lo)*52/(hi-lo);
+    return {x,y};
+  });
+  const line=document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  line.setAttribute('fill','none');
+  line.setAttribute('stroke','currentColor');
+  line.setAttribute('stroke-width','2.5');
+  line.setAttribute('stroke-linecap','round');
+  line.setAttribute('stroke-linejoin','round');
+  line.setAttribute('points',xy.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' '));
+  svg.append(line);
+  for(const p of [xy[0],xy[xy.length-1]]) {
+    const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('cx',p.x);
+    dot.setAttribute('cy',p.y);
+    dot.setAttribute('r','3.2');
+    dot.setAttribute('fill','currentColor');
+    svg.append(dot);
+  }
+  return svg;
+}
+function reportOfferLink(id,offer){
+  const title='Review Five Bars deal: '+id;
+  const body='The advertised price or eligibility may be wrong.\n\nOffer: '+(offer?.phone||id)+
+    '\nCatalog page: '+(offer?.url||'https://gcd231983.github.io/five-bars/')+
+    '\nWhat needs correcting: ';
+  return linkTo('https://github.com/gcd231983/five-bars/issues/new?title='+
+    encodeURIComponent(title)+'&body='+encodeURIComponent(body),'Report incorrect price (GitHub login)');
+}
+function renderPriceWatch(){
+  const root=document.querySelector('#fb-price-watch-root');
+  if(!root)return;
+  root.replaceChildren();
+  const checked=priceEvidence?.generatedAt;
+  if(!checked){
+    root.append(note('The first strict official-price scan has not published any observations yet. Listed prices still require carrier confirmation.'));
+    return;
+  }
+  const age=Date.now()-Date.parse(checked);
+  const current=Number.isFinite(age)&&age>=0&&age<=EVIDENCE_FRESH_MS;
+  root.append(element('p',
+    'Official source: Boost Mobile. Last check: '+new Date(checked).toLocaleString('en-US')+
+    '. '+(current?'Evidence scan is recent.':'CAUTION: scan is more than 48 hours old.')+
+    ' Checks cover ONLY three models and three advertised headline conditions.','fb-watch-meta'));
+  const summary=priceEvidence.summary||{};
+  root.append(element('p',
+    (summary.headlineMatches||0)+' official headline matches, '+
+    (summary.priceMismatches||0)+' mismatches, '+
+    (summary.needReview||0)+' items requiring review. A match never proves full eligibility, carrier locking, fees or checkout totals.',
+    'fb-subtle'));
+  const group=element('div',null,'fb-watch-grid');
+  const all=(catalog.phones||[]);
+  const entries=Object.entries(priceEvidence.offers||{}).sort(([id1],[id2])=>id1.localeCompare(id2));
+  for(const [id,record] of entries){
+    const original=all.find(x=>x.id===id);
+    if(!original)continue;
+    const card=element('article',null,'fb-watch-card');
+    card.setAttribute('data-offer-id',id);
+    card.append(element('h3',original.phone));
+    card.append(statusNode(original));
+    const catalogPrice=element('div',null,'fb-watch-pair');
+    catalogPrice.append(element('span','Catalog device: '+usd(original.price)));
+    catalogPrice.append(element('span','Catalog plan: '+usd(original.planPrice)+'/mo'));
+    card.append(catalogPrice);
+    if(record.observedPrice!==null && Number.isFinite(record.observedPrice)){
+      const observed=element('p','Official headline observed: '+usd(record.observedPrice)+
+        ' device with '+usd(record.observedPlanPrice)+'/mo plan.','fb-watch-price');
+      card.append(observed);
+    } else card.append(note('No matching official headline extracted on the latest scan.'));
+    if(record.state==='headline_mismatch'||record.state==='ambiguous'){
+      card.append(element('p','Needs review: catalog and official evidence do not agree.','fb-watch-warning'));
+    }
+    if(record.note)card.append(note(record.note));
+    const entries=(priceHistory?.offers?.[id]||[]).filter(x=>x&&Number.isFinite(x.price));
+    if(entries.length){
+      const sorted=[...entries].sort((a,b)=>a.date.localeCompare(b.date));
+      const earliest=sorted[0],latest=sorted[sorted.length-1];
+      card.append(element('p','Observed '+sorted.length+' day(s), '+earliest.date+' to '+latest.date+
+        '. Latest: '+usd(latest.price)+'.','fb-subtle'));
+      card.append(priceSparkline(sorted));
+    } else card.append(note('No historical price observations yet.'));
+    const actions=element('div',null,'fb-card-actions');
+    actions.append(linkTo('https://www.boostmobile.com/deals','Official advertised offers'));
+    actions.append(reportOfferLink(id,original));
+    card.append(actions);
+    group.append(card);
+  }
+  if(group.childElementCount)root.append(group);
+  else root.append(note('There are no scoped price observations in the latest report.'));
+  root.append(element('p','History tracks selected device and required-plan headline prices from the official source. It is not a checkout receipt, price guarantee, or an assertion that every condition still applies. Prices on this website will not change automatically from these observations.','fb-watch-detail'));
+}
+
 async function start() {
   renderFinder();
   try {
-    const [c,v] = await Promise.all([
+    const [c,v,proof,history] = await Promise.all([
       fetch('data/deals.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}),
       fetch('data/verifications.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
+      fetch('data/price-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('data/price-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
     ]);
     catalog={plans:Array.isArray(c.plans)?c.plans:[],phones:Array.isArray(c.phones)?c.phones:[]};
     reviews=v?.offers && typeof v.offers==='object'?v.offers:{};
+    priceEvidence=proof?.schema===1 && typeof proof.offers==='object'?proof:null;
+    priceHistory=history?.schema===1 && typeof history.offers==='object'?history:{offers:{}};
+    const submit=finderRoot.querySelector('#fb-finder-form button[type="submit"]');
+    if(submit){submit.disabled=false;submit.removeAttribute('aria-busy');submit.textContent='Find matching options';}
+    renderPriceWatch();
     try{selected=normalizeCompare(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'),catalog);}catch{selected=[];}
     try {
       const stored=JSON.parse(localStorage.getItem(COMPARE_PREFS_KEY)||'null');
@@ -279,6 +444,7 @@ async function start() {
   } catch (e) {
     finderRoot.querySelector('#fb-finder-results').replaceChildren(note('Could not load the catalog. Please refresh the page.'));
     compareRoot.replaceChildren(note('Could not load comparisons.'));
+    document.querySelector('#fb-price-watch-root')?.replaceChildren(note('Price evidence is currently unavailable.'));
   }
 }
 start();

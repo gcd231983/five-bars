@@ -4,6 +4,7 @@
 // This scans canonical public URLs; a reachable page is NOT proof of a deal.
 import { readFile, writeFile, rename } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { BOOST_SOURCE, evaluatePriceEvidence } from './price-evidence.mjs';
 import {
   easternDate, expireKnownOffers, offerDiff,
   parseBoostCandidates, reviewBoostCandidates, safeSourceUrl,
@@ -13,11 +14,13 @@ const root = new URL('../', import.meta.url);
 const dataFile = new URL('site/data/deals.json', root);
 const statusFile = new URL('site/data/status.json', root);
 const changesFile = new URL('site/data/changes.json', root);
+const priceEvidenceFile = new URL('site/data/price-evidence.json', root);
+const priceHistoryFile = new URL('site/data/price-history.json', root);
 const dryRun = process.argv.includes('--dry-run');
 const concurrency = 5;
 const requestTimeoutMs = 12000;
 const maxBytes = 1_500_000;
-const BOOST_URL = 'https://www.boostmobile.com/deals';
+const BOOST_URL = BOOST_SOURCE;
 
 async function json(url, fallback = null) {
   try { return JSON.parse(await readFile(url, 'utf8')); } catch { return fallback; }
@@ -97,6 +100,7 @@ const sources = await mapped(sourceInputs, async s => {
   const hash = result.ok ? createHash('sha256').update(result.html.replace(/\s+/g, ' ').slice(0, 20000)).digest('hex') : null;
   return {
     name: s.name, url: s.url, ok: result.ok,
+    finalUrl: result.ok ? result.finalUrl : null,
     status: result.status || null, note: description(result),
     changedSincePreviousScan: !!(hash && previousStatus.sources?.find(p => p.url === s.url)?.hash && previousStatus.sources.find(p => p.url === s.url).hash !== hash),
     hash,
@@ -113,6 +117,20 @@ const carrierFeed = sources.find(s => s.url === BOOST_URL && s.ok);
 const extracted = carrierFeed ? parseBoostCandidates(carrierFeed._html) : {};
 const priceReviews = reviewBoostCandidates(next, extracted, BOOST_URL);
 alerts.push(...priceReviews);
+// This is an additional, stricter and deliberately limited official-headline
+// check. Only price/plan/port headline text is compared; full terms still
+// require the manual review ledger. Missing/ambiguous pages NEVER edit prices.
+const oldHistory = await json(priceHistoryFile, {schema:1,offers:{}});
+const { report:priceEvidence, history:priceHistory } = evaluatePriceEvidence({
+  catalog:next,
+  html:carrierFeed?._html || '',
+  sourceAvailable:!!carrierFeed,
+  finalUrl:carrierFeed?.finalUrl || BOOST_URL,
+  checkedAt:now.toISOString(),
+  day:today,
+  previousHistory:oldHistory
+});
+alerts.push(...priceEvidence.alerts);
 
 // Check each known offer URL, but NEVER treat HTTP 200 as proof that a specific
 // price, promotion, or activation condition still exists.
@@ -128,6 +146,16 @@ for (const offer of allOffers) {
     checkedAt: now.toISOString(),
     note: link?.ok ? 'Carrier or retailer page reachable; individual deal terms are not verified' : (link?.error || 'Invalid URL'),
   };
+}
+for (const [id, proof] of Object.entries(priceEvidence.offers)) {
+  if (offerStatuses[id]) {
+    offerStatuses[id].priceEvidenceState = proof.state;
+    offerStatuses[id].priceEvidenceScope = proof.scope;
+    offerStatuses[id].priceEvidenceNote = proof.note;
+    if (proof.state === 'headline_mismatch' || proof.state === 'ambiguous') {
+      offerStatuses[id].reviewRequired = true;
+    }
+  }
 }
 for (const { id } of priceReviews) {
   if (offerStatuses[id]) {
@@ -154,6 +182,10 @@ const status = {
     sourcesChecked: sourceInputs.length, sourcesReachable: sourceSuccess,
     offerLinksChecked: urlList.length, offerLinksReachable: scannedLinks.filter(x => x.ok).length,
     priceCandidatesForReview: priceReviews.length,
+    officialHeadlineMatches: priceEvidence.summary.headlineMatches,
+    officialHeadlineMismatches: priceEvidence.summary.priceMismatches,
+    officialHeadlineReviewAlerts: priceEvidence.summary.needReview,
+    officialPriceObservations: priceEvidence.summary.observationsRecorded,
     automaticChanges: automaticChanges.length, expiredPhoneDealsRemoved: expiredPhones.length,
     reviewAlerts: alerts.length,
   },
@@ -170,12 +202,17 @@ if (!dryRun) {
   await writeJson(dataFile, next);
   await writeJson(changesFile, newChanges);
   await writeJson(statusFile, status);
+  await writeJson(priceEvidenceFile, priceEvidence);
+  await writeJson(priceHistoryFile, priceHistory);
 }
 console.log(JSON.stringify({
   date: today, dryRun,
   sources: `${sourceSuccess}/${sourceInputs.length}`,
   links: `${status.summary.offerLinksReachable}/${urlList.length}`,
   priceCandidatesForReview: status.summary.priceCandidatesForReview,
+  officialHeadlineMatches: priceEvidence.summary.headlineMatches,
+  officialHeadlineReviewAlerts: priceEvidence.summary.needReview,
+  priceObservations: priceEvidence.summary.observationsRecorded,
   catalogChanges: diff,
   alerts: alerts.length,
   wroteFiles: !dryRun,
