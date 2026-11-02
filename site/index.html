@@ -76,6 +76,8 @@ button,select,textarea{font:inherit;color:inherit}
 /* Tabs */
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);z-index:5;border-bottom:1px solid var(--line)}
 .tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.fb-tab-swipe{display:none;margin:0;padding:0 12px 5px;color:var(--muted);font-size:.7rem;text-align:center}
+@media (max-width:620px){.tabs .wrap{scrollbar-width:thin}.fb-tab-swipe{display:block}}
 .tab{background:none;border:0;padding:13px 10px 10px;color:var(--muted);font-weight:650;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
 .tab[aria-selected="true"]{color:var(--ink);border-color:var(--accent)}
 .tab .count{font-weight:500;margin-left:3px}
@@ -239,6 +241,7 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
     <button class="tab" role="tab" data-tab="pricewatch" id="t-pricewatch" aria-controls="p-pricewatch">Price watch</button>
     <button class="tab" role="tab" data-tab="sources" id="t-sources" aria-controls="p-sources">Sources &amp; refresh</button>
   </div>
+  <p class="fb-tab-swipe">Swipe sideways for Compare, Price watch and Sources.</p>
 </nav>
 
 <main class="wrap">
