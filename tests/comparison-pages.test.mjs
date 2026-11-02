@@ -106,7 +106,7 @@ test('sitemap includes only reader-facing pages and excludes noindex editorial w
  assert.ok(!xml.includes('review-workbench.html'));
  const editor=read('site/review-workbench.html');
  assert.match(editor,/name="robots" content="noindex,nofollow"/);
- assert.match(editor,/not a sign-off/i);
+ assert.match(editor,/NOT proof of verification/i);
 });
 test('empty or uncurated guide data fails safely',()=>{
  const fake={...GUIDES[0],slug:'forged'};
