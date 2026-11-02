@@ -2,10 +2,11 @@
 // Human-reviewed evidence only. Automated link scans NEVER run this command.
 // Usage:
 //   node scripts/review-offer.mjs audit
-//   node scripts/review-offer.mjs verify OFFER_ID https://official-carrier-url --full-terms-reviewed
+//   node scripts/review-offer.mjs verify OFFER_ID https://official-carrier-url --full-terms-reviewed --checkout-json JSON --reviewer-actor GH_LOGIN
 //   node scripts/review-offer.mjs invalidate OFFER_ID
 import {readFile,writeFile} from 'node:fs/promises';
 import {localDay,offerSignature,verificationState,validDay} from '../site/value-core.mjs';
+import {validateReviewRequest,VERIFY_ATTESTATION} from './review-gate.mjs';
 import {safeSourceUrl} from './auto-core.mjs';
 
 const catalogFile=new URL('../site/data/deals.json',import.meta.url);
@@ -27,12 +28,19 @@ if(command==='verify'){
   if(!opts.includes('--full-terms-reviewed')) {
     throw Error('You must manually inspect the exact deal, price, service requirements and exceptions before adding --full-terms-reviewed');
   }
-  const p=lookup(id);
-  // This is an explicit manual assertion. No AI output or HTTP 200 may certify an offer.
+  const ix=opts.indexOf('--checkout-json'),rx=opts.indexOf('--reviewer-actor');
+  if(ix<0||rx<0||!opts[ix+1]||!opts[rx+1])
+    throw Error('Anonymized checkout details and attributed reviewer are required; a URL is insufficient');
+  const request=validateReviewRequest({
+    operation:'verify',id,evidenceUrl:url,attestation:VERIFY_ATTESTATION,
+    reviewDetails:opts[ix+1],reviewerActor:opts[rx+1],catalog,today
+  });
+  const p=request.offer;
+  // A human-confirmed, scenario-specific quote, NOT a universal checkout promise.
   records.offers[id]={
-    scope:'full_terms',verifiedAt:today,evidenceUrl:url,
-    signature:offerSignature(p),
-    method:'Human checked price, term, eligibility, financing/rebate restrictions and carrier page',
+    scope:'full_terms',verifiedAt:today,evidenceUrl:request.sourceUrl,
+    signature:offerSignature(p),reviewerActor:request.reviewerActor,
+    checkout:request.checkout,method:'anonymized_human_checkout_quote'
   };
   await save();
   console.log('Recorded manual full-terms review for '+id+' on '+today+'. This evidence becomes stale after 14 days.');
@@ -59,6 +67,6 @@ if(command==='verify'){
   console.log(JSON.stringify({total:Object.keys(records.offers).length,current,stale,changed,invalid,unreviewed:all.length-current},null,2));
   if(invalid)process.exitCode=1;
 }else{
-  console.error('Usage: node scripts/review-offer.mjs audit | verify ID URL --full-terms-reviewed | invalidate ID');
+  console.error('Usage: node scripts/review-offer.mjs audit | verify ID URL --full-terms-reviewed --checkout-json JSON --reviewer-actor GH_LOGIN | invalidate ID');
   process.exitCode=2;
 }
