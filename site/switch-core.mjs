@@ -132,6 +132,8 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
   const config=normalizeScenario(scenario);
   const offer=sampleOffer(catalog,type,id);
   if(!offer)throw Error('The selected listing is not in the current catalog.');
+  if(type==='phone'&&offer.postpaid===true)
+    throw Error('Financed/trade-in phone promotion: no reliable savings without full device retail price, installment payments, qualifying service and credit-loss/payoff terms. Ask the carrier for its complete agreement first.');
   // A dated, manually researched public official price baseline may contradict
   // future catalog edits. Stop showing savings until the discrepancy is resolved.
   // A baseline match is NOT independent full checkout verification.
