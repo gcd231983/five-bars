@@ -116,6 +116,7 @@ export function buildResearchAudit({catalog,ledger={},research,today=localDay()}
   const review=verificationState(o,ledger.offers?.[o.id],today);
   return {
    id:o.id,carrier:o.carrier,offer:o.plan||o.phone,kind:o.kind,
+   availability:o.availability||null,availabilityObservedOn:o.availabilityObservedOn||null,listedUrl:o.url||null,
    catalogPrice:o.price,billingMonths:o.billingMonths||1,billingUpfront:o.billingUpfront||null,
    researchState:state.state,researchLabel:state.label,
    issues:state.issues,manualReview:review.status,
@@ -131,7 +132,8 @@ export function buildResearchAudit({catalog,ledger={},research,today=localDay()}
   aged:entries.filter(x=>x.researchState==='aged').length,
   notResearched:entries.filter(x=>x.researchState==='not_researched').length,
   manuallyFullyReviewed:entries.filter(x=>x.manualReview==='verified').length,
-  needingFullTerms:entries.filter(x=>x.manualReview!=='verified').length
+  needingFullTerms:entries.filter(x=>x.manualReview!=='verified').length,
+  availabilityHolds:entries.filter(x=>x.availability==='out_of_stock').length
  };
  return {
   schema:1,asOf:today,researchObservedOn:research.observedOn,
@@ -208,12 +210,31 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
   for(const question of record.unresolved)sections.push('<li>'+safe(question)+'</li>');
   sections.push('</ul></article>');
  }
- sections.push('</section><section><h2>Remaining catalog items without this source audit</h2>'+
-  '<p>These listings still need dated official publication research and full-terms review; their existing prices should not be mistaken for validated offers.</p><ul>');
- for(const item of audit.offers.filter(x=>x.researchState==='not_researched')){
-  sections.push('<li>'+safe(item.carrier)+' — '+safe(item.offer)+' ('+safe(item.kind)+')</li>');
+ sections.push('</section><section><h2>Stock and checkout holds ('+sum.availabilityHolds+')</h2>'+
+  '<p>These promotions were listed as out of stock on the dated observation. Historic advertised prices remain for context, but the finder, comparison and Switch &amp; Save must not model them as purchasable offers.</p><ul>');
+ for(const item of audit.offers.filter(x=>x.availability==='out_of_stock')){
+  sections.push('<li><strong>'+safe(item.carrier)+' — '+safe(item.offer)+'</strong>; observed '+
+    safe(item.availabilityObservedOn||'date unknown')+'. '+href(item.listedUrl,'Recheck stock at listed carrier page')+
+    '. No current checkout certification.</li>');
  }
- sections.push('</ul></section><section><h2>How to improve this record</h2>'+
+ sections.push('</ul></section><section><h2>Research next — prioritized source checklist</h2>'+
+  '<p>Priorities are deterministic screening suggestions, not carrier ratings. Research listed links before making customer-specific claims. A link may point to a retailer rather than the carrier. Each listing requires a dated carrier publication plus eligibility, payment and stock confirmation.</p><ol>');
+ const pending=audit.offers.filter(x=>x.researchState==='not_researched').map(item=>{
+  const phone=item.kind==='phone';
+  const postpaid=catalog.phones.some(x=>x.id===item.id&&x.postpaid);
+  const risk=postpaid?0:phone?1:2;
+  const why=postpaid?'Financing retail balance, installments and credit-loss terms missing':
+    phone?'Phone price, qualifying service, device tax, stock and transfer terms to confirm':
+    'Plan rate, taxes, AutoPay, activation and household terms to confirm';
+  return {item,risk,why};
+ }).sort((a,b)=>a.risk-b.risk||a.item.carrier.localeCompare(b.item.carrier)||a.item.id.localeCompare(b.item.id));
+ for(const {item,risk,why} of pending){
+  sections.push('<li><strong>'+safe(risk===0?'Financing priority':risk===1?'Device priority':'Plan priority')+
+    ' — '+safe(item.carrier)+' — '+safe(item.offer)+'</strong> ('+safe(item.kind)+'). '+
+    safe(why)+'. '+href(item.listedUrl,'Inspect listed offer URL')+
+    '. <em>No dated first-level carrier research recorded.</em></li>');
+ }
+ sections.push('</ol></section><section><h2>How to improve this record</h2>'+
   '<p>Researchers should document the exact carrier source URL, standard price, upfront payment, promotion restrictions, included data, taxes and limitations. Never convert a successful HTTP request or copied price headline into a full-terms sign-off.</p>'+
   '<p>See the <a href="review-workbench.html">offer review workbench</a> for a human inspection checklist and the protected GitHub sign-off workflow.</p></section></main>');
  return htmlDoc(sections.join(''));
