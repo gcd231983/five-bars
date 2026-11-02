@@ -19,6 +19,7 @@ let priceHistory = {offers:{}};
 let mvnoEvidence = null;
 let mvnoHistory = {offers:{}};
 let reviewQueue = null;
+let alertFeed = null;
 const EVIDENCE_FRESH_MS = 48*60*60*1000;
 
 function element(tag, content, className) {
@@ -501,10 +502,56 @@ function appendReviewQueue(root){
   root.append(section);
 }
 
+function appendActionAlerts(root){
+  const section=element('section',null,'fb-action-alerts');
+  section.id='fb-action-alerts';
+  section.append(element('h3','Actionable price & deadline alerts'));
+  section.append(note('Only approaching catalog promotion deadlines, observed official headline changes and unresolved official price discrepancies trigger these alerts. HTTP errors and routine missing full-terms reviews do not create notifications.'));
+  if(!alertFeed?.generatedAt || !Array.isArray(alertFeed.events)){
+    section.append(note('The first daily alert check has not published results yet.'));
+    root.append(section);
+    return;
+  }
+  const active=alertFeed.events.filter(a=>a&&a.active===true);
+  const summary=alertFeed.summary||{};
+  const stamp=Date.parse(alertFeed.generatedAt);
+  section.append(element('p',
+    active.length+' currently actionable alert(s) · '+(summary.critical||0)+' critical price conflicts · '+
+    (summary.high||0)+' deadline or rate-change alerts. Checked '+
+    (Number.isFinite(stamp)?new Date(stamp).toLocaleString('en-US'):'date unavailable')+'.',
+    'fb-watch-meta'));
+  if(!active.length){
+    section.append(note('No qualifying price discrepancies, headline changes or near-term catalog deadlines in the latest scan. This does NOT mean every listing has been fully verified.'));
+  }else{
+    const list=element('div',null,'fb-action-list');
+    for(const a of active.slice(0,12)){
+      const card=element('article',null,'fb-action-card');
+      card.setAttribute('data-alert-key',String(a.key||'').slice(0,160));
+      card.append(element('h4',String(a.title||'Offer requires review')));
+      card.append(element('p',String(a.severity||'review').toUpperCase()+' · '+
+        (a.type==='deadline'?'Catalog deadline':a.type==='conflict'?'Official price conflict':'Observed headline change'),
+        'fb-subtle'));
+      if(a.description)card.append(note(a.description));
+      if(a.action)card.append(note('What to check: '+a.action));
+      const actions=element('div',null,'fb-card-actions');
+      if(a.sourceUrl)actions.append(linkTo(a.sourceUrl,'Official carrier source'));
+      actions.append(linkTo('https://github.com/gcd231983/five-bars/issues?q=is%3Aissue+%22%5BFive+Bars%5D%22','View GitHub alerts'));
+      card.append(actions);
+      list.append(card);
+    }
+    section.append(list);
+  }
+  if(alertFeed.events.some(e=>e?.active===false))
+    section.append(note('Past events remain in the alert record for transparency; they are not sent as new daily notifications.'));
+  section.append(note('GitHub sends notifications according to your repository and assigned-issue notification settings. Closing an alert issue manually will not cause the bot to reopen it for the same event.'));
+  root.append(section);
+}
+
 function renderPriceWatch(){
   const root=document.querySelector('#fb-price-watch-root');
   if(!root)return;
   root.replaceChildren();
+  appendActionAlerts(root);
   const checked=priceEvidence?.generatedAt;
   if(!checked){
     root.append(note('The first strict Boost device-price scan has not published any observations yet. Listed prices still require carrier confirmation.'));
@@ -572,7 +619,7 @@ function renderPriceWatch(){
 async function start() {
   renderFinder();
   try {
-    const [c,v,proof,history,mvnoProof,mvnoRecords,queue] = await Promise.all([
+    const [c,v,proof,history,mvnoProof,mvnoRecords,queue,alerts] = await Promise.all([
       fetch('data/deals.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}),
       fetch('data/verifications.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
       fetch('data/price-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
@@ -580,6 +627,7 @@ async function start() {
       fetch('data/mvno-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('data/mvno-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
       fetch('data/review-queue.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('data/alerts.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
     ]);
     catalog={plans:Array.isArray(c.plans)?c.plans:[],phones:Array.isArray(c.phones)?c.phones:[]};
     const providerSelect=finderRoot.querySelector('#fb-provider');
@@ -596,6 +644,7 @@ async function start() {
     mvnoEvidence=mvnoProof?.schema===1 && typeof mvnoProof.offers==='object'?mvnoProof:null;
     mvnoHistory=mvnoRecords?.schema===1 && typeof mvnoRecords.offers==='object'?mvnoRecords:{offers:{}};
     reviewQueue=queue?.schema===1 && Array.isArray(queue.items)?queue:null;
+    alertFeed=alerts?.schema===1 && Array.isArray(alerts.events)?alerts:null;
     const submit=finderRoot.querySelector('#fb-finder-form button[type="submit"]');
     if(submit){submit.disabled=false;submit.removeAttribute('aria-busy');submit.textContent='Find matching options';}
     renderPriceWatch();
