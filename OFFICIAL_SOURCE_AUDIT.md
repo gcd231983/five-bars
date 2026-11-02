@@ -5,14 +5,14 @@
 ## Current coverage and meanings
 
 - **Total catalog**: 78 items — 38 plans, 40 device promotions.
-- **28 published plan-price baselines researched**: the previous 15 plus 13 additional official plan observations (Helium, Metro, Red Pocket, Boost, H2O annual and Good2Go annual).
+- **36 dated plan-rate baselines researched**: the previous 28 plus Ultra Mobile (two plans), MobileX (two plans), Google Fi Essentials, Consumer Cellular 1GB, Tracfone Freedom and Straight Talk StraightSAVINGS.
 - **9 dated conditional handset headlines researched**: the original five plus Boost Pixel 10a, Boost Motorola razr 2025, Boost Moto G 2026 and Visible iPhone 18 Pro.
-- **41 entries remain without recorded official-publication research**: 10 other service plans and 31 phone offers. A matching conditional handset headline does not establish checkout eligibility.
+- **33 entries remain without recorded official-publication research**: 2 other service plans and 31 phone offers. A matching conditional handset headline does not establish checkout eligibility.
 - **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Official source research and a rate match do not change this.
 - **Research date**: 2026-11-02. The generator marks price-source observations aged after 21 days; the separately signed full-terms review expires after 14 days or a material data change.
 
 Public record: https://gcd231983.github.io/five-bars/source-research.html
-Underlying 37-item source file: `site/data/research-evidence.json`.
+Underlying 45-item source file: `site/data/research-evidence.json`.
 Machine-readable coverage report: `site/data/research-audit.json`.
 
 ## Confirmed public-rate baselines (not checkout)
@@ -116,3 +116,24 @@ These policy links explain risks; they do NOT verify any particular device promo
 **Good2Go annual prepaid:** 1GB $60 upfront ($5/month equivalent), 3GB $120 upfront ($10/month equivalent), 5GB $240 upfront ($20/month equivalent); always display cash paid annually. Official https://annualplans.good2gomobile.com/home-page
 
 The source ledger now records **37/78** dated public-source findings (28 service plans and nine device promotions); **41/78** remain unresearched at this level; **0/78** have complete human full-terms checkout sign-offs. Records retain open eligibility and tax questions. New documentary fields capture the *conditional introductory amount, number of promo months and required customer status* so material catalog mismatches pause savings. The site links directly from a plan or phone badge to its dated source record; a source badge says PARTIAL, not verified checkout.
+
+## Five Bars 3.6 — verified-publication scope and port/prepayment rules (November 2, 2026)
+
+The default plan comparison no longer assumes a shopper is eligible to **port in an active number**. US Mobile Starter/Premium promotional prices appear in the calculator only if the visitor positively confirms eligible number transfer; no answer means regular monthly price. In the guided finder, number transfer is a three-way choice (**unconfirmed / yes / no**); port-required phone offers do not appear as qualifying recommendations until yes. The catalog still lists conditionally advertised devices for browsing with eligibility warnings, and Switch & Save independently requires port eligibility.
+
+US Mobile's current public plan selector advertises **$15/mo Starter and $25/mo Premium for six months with port-in**, then $25 and $44; its separately published October 20 carrier articles describe alternative FBF10/FBF20 code campaigns at $10/$20 for six months. These should **not** be conflated, substituted without selecting the actual offer channel, or stacked. The selected online promo records now sign the amount, term and transfer condition as a partial carrier observation, not a checkout approval. Sources: https://www.usmobile.com/plans and https://www.usmobile.com/blog/cell-phone-plans/ .
+
+**Ultra prepaid billing correction:** The site previously modeled a multi-month advance-payment headline as a regular 12-month introductory subscription without charging the advance payment. That assumption was removed. The quoted **one-month** Ultra Unlimited cost is $49; Ultra 4GB costs $19, before taxes/fees. Carrier-published 3/6/12-month rates require selecting those separate durations and paying all months upfront; not included in this one-month model. Ultra official sources: https://www.ultramobile.com/product/unlimited-prepaid-plan/ and https://www.ultramobile.com/product/4gb-prepaid-plan/ .
+
+Other new first-level carrier observations:
+
+| Catalog ID | Observed published service-only baseline | Official source |
+| --- | --- | --- |
+| `mobilex-unlimited10` | $14.88 for 10GB high-speed, then lower speeds; taxes extra | https://mymobilex.com/all-faqs/ |
+| `mobilex-unlimited30` | $24.88 for 30GB high-speed, then lower speeds; taxes extra | https://mymobilex.com/all-faqs/ |
+| `fi` | $35 Fi **Unlimited Essentials**, 30GB high-speed; excludes taxes and temporary Pixel promotions | https://fi.google.com/about/plans |
+| `cc` | $20 Consumer Cellular 1GB with $5 AutoPay/eBilling reduction; additional mandatory phone fees, taxes and activation may apply | https://www.consumercellular.com/shopping/choose/plan |
+| `tracfone` | $45 Tracfone Freedom with Auto-Refill, $50 without; prior anniversary promotion ended Oct 26, 2026 | https://www.tracfone.com/plans/tracfone-freedom-30-days |
+| `straighttalk` | $25 ordinary StraightSAVINGS rate, with qualified new BYOP/AutoPay $20 promotional option **not assumed** | https://www.straighttalk.com/whyst/bring-your-own-phone |
+
+**Evidence boundary:** The published-rate ledger now covers **45 of 78 catalog entries** (36 plans and 9 conditional phone headlines); **33 entries still lack this first-level source research**. Exactly **0 of 78** have customer-specific, complete human checkout verification. Service-only prices may exclude taxes, activation, AutoPay ineligibility, SIM kits, and other compulsory fees; they do not guarantee checkout cash. The published observation date is not overwritten by an automated link check.
