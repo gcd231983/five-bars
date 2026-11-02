@@ -204,6 +204,7 @@ function renderFinder() {
         actions.append(button('Compare',()=>addToCompare('plan',p.id)));
         actions.append(button('See in plan list',()=>goToRow(p.id,'plan')));
         actions.append(button('Watch plan',()=>window.fiveBarsWatch?.('plan',p.id)));
+        actions.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('plan',p.id)));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
         root.append(card);
@@ -223,6 +224,7 @@ function renderFinder() {
         actions.append(button('Compare',()=>addToCompare('phone',p.id)));
         actions.append(button('See offer',()=>goToRow(p.id,'phone')));
         actions.append(button('Watch phone',()=>window.fiveBarsWatch?.('phone',p.id)));
+        actions.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('phone',p.id)));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
         root.append(card);
@@ -651,7 +653,7 @@ async function start() {
     window.fiveBarsWatchData={
       catalog,phoneEvidence:priceEvidence||{offers:{}},
       mvnoEvidence:mvnoEvidence||{offers:{}},siteAlerts:alertFeed||{events:[]},
-      status:status?.schema===1?status:{}
+      status:status?.schema===1?status:{},verifications:reviews
     };
     window.dispatchEvent(new Event('fivebars:watch-data'));
     const submit=finderRoot.querySelector('#fb-finder-form button[type="submit"]');
