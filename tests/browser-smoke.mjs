@@ -116,6 +116,9 @@ try {
       /stale totals suppressed/i);
     assert.equal(await page.locator('#r-boost-a17 .fb-compare-btn').count(),0,
       'disputed offer cannot be compared at stale catalog price');
+    const phoneOverflow=await page.evaluate(()=>document.documentElement.scrollWidth);
+    assert.ok(phoneOverflow<=viewport.width+2,
+      'Price-under-review row must not cause page overflow on '+view+': '+phoneOverflow);
     await page.locator('#t-pricewatch').click();
     assert.equal(await page.locator('#p-pricewatch').isVisible(),true);
     assert.equal(await page.locator('#fb-price-watch-root .fb-watch-card').count(),2,
