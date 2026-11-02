@@ -91,6 +91,7 @@ test('phone row keeps link failure and manual-review warnings together', { skip 
     phoneCalc: () => ({ year: 619.99, due: 69.99, commitment: 69.99, eff: 19.99, ei: null }),
     state: { sort: 'year' }, NET: { multi: { name: 'Multiple networks', c: '#000' } }, NEWIDS: new Set(),
     AUTO_STATUS: { offers: { 'boost-a17': { state: 'source_unavailable', reviewRequired: true } } },
+    RESEARCH_AUDIT:null,
     money: n => '$' + n.toFixed(2),
     el: (tag, props, ...children) => ({ tag, props, children }),
   });
