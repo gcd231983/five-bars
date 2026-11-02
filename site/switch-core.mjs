@@ -155,7 +155,10 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
        (published.billingMonths===12?
         offer.billingMonths!==12||!Number.isFinite(published.billingUpfront)||offer.billingUpfront!==published.billingUpfront:
         offer.billingMonths===12)||
-       (published.publishedFirstMonthPrice!==undefined&&offer.firstMonthPrice!==published.publishedFirstMonthPrice));
+       (published.publishedFirstMonthPrice!==undefined&&offer.firstMonthPrice!==published.publishedFirstMonthPrice)||
+       (published.publishedPromoPrice!==undefined&&
+        (offer.promo?.price!==published.publishedPromoPrice||offer.promo?.months!==published.publishedPromoMonths||
+         offer.promo?.req!==published.publishedPromoRequirement)));
     if(mismatch)throw Error('Official published-source research conflicts with this offer price or required payment terms. Switch estimates are paused pending review.');
   }
   const proof=evidenceStatus(id,type,opts);
