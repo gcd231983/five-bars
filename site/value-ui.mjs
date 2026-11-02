@@ -18,6 +18,7 @@ let priceEvidence = null;
 let priceHistory = {offers:{}};
 let mvnoEvidence = null;
 let mvnoHistory = {offers:{}};
+let reviewQueue = null;
 const EVIDENCE_FRESH_MS = 48*60*60*1000;
 
 function element(tag, content, className) {
@@ -375,7 +376,7 @@ function appendMvnoWatch(root){
   const heading=element('h3','MVNO service-plan rate monitoring');
   heading.id='fb-mvno-watch-title';
   section.append(heading);
-  section.append(note('Strict partial monitoring currently covers selected Helium, MobileX, and Good2Go plans. Tello, H2O Wireless, and Red Pocket are NOT yet automatically price-validated; their official pages block or limit the automated checker. Carrier prices remain subject to taxes, activation, renewal and eligibility.'));
+  section.append(note('Strict partial monitoring covers selected Helium, MobileX, Good2Go and H2O Wireless monthly plans. H2O annual plans, Tello and Red Pocket still need direct manual price reviews because their plan pages block automated access. The H2O homepage shows featured monthly rates only. Carrier taxes, activation and checkout terms are not verified.'));
   const checked=mvnoEvidence?.generatedAt;
   if(!checked){
     section.append(note('The first automatic MVNO price check has not published results yet. Check carrier websites before purchasing.'));
@@ -433,6 +434,73 @@ function appendMvnoWatch(root){
   root.append(section);
 }
 
+
+function appendReviewQueue(root){
+  const section=element('section',null,'fb-review-queue');
+  section.id='fb-review-queue';
+  const h=element('h3','Price & terms review queue');h.id='fb-review-queue-heading';
+  section.append(h);
+  section.append(note('An action list for maintaining trustworthy plan listings. These flags are NOT proof that a deal is invalid. A reachable page or a matching headline never equals full checkout verification.'));
+  if(!reviewQueue?.generatedAt || !Array.isArray(reviewQueue.items)){
+    section.append(note('Automated review priorities have not been published yet. Refer to the official carrier pages before purchasing.'));
+    root.append(section);return;
+  }
+  const stats=reviewQueue.summary||{};
+  section.append(element('p',
+    (stats.critical||0)+' critical, '+(stats.high||0)+' high, '+(stats.medium||0)+
+    ' medium and '+(stats.routine||0)+' routine reviews. '+
+    (stats.withoutCurrentManualReview||0)+' listings have no recent documented full-terms review.',
+    'fb-watch-meta'));
+  const blocked=Array.isArray(reviewQueue.blockedProviders)?reviewQueue.blockedProviders:[];
+  if(blocked.length){
+    section.append(note('Carrier offer pages not fully accessible to the automatic scanner: '+
+      blocked.slice(0,9).map(x=>x.carrier+' ('+x.affected+')').join(', ')+
+      (blocked.length>9?' and others':'')+
+      '. This does not mean the carrier or its offer is unavailable to customers.'));
+  }
+  const filterLabel=element('label','Review priority: ','fb-review-filter');
+  const filter=element('select');
+  filter.setAttribute('aria-label','Filter review items by priority');
+  for(const key of ['all','critical','high','medium','routine']){
+    const opt=element('option',key==='all'?'All priorities':key.charAt(0).toUpperCase()+key.slice(1));
+    opt.value=key;filter.append(opt);
+  }
+  filterLabel.append(filter);section.append(filterLabel);
+  const list=element('div',null,'fb-review-items');
+  list.setAttribute('aria-live','polite');
+  section.append(list);
+  const more=button('Show more reviews',()=>{showAll=true;draw();},'fb-compare-btn');
+  section.append(more);
+  let showAll=false;
+  function draw(){
+    const arr=reviewQueue.items.filter(x=>filter.value==='all'||x.priority===filter.value);
+    const visible=showAll?arr:arr.slice(0,12);
+    list.replaceChildren(...visible.map(item=>{
+      const card=element('article',null,'fb-review-item');
+      card.setAttribute('data-review-offer-id',item.id);
+      const title=element('h4',item.carrier+' — '+item.offer);
+      card.append(title);
+      card.append(element('p',
+        item.priority.toUpperCase()+' PRIORITY · '+item.kind+
+        (item.manualReviewStatus==='verified'?' · Full terms manually checked':' · Full terms not fully verified'),
+        'fb-subtle'));
+      for(const detail of item.reasons.slice(0,3))card.append(note(detail));
+      const links=element('div',null,'fb-card-actions');
+      if(item.link)links.append(linkTo(item.link,'Carrier offer page'));
+      links.append(reportOfferLink(item.id,{phone:item.offer,url:item.link}));
+      card.append(links);
+      return card;
+    }));
+    if(!arr.length)list.append(note('No reviews match this priority filter.'));
+    more.hidden=showAll||arr.length<=12;
+    more.textContent='Show all '+arr.length+' reviews';
+  }
+  filter.addEventListener('change',()=>{showAll=false;draw();});
+  draw();
+  section.append(note('Urgent reviews include official price conflicts and already-ended promotions. Blocked pages and missing independent full-terms checks are kept separate. Reviewed corrections require human confirmation; scans never rewrite advertised prices.'));
+  root.append(section);
+}
+
 function renderPriceWatch(){
   const root=document.querySelector('#fb-price-watch-root');
   if(!root)return;
@@ -441,6 +509,7 @@ function renderPriceWatch(){
   if(!checked){
     root.append(note('The first strict Boost device-price scan has not published any observations yet. Listed prices still require carrier confirmation.'));
     appendMvnoWatch(root);
+    appendReviewQueue(root);
     return;
   }
   root.append(element('h3','Boost Mobile device promotions'));
@@ -497,18 +566,20 @@ function renderPriceWatch(){
   else root.append(note('There are no scoped price observations in the latest report.'));
   root.append(element('p','History tracks selected device and required-plan headline prices from the official source. It is not a checkout receipt, price guarantee, or an assertion that every condition still applies. Prices on this website will not change automatically from these observations.','fb-watch-detail'));
   appendMvnoWatch(root);
+  appendReviewQueue(root);
 }
 
 async function start() {
   renderFinder();
   try {
-    const [c,v,proof,history,mvnoProof,mvnoRecords] = await Promise.all([
+    const [c,v,proof,history,mvnoProof,mvnoRecords,queue] = await Promise.all([
       fetch('data/deals.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}),
       fetch('data/verifications.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
       fetch('data/price-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('data/price-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
       fetch('data/mvno-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('data/mvno-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
+      fetch('data/review-queue.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
     ]);
     catalog={plans:Array.isArray(c.plans)?c.plans:[],phones:Array.isArray(c.phones)?c.phones:[]};
     const providerSelect=finderRoot.querySelector('#fb-provider');
@@ -524,6 +595,7 @@ async function start() {
     priceHistory=history?.schema===1 && typeof history.offers==='object'?history:{offers:{}};
     mvnoEvidence=mvnoProof?.schema===1 && typeof mvnoProof.offers==='object'?mvnoProof:null;
     mvnoHistory=mvnoRecords?.schema===1 && typeof mvnoRecords.offers==='object'?mvnoRecords:{offers:{}};
+    reviewQueue=queue?.schema===1 && Array.isArray(queue.items)?queue:null;
     const submit=finderRoot.querySelector('#fb-finder-form button[type="submit"]');
     if(submit){submit.disabled=false;submit.removeAttribute('aria-busy');submit.textContent='Find matching options';}
     renderPriceWatch();
