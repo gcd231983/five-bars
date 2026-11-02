@@ -19,6 +19,8 @@ jobs:
           node-version: '22'
       - name: Install browser test runner
         run: npm install --no-save playwright@1.56.1
+      - name: Generate official-source evidence audit
+        run: node scripts/build-source-research.mjs
       - name: Generate source-linked comparison pages
         run: node scripts/build-comparisons.mjs
       - name: Run mobile and desktop browser acceptance tests
