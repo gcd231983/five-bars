@@ -414,6 +414,9 @@ try {
     await page.locator('#t-switch').click();
     await page.locator('#fb-switch-type').selectOption('plan');
     await page.locator('#fb-switch-offer').selectOption('mint');
+    await page.locator('[name="payoff"]').fill('0');
+    await page.locator('[name="switchFees"]').fill('0');
+    await page.locator('[name="extraMonthly"]').fill('0');
     await page.locator('#fb-switch-form button[type="submit"]').click();
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$360\.00/);
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$720\.00/);
