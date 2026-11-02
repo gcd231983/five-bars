@@ -117,11 +117,24 @@ export function normalizeScenario(input={}){
   };
 }
 export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
-  mvnoEvidence={},status={},verifications={}}){
+  mvnoEvidence={},status={},verifications={},researchEvidence=null}){
   const opts={phoneEvidence,mvnoEvidence};
   const config=normalizeScenario(scenario);
   const offer=sampleOffer(catalog,type,id);
   if(!offer)throw Error('The selected listing is not in the current catalog.');
+  // A dated, manually researched public official price baseline may contradict
+  // future catalog edits. Stop showing savings until the discrepancy is resolved.
+  // A baseline match is NOT independent full checkout verification.
+  const published=type==='plan'?researchEvidence?.records?.[id]:null;
+  if(published){
+    const mismatch=!Number.isFinite(published.publishedMonthly) ||
+      Math.abs(offer.price-published.publishedMonthly)>0.0001 ||
+      (published.billingMonths===12 ?
+       offer.billingMonths!==12 || !Number.isFinite(published.billingUpfront) ||
+       offer.billingUpfront!==published.billingUpfront :
+       offer.billingMonths===12);
+    if(mismatch)throw Error('Official published-source research conflicts with this plan price or upfront billing. Switch estimates are paused pending review.');
+  }
   const proof=evidenceStatus(id,type,opts);
   if(!healthy(proof)||status?.offers?.[id]?.reviewRequired===true)
     throw Error('Official price evidence or manual-review status conflicts with this listing. Switch estimates are paused until reviewed.');
@@ -159,6 +172,11 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
     ...choice.notes
   ];
   if(unreviewed.status!=='verified')facts.unshift('The complete offer has NOT received a current documented independent full-terms review.');
+  if(published && validDay(published.observedOn)){
+    const researchAge=(Date.parse(config.today+'T12:00:00Z')-Date.parse(published.observedOn+'T12:00:00Z'))/86400000;
+    if(researchAge>21)facts.unshift('The dated official public price research is older than 21 days; reconfirm it before switching.');
+    else facts.unshift('Only the published official plan baseline was cross-checked on '+published.observedOn+'; checkout terms remain unverified.');
+  }
   const summary={
     schema:1,offer:{id:offer.id,kind:type,carrier:offer.carrier,name:type==='plan'?offer.plan:offer.phone,
       url:offer.url,network:offer.net},
