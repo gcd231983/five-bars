@@ -137,3 +137,31 @@ Other new first-level carrier observations:
 | `straighttalk` | $25 ordinary StraightSAVINGS rate, with qualified new BYOP/AutoPay $20 promotional option **not assumed** | https://www.straighttalk.com/whyst/bring-your-own-phone |
 
 **Evidence boundary:** The published-rate ledger now covers **45 of 78 catalog entries** (36 plans and 9 conditional phone headlines); **33 entries still lack this first-level source research**. Exactly **0 of 78** have customer-specific, complete human checkout verification. Service-only prices may exclude taxes, activation, AutoPay ineligibility, SIM kits, and other compulsory fees; they do not guarantee checkout cash. The published observation date is not overwritten by an automated link check.
+
+
+## Five Bars 3.7 — documented mandatory charges and conditional payment-method discounts (November 2, 2026)
+
+**Published price does not imply eligibility.** An official $20 or $45 recurring headline may require AutoPay, Auto-Refill, or AutoPay **and** eBilling. Five Bars now models the official **undiscounted** regular rate unless the visitor actively confirms satisfying the selected carrier's relevant discount conditions. This applies to the main list, guided finder, side-by-side comparison, and Switch & Save; no site account or personal data collection is needed. Payment-method qualification is NOT a human checkout sign-off.
+
+Five dated plan records include source-bound recurring full rates: Metro BYOD $30 versus $25 with AutoPay; Metro Premium $65 versus $60; Total MAX BYO $30 versus $20; Consumer Cellular 1GB $25 versus $20 requiring AutoPay **and** eBilling; Tracfone Freedom $50 versus $45 with qualifying Auto-Refill. Existing first-month source charges remain in the model ($30 Metro BYOD, $65 Metro Premium, $30 Total MAX BYO); the Tracfone publication says Auto-Refill savings start *after* the first month, so a $50 first 30-day service charge is explicitly modeled. This is an estimated service rate only, with customer eligibility and full checkout unresolved.
+
+### Consumer Cellular published fixed provider fees
+
+The official Consumer Cellular broadband facts included with the selected plan list **$3.99 per phone per month operational compliance, $1.00 Federal Universal Service Fund, $0.01 FCC regulatory monthly**, and a **$10 network activation charge per line**. For a *single* 1GB line, Five Bars now adds $5.00 in disclosed monthly carrier fees and $10 activation on first payment, separate from the $20 conditional service rate or $25 undiscounted service rate. Approximate single-line service + these fees: **$40 initially and $370 over 12 months without qualified AutoPay/eBilling**, or **$35 initially and $310 over 12 months** if all discount conditions are met. **Government taxes, other fees, possible fee changes, device cost, device activation surprises, and individual checkout are not verified or included.** Multi-line modeling for this record is withheld.
+
+Official evidence: https://www.consumercellular.com/shopping/choose/plan . All fee figures are *dated* and changeable; the site does not extrapolate known single-line fees to unverified family billing.
+
+### Straight Talk correction
+
+The official $25 StraightSAVINGS BYOP promotion requires an eligible new line, a compatible unlocked device not recently active with Straight Talk, and other conditions. The published FAQ says **the selected plan cannot combine with AutoPay discounts**. A previous Five Bars narrative suggesting a $20 AutoPay rate was inaccurate and has been corrected. The physical-SIM starter bundle is advertised at **$29.88**, consisting of one $25 service month plus a $4.88 physical SIM kit; eSIM or other channels may differ, and taxes/fees are additional. The later rewards device credit is conditional and excluded from estimated checkout cash.
+
+Sources: https://www.straighttalk.com/devices/byop-simkit and https://www.straighttalk.com/whyst/bring-your-own-phone .
+
+Carrier public rates are **not** guaranteed customer-specific quotes. The 45 official-publication records remain separate from independently reviewed checkout terms: **45/78 with partial official research, 33/78 without first-level official research, and 0/78 complete human checkout/full-terms sign-offs**.
+
+### Limits and audit requirements
+
+- A documented fee is additive *once* per cycle or activation in eligible models; user-entered extra monthly fees must NOT duplicate the carrier fees already included in the base amount.
+- A blank discount-eligibility input means **not confirmed**. Payment discount eligibility and new-customer/port-in confirmation are different controls.
+- Changes to recorded undiscounted rate, discount requirements, fixed recurring provider fee or activation charge invalidate earlier manual review signatures and generate a source-material conflict before showing switch savings.
+- All non-recorded taxes, region-dependent levies and provider fees remain **unknown**, not silently represented as $0 in a final bill.
