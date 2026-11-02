@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto';
 import { BOOST_SOURCE, evaluatePriceEvidence } from './price-evidence.mjs';
 import { evaluateMvnoEvidence } from './mvno-evidence.mjs';
 import { buildReviewQueue } from './review-queue.mjs';
+import { buildAlertFeed } from './alert-engine.mjs';
 import {
   easternDate, expireKnownOffers, offerDiff,
   parseBoostCandidates, reviewBoostCandidates, safeSourceUrl,
@@ -22,6 +23,7 @@ const mvnoEvidenceFile = new URL('site/data/mvno-evidence.json', root);
 const mvnoHistoryFile = new URL('site/data/mvno-history.json', root);
 const reviewQueueFile = new URL('site/data/review-queue.json',root);
 const manualReviewsFile = new URL('site/data/verifications.json',root);
+const alertsFile = new URL('site/data/alerts.json',root);
 const dryRun = process.argv.includes('--dry-run');
 const concurrency = 5;
 const requestTimeoutMs = 12000;
@@ -242,6 +244,17 @@ const reviewQueue = buildReviewQueue({
 });
 status.summary.offersNeedingReview=reviewQueue.summary.needAttention;
 status.summary.highPriorityReviews=reviewQueue.summary.critical+reviewQueue.summary.high;
+// Only actual disputed headlines, changed official observations and approaching
+// catalog promotion deadlines enter this actionable feed. Source outages and
+// routine unreviewed records never generate owner notifications.
+const previousFeed=await json(alertsFile,{schema:1,events:[]});
+const alertFeed=buildAlertFeed({
+  catalog:next,phoneEvidence:priceEvidence,mvnoEvidence,
+  phoneHistory:priceHistory,mvnoHistory,
+  previousFeed,generatedAt:now.toISOString(),today
+});
+status.summary.actionablePriceAlerts=alertFeed.summary.active;
+status.summary.criticalPriceAlerts=alertFeed.summary.critical;
 const newChanges = { date: today, ...diff };
 
 if (!dryRun) {
@@ -255,6 +268,7 @@ if (!dryRun) {
   await writeJson(mvnoEvidenceFile, mvnoEvidence);
   await writeJson(mvnoHistoryFile, mvnoHistory);
   await writeJson(reviewQueueFile, reviewQueue);
+  await writeJson(alertsFile, alertFeed);
 }
 console.log(JSON.stringify({
   date: today, dryRun,
@@ -269,6 +283,7 @@ console.log(JSON.stringify({
   mvnoPriceObservations: mvnoEvidence.summary.observationsRecorded,
   mvnoStates: Object.fromEntries(Object.entries(mvnoEvidence.offers).map(([id,p])=>[id,p.state])),
   reviewQueue: reviewQueue.summary,
+  actionableAlerts: alertFeed.summary,
   catalogChanges: diff,
   alerts: alerts.length,
   wroteFiles: !dryRun,
