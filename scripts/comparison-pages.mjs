@@ -151,7 +151,8 @@ function pageEnd({nested=false}={}){
  return '<footer class="wrap"><p>Five Bars is an independent informational comparison, not a wireless carrier. No affiliate commissions or paid placement are recorded for these links. Rates, availability and eligibility must be confirmed with each carrier.</p>'+
    '<nav><a href="'+prefix+'privacy.html">Privacy</a><a href="'+prefix+'editorial.html">Methodology</a>'+
    '<a href="'+prefix+'disclosures.html">Commercial disclosures</a><a href="'+prefix+'switching-guide.html">Switching safely</a>'+
-   '<a href="'+prefix+'carrier-comparisons.html">All comparisons</a></nav></footer></body></html>\n';
+   '<a href="'+prefix+'carrier-comparisons.html">All comparisons</a>'+
+   '<a href="'+prefix+'source-research.html">Official-source audit</a></nav></footer></body></html>\n';
 }
 function dates(data){
  const checked=validDay(data.catalog?.checked)?data.catalog.checked:'Unknown';
