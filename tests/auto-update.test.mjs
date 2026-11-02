@@ -104,7 +104,7 @@ test('scanner publishes review alerts without verified-price claims or catalog m
     for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs', 'mvno-evidence.mjs', 'review-queue.mjs']) {
       await copyFile(new URL('../scripts/' + name, import.meta.url), join(fixture, 'scripts', name));
     }
-    await mkdir(join(fixture,'site'));
+
     await copyFile(new URL('../site/value-core.mjs',import.meta.url),join(fixture,'site/value-core.mjs'));
     const data = {
       checked: '2026-10-29', sources: [{ name: 'Boost', url: 'https://www.boostmobile.com/deals' }],
