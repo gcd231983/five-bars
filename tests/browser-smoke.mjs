@@ -331,11 +331,12 @@ try {
     await page.locator('#fb-switch-type').selectOption('phone');
     await page.locator('#fb-switch-offer').selectOption('cricket-16e');
     assert.equal(await page.locator('#fb-switch-lines').inputValue(),'1');
+    await page.locator('#fb-switch-canport').check();
     await page.locator('#fb-switch-form button[type="submit"]').click();
     assert.match(await switchResult.innerText(),/prepaid service/i,'phone promotion prepay is disclosed');
-    await page.locator('#fb-switch-noport').check();
+    await page.locator('#fb-switch-canport').uncheck();
     await page.locator('#fb-switch-form button[type="submit"]').click();
-    assert.match(await page.locator('#fb-switch-message').innerText(),/requires number transfer/i);
+    assert.match(await page.locator('#fb-switch-message').innerText(),/confirmed eligible number transfer/i);
     for(const name of ['editorial.html','privacy.html','disclosures.html','switching-guide.html']){
       const result=await page.request.get(new URL(name,base).href);
       assert.equal(result.status(),200,name+' must be served');
