@@ -9,6 +9,8 @@ const finderRoot = document.querySelector('#fb-finder-root');
 const compareRoot = document.querySelector('#fb-compare-root');
 if (!finderRoot || !compareRoot) throw new Error('Five Bars comparison panels were not found');
 const STORAGE_KEY = 'fivebars-compare-v1';
+const COMPARE_PREFS_KEY = 'fivebars-household-compare-v1';
+let comparePrefs = {lines:1,cannotPort:false,fromFinder:false};
 let catalog = {plans:[],phones:[]};
 let reviews = {};
 let selected = [];
@@ -54,9 +56,16 @@ function goToRow(id,type) {
   if (row) { row.scrollIntoView({block:'center',behavior:'smooth'}); row.classList.add('hl'); setTimeout(()=>row.classList.remove('hl'),1800); }
 }
 function saveCompare() {
-  try {localStorage.setItem(STORAGE_KEY,JSON.stringify(selected));} catch {}
+  try {
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(selected));
+    localStorage.setItem(COMPARE_PREFS_KEY,JSON.stringify(comparePrefs));
+  } catch {}
 }
 function addToCompare(type,id) {
+  if (!comparePrefs.fromFinder) {
+    const selectedLines=Number(document.querySelector('#lines')?.value);
+    if(Number.isInteger(selectedLines) && selectedLines>=1 && selectedLines<=5) comparePrefs.lines=selectedLines;
+  }
   const next = normalizeCompare([...selected,{type,id}],catalog);
   if (selected.length && selected[0].type!==type) {
     selected = [{type,id}];
@@ -106,12 +115,18 @@ function renderFinder() {
       network:data.get('net'),lines:Number(data.get('lines')),budget:data.get('budget'),
       cannotPort:data.has('cannotPort'),priority:data.has('priority'),hotspot:data.has('hotspot'),
     };
+    comparePrefs={lines:prefs.lines,cannotPort:prefs.cannotPort,fromFinder:true};
+    saveCompare();
+    renderCompare();
     const ranked = rankMatches(catalog,prefs,localDay());
     const root = document.querySelector('#fb-finder-results');
     root.replaceChildren();
     root.append(element('h3','Matching options'));
     root.append(note('Estimated costs only, not a coverage guarantee or verified carrier quote. Promotions may have additional requirements.'));
     for(const msg of ranked.messages) root.append(note(msg));
+    root.append(note(ranked.lines>1 ?
+      'Plan results show known family prices first, then estimates; within each group the lowest 12-month cost ranks first.' :
+      'Plan results are ordered by the estimated first-year service cost.'));
     const showPlans = data.get('device')!=='phone';
     const showPhones = data.get('device')!=='byop';
     if(showPlans) {
@@ -156,16 +171,18 @@ function renderFinder() {
 }
 function fieldValue(type,offer,key) {
   if(type==='plan') {
-    const c=planCost(offer,1);
+    const c=planCost(offer,comparePrefs.lines,{cannotPort:comparePrefs.cannotPort});
     switch(key) {
       case 'network':return offer.net==='multi'?'Choice of networks':offer.net==='att'?'AT&T':offer.net==='vzw'?'Verizon':'T-Mobile';
-      case 'monthly':return usd(c?.nowPerLine)+'/line';
-      case 'year':return usd(c?.year)+'/line';
+      case 'monthly':return usd(c?.monthTotal)+' total'+(c?.estimatedFamilyPrice?' (estimate)':'');
+      case 'year':return usd(c?.year)+' total'+(c?.estimatedFamilyPrice?' (estimate)':'');
       case 'data':return offer.unl?'Unlimited (check limits)':(offer.data||'Not specified');
       case 'hotspot':return offer.hot||'Not specified';
       case 'priority':return offer.pri===true?'Listed priority':offer.pri===false?'Lower priority or variable':'Not specified';
       case 'taxes':return offer.tax?'Included':'Check carrier';
-      case 'eligibility':return offer.promo?.req==='port'?'Intro rate requires port-in':'Check current promo terms';
+      case 'eligibility':return c?.promoFamilyUnconfirmed?'Multi-line intro not confirmed; excluded' :
+        c?.promoSuppressedForNoPort?'Port-in promo excluded as requested' :
+        offer.promo?.req==='port'?'Intro rate requires port-in':'Check current promo terms';
       default:return '—';
     }
   }
@@ -190,10 +207,29 @@ function renderCompare() {
   toolbar.append(button('Clear comparison',()=>{selected=[];saveCompare();renderCompare();}));
   compareRoot.append(toolbar);
   const type=selected[0].type;
+  if(type==='plan'){
+    const label=element('label','Compare household size: ','fb-compare-household');
+    const select=element('select');
+    select.setAttribute('aria-label','Compare household lines');
+    for(let n=1;n<=5;n++){
+      const option=element('option',n+' '+(n===1?'line':'lines'));
+      option.value=String(n);select.append(option);
+    }
+    select.value=String(comparePrefs.lines);
+    select.addEventListener('change',()=>{
+      comparePrefs.lines=Number(select.value);
+      comparePrefs.fromFinder=true;
+      saveCompare();
+      renderCompare();
+    });
+    label.append(select);
+    toolbar.append(label);
+  }
   const records=selected.map(s=>(type==='plan'?catalog.plans:catalog.phones).find(p=>p.id===s.id)).filter(Boolean);
   const labels=type==='plan'
-    ? [['network','Network'],['monthly','Current rate'],['year','12-month service cost'],['data','Data'],['hotspot','Hotspot'],['priority','Data priority'],['taxes','Taxes'],['eligibility','Promo requirements']]
+    ? [['network','Network'],['monthly','Current rate ('+comparePrefs.lines+' lines)'],['year','12-month total ('+comparePrefs.lines+' lines)'],['data','Data'],['hotspot','Hotspot'],['priority','Data priority'],['taxes','Taxes'],['eligibility','Promo requirements']]
     : [['network','Network'],['monthly','Required plan'],['year','Estimated 12-month cost'],['data','Due today (est.)'],['hotspot','Minimum commitment (est.)'],['priority','Carrier lock'],['taxes','Plan type'],['eligibility','Transfer requirement']];
+  compareRoot.append(note('On a phone, swipe the table sideways to see every comparison.')).classList.add('fb-swipe-hint');
   const wrap=element('div',null,'fb-table-wrap');
   const table=element('table',null,'fb-table');
   const head=element('thead'),header=element('tr');
@@ -218,8 +254,9 @@ function renderCompare() {
   const links=element('tr'); const source=element('th','Carrier website');source.scope='row';links.append(source);
   for(const item of records){const cell=element('td');cell.append(linkTo(item.url,'View published offer'));links.append(cell);}
   body.append(links);table.append(body);wrap.append(table);compareRoot.append(wrap);
-  compareRoot.append(note(type==='plan'?'Figures are per line for side-by-side fairness; choose your family size in the Plan Finder for household estimates.' :
-    'Device credits, delayed rebates, taxes and financing terms can alter both estimated upfront and lifetime costs.'));
+  compareRoot.append(note(type==='plan' ?
+    'Household estimates for '+comparePrefs.lines+' '+(comparePrefs.lines===1?'line':'lines')+'. Unknown multi-line prices extrapolate one-line rates; unconfirmed family intro offers are excluded. Taxes and eligibility may change actual costs.' :
+    'Device promotions are quoted per handset, NOT for the full household. Credits, delayed rebates, taxes and financing terms may alter estimated totals.'));
 }
 async function start() {
   renderFinder();
@@ -231,6 +268,12 @@ async function start() {
     catalog={plans:Array.isArray(c.plans)?c.plans:[],phones:Array.isArray(c.phones)?c.phones:[]};
     reviews=v?.offers && typeof v.offers==='object'?v.offers:{};
     try{selected=normalizeCompare(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'),catalog);}catch{selected=[];}
+    try {
+      const stored=JSON.parse(localStorage.getItem(COMPARE_PREFS_KEY)||'null');
+      if(stored && Number.isInteger(stored.lines) && stored.lines>=1 && stored.lines<=5) {
+        comparePrefs={lines:stored.lines,cannotPort:stored.cannotPort===true,fromFinder:stored.fromFinder===true};
+      }
+    }catch{}
     renderCompare();
     decorateCards();
   } catch (e) {
