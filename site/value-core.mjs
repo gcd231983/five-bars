@@ -23,7 +23,7 @@ export function offerSignature(offer) {
   const fields = ['id','carrier','plan','phone','net','os','price','planPrice','priceNote','promo',
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
     'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
-    'billingMonths','billingUpfront','priceSourceDate'];
+    'billingMonths','billingUpfront','firstMonthPrice','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
 export function verificationState(offer, record, today = localDay()) {
@@ -68,10 +68,14 @@ export function planCost(plan, count = 1, options = {}) {
   const monthTotal = discounted * lines;
   const regularMonthTotal = regular * lines;
   const annual = plan.billingMonths===12 && Number.isFinite(plan.billingUpfront) && plan.billingUpfront>0 && lines===1;
-  const year = annual ? plan.billingUpfront : (discounted * introMonths + regular * (12-introMonths)) * lines;
-  const upfrontDue = annual ? plan.billingUpfront : discounted * lines;
+  // A documented first month is charged once, not as a recurring monthly rate.
+  const firstMonthAdjusted=!annual && lines===1 && Number.isFinite(plan.firstMonthPrice) && plan.firstMonthPrice>=0;
+  const firstMonthDue=firstMonthAdjusted?plan.firstMonthPrice:discounted;
+  const year=annual?plan.billingUpfront:(discounted*introMonths+regular*(12-introMonths))*lines +
+    (firstMonthAdjusted?firstMonthDue-discounted:0);
+  const upfrontDue=annual?plan.billingUpfront:(firstMonthAdjusted?firstMonthDue:discounted*lines);
   return {lines,nowPerLine:discounted,regularPerLine:regular,monthTotal,regularMonthTotal,year,
-    upfrontDue,billingMonths:annual?12:1,annualPrepaid:annual,
+    upfrontDue,firstMonthAdjusted,firstMonthDue,billingMonths:annual?12:1,annualPrepaid:annual,
     promoUsed:introAvailable,familyKnown,estimatedFamilyPrice:!familyKnown,
     promoFamilyUnconfirmed:lines>1 && !!promo && !promoAllowedLines,
     promoSuppressedForNoPort:!!promo && !!options.cannotPort && promo.req==='port'};
@@ -142,7 +146,9 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
       ...(plans.some(x=>x.cost.promoFamilyUnconfirmed) ?
         ['Introductory discounts are excluded for multiple lines unless family eligibility is explicitly recorded.'] : []),
       ...(plans.some(x=>x.cost.annualPrepaid) ?
-        ['Annual prepaid plans require the full year payment upfront. The advertised monthly figure is an effective equivalent, not monthly billing.'] : [])
+        ['Annual prepaid plans require the full year payment upfront. The advertised monthly figure is an effective equivalent, not monthly billing.'] : []),
+      ...(plans.some(x=>x.cost.firstMonthAdjusted) ?
+        ['Documented first-month charges are included in upfront and first-year modeled amounts.'] : [])
     ],
   };
 }

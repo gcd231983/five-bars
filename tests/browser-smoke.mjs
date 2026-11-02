@@ -391,9 +391,9 @@ try {
     research.on('pageerror',e=>errors.push(view+' source research: '+e.message));
     await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
     assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
-    assert.equal(await research.locator('.research-article').count(),12);
+    assert.equal(await research.locator('.research-article').count(),15);
     assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human full-terms sign-offs/i);
-    assert.match(await research.locator('main').innerText(),/66.*without documented official-source research/s);
+    assert.match(await research.locator('main').innerText(),/63.*without documented official-source research/s);
     const mint=research.locator('[data-offer-id="mint"]');
     assert.match(await mint.innerText(),/\$360\.00 due upfront for 12 months/);
     assert.match(await mint.innerText(),/\$180/);
@@ -420,6 +420,15 @@ try {
     await page.locator('#fb-switch-form button[type="submit"]').click();
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$360\.00/);
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$720\.00/);
+    await page.locator('#t-plans').click();
+    await page.locator('#carrier').selectOption('Total Wireless');
+    assert.match(await page.locator('#r-total-max').innerText(),/First bill \$30(?:\.00)?/i);
+    assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$250/);
+    await page.locator('#t-switch').click();
+    await page.locator('#fb-switch-offer').selectOption('total-max');
+    await page.locator('#fb-switch-form button[type="submit"]').click();
+    assert.match(await page.locator('#fb-switch-results').innerText(),/\$250\.00/);
+    assert.match(await page.locator('#fb-switch-results').innerText(),/\$490\.00/);
     await context.close();
   }
   assert.deepEqual(errors,[],'no JavaScript page errors');

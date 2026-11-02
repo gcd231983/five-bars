@@ -110,3 +110,8 @@ A targeted public-source audit now records **twelve** plan rate baselines from o
 The static evidence report and edited carrier comparison pages refresh with existing no-AI GitHub Actions, but the November 2 observation date remains fixed until new carrier research is actually conducted. The report marks research **aged after 21 days** and flags catalog rates or annual prepayments that diverge from the dated official record. These public source matches are NOT final checkout validation. The editor workbench now shows each researched offer's official sources and outstanding customer-specific questions.
 
 Next: complete real checkout and human full-terms reviews before calling any offer fully verified, and expand the published-source audit beyond the first 12 plans. Do not apply affiliate tracking or claim paid-partner relationships until agreements and disclosures are approved.
+
+
+## Five Bars 3.1 — first-bill accuracy and official rate coverage (November 2, 2026)
+
+The Total Wireless MAX 5G BYO plan now models a $30 first bill and $20/month afterward with qualifying AutoPay. Estimated service total: $250 over 12 months, $490 over 24, and $730 over 36, before unrecorded taxes, fees, or eligibility changes. First-month source terms invalidate prior manual signatures if changed. There are now 15 dated published plan-baseline records and 63 other listings lacking this first-level research. All 78 require customer-specific checkout/full-terms verification before claiming a verified catalog. Boost Pixel 10a online and in-store advance-payment requirements must not be conflated.

@@ -14,14 +14,14 @@ const ledger=JSON.parse(read('site/data/verifications.json'));
 const date='2026-11-02';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
-test('12 public source-backed plan rates are identified without giving any of 78 offers a human full-terms status',()=>{
- assert.equal(Object.keys(research.records).length,12);
+test('15 public plan baselines are documented without giving any of 78 offers human full-terms status',()=>{
+ assert.equal(Object.keys(research.records).length,15);
  const audit=build();
  assert.equal(audit.summary.offers,78);
- assert.equal(audit.summary.researched,12);
- assert.equal(audit.summary.notResearched,66);
+ assert.equal(audit.summary.researched,15);
+ assert.equal(audit.summary.notResearched,63);
  assert.equal(audit.summary.conflictingOrInvalid,0);
- assert.equal(audit.summary.publishedPriceMatches,12);
+ assert.equal(audit.summary.publishedPriceMatches,15);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  assert.equal(audit.summary.needingFullTerms,78);
  assert.ok(audit.offers.every(x=>x.manualReview!=='verified'));
@@ -42,7 +42,8 @@ test('official dated evidence is auditable, sourced with HTTPS, exact offer IDs,
    assert.equal(url.protocol,'https:');
    assert.ok(url.hostname.endsWith('usmobile.com')||
     url.hostname.endsWith('visible.com')||url.hostname.endsWith('tello.com')||
-    url.hostname.endsWith('mintmobile.com')||url.hostname.endsWith('cricketwireless.com'),id+' unexpected domain');
+    url.hostname.endsWith('mintmobile.com')||url.hostname.endsWith('cricketwireless.com')||
+    url.hostname.endsWith('totalwireless.com')||url.hostname.endsWith('h2owireless.com'),id+' unexpected domain');
    assert.ok(source.supports.length>20);
   }
   assert.equal(record.publishedMonthly,offer.price);
@@ -106,15 +107,15 @@ test('published source matches do not create human verification records',()=>{
  assert.equal(signed.status,'unverified');
  assert.equal(researchStatus(offer,research.records[offer.id],{today:date}).state,'published_match');
 });
-test('static public source audit prints 12 research cards, all 66 unresearched offers and clear noncheckout warnings',()=>{
+test('static public source audit prints 15 research cards, all 63 unresearched offers and clear noncheckout warnings',()=>{
  const html=renderResearchPage({catalog,ledger,research,today:date});
- assert.equal((html.match(/class="guide research-article"/g)||[]).length,12);
+ assert.equal((html.match(/class="guide research-article"/g)||[]).length,15);
  assert.match(html,/What our official sources actually confirm/);
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
  assert.match(html,/Not yet confirmed at checkout/);
  assert.match(html,/full-terms sign-offs/);
- assert.match(html,/66/);
+ assert.match(html,/63/);
  assert.doesNotMatch(html,/100% verified|Guaranteed savings|affiliate commission available/);
  const sandbox=structuredClone(catalog);
  sandbox.plans.find(x=>x.id==='mint').plan='<script>alert(1)</script>';
@@ -136,6 +137,30 @@ test('Switch & Save refuses sourced rate or annual cash discrepancies but never 
  const stale=simulateSwitch({catalog,type:'plan',id:'mint',researchEvidence:research,
   scenario:{currentMonthly:60,lines:1,horizon:12,today:'2026-11-26'}});
  assert.ok(stale.warnings.some(x=>x.includes('older than 21 days')));
+});
+test('Total BYO first month is modeled once across standalone and Switch & Save calculators',()=>{
+ const p=get('total-max');
+ const cost=planCost(p,1,{today:date});
+ assert.equal(cost.monthTotal,20);
+ assert.equal(cost.upfrontDue,30);
+ assert.equal(cost.year,250);
+ const report=simulateSwitch({catalog,type:'plan',id:'total-max',researchEvidence:research,
+  scenario:{lines:1,currentMonthly:60,horizon:12,today:date}});
+ assert.equal(report.chosen.upfrontDue,30);
+ assert.equal(report.results[12].serviceTotal,250);
+ assert.equal(report.results[24].serviceTotal,490);
+ assert.equal(report.results[36].serviceTotal,730);
+ const calc=read('site/index.html').match(/^function planCalc\\(p\\)\\{[\\s\\S]*?^\\}/m)?.[0];
+ assert.ok(calc);
+ const main=runInNewContext(calc+'; planCalc(p);',{p,state:{lines:1,t:{}},endInfo:()=>null});
+ assert.equal(main.upfrontDue,30);
+ assert.equal(main.year,250);
+ assert.match(renderResearchPage({catalog,ledger,research,today:date}),/\\$30\\.00 first month/);
+ const bad={...p,firstMonthPrice:20};
+ assert.equal(researchStatus(bad,research.records['total-max'],{today:date}).state,'conflict');
+ assert.throws(()=>simulateSwitch({catalog:{...catalog,plans:catalog.plans.map(v=>v.id===p.id?bad:v)},
+  type:'plan',id:p.id,researchEvidence:research,
+  scenario:{lines:1,currentMonthly:60,horizon:12,today:date}}),/official published-source research conflicts/i);
 });
 test('unrelated phone offers remain not researched; official source research does not sneak into signed ledger',()=>{
  assert.equal(Object.keys(ledger.offers).length,0);

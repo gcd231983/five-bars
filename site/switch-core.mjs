@@ -47,6 +47,11 @@ function buildCashflow(offer,type,scenario,months){
       for(let month=0;month<months;month++){
         service[month]=money((month<m?cost.nowPerLine:cost.regularPerLine)*L);
       }
+      if(cost.firstMonthAdjusted){
+        service[0]=money(cost.firstMonthDue);
+        note.push('Published first service bill: $'+money(cost.firstMonthDue).toFixed(2)+
+          ', with later bills modeled at the listed rate; confirm AutoPay and eligibility.');
+      }
       serviceUpfront=service[0];
       if(requiresNew)note.push('New-customer introductory pricing excluded because eligibility was not confirmed.');
       if(offer.promo?.req==='port'&&!scenario.canPort)
@@ -132,7 +137,8 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
       (published.billingMonths===12 ?
        offer.billingMonths!==12 || !Number.isFinite(published.billingUpfront) ||
        offer.billingUpfront!==published.billingUpfront :
-       offer.billingMonths===12);
+       offer.billingMonths===12) ||
+      (published.publishedFirstMonthPrice!==undefined && offer.firstMonthPrice!==published.publishedFirstMonthPrice);
     if(mismatch)throw Error('Official published-source research conflicts with this plan price or upfront billing. Switch estimates are paused pending review.');
   }
   const proof=evidenceStatus(id,type,opts);
