@@ -513,7 +513,8 @@ function renderPhones(){
     due:(a,b)=>(a.c.due??big)-(b.c.due??big) || a.c.eff-b.c.eff,
     price:(a,b)=>a.c.eff-b.c.eff || (a.c.year??big)-(b.c.year??big)
   }[state.sort];
-  rows.sort(by);
+  const underReview=d=>['headline_mismatch','ambiguous'].includes(AUTO_STATUS?.offers?.[d.id]?.priceEvidenceState);
+  rows.sort((a,b)=>Number(underReview(a.d))-Number(underReview(b.d)) || by(a,b));
   $("#c-phones").textContent = rows.length;
   const list = $("#phones-list");
   if(!rows.length){ list.replaceChildren(emptyState()); return; }
@@ -521,6 +522,7 @@ function renderPhones(){
     const n = NET[d.net];
     const free = c.eff <= 0;
     const scan = AUTO_STATUS?.offers?.[d.id];
+    const priceDisputed=underReview(d);
     const facts = [
       d.bundle ? "Includes " + d.bundle + " months of service" : (d.planPrice!=null ? "Needs a " + money(d.planPrice) + "/mo plan" : "Needs a premium unlimited plan"),
       d.prepay>1 && !d.bundle && d.id!=="usm-p11" ? "Prepay " + d.prepay + " months" : null,
@@ -537,20 +539,23 @@ function renderPhones(){
         el("div",{class:"plan"}, d.carrier),
         el("div",{class:"net"}, n.name)),
       el("div",{class:"price"},
-        el("div",{class:"now"}, d.price===0 ? (d.postpaid ? "$0 advertised" : "Free") : money(d.price)),
-        d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
-        d.rebate ? el("div",{class:"was"}, money(d.rebate) + " rebate; net phone cost " + money(c.eff)) : null),
-      el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null, scan?.state==="source_unavailable" ? el("li",{class:"warn"}, "Offer link could not be checked") : null, scan?.reviewRequired ? el("li",{class:"warn"}, "Price candidate needs manual review; listed terms are unverified") : null),
+        el("div",{class:"now"}, priceDisputed ? "Price under review" : d.price===0 ? (d.postpaid ? "$0 advertised" : "Free") : money(d.price)),
+        !priceDisputed && d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
+        !priceDisputed && d.rebate ? el("div",{class:"was"}, money(d.rebate) + " rebate; net phone cost " + money(c.eff)) : null),
+      el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null, scan?.state==="source_unavailable" ? el("li",{class:"warn"}, "Offer link could not be checked") : null, scan?.reviewRequired ? el("li",{class:"warn"}, "Price candidate needs manual review; listed terms are unverified") : null,
+      priceDisputed ? el("li",{class:"warn"},"Official price evidence conflicts with this listing; stale totals suppressed") : null),
       ends ? el("div",{class: ends.expired ? "deal off" : "deal"}, ends.expired ? ends.text + ". Recheck before you go." : ends.text + ".") : null,
       d.note ? el("div",{class:"extra"}, d.note) : null,
       el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
-        el("span",{class:"yr"},
-          c.due!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Due today (est.): ", el("b",null, money(c.due))) : "Upfront total: ask carrier. ",
-          c.commitment!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Min. commitment: ", el("b",null, money(c.commitment))) : null,
-          c.year!=null ? el("span",{style:"display:inline-block"}, "First year (est.): ", el("b",null, money(c.year))) : "Plan price varies by trade-in"),
+        priceDisputed ? el("span",{class:"yr fb-watch-warning"},"Device cost and first-year totals are suppressed pending review of the official headline.") :
+          el("span",{class:"yr"},
+            c.due!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Due today (est.): ", el("b",null, money(c.due))) : "Upfront total: ask carrier. ",
+            c.commitment!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Min. commitment: ", el("b",null, money(c.commitment))) : null,
+            c.year!=null ? el("span",{style:"display:inline-block"}, "First year (est.): ", el("b",null, money(c.year))) : "Plan price varies by trade-in"),
         el("a",{href:d.url, target:"_blank", rel:"noopener noreferrer"}, "See it at " + d.carrier.replace(" at Walmart","")),
-        el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("phone",d.id)},"Compare"))
+        priceDisputed ? el("span",{class:"fb-watch-warning"},"Compare after price review") :
+          el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("phone",d.id)},"Compare"))
     );
   }));
 }
