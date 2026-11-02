@@ -37,6 +37,8 @@ test('generated pages have descriptive static SEO copy, canonical URL, disclosur
   assert.match(html,/Single-line standard-rate snapshots/);
   assert.match(html,/Official carrier terms/);
   assert.match(html,/Try Switch &amp; Save/);
+  assert.match(html,/Report an issue/);
+  assert.match(html,/\.\.\/report\.html\?offer=/);
   assert.match(html,/no affiliate commissions/i);
   assert.doesNotMatch(html,/"aggregateRating"|"Product"|"Offer"/);
  }
@@ -103,6 +105,7 @@ test('sitemap includes only reader-facing pages and excludes noindex editorial w
  const xml=renderSitemap(data);
  for(const g of GUIDES)assert.ok(xml.includes('compare/'+g.slug+'.html'));
  assert.ok(xml.includes('carrier-comparisons.html'));
+ assert.ok(xml.includes('report.html'));
  assert.ok(!xml.includes('review-workbench.html'));
  const editor=read('site/review-workbench.html');
  assert.match(editor,/name="robots" content="noindex,nofollow"/);
