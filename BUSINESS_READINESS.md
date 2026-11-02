@@ -137,3 +137,12 @@ Official-publication source coverage now includes 15 wireless plan rates and fiv
 - Dated source coverage expands from 24 to **37 of 78** entries, including official H2O and Good2Go annual-prepay values, which must not be mistaken for monthly cash bills.
 - The public cards now link directly to the dated official-source research, with an explicit **partial evidence, not checkout verified** label. Material source-research disagreements stop comparisons and legacy price cards.
 - **Full checkout-reviewed count remains zero.** Further expansion, independent checkout documentation, complaints/contact paths, and affiliate disclosure review are still required before any verified deal claims or referral monetization.
+
+
+## Five Bars 3.6 — port-in and prepaid promotional protections (November 2, 2026)
+
+- Introductory **port-in discounts** no longer apply automatically to the legacy plans page, shared model, guided finder, or side-by-side comparison. The user must confirm eligible number transfer; "not sure" conservatively models ordinary service prices. The guided finder also withholds port-only handset recommendations until eligibility is positively confirmed. Switch & Save continues to require its own confirmation.
+- Discovered and corrected a financially material mistake: Ultra's prepaid 3/6/12-month **effective** discounted rates were represented as payable monthly intro rates without cash paid upfront. Ultra Unlimited and 4GB now use the sourced **1-month** $49/$19 baselines; multi-month choices are descriptive only until a distinct paid-in-advance catalog model exists. Catalog validator rejects a prepayment promotion entered in the ordinary monthly `promo.text` field.
+- Clarified Google Fi $35 as Essentials rather than Premium, Tracfone Auto-Refill/expired anniversary terms, Straight Talk regular $25 vs conditional $20 AutoPay offer, and Consumer Cellular recurring/activation extras.
+- Extended official-source research from 37 to **45 of 78 listings** (36 plan baselines, nine phone headlines); only two service plans and 31 phone offers lack a dated source record. All 78 still need independent full checkout and customer eligibility reviews.
+- Additional commercial readiness gate: model compulsory service fees and explicit AutoPay eligibility before calling estimates actual paid totals, or continue labeling them conservative **service-only** estimates. Do not monetize referrals as verified-price recommendations yet.
