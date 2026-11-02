@@ -26,7 +26,7 @@ const server=createServer(async (req,res)=>{
 });
 await new Promise(done=>server.listen(0,'127.0.0.1',done));
 const base='http://127.0.0.1:'+server.address().port+'/';
-const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+const browser=await chromium.launch({headless:true,channel:'chrome',args:['--no-sandbox']});
 const output=resolve(dirname(fileURLToPath(import.meta.url)),'../browser-artifacts');
 await mkdir(output,{recursive:true});
 let errors=[];
