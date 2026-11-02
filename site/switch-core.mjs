@@ -29,7 +29,9 @@ function buildCashflow(offer,type,scenario,months){
   if(type==='plan'){
     if(offer.maxLines && L>offer.maxLines)
       throw Error('This plan has not been quoted for '+L+' lines. Reduce your line count or choose another offer.');
-    const cost=planCost(offer,L,{today:scenario.today,cannotPort:scenario.cannotPort});
+    const requiresNew=offer.promo?.req==='new'&&!scenario.newCustomer;
+    const cost=planCost(requiresNew?{...offer,promo:null}:offer,L,
+      {today:scenario.today,cannotPort:scenario.cannotPort||!scenario.canPort});
     if(!cost)throw Error('This plan has no usable published service price.');
     if(cost.annualPrepaid){
       if(!Number.isFinite(offer.billingUpfront)||offer.billingUpfront<=0)
@@ -46,6 +48,9 @@ function buildCashflow(offer,type,scenario,months){
         service[month]=money((month<m?cost.nowPerLine:cost.regularPerLine)*L);
       }
       serviceUpfront=service[0];
+      if(requiresNew)note.push('New-customer introductory pricing excluded because eligibility was not confirmed.');
+      if(offer.promo?.req==='port'&&!scenario.canPort)
+        note.push('Port-in introductory pricing excluded unless the visitor confirms an eligible number transfer.');
       if(cost.promoUsed)note.push('Intro rate applies only for the recorded '+offer.promo.months+
         ' month(s), then modeled at the listed regular rate. Promotion eligibility remains unverified.');
       else if(offer.promo?.req==='port' && scenario.cannotPort)
@@ -60,8 +65,8 @@ function buildCashflow(offer,type,scenario,months){
     if(L!==1)throw Error('Phone promotions are per device. Use one line; household phone bundles cannot be assumed.');
     if(pastEnd(offer.ends,scenario.today))
       throw Error('This device promotion has passed its recorded expiration date.');
-    if(offer.port && scenario.cannotPort)
-      throw Error('This phone promotion requires number transfer. The selected eligibility does not qualify.');
+    if(offer.port && (scenario.cannotPort||!scenario.canPort))
+      throw Error('This phone promotion requires a confirmed eligible number transfer before a savings estimate can be shown.');
     if(!Number.isFinite(offer.price)||offer.price<0)
       throw Error('The advertised device price is unavailable.');
     deviceUpfront=money(offer.price);
@@ -100,8 +105,11 @@ export function normalizeScenario(input={}){
   if(!SWITCH_HORIZONS.includes(h))throw Error('Choose a 12-, 24-, or 36-month comparison.');
   const day=input.today??localDay();
   if(!validDay(day))throw Error('Comparison date is invalid.');
+  if(input.canPort===true && input.cannotPort===true)
+    throw Error('Number-transfer eligibility inputs conflict.');
   return {
     lines,horizon:h,today:day,cannotPort:!!input.cannotPort,
+    canPort:input.canPort===true,newCustomer:input.newCustomer===true,
     currentMonthly:amount('Current monthly bill',input.currentMonthly,5000),
     payoff:amount('Existing device payoff',input.payoff??0),
     switchFees:amount('One-time switching fees',input.switchFees??0),
@@ -193,7 +201,9 @@ export function switchShareParams(type,id,scenario,{includeFinancials=false}={})
   const lines=Number(scenario.lines??1);
   params.set('lines',String(Number.isInteger(lines)&&lines>=1&&lines<=5?lines:1));
   params.set('months',String(SWITCH_HORIZONS.includes(Number(scenario.horizon))?scenario.horizon:12));
-  if(scenario.cannotPort)params.set('noport','1');
+  if(scenario.cannotPort||!scenario.canPort)params.set('noport','1');
+  if(scenario.canPort)params.set('canport','1');
+  if(scenario.newCustomer)params.set('newcustomer','1');
   if(includeFinancials){
     // These values are intentionally omitted by default because links are
     // visible to anyone who receives them and may appear in browser history.
@@ -212,7 +222,9 @@ export function parseSwitchShare(search,catalog){
   const scenario={
     lines:/^[1-5]$/.test(p.get('lines')||'')?Number(p.get('lines')):1,
     horizon:SWITCH_HORIZONS.includes(Number(p.get('months')))?Number(p.get('months')):12,
-    cannotPort:p.get('noport')==='1'
+    cannotPort:p.get('noport')==='1',
+    canPort:p.get('canport')==='1'&&p.get('noport')!=='1',
+    newCustomer:p.get('newcustomer')==='1'
   };
   for(const [key,field] of Object.entries(nums)){
     const v=p.get(field);
