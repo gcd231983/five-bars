@@ -259,6 +259,7 @@ console.log(JSON.stringify({
   mvnoPriceObservations: mvnoEvidence.summary.observationsRecorded,
   mvnoStates: Object.fromEntries(Object.entries(mvnoEvidence.offers).map(([id,p])=>[id,p.state])),
   reviewQueue: reviewQueue.summary,
+  ...(dryRun ? {sourceFailures: sources.filter(x=>!x.ok).map(x=>({name:x.name,note:x.note,status:x.status}))} : {}),
   catalogChanges: diff,
   alerts: alerts.length,
   wroteFiles: !dryRun,
