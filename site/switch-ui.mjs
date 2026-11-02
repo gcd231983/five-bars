@@ -136,8 +136,13 @@ function render(report){
   for(const text of report.warnings)list.append(make('li',text));
   section.append(list);
   const actions=make('div',null,'fb-card-actions');
-  const link=make('a','View carrier offer');link.href=report.offer.url;
-  link.target='_blank';link.rel='noopener noreferrer';actions.append(link);
+  try{
+    const carrierURL=new URL(report.offer.url);
+    if(carrierURL.protocol==='https:'&&!carrierURL.username&&!carrierURL.password&&!carrierURL.port){
+      const link=make('a','View carrier offer');link.href=carrierURL.href;
+      link.target='_blank';link.rel='noopener noreferrer';actions.append(link);
+    }
+  }catch{}
   actions.append(button('Copy full report',()=>copy(formatSwitchSummary(report,{includeInputs:true}),'Full report (including your financial inputs)')));
   actions.append(button('Print / save PDF',()=>window.print()));
   actions.append(button('Share private-safe link',()=>{
@@ -185,7 +190,7 @@ function updateData(){
         ['switchFees','fees'],['extraMonthly','extra']
       ])if(Number.isFinite(share.scenario[key]))form.elements[field].value=share.scenario[key];
       window.showTab?.('switch');
-    }
+    }else if(window.location.hash==='#switch-save')window.showTab?.('switch');
   }
   updateOptions();addCardActions();
 }
