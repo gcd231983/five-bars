@@ -239,9 +239,9 @@ try {
     await page.getByRole('button',{name:'Unlimited data',exact:true}).click();
     await page.locator('#carrier').selectOption('Boost Mobile');
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/);
-    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
+    await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$10/);
-    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
+    await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/);
     await page.locator('#carrier').selectOption('US Mobile');
     assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$25/);
@@ -252,10 +252,10 @@ try {
     await page.getByRole('button',{name:'Can’t move my number'}).click();
     await page.locator('#carrier').selectOption('Ultra Mobile');
     assert.match(await page.locator('#r-ultra .price .now').innerText(),/\$49/);
-    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
+    await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
     assert.match(await page.locator('#r-ultra .price .now').innerText(),/\$49/,
       'multi-month prepaid discounts cannot be quoted as monthly intro rates');
-    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
+    await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
     await page.locator('#carrier').selectOption('any');
     assert.doesNotMatch(await disputed.locator('.foot').innerText(),/12 months \(est\.\)/);
     await page.locator('#plans-list .fb-compare-btn').first().click();
