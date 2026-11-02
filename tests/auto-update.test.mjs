@@ -101,7 +101,7 @@ test('scanner publishes review alerts without verified-price claims or catalog m
   try {
     await mkdir(join(fixture, 'scripts'));
     await mkdir(join(fixture, 'site/data'), { recursive: true });
-    for (const name of ['auto-core.mjs', 'auto-update.mjs']) {
+    for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs']) {
       await copyFile(new URL('../scripts/' + name, import.meta.url), join(fixture, 'scripts', name));
     }
     const data = {
@@ -123,11 +123,21 @@ test('scanner publishes review alerts without verified-price claims or catalog m
     await import(pathToFileURL(join(fixture, 'scripts/auto-update.mjs')).href);
     const saved = JSON.parse(await readFile(join(fixture, 'site/data/deals.json'), 'utf8'));
     const status = JSON.parse(await readFile(join(fixture, 'site/data/status.json'), 'utf8'));
+    const proof = JSON.parse(await readFile(join(fixture, 'site/data/price-evidence.json'), 'utf8'));
+    const history = JSON.parse(await readFile(join(fixture, 'site/data/price-history.json'), 'utf8'));
     assert.deepEqual(saved, data);
     assert.deepEqual(status.automaticChanges, []);
     assert.equal(status.summary.priceCandidatesForReview, 1);
+    assert.equal(proof.schema,1);
+    assert.equal(proof.summary.offersChecked,1);
+    assert.equal(proof.summary.headlineMatches,0,'a short headline cannot claim full price/plan proof');
+    assert.equal(proof.offers['boost-a17'].fullTermsVerified,false);
+    assert.equal(proof.offers['boost-a17'].state,'not_found');
+    assert.deepEqual(history.offers,{},'unmatched snippets cannot create price observations');
     assert.equal(status.summary.pricesMatchedOnCarrierPage, undefined);
     assert.equal(status.offers['boost-a17'].state, 'source_reachable');
+    assert.equal(status.offers['boost-a17'].priceEvidenceState,'not_found');
+    assert.equal(status.summary.officialHeadlineMatches,0);
     assert.equal(status.offers['boost-a17'].reviewRequired, true);
     assert.ok(Object.values(status.offers).every(offer => offer.state !== 'price_and_plan_checked'));
     assert.ok(status.alerts.some(alert => alert.id === 'boost-a17' && alert.verified === false));
