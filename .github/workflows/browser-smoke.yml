@@ -19,8 +19,6 @@ jobs:
           node-version: '22'
       - name: Install browser test runner
         run: npm install --no-save playwright@1.56.1
-      - name: Install Chromium and dependencies
-        run: npx playwright install --with-deps chromium
       - name: Run mobile and desktop browser acceptance tests
         run: node tests/browser-smoke.mjs
       - uses: actions/upload-artifact@v4
