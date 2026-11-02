@@ -42,6 +42,15 @@ test('Eastern date and end-date parser use strict calendar days',()=>{
   assert.equal(pastEnd('2026-11-01','2026-11-01'),false);
 });
 
+test('expired Tello intro cannot be signed after deadline while the $15 plan remains independently reviewable',()=>{
+ const offer={id:'tello',carrier:'Tello',plan:'Everyday 10GB',price:15,promo:{price:10,months:3,req:'new',ends:'2026-11-09'},url:'https://tello.com/buy/custom_plans'};
+ const lastDay=checkoutRecord(offer,'2026-11-09',offer.url);
+ assert.equal(verificationState(offer,lastDay,'2026-11-09').status,'verified');
+ const after=checkoutRecord(offer,'2026-11-10',offer.url);
+ assert.equal(verificationState(offer,after,'2026-11-10').status,'unverified');
+ const regular={...offer,promo:undefined};
+ assert.equal(verificationState(regular,checkoutRecord(regular,'2026-11-10',regular.url),'2026-11-10').status,'verified');
+});
 test('unreviewed offers never acquire a verified label from link checks',()=>{
   const offer=sample.plans[0];
   assert.equal(verificationState(offer,undefined,'2026-11-01').status,'unverified');
