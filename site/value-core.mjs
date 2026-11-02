@@ -47,6 +47,11 @@ export function planCost(plan, count = 1, options = {}) {
   const today = options.today || localDay();
   const regularSingle = Number(plan.price);
   if (!Number.isFinite(regularSingle) || regularSingle < 0) return null;
+  // Annual-prepaid amounts are per recorded offer and must NEVER be treated as
+  // monthly billing for an assumed multi-line household. Until a documented
+  // family-wide annual prepayment exists, these offers are one-line quotes.
+  if (plan.billingMonths===12 &&
+    (lines!==1 || !Number.isFinite(plan.billingUpfront) || plan.billingUpfront<=0))return null;
   const family = lines > 1 && plan.family ? plan.family[String(lines)] : null;
   const familyKnown = lines === 1 || (typeof family === 'number' && Number.isFinite(family) && family >= 0);
   const regular = familyKnown && lines > 1 ? family : regularSingle;

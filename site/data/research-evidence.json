@@ -1,0 +1,350 @@
+{
+  "schema": 1,
+  "observedOn": "2026-11-02",
+  "scope": "Published official plan pages, broadband consumer labels, official FAQ or promotion notice. NOT carrier checkout, customer eligibility, independent full-terms certification, or a price guarantee.",
+  "methodologicalNote": "Values were researched from official public carrier material on November 2, 2026. The source pages can change without notice; recheck expiry, line count, taxes, fees, network coverage, eSIM/IMEI, financing and actual checkout before purchase. Review status stays unverified until an authorized human signs a separate full-terms ledger.",
+  "records": {
+    "usm-starter": {
+      "carrier": "US Mobile",
+      "publishedMonthly": 25,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://www.usmobile.com/broadband-facts",
+          "supports": "FCC-style broadband label: Starter $25 monthly regular, taxes/fees included, no contract"
+        },
+        {
+          "url": "https://www.usmobile.com/plans",
+          "supports": "Eligible port-ins $15/mo for first six months, then $25 regular"
+        },
+        {
+          "url": "https://www.usmobile.com/help/docs/our-plans/core-plans/unlimited-data-plans",
+          "supports": "Network-dependent high-speed and hotspot allotments"
+        }
+      ],
+      "supportedFacts": [
+        "Published standard monthly price is $25 with taxes and fees included",
+        "Published limited new-line port-in offer is $15/month for six months before $25 renewal",
+        "Dark Star Starter includes 20GB hotspot; Warp and Light Speed may have different hotspot/high-speed limits",
+        "Broadband label indicates SD streaming by default unless upgraded"
+      ],
+      "unresolved": [
+        "Confirm current port-in promotion code and whether your number/line qualifies at checkout",
+        "Confirm selected underlying network, device acceptance and priority/high-speed allowances",
+        "Confirm any extra multi-line, smartwatch and activation charges for the intended order"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "usm-premium": {
+      "carrier": "US Mobile",
+      "publishedMonthly": 44,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://www.usmobile.com/broadband-facts",
+          "supports": "Premium non-introductory $44/mo label, taxes/fees included"
+        },
+        {
+          "url": "https://www.usmobile.com/plans",
+          "supports": "Port-in promotion $25/mo for first six months before regular $44"
+        },
+        {
+          "url": "https://www.usmobile.com/help/docs/our-plans/core-plans/unlimited-data-plans",
+          "supports": "Premium hotspot/data allowances differ among underlying networks"
+        }
+      ],
+      "supportedFacts": [
+        "Published regular monthly price is $44 with taxes and fees included",
+        "Eligible port-in published offer is $25/mo for six months before regular renewal",
+        "Dark Star hotspot may include 100GB full speed then 100GB at reduced speed; other networks have lower allowances",
+        "Unthrottled service and premium/high-speed policies vary by network and eligibility"
+      ],
+      "unresolved": [
+        "Verify activation's specific network and current premium data/hotspot policy, including throttling",
+        "Verify promo code, eligibility, subscription date, roaming terms and any add-on charges",
+        "Confirm video quality options, taxes/fees and all checkout totals"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "usm-light": {
+      "carrier": "US Mobile",
+      "publishedMonthly": 10,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://www.usmobile.com/broadband-facts",
+          "supports": "Light 2GB $10/mo standard broadband label; taxes/fees included"
+        },
+        {
+          "url": "https://www.usmobile.com/plans",
+          "supports": "Plan overview and network options"
+        }
+      ],
+      "supportedFacts": [
+        "Official broadband label shows $10/mo nonintroductory Light plan with 2GB data",
+        "Label states taxes and fees included and no annual contract for monthly option",
+        "Annual-billing discount is separate from the $10 monthly price"
+      ],
+      "unresolved": [
+        "Check the exact available networks and device/IMEI support",
+        "Confirm data after 2GB and hotspot allowance, top-ups and any bundle discounts",
+        "Confirm activation, payment and taxes for the intended line"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "visible": {
+      "carrier": "Visible",
+      "publishedMonthly": 25,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://www.visible.com/buy/plans",
+          "supports": "Visible baseline broadband label $25/mo taxes/fees included, no annual contract"
+        },
+        {
+          "url": "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html",
+          "supports": "Verizon network and up-to-5Mbps unlimited hotspot"
+        }
+      ],
+      "supportedFacts": [
+        "Official published standard month-to-month rate is $25 including taxes/fees",
+        "Official base plan has unlimited hotspot subject to up-to-5Mbps speed cap",
+        "Other promotional codes may temporarily reduce the price but are not used in this baseline"
+      ],
+      "unresolved": [
+        "Check latest promotional code and eligibility separately from regular $25 rate",
+        "Check device eSIM/IMEI, exact coverage and any speed-prioritization limitations",
+        "Confirm checkout and any activation or optional add-on charges"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "visible-plus": {
+      "carrier": "Visible",
+      "publishedMonthly": 35,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://www.visible.com/buy/plans",
+          "supports": "Visible+ nonintroductory baseline $35/mo with taxes/fees included"
+        },
+        {
+          "url": "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html",
+          "supports": "Visible+ hotspot up to 10Mbps, streaming and roaming conditions"
+        }
+      ],
+      "supportedFacts": [
+        "Official broadband label standard rate is $35/mo, taxes/fees included",
+        "Visible+ supports unlimited hotspot at speeds up to 10Mbps",
+        "Up to 1080p video is network/device-dependent; standard 5G/LTE may differ",
+        "Published limited-time discount codes may lower the rate but do not change the $35 regular baseline"
+      ],
+      "unresolved": [
+        "Confirm current discount code terms, duration, eligibility and actual billing",
+        "Verify premium data policy on the intended device and coverage",
+        "Check smartwatch, international and activation/checkout details"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "visible-pro": {
+      "carrier": "Visible",
+      "publishedMonthly": 45,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://www.visible.com/buy/plans",
+          "supports": "Visible+ Pro nonintroductory $45/mo label and currently advertised separate discounts"
+        },
+        {
+          "url": "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html",
+          "supports": "Visible+ Pro unlimited hotspot up to 15Mbps and feature tiers"
+        }
+      ],
+      "supportedFacts": [
+        "Published standard monthly rate is $45 with taxes and fees included",
+        "Published hotspot cap is up to 15Mbps with unlimited usage subject to terms",
+        "Up to 4K video requires an eligible 5G Ultra Wideband device/network; elsewhere video quality may be lower",
+        "A temporary promotional code may lower monthly payments but cannot be assumed for all shoppers"
+      ],
+      "unresolved": [
+        "Confirm current promotion duration, eligibility, and cancellation/port rules",
+        "Check 5G Ultra Wideband coverage, international availability and smartwatch conditions",
+        "Confirm checkout charges and plan feature conditions"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "tello": {
+      "carrier": "Tello",
+      "publishedMonthly": 15,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://tello.com/buy/custom_plans",
+          "supports": "Official Everyday 10GB plan $15 ongoing, $10 for first three qualifying months"
+        },
+        {
+          "url": "https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/",
+          "supports": "Official October 22, 2026 promotion: new lines through November 9, 2026 11:59 PM EST"
+        }
+      ],
+      "supportedFacts": [
+        "Regular rate $15/mo for 10GB and unlimited talk/text",
+        "Eligible new lines activated by November 9, 2026 11:59 PM EST pay $10/mo for first three months",
+        "A change or cancellation of the plan ends the introductory pricing",
+        "Hotspot shares the plan's 10GB data allotment; government taxes and up to $0.30 cost recovery can apply"
+      ],
+      "unresolved": [
+        "Check whether promotion remains available at actual sign-up and exact qualifying new-line conditions",
+        "Verify area taxes, total upfront charge and eSIM/IMEI compatibility",
+        "Confirm final coverage and tethering/device restrictions"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "tello-starter": {
+      "carrier": "Tello",
+      "publishedMonthly": 10,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://tello.com/buy/custom_plans",
+          "supports": "Starter 2GB unlimited talk/text at standard $10/mo and broadband consumer facts"
+        },
+        {
+          "url": "https://tello.com/buy/custom_plans?plan=2000-unlimited",
+          "supports": "Detailed 2GB plan page and published broadband facts"
+        }
+      ],
+      "supportedFacts": [
+        "Starter lists 2GB of data with unlimited talk/text for $10/mo",
+        "Data plans include hotspot using the plan's allotment",
+        "Published broadband disclosure lists no early termination fee, variable location taxes and cost-recovery charge"
+      ],
+      "unresolved": [
+        "Confirm exact taxes/cost-recovery and activation charges at checkout",
+        "Confirm 2GB high-speed use and what happens afterward",
+        "Confirm device compatibility and coverage"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "tello-power": {
+      "carrier": "Tello",
+      "publishedMonthly": 20,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://tello.com/buy/custom_plans",
+          "supports": "Power 20GB plan at $20/mo, hotspot shared with plan data"
+        },
+        {
+          "url": "https://tello.com/buy/custom_plans?plan=unlimited-unlim-unlim",
+          "supports": "Official FAQ: all capped plans' hotspot uses plan-data allowance"
+        }
+      ],
+      "supportedFacts": [
+        "Power plan advertises 20GB data and unlimited talk/text at standard $20/mo",
+        "Hotspot draws from 20GB allowance",
+        "No annual commitment indicated on published custom monthly plan page"
+      ],
+      "unresolved": [
+        "Confirm throttling after the monthly high-speed data cap",
+        "Confirm local taxes, cost-recovery charges and actual bill",
+        "Confirm device and coverage suitability"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "tello-max": {
+      "carrier": "Tello",
+      "publishedMonthly": 25,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://tello.com/buy/custom_plans",
+          "supports": "Max unlimited $25 standard plan, hotspot included"
+        },
+        {
+          "url": "https://tello.com/buy/custom_plans?plan=unlimited-unlim-unlim",
+          "supports": "Official Tello unlimited plan hotspot cap 10GB"
+        },
+        {
+          "url": "https://tello.com/buy/custom_plans?plan=0-unlimited-unlimited",
+          "supports": "Published Unlimited broadband disclosure lists 50GB high-speed then throttled; may be dynamically rendered"
+        }
+      ],
+      "supportedFacts": [
+        "Tello Max Unlimited lists regular $25/mo for data and unlimited talk/text",
+        "Official FAQ states Unlimited plan includes 10GB hotspot",
+        "Official broadband disclosure describes 50GB high-speed data then reduced speeds",
+        "New-customer promotions on this tier may differ and are not used in this baseline"
+      ],
+      "unresolved": [
+        "Confirm after-threshold data speeds and priority under intended coverage",
+        "Confirm actual taxes/cost-recovery and any current new-line price",
+        "Confirm device compatibility and hotspot policies"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "mint": {
+      "carrier": "Mint Mobile",
+      "publishedMonthly": 30,
+      "term": "annual_prepaid_renewal",
+      "billingMonths": 12,
+      "billingUpfront": 360,
+      "sources": [
+        {
+          "url": "https://www.mintmobile.com/phone-plans/12-month-plans/",
+          "supports": "Unlimited 12-month renewal $30/mo equivalent, $360 prepaid, taxes/fees extra; checkout promo separate"
+        },
+        {
+          "url": "https://www.mintmobile.com/phone-plans/3-month-plans/",
+          "supports": "Published Unlimited 12-month renewal option $360 upfront from shorter-term plan"
+        },
+        {
+          "url": "https://www.mintmobile.com/help/what-is-mint-mobiles-switch-to-mint-and-get-3-6-or-12-months-of-premium-wireless-for-15-mo-any-plan-promotion/",
+          "supports": "New customers may qualify for temporary $15/month equivalent and $180 upfront for 12 months"
+        }
+      ],
+      "supportedFacts": [
+        "Regular 12-month Unlimited renewal is a $30/mo equivalent but requires $360 paid upfront",
+        "New-customer 12-month promotion can require $180 prepaid for the first 12 months; it is NOT the regular ongoing rate",
+        "Taxes and fees are additional",
+        "High-speed usage over 50GB may be deprioritized during congestion; up to 20GB hotspot, SD video"
+      ],
+      "unresolved": [
+        "Verify actual checkout plan duration, whether the $180 new-customer prepaid offer still applies to the exact customer and cart",
+        "Confirm taxes/fees, refund/cancellation rules, renewal rate and family payment plans",
+        "Confirm IMEI/eSIM and account eligibility; do not assume household monthly billing"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "cricket-supreme": {
+      "carrier": "Cricket",
+      "publishedMonthly": 60,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/support/plans-and-features/plans",
+          "supports": "Supreme Unlimited published $60 baseline with unlimited high-speed"
+        },
+        {
+          "url": "https://qrcricket.cricketwireless.com/en_US/unl50.html",
+          "supports": "Cricket broadband label $60/mo, taxes included, $25 in-store activation; 50GB hotspot, $5 AutoPay after month one"
+        },
+        {
+          "url": "https://qrcricket.cricketwireless.com/en_US/rate-plan-mutli.html",
+          "supports": "Multi-line Supreme price tables assume AutoPay discount starting second month"
+        }
+      ],
+      "supportedFacts": [
+        "Cricket Supreme Unlimited official standard rate is $60/mo, taxes included",
+        "Published plan includes 50GB hotspot",
+        "Eligible AutoPay may reduce cost by $5/mo starting the second month",
+        "Store activation or upgrade can cost $25; catalog family pricing may differ from first-month cash due"
+      ],
+      "unresolved": [
+        "Confirm customer eligibility, AutoPay timing, and 2-5 line first-month checkout totals",
+        "Confirm store versus online activation charges and device promotion requirements",
+        "Confirm international, cancellation and phone unlocking terms"
+      ],
+      "observedOn": "2026-11-02"
+    }
+  }
+}

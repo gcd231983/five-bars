@@ -354,6 +354,7 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
     <p id="scan-status" class="note"></p>
     <ul class="srcs" id="src-list"></ul>
     <h3>How it stays fresh</h3>
+    <p>See the <a href="source-research.html">official-source evidence audit</a>: dated published-price findings, source URLs, checkout questions and the number of offers still awaiting research.</p>
     <p>Every morning, GitHub checks public sources and expires explicitly ended offers. Selected Boost Mobile promotions also receive strict partial checks against official advertised device prices, required plans, and number-transfer wording, with a visible observation history. Missing or conflicting evidence is flagged; no automatic price update or full-deal verification occurs. All other offers still require manual review. No AI or API keys are used.</p>
     <p>Deals with an end date also watch themselves: once a promo expires, its discount drops out of the math; ended phone offers are hidden.</p>
     <p>Editorial maintainers: <a href="review-workbench.html">Open the read-only offer review workbench</a> to investigate unresolved offers and prepare human review notes. Only repository editors can submit signed verifications through GitHub.</p>
@@ -368,6 +369,7 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
       <a href="disclosures.html">Disclosures</a>
       <a href="switching-guide.html">Switching guide</a>
       <a href="carrier-comparisons.html">Compare carriers</a>
+      <a href="source-research.html">Official-source research</a>
       <a href="https://github.com/gcd231983/five-bars/issues/new" target="_blank" rel="noopener noreferrer">Report an issue (GitHub)</a>
     </nav>
   </footer>
@@ -434,6 +436,7 @@ function el(tag, attrs, ...kids){
 /* ---------- plan math ---------- */
 function planCalc(p){
   const L = state.lines;
+  if(p.billingMonths===12 && (L!==1 || !Number.isFinite(p.billingUpfront) || p.billingUpfront<=0))return null;
   let promo = p.promo || null, promoState = null;
   if(promo){
     const ei = endInfo(promo.ends);
@@ -468,6 +471,9 @@ function planCalc(p){
   };
 }
 function planVisible(p){
+  // Without an explicit household annual-prepayment quote, displaying a
+  // monthly due-today figure for two or more lines would be deceptive.
+  if(p.billingMonths===12 && (state.lines!==1 || !Number.isFinite(p.billingUpfront) || p.billingUpfront<=0))return false;
   if(state.net!=="any" && p.net!==state.net && p.net!=="multi") return false;
   if(state.provider && state.provider!=="any" && p.carrier!==state.provider) return false;
   if(p.maxLines && state.lines > p.maxLines) return false;
@@ -581,7 +587,7 @@ function renderPlans(){
   $("#c-plans").textContent = rows.length;
   const L = state.lines;
   $("#plans-note").textContent = L>1
-    ? "12-month cost covers all " + L + " lines. Unknown multi-line prices are estimated from single-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
+    ? "12-month cost covers all " + L + " lines. Annual prepaid plans without an explicit multi-line upfront quote are excluded. Other unknown multi-line prices are estimated from one-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
     : "12-month cost includes any intro price, then the regular price for the rest of the year. Annual prepaid offers show a monthly EQUIVALENT, but require full payment in advance.";
   const list = $("#plans-list");
   if(!rows.length){ list.replaceChildren(emptyState()); return; }

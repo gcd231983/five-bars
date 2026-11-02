@@ -2,6 +2,7 @@
 // Listings and status come from the repo; a generated page is NOT independent
 // carrier checkout verification. No advertising SDKs, AI, tracking or scraping.
 import {planCost,verificationState,localDay,validDay,pastEnd,usd} from '../site/value-core.mjs';
+import {researchStatus} from './source-research.mjs';
 
 const BASE='https://gcd231983.github.io/five-bars/';
 const COLLISION=/^(?:javascript|data|file|ftp):/i;
@@ -91,12 +92,17 @@ export function safeHttps(value){
 }
 const a=(url,text)=>safeHttps(url)?'<a href="'+escapeHtml(safeHttps(url))+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(text)+'</a>':'Official link unavailable';
 function compareLink(id){return BASE+'?switch=plan%3A'+encodeURIComponent(id)+'#switch-save';}
-function statusFor(plan,{ledger,status,mvnoEvidence},today){
+function statusFor(plan,{ledger,status,mvnoEvidence,research},today){
  const checked=verificationState(plan,ledger?.offers?.[plan.id],today);
  const raw=mvnoEvidence?.offers?.[plan.id]?.state;
  const flagged=status?.offers?.[plan.id];
+ const source=research?.records?.[plan.id];
+ const sourceState=researchStatus(plan,source,{today});
  const proof=['headline_mismatch','ambiguous','unresolved_mismatch'].includes(raw);
- const hold=proof||['headline_mismatch','ambiguous','unresolved_mismatch'].includes(flagged?.mvnoPriceEvidenceState);
+ // An actual documented source conflict supersedes pricing claims, including
+ // a previous manual sign-off if source facts now contradict catalog price.
+ const hold=proof||['headline_mismatch','ambiguous','unresolved_mismatch'].includes(flagged?.mvnoPriceEvidenceState)||
+   ['conflict','invalid'].includes(sourceState.state);
  let detail='Not independently verified';
  if(checked.status==='verified')detail='Manual full-terms check: '+checked.verifiedAt;
  else if(checked.status==='stale')detail='Full-terms review expired';
@@ -104,6 +110,11 @@ function statusFor(plan,{ledger,status,mvnoEvidence},today){
  if(raw==='headline_matched')detail+='; partial official rate matched';
  else if(raw==='source_unavailable')detail+='; official rate source unavailable';
  else if(raw==='not_found')detail+='; rate could not be confirmed by scanner';
+ if(sourceState.state==='published_match')detail+='; official published baseline documented '+source.observedOn+' (not checkout)';
+ else if(sourceState.state==='aged')detail+='; published source research is old, reconfirm before purchase';
+ else if(sourceState.state==='conflict'||sourceState.state==='invalid')
+   detail+='; dated official source evidence conflicts or is invalid';
+ else if(!source)detail+='; no documented plan-price research for this offer';
  return {hold,detail,verified:checked.status==='verified'};
 }
 function planSummary(plan,data,today){
@@ -140,7 +151,8 @@ function pageEnd({nested=false}={}){
  return '<footer class="wrap"><p>Five Bars is an independent informational comparison, not a wireless carrier. No affiliate commissions or paid placement are recorded for these links. Rates, availability and eligibility must be confirmed with each carrier.</p>'+
    '<nav><a href="'+prefix+'privacy.html">Privacy</a><a href="'+prefix+'editorial.html">Methodology</a>'+
    '<a href="'+prefix+'disclosures.html">Commercial disclosures</a><a href="'+prefix+'switching-guide.html">Switching safely</a>'+
-   '<a href="'+prefix+'carrier-comparisons.html">All comparisons</a></nav></footer></body></html>\n';
+   '<a href="'+prefix+'carrier-comparisons.html">All comparisons</a>'+
+   '<a href="'+prefix+'source-research.html">Official-source audit</a></nav></footer></body></html>\n';
 }
 function dates(data){
  const checked=validDay(data.catalog?.checked)?data.catalog.checked:'Unknown';
@@ -223,7 +235,7 @@ export function renderHub(data){
 export function renderSitemap(data){
  const day=validDay(data?.catalog?.checked)?data.catalog.checked:'2026-10-29';
  const urls=['','editorial.html','privacy.html','disclosures.html','switching-guide.html',
-  'carrier-comparisons.html',...GUIDES.map(g=>'compare/'+g.slug+'.html')];
+  'carrier-comparisons.html','source-research.html',...GUIDES.map(g=>'compare/'+g.slug+'.html')];
  const xmlEscape=escapeHtml;
  return '<?xml version="1.0" encoding="UTF-8"?>\n'+
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+

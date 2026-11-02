@@ -37,7 +37,7 @@ const pageParts=[
 root.innerHTML=pageParts.join('');
 const form=document.getElementById('fb-switch-form'),results=document.getElementById('fb-switch-results');
 const choose=(field)=>document.getElementById('fb-switch-'+field);
-let catalog=null,phoneEvidence={},mvnoEvidence={},status={},verifications={},selected=null;
+let catalog=null,phoneEvidence={},mvnoEvidence={},status={},verifications={},researchEvidence=null,selected=null;
 let pending=null;
 function listOffers(){
   if(!catalog)return [];
@@ -165,7 +165,7 @@ form.addEventListener('submit',event=>{
         currentMonthly:f.get('currentMonthly'),payoff:f.get('payoff'),
         switchFees:f.get('switchFees'),extraMonthly:f.get('extraMonthly'),
         cannotPort:!f.has('canPort'),canPort:f.has('canPort'),newCustomer:f.has('newCustomer')
-      },phoneEvidence,mvnoEvidence,status,verifications
+      },phoneEvidence,mvnoEvidence,status,verifications,researchEvidence
     });
     render(report);notice('Estimated locally. Please review all assumptions and verify checkout terms with the carrier.');
   }catch(e){results.replaceChildren();notice(e.message||'Could not calculate this offer.');}
@@ -177,7 +177,7 @@ function updateData(){
   const first=!catalog;
   catalog=data.catalog;phoneEvidence=data.phoneEvidence||{};
   mvnoEvidence=data.mvnoEvidence||{};status=data.status||{};
-  verifications=data.verifications||{};
+  verifications=data.verifications||{};researchEvidence=data.researchEvidence||null;
   choose('submit').disabled=false;choose('submit').textContent='Calculate switching savings';
   if(first){
     const share=parseSwitchShare(window.location.search,catalog);

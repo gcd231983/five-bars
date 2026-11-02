@@ -41,7 +41,7 @@ const workSteps=[
  'Phone locking, unlocking and early-exit requirements (when relevant)',
  'Official carrier Broadband Facts or matching detailed plan terms'
 ];
-let queue=[],catalog=null,status=null,ledger={offers:{}},limit=16;
+let queue=[],catalog=null,status=null,ledger={offers:{}},research={records:{}},limit=16;
 const notice=message=>{$('fb-editor-notice').textContent=message;};
 async function load(path){
  const response=await fetch(path,{cache:'no-store'});
@@ -101,6 +101,31 @@ function display(){
   const ul=create('ul');
   for(const reason of reasons.slice(0,6))ul.append(create('li',reason));
   article.append(ul);
+  const official=research.records?.[item.id];
+  if(official){
+    const info=create('details',null,'fb-research-evidence');
+    info.append(create('summary','Official published-price research ('+official.observedOn+'; not checkout)'));
+    const basis=official.billingMonths===12&&Number.isFinite(official.billingUpfront)?
+      '/mo equivalent; '+usd(official.billingUpfront)+' due upfront for 12 months':
+      '/mo standard published rate';
+    info.append(create('p','Official published baseline: '+usd(official.publishedMonthly)+
+      basis+'. This is NOT a full-terms sign-off.'));
+    info.append(create('h4','Official published source links'));
+    const sources=create('ul');
+    for(const src of official.sources||[]){
+      const li=create('li');
+      li.append(link(src.url,src.supports||'Official carrier source'));
+      sources.append(li);
+    }
+    info.append(sources);
+    info.append(create('h4','Open questions for a full checkout review'));
+    const questions=create('ul');
+    for(const q of official.unresolved||[])questions.append(create('li',q));
+    info.append(questions);
+    article.append(info);
+  }else{
+    article.append(create('p','No dated official-source price research has been collected for this listing. Full verification remains outstanding.','fb-review-hint'));
+  }
   const actions=create('div',null,'actions');
   const src=safeUrl(record.url)||safeUrl(item.link);
   if(src)actions.append(link(src,'Open official offer'));
@@ -161,12 +186,14 @@ for(const id of ['fb-review-scope','fb-review-priority','fb-review-carrier','fb-
 }
 $('fb-review-more').addEventListener('click',()=>{limit+=16;display();});
 try{
- const [rawQueue,rawCatalog,rawStatus,rawLedger]=await Promise.all([
+ const [rawQueue,rawCatalog,rawStatus,rawLedger,rawResearch]=await Promise.all([
   load('data/review-queue.json'),load('data/deals.json'),
-  load('data/status.json'),load('data/verifications.json')
+  load('data/status.json'),load('data/verifications.json'),
+  load('data/research-evidence.json')
  ]);
  if(!Array.isArray(rawQueue.items)||!Array.isArray(rawCatalog.plans)||
    !Array.isArray(rawCatalog.phones))throw Error('Offer data is incomplete');
  queue=rawQueue.items;catalog=rawCatalog;status=rawStatus;ledger=rawLedger;
+ research=rawResearch?.schema===1&&rawResearch.records?rawResearch:{records:{}};
  normalize();display();
 }catch(e){$('fb-review-summary').textContent='Review workbench could not load: '+e.message;}

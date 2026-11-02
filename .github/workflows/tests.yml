@@ -17,12 +17,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Build official source audit and evidence dashboard
+        run: node scripts/build-source-research.mjs
       - name: Generate curated comparison pages from current catalog
         run: node scripts/build-comparisons.mjs
       - run: node --test tests/*.test.mjs
       - run: node scripts/deals.mjs check
       - run: node --check scripts/auto-update.mjs
       - run: node --check scripts/comparison-pages.mjs
+      - run: node --check scripts/source-research.mjs
+      - run: node --check scripts/build-source-research.mjs
       - run: node --check scripts/build-comparisons.mjs
       - run: node --check site/review-workbench.mjs
       - run: node --check scripts/price-evidence.mjs

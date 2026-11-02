@@ -109,15 +109,16 @@
       "tax": true,
       "pri": false,
       "hot": "20GB hotspot",
-      "video": "4K video",
-      "extra": "Annual option: $199 for the first year. 30-day free trial with port-in.",
+      "video": "SD video by default; higher resolution may require a plan/network upgrade",
+      "extra": "First 6 months at $15/mo for eligible port-ins on current monthly offer, then $25/mo; annual option is distinct. Unlimited Starter 20GB hotspot on Dark Star; hotspot and high-speed data terms vary by network.",
       "url": "https://www.usmobile.com/plans",
       "family": {
         "2": 25,
         "3": 25,
         "4": 25,
         "5": 25
-      }
+      },
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "usm-premium",
@@ -134,16 +135,17 @@
       },
       "tax": true,
       "pri": true,
-      "hot": "200GB hotspot",
-      "video": "4K video",
-      "extra": "Annual option: $299 for the first year.",
+      "hot": "Dark Star: 100GB full-speed hotspot, then 100GB at up to 8Mbps; other networks differ",
+      "video": "SD video by default on published broadband label; streaming upgrades depend on eligible network",
+      "extra": "First 6 months at $25/mo for eligible port-ins, then $44/mo. Premium hotspot/high-speed allowances vary across Dark Star, Warp and Light Speed; confirm which network you activate.",
       "url": "https://www.usmobile.com/plans",
       "family": {
         "2": 44,
         "3": 44,
         "4": 44,
         "5": 44
-      }
+      },
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "visible",
@@ -162,7 +164,9 @@
         "3": 25,
         "4": 25,
         "5": 25
-      }
+      },
+      "extra": "Standard $25/mo includes taxes/fees. Optional promotions may differ; this catalog uses the regular broadband-label rate.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "visible-plus",
@@ -174,15 +178,16 @@
       "tax": true,
       "pri": true,
       "hot": "Hotspot at 10 Mbps",
-      "video": "1080p video",
-      "extra": "Includes calls and data in Mexico and Canada.",
+      "video": "Up to 1080p on 5G Ultra Wideband; up to 720p on 5G/LTE",
+      "extra": "Standard $35/mo taxes included. Carrier may offer promotional codes; this listing uses the regular rate, not a temporary discount.",
       "url": "https://www.visible.com/plans",
       "family": {
         "2": 35,
         "3": 35,
         "4": 35,
         "5": 35
-      }
+      },
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "visible-pro",
@@ -193,16 +198,17 @@
       "price": 45,
       "tax": true,
       "pri": true,
-      "hot": "Faster hotspot",
-      "video": "HD video",
-      "extra": "Calls to 85+ countries.",
+      "hot": "Unlimited hotspot, up to 15 Mbps",
+      "video": "Up to 4K on 5G Ultra Wideband; up to 1080p on 5G/LTE",
+      "extra": "Standard $45/mo including taxes. Carrier promotions can lower price; not assumed in the catalog baseline.",
       "url": "https://www.visible.com/plans",
       "family": {
         "2": 45,
         "3": 45,
         "4": 45,
         "5": 45
-      }
+      },
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "total-max",
@@ -244,18 +250,16 @@
       "net": "tmo",
       "unl": true,
       "price": 30,
-      "priceNote": "on a 12-month prepay",
+      "priceNote": "12-month renewal equivalent: $30/mo requires $360 paid upfront; taxes and fees extra",
       "tax": false,
       "pri": false,
       "hot": "20GB hotspot",
       "video": "480p video",
       "url": "https://www.mintmobile.com/plans/",
-      "family": {
-        "2": 30,
-        "3": 30,
-        "4": 30,
-        "5": 30
-      }
+      "billingMonths": 12,
+      "billingUpfront": 360,
+      "extra": "Official Mint Unlimited 12-month renewal lists $360 upfront ($30/mo equivalent); an eligible new-customer promotion can lower initial annual prepay to $180 ($15/mo equivalent) for the first term. This catalog models the conservative regular $360 prepay, not automatic promo eligibility. Taxes/fees extra; 50GB high-speed usage threshold, 20GB hotspot.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "metro",
@@ -359,16 +363,11 @@
       "price": 60,
       "tax": true,
       "pri": false,
-      "hot": "Hotspot included",
+      "hot": "50GB hotspot",
       "video": null,
-      "extra": "The plan Cricket requires for most of its free phones. 14-day free trial.",
+      "extra": "Standard Supreme Unlimited is $60/mo before AutoPay. Eligible AutoPay may reduce recurring price by $5 from month 2. Taxes included; $25 activation/upgrade fee applies in Cricket stores. Family rate tables may reflect AutoPay starting in month 2; initial due can be higher. Multi-line AutoPay table rates are excluded from the calculator until actual first-month eligibility and payment amounts are reviewed.",
       "url": "https://www.cricketwireless.com",
-      "family": {
-        "2": 45,
-        "3": 36.67,
-        "4": 32.5,
-        "5": 32
-      }
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "tracfone",
@@ -437,7 +436,9 @@
       "pri": false,
       "hot": null,
       "video": null,
-      "url": "https://www.usmobile.com/plans"
+      "url": "https://www.usmobile.com/plans",
+      "priceSourceDate": "2026-11-02",
+      "extra": "US Mobile's published Light 2GB monthly broadband label lists $10/mo with taxes and fees included; discounted annual purchase is a separate option."
     },
     {
       "id": "ultra-4",
@@ -486,7 +487,7 @@
         "5": 15
       },
       "priceSourceDate": "2026-11-02",
-      "extra": "Unlimited talk and text. $10/month for eligible new lines in the introductory period, then $15. Taxes and cost recovery may apply."
+      "extra": "Tello's October 22, 2026 official notice sets $10/month for the first 3 months on eligible newly activated lines through November 9, 2026, 11:59 PM EST, then $15/month. Any plan change or cancellation ends promo pricing. Taxes and cost recovery may apply."
     },
     {
       "id": "cc",
@@ -515,7 +516,7 @@
       "pri": null,
       "hot": "Hotspot uses plan data",
       "video": null,
-      "extra": "Unlimited talk and text. No yearly contract. Taxes and cost-recovery charges may apply.",
+      "extra": "2GB high-speed plus unlimited talk/text for $10/mo; taxes and cost recovery may apply. Hotspot shares available plan data.",
       "url": "https://tello.com/buy/custom_plans",
       "priceSourceDate": "2026-11-02"
     },
@@ -531,7 +532,7 @@
       "pri": null,
       "hot": "Hotspot uses plan data",
       "video": null,
-      "extra": "Unlimited talk and text. Data allowance and hotspot share the plan's high-speed allotment.",
+      "extra": "20GB high-speed and unlimited talk/text for $20/mo; hotspot shares plan data, taxes/cost recovery may apply.",
       "url": "https://tello.com/buy/custom_plans",
       "priceSourceDate": "2026-11-02"
     },
@@ -546,7 +547,7 @@
       "pri": null,
       "hot": "10GB hotspot",
       "video": null,
-      "extra": "50GB high-speed data, then throttled. Promotional new-line prices may differ; $25 is the standard monthly rate.",
+      "extra": "Standard $25/mo Unlimited plan, 50GB high-speed then throttled, 10GB hotspot. Current temporary promotional prices may differ; taxes/cost recovery may apply.",
       "url": "https://tello.com/buy/custom_plans",
       "priceSourceDate": "2026-11-02"
     },
