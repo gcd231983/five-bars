@@ -99,6 +99,7 @@ try {
     await page.route('**/data/status.json',async route=>{
       const response=await route.fetch();
       const saved=await response.json();
+      saved.generatedAt=checkedAt;
       saved.offers ||= {};
       saved.offers['boost-a17']={
         ...(saved.offers['boost-a17']||{}),
@@ -193,7 +194,7 @@ try {
     assert.ok(await page.locator('#plans-list .fb-review').count()>0,'verification labels on plan rows');
     const disputed=page.locator('#r-helium-infinity');
     assert.match(await disputed.locator('.price .now').innerText(),/Price under review/);
-    assert.equal(await disputed.locator('.fb-compare-btn').count(),0,'disputed plan cannot be compared at stale price');
+    assert.equal(await disputed.getByRole('button',{name:'Compare',exact:true}).count(),0,'disputed plan cannot be compared at stale price');
     assert.match(await disputed.locator('[data-verification]').innerText(),/Official plan rate differs/);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Official plan rate matches/);
     assert.doesNotMatch(await disputed.locator('.foot').innerText(),/12 months \(est\.\)/);
@@ -209,7 +210,7 @@ try {
       /Price under review/,'conflicting official price must never display as Free');
     assert.match(await page.locator('#r-boost-a17').innerText(),
       /stale totals suppressed/i);
-    assert.equal(await page.locator('#r-boost-a17 .fb-compare-btn').count(),0,
+    assert.equal(await page.locator('#r-boost-a17').getByRole('button',{name:'Compare',exact:true}).count(),0,
       'disputed offer cannot be compared at stale catalog price');
     const phoneOverflow=await page.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(phoneOverflow<=viewport.width+2,
@@ -255,6 +256,47 @@ try {
     await page.locator('#fb-compare-root table').waitFor({timeout:15000});
     await page.locator('#t-compare').click();
     assert.ok(await page.locator('#fb-compare-root table').count()>0,'saved comparison survived reload');
+
+    // Local-only watchlist: save, filter target, mark reviewed, export/import and reload.
+    await page.locator('#t-plans').click();
+    const watchButton=page.locator('#r-usm-starter .fb-watch-toggle');
+    await watchButton.waitFor();
+    await watchButton.click();
+    assert.equal(await page.locator('#p-watchlist').isVisible(),true);
+    const watchRoot=page.locator('#fb-watchlist-root');
+    assert.equal(await watchRoot.locator('.fb-watch-saved-card').count(),1);
+    assert.match(await watchRoot.innerText(),/Unlimited Starter/);
+    const input=watchRoot.locator('.fb-watch-saved-card input');
+    await input.fill('25');
+    await watchRoot.locator('.fb-watch-saved-card').getByRole('button',{name:'Save target'}).click();
+    assert.match(await watchRoot.innerText(),/Unlimited Starter meets target/);
+    assert.match(await watchRoot.innerText(),/Catalog price meets your target/);
+    await watchRoot.getByRole('button',{name:'Mark all current alerts reviewed'}).click();
+    assert.match(await watchRoot.innerText(),/0 new or unreviewed item\(s\)/);
+
+    await page.locator('#fb-watch-carrier').selectOption('Tello');
+    await watchRoot.getByRole('button',{name:'Add provider watch'}).click();
+    assert.equal(await watchRoot.locator('.fb-watch-saved-card').count(),2);
+    assert.match(await watchRoot.innerText(),/Tello introductory promotion ends November 9/);
+    assert.match(await watchRoot.innerText(),/1 new or unreviewed item\(s\)/);
+    await watchRoot.getByRole('button',{name:'Export JSON'}).click();
+    const backup=await page.locator('#fb-watch-backup').inputValue();
+    const exported=JSON.parse(backup);
+    assert.equal(exported.schema,1);
+    assert.equal(exported.watches.length,2);
+    await watchRoot.locator('.fb-watch-saved-card').first().getByRole('button',{name:'Remove'}).click();
+    assert.equal(await watchRoot.locator('.fb-watch-saved-card').count(),1);
+    await page.locator('#fb-watch-backup').fill(backup);
+    await watchRoot.getByRole('button',{name:'Import JSON'}).click();
+    assert.equal(await watchRoot.locator('.fb-watch-saved-card').count(),2);
+    assert.match(await watchRoot.innerText(),/Stored on this device only/);
+    const watchOverflow=await page.evaluate(()=>document.documentElement.scrollWidth);
+    assert.ok(watchOverflow<=viewport.width+2,'watchlist must not overflow '+view+' viewport');
+    await page.screenshot({path:join(output,view+'-watchlist.png'),fullPage:true});
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.locator('#fb-watchlist-root .fb-watch-saved-card').first().waitFor({timeout:15000});
+    assert.equal(await page.locator('#fb-watchlist-root .fb-watch-saved-card').count(),2,
+      'watchlist survives reload via localStorage');
     await context.close();
   }
   assert.deepEqual(errors,[],'no JavaScript page errors');

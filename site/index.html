@@ -196,6 +196,23 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
 .fb-action-card h4{font-size:1rem;line-height:1.4;margin:0 0 8px}
 .fb-action-card p{font-size:.86rem;line-height:1.45;margin:7px 0}
 .fb-action-card .fb-card-actions{margin-top:10px}
+.fb-watch-intro{margin-bottom:20px}
+.fb-watch-intro h3{margin:0 0 8px}
+.fb-watch-hint{font-size:.84rem}
+.fb-watch-carrier-form{display:flex;gap:12px;align-items:end;flex-wrap:wrap;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-bottom:10px}
+.fb-watch-field{display:flex;flex:1 1 180px;flex-direction:column;gap:5px;font-size:.86rem;font-weight:650}
+.fb-watch-field select,.fb-watch-field input,.fb-watch-target-label input{min-width:0;max-width:100%;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);padding:9px}
+.fb-watch-section{border-top:1px solid var(--line);padding:18px 0;margin-top:16px}
+.fb-watch-section h3{margin:0 0 12px}
+.fb-watch-saved,.fb-watch-events{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:10px;margin-bottom:14px}
+.fb-watch-saved-card,.fb-watch-event{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0;overflow-wrap:anywhere}
+.fb-watch-saved-card h4,.fb-watch-event h4{font-size:1rem;line-height:1.35;margin:0 0 8px}
+.fb-watch-saved-card p,.fb-watch-event p{font-size:.86rem;margin:6px 0}
+.fb-watch-saved-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin-top:14px}
+.fb-watch-target-label{display:flex;flex-direction:column;gap:5px;flex:1 1 120px;font-size:.8rem;font-weight:650}
+.fb-watch-feedback{min-height:1.2em;color:var(--accent);font-weight:650;font-size:.86rem}
+#fb-watch-backup{display:block;margin-top:10px;width:100%;min-height:110px;font:13px monospace}
+.fb-watch-toggle[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
 [hidden]{display:none !important}
 @media (max-width:520px){
   .fb-form .fb-fields{grid-template-columns:1fr}
@@ -255,10 +272,11 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
     <button class="tab" role="tab" data-tab="plans" id="t-plans" aria-controls="p-plans">Plans<span class="count" id="c-plans"></span></button>
     <button class="tab" role="tab" data-tab="phones" id="t-phones" aria-controls="p-phones">Phone deals<span class="count" id="c-phones"></span></button>
     <button class="tab" role="tab" data-tab="compare" id="t-compare" aria-controls="p-compare">Compare</button>
+    <button class="tab" role="tab" data-tab="watchlist" id="t-watchlist" aria-controls="p-watchlist">My watchlist<span class="count" id="c-watchlist"></span></button>
     <button class="tab" role="tab" data-tab="pricewatch" id="t-pricewatch" aria-controls="p-pricewatch">Price watch</button>
     <button class="tab" role="tab" data-tab="sources" id="t-sources" aria-controls="p-sources">Sources &amp; refresh</button>
   </div>
-  <p class="fb-tab-swipe">Swipe sideways for Compare, Price watch and Sources.</p>
+  <p class="fb-tab-swipe">Swipe sideways for Compare, My watchlist, Price watch and Sources.</p>
 </nav>
 
 <main class="wrap">
@@ -282,6 +300,12 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
   <section id="p-compare" class="panel" role="tabpanel" aria-labelledby="t-compare" hidden>
     <h2>Compare plans and phone deals</h2>
     <div id="fb-compare-root" class="fb-tool"></div>
+  </section>
+
+  <section id="p-watchlist" class="panel" role="tabpanel" aria-labelledby="t-watchlist" hidden>
+    <h2>My private watchlist</h2>
+    <p class="note">Save specific phone deals, wireless plans, and providers. Set optional target prices and see matches when you visit. Everything is stored in this browser only, with no account or remote alerts.</p>
+    <div id="fb-watchlist-root" class="fb-tool" aria-live="polite"></div>
   </section>
 
   <section id="p-pricewatch" class="panel" role="tabpanel" aria-labelledby="t-pricewatch" hidden>
@@ -636,7 +660,7 @@ function showTab(t){
     b.setAttribute("aria-selected", String(active));
     b.tabIndex=active ? 0 : -1;
   }
-  for(const id of ["finder","plans","phones","compare","pricewatch","sources"]) $("#p-"+id).hidden = id!==t;
+  for(const id of ["finder","plans","phones","compare","watchlist","pricewatch","sources"]) $("#p-"+id).hidden = id!==t;
   update(true);
 }
 document.querySelectorAll(".tab").forEach(b=>{
@@ -707,5 +731,6 @@ async function boot(){
 boot();
 </script>
 <script type="module" src="value-ui.mjs"></script>
+<script type="module" src="watchlist-ui.mjs"></script>
 </body>
 </html>

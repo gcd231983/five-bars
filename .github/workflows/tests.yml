@@ -28,5 +28,7 @@ jobs:
       - run: node --check scripts/notify-issues.mjs
       - run: node --check site/value-core.mjs
       - run: node --check site/value-ui.mjs
+      - run: node --check site/watchlist-core.mjs
+      - run: node --check site/watchlist-ui.mjs
       - run: node scripts/review-offer.mjs audit
 
