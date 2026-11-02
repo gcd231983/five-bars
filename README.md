@@ -1,58 +1,63 @@
-# Five Bars
+# Five Bars — automatic, Claude-free deal monitoring
 
-A phone-plan and free-phone deal tracker that updates itself every morning, with no API billing.
-It runs on GitHub Actions and GitHub Pages (both free) and uses your existing Claude subscription
-through Claude Code. Needs Claude Pro or Max.
+Five Bars compares US phone plans and advertised phone offers. The website is a static GitHub Pages site. A scheduled GitHub Actions workflow checks public sources and publishes **conservative** updates without Claude, AI subscriptions, paid APIs, or external servers.
 
-Every day at about 6:15 a.m. Eastern:
+## What the automator can and cannot do
 
-1. `scripts/deals.mjs prep` backs up the current list and downloads the deal pages (PrepaidCompare, Clark.com, BestPhonePlans).
-2. Claude Code reads those pages, runs a few web searches to confirm carrier promos, and edits `site/data/deals.json`
-   following `scripts/UPDATE_INSTRUCTIONS.md`. It checks its own work with `node scripts/deals.mjs check`.
-3. `scripts/deals.mjs finish` validates the result. If anything looks wrong (bad prices, too many deals vanishing),
-   it restores yesterday’s list and the run fails. GitHub emails you when that happens.
-4. The site republishes. New deals get a “New” tag.
+Every day, it:
 
-## One-time setup (about 20 minutes, on a computer)
+1. Fetches the existing 11 public sources from `site/data/deals.json` and checks each listed offer link (without bypassing site protections).
+2. Automatically removes **explicitly expired** promotional plan prices and ended phone deals.
+3. Collects possible Boost Mobile price candidates for **manual review only**. Scraped text can mix products or omit conditions, so it never changes catalog prices or verifies promotions.
+4. Reports price candidates and blocked, failed, or unverifiable links rather than guessing.
+5. Saves `site/data/status.json` with source-check results, alerts, and last scan date. The website distinguishes the **last full manual review** from the automatic link scan.
+6. Keeps existing catalog data if a source is unavailable; a reachable link **does not** mean an offer's eligibility, price, or availability is verified.
 
-1. **Get a Claude Code token.** Install Claude Code (search “Claude Code install” on claude.com and use the
-   Windows installer). Open a terminal and run:
-   ```
-   claude setup-token
-   ```
-   Sign in with your Claude account when the browser opens. Copy the token it prints (starts with `sk-ant-oat01-`).
-2. **Create a repo.** On github.com, click **New repository**, name it `five-bars`, choose **Public**, and create it.
-   (Free GitHub Pages needs a public repo.)
-3. **Upload the files.** On the new repo’s page, choose **uploading an existing file** and drag in everything from
-   this folder, including the `.github` folder. Commit.
-   If your file browser hides `.github`, turn on hidden items (Windows: View > Show > Hidden items).
-4. **Add the token.** **Settings > Secrets and variables > Actions > New repository secret.**
-   Name: `CLAUDE_CODE_OAUTH_TOKEN`. Value: the token from step 1.
-5. **Turn on Pages.** **Settings > Pages > Build and deployment > Source: GitHub Actions.**
-6. **Run it once.** **Actions** tab > **Daily deal update** > **Run workflow**.
-   Your site is at `https://YOUR-USERNAME.github.io/five-bars/`.
+**Important limitations:** This is *not* an autonomous universal offer-discovery crawler. Carrier sites change HTML frequently, some disallow automation, and many offers have complex eligibility/financing terms. Automatic catalog changes are limited to explicit expirations; all price changes and new offers need human verification. The site clearly discloses that limitation.
 
-From then on it runs by itself daily. Each run uses a bit of your Claude plan’s usage, like one
-research chat. If you ever see an auth error, run `claude setup-token` again and replace the secret.
+## Cost
 
-## Handy changes
+For a public repo, this design typically runs with GitHub-hosted Actions and GitHub Pages at no charge under GitHub's current public-repository policies. There are **no Claude calls** and no model API credentials. Review GitHub's policies if your repository visibility changes.
 
-- **Different time:** edit the `cron` line in `.github/workflows/daily.yml` (UTC; `17 10 * * *` = 10:17 UTC).
-- **More sources:** add pages to `FEEDS` at the top of `scripts/deals.mjs`.
-- **How Claude decides what to keep:** edit `scripts/UPDATE_INSTRUCTIONS.md`.
-- **Update on demand:** Actions > Daily deal update > Run workflow.
+## Setup
 
-## Going public later
+1. Keep this repo **public** if using free GitHub Pages and Actions.
+2. Go to **Settings → Pages → Build and deployment** and select **GitHub Actions** (same as before).
+3. In **Actions → Five Bars - no-AI deal checks and website → Run workflow**, launch one run after the changes are merged.
+4. Look for the successful **update** and **deploy** jobs. The site is typically at `https://gcd231983.github.io/five-bars/`.
+5. Open the **Sources & refresh** tab to see link-check results, the last full review date, and alert counts.
 
-- Add a custom domain under **Settings > Pages**.
-- If you add affiliate links, put a short disclosure near the top of the page and in the footer.
-- Keep the “confirm on the carrier’s site” note. Promos change weekly.
+No Claude subscription token or Anthropic secret is used. You may delete `CLAUDE_CODE_OAUTH_TOKEN` from Actions secrets after verifying the new workflow if nothing else needs it.
 
-## Files
+## Manual verification and safe edits
 
-- `site/index.html`: the site (loads `data/deals.json` when it opens)
-- `site/data/deals.json`: the deal list
-- `site/data/changes.json`: what changed in the latest run
-- `scripts/deals.mjs`: download pages, validate, stamp the date (no API calls)
-- `scripts/UPDATE_INSTRUCTIONS.md`: what Claude does each morning
-- `.github/workflows/daily.yml`: the schedule and deploy
+- `site/data/deals.json`: verified catalog entries; follow the original schema described in `scripts/UPDATE_INSTRUCTIONS.md`.
+- `site/data/status.json`: machine-generated scan status; **not** a factual price feed.
+- `site/data/changes.json`: latest automatic changes, including explicit expirations.
+- `scripts/auto-core.mjs`: deterministic rules, offer expiry, and phone-cost math used in tests.
+- `scripts/auto-update.mjs`: source fetcher, safety checks, and data publisher.
+- `.github/workflows/daily.yml`: daily schedule, tests, save, GitHub Pages deployment.
+- `.github/workflows/tests.yml`: PR regression checks.
+
+Run locally from the repo root with Node 22 or newer:
+
+```sh
+node --test tests/*.test.mjs
+node scripts/deals.mjs check
+node scripts/auto-update.mjs --dry-run
+```
+
+`--dry-run` still checks the public Internet, but writes no files. A regular `node scripts/auto-update.mjs` writes the three JSON files after its safety checks.
+
+## Pricing disclaimers
+
+Phone listings show separate **estimated due today**, **estimated minimum commitment**, and **estimated first-year cost**. These figures can omit taxes, activation fees, financed device charges, rebate processing delays, and discount clawbacks. When months are not explicitly prepaid, the estimate assumes the first month's service is paid at signup. **Always confirm at checkout.**
+
+## Troubleshooting
+
+- **Automated check failed:** Open the Actions run and inspect the failed step. Publication requires successful tests, data validation, and scanning. No catalog changes are published if every main source fails.
+- **Some sources unavailable:** This is normal for sites with anti-bot protection. The deal is retained but flagged; no fabricated current prices are published.
+- **No new offers:** Intentional. The script does not invent plan requirements or lock policies from a marketing headline.
+- **Outdated full-review date:** Intentional. Automated link scans are not a substitute for verifying the complete offer catalog.
+
+The previous Claude-based workflow has been replaced. The old `scripts/deals.mjs` remains solely as a structural validator and backwards-compatible maintenance utility; it is not used to run Claude.

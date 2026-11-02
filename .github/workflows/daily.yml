@@ -1,11 +1,11 @@
-name: Daily deal update
+name: Five Bars - no-AI deal checks and website
 
 on:
   schedule:
-    - cron: "17 10 * * *"   # every day around 6:17 a.m. Eastern (10:17 UTC). GitHub may start it a few minutes late.
-  workflow_dispatch:         # "Run workflow" button for an update on demand
+    - cron: '17 10 * * *' # 10:17 UTC; Eastern time varies with daylight saving
+  workflow_dispatch:
   push:
-    branches: [main]         # redeploy the site whenever you change it
+    branches: [main]
 
 permissions:
   contents: write
@@ -18,43 +18,36 @@ concurrency:
 
 jobs:
   update:
-    if: github.event_name != 'push'
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-
-      - name: Download today's deal pages
-        run: node scripts/deals.mjs prep
-
-      - name: Claude updates the deal list (runs on your Claude subscription)
-        uses: anthropics/claude-code-action@v1
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          prompt: |
-            Read scripts/UPDATE_INSTRUCTIONS.md and follow it exactly to update site/data/deals.json for today.
-          claude_args: |
-            --max-turns 90
-            --allowedTools "Read,Edit,Write,Glob,Grep,WebSearch,WebFetch,Bash(node scripts/deals.mjs check)"
-
-      - name: Validate and stamp
-        run: node scripts/deals.mjs finish
-
-      - name: Save changes
+          node-version: '22'
+      - name: Run deterministic regression tests
+        run: node --test tests/*.test.mjs
+      - name: Check updater syntax
+        run: node --check scripts/auto-update.mjs
+      - name: Check current data structure
+        run: node scripts/deals.mjs check
+      - name: Scan public sources and expire known offers (no AI)
+        run: node scripts/auto-update.mjs
+      - name: Validate updated data
+        run: node scripts/deals.mjs check
+      - name: Commit safe changes and source status
         run: |
-          git config user.name "five-bars-bot"
-          git config user.email "five-bars-bot@users.noreply.github.com"
-          git add site/data
-          git diff --cached --quiet || git commit -m "Deals update $(date -u +%F)"
-          git push
+          git config user.name 'five-bars-bot'
+          git config user.email 'five-bars-bot@users.noreply.github.com'
+          git add site/data/deals.json site/data/changes.json site/data/status.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Source check $(date -u +%F) (no AI)"
+            git push
+          fi
 
   deploy:
     needs: update
-    if: ${{ always() && needs.update.result != 'cancelled' }}
+    if: ${{ needs.update.result == 'success' }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages

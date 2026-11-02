@@ -169,7 +169,6 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
   <div class="wrap" role="tablist">
     <button class="tab" role="tab" data-tab="plans" id="t-plans">Plans<span class="count" id="c-plans"></span></button>
     <button class="tab" role="tab" data-tab="phones" id="t-phones">Free phones<span class="count" id="c-phones"></span></button>
-    <button class="tab" role="tab" data-tab="ask" id="t-ask" hidden>Ask Claude</button>
     <button class="tab" role="tab" data-tab="sources" id="t-sources">Sources &amp; refresh</button>
   </div>
 </nav>
@@ -181,32 +180,23 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
   </section>
 
   <section id="p-phones" role="tabpanel" aria-labelledby="t-phones" hidden>
-    <p class="note">Costs are per line. “Cash to walk away” is the least you pay before the phone is yours to keep on that plan. Most prepaid phones stay locked to the carrier for 12 months, so the first-year cost is the realistic number.</p>
+    <p class="note">Costs are per line. “Due today” estimates the device plus service required at signup. “Minimum commitment” also counts required future service. Rebates are excluded from the upfront estimate. All totals exclude taxes, fees, conditional clawbacks and financing; always confirm checkout terms with the carrier.</p>
     <ol class="list" id="phones-list"></ol>
-  </section>
-
-  <section id="p-ask" class="panel" role="tabpanel" aria-labelledby="t-ask" hidden>
-    <h2>Ask Claude to pick for you</h2>
-    <p class="small">Describe your situation. Claude reads only the deals on this page and picks up to three. Uses your Claude account.</p>
-    <textarea id="ask-box" placeholder="Example: 2 lines in rural South Carolina, Verizon is strongest at my house, my son needs a free Android, I’d like to stay under $60 a month total."></textarea>
-    <div class="actions">
-      <button class="btn" id="ask-go">Find my best deal</button>
-      <button class="btn ghost" id="ask-stop" hidden>Stop</button>
-    </div>
-    <div class="answer" id="ask-out" aria-live="polite"></div>
   </section>
 
   <section id="p-sources" class="panel" role="tabpanel" aria-labelledby="t-sources" hidden>
     <h2>Where these deals come from</h2>
     <p id="src-date"></p>
+    <p id="scan-status" class="note"></p>
     <ul class="srcs" id="src-list"></ul>
     <h3>How it stays fresh</h3>
-    <p>Every morning a scheduled job reads these sources and searches the web for new carrier promos. Community posts and carrier-written guides are treated as leads and confirmed with a second source before they’re added. Claude turns what it finds into the deal list, a validator checks the result, and the site republishes. If a run looks wrong (too many deals vanish, bad prices), it’s rejected and yesterday’s list stays up.</p>
-    <p>Deals with an end date also watch themselves: once a promo expires, its discount drops out of the math and the deal is marked as ended.</p>
+    <p>Every morning a scheduled job checks public source and offer links and removes explicitly expired deals. Scraped price candidates are flagged for manual review; they never change catalog prices or verify promotions automatically. No AI or API keys are used. Failed checks prevent publication, and a reachable link does not confirm the offer’s terms.</p>
+    <p>Deals with an end date also watch themselves: once a promo expires, its discount drops out of the math; ended phone offers are hidden.</p>
   </section>
 </main>
 
 <script>
+// Five Bars AutoPilot / no AI: public-source scan metadata, not a guarantee of offer validity.
 const NET = {
   vzw:  {name:"Verizon network",  c:"var(--vzw)"},
   att:  {name:"AT&T network",     c:"var(--att)"},
@@ -214,7 +204,7 @@ const NET = {
   multi:{name:"Your pick of Verizon, AT&T or T-Mobile", c:"var(--multi)"}
 };
 
-let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), CHANGES = null;
+let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), CHANGES = null, AUTO_STATUS = null;
 
 /* ---------- state ---------- */
 const PLAN_TOGS = [
@@ -225,7 +215,7 @@ const PHONE_TOGS = [
 ];
 const SORTS = {
   byop:[["year","lowest 12-month cost"],["reg","lowest regular price"],["save","biggest intro savings"],["pri","priority data first"]],
-  phone:[["year","lowest first-year cost"],["walk","least cash to walk away"],["price","lowest phone price"]]
+  phone:[["year","lowest first-year cost"],["due","least estimated due today"],["price","lowest phone price"]]
 };
 const state = {lines:1, net:"any", mode:"byop", sort:"year", tab:"plans", t:{unl:true}};
 try{
@@ -305,18 +295,21 @@ function planVisible(p){
 /* ---------- phone math ---------- */
 function phoneCalc(d){
   const ei = endInfo(d.ends);
-  const eff = d.price - (d.rebate||0);
-  let walk = null, year = null;
-  if(d.bundle){ walk = d.price; year = d.price; }
-  else if(d.planPrice!=null){
-    const m = Math.max(d.prepay||1, d.stay||1);
-    walk = eff + d.planPrice*m;
-    year = eff + d.planPrice*12 - (d.credit ? d.credit*Math.min(12, d.creditMonths) : 0);
-  }
-  return {walk, year, eff, ei};
+  const price = d.price;
+  const plan = d.planPrice == null ? null : d.planPrice;
+  const rebate = Math.max(0, d.rebate||0);
+  const prepay = Math.max(0, d.prepay||0);
+  const stay = Math.max(0, d.stay||0);
+  const bundle = Math.max(0, d.bundle||0);
+  const due = bundle ? price : (plan == null ? null : price + plan*Math.max(1,prepay));
+  const commitment = bundle ? price : (plan == null ? null : price-rebate+plan*Math.max(1,prepay,stay));
+  const year = bundle ? (bundle>=12 ? price : (plan == null ? null : price+plan*(12-bundle)))
+    : (plan == null ? null : price+12*plan-rebate-(d.credit||0)*Math.min(12,d.creditMonths||0));
+  return {due, commitment, year, eff: Math.max(0, price-rebate), ei};
 }
 function phoneVisible(d){
   const t = state.t;
+  if(endInfo(d.ends)?.expired) return false;
   if(state.net!=="any" && d.net!==state.net && d.net!=="multi") return false;
   if(t.free && phoneCalc(d).eff > 0) return false;
   if(t.iphone && !t.android && d.os!=="iphone") return false;
@@ -358,7 +351,17 @@ function renderControls(){
     if(CHANGES.removed.length) parts.push(CHANGES.removed.length + " gone");
     if(parts.length) summary = " Since the last update: " + parts.join(", ") + ".";
   }
-  $("#fresh").replaceChildren("Updated every morning. Last update " + d + "." + summary + " ",
+  let freshness = "Last full deal review: " + d + "." + summary;
+  if(AUTO_STATUS?.generatedAt){
+    const scanDate = new Date(AUTO_STATUS.generatedAt);
+    const age = (Date.now()-scanDate.getTime())/86400000;
+    const n = AUTO_STATUS.summary || {};
+    freshness += " Automated source scan: " + scanDate.toLocaleDateString("en-US",{month:"short",day:"numeric"}) +
+      " (" + (n.sourcesReachable??0) + "/" + (n.sourcesChecked??0) + " sources loaded; " +
+      (n.reviewAlerts??0) + " alerts).";
+    if(age>2) freshness += " CAUTION: automated checks are overdue.";
+  } else freshness += " Automated source scan not yet available.";
+  $("#fresh").replaceChildren(freshness + " ",
     el("button",{type:"button", onclick:()=>showTab("sources")}, "Sources"));
 }
 
@@ -381,6 +384,7 @@ function renderPlans(){
   if(!rows.length){ list.replaceChildren(emptyState()); return; }
   list.replaceChildren(...rows.map(({p,c},i)=>{
     const n = NET[p.net];
+    const scan = AUTO_STATUS?.offers?.[p.id];
     const facts = [
       p.unl ? "Unlimited data" : (p.data + " data"),
       p.pri===true ? "Priority data" : (p.pri===false && p.unl ? "Deprioritized when busy" : null),
@@ -406,7 +410,7 @@ function renderPlans(){
         el("div",{class:"now"}, money(c.now), el("span",{class:"per"},"/mo")),
         c.live ? el("div",{class:"then"}, "then " + money(c.reg)) : (p.priceNote ? el("div",{class:"then"}, p.priceNote) : null),
         L>1 ? el("div",{class:"then"}, "per line") : null),
-      el("ul",{class:"facts"}, NEWIDS.has(p.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f))),
+      el("ul",{class:"facts"}, NEWIDS.has(p.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), scan?.state==="source_unavailable" ? el("li",{class:"warn"},"Plan source could not be checked") : null),
       deal,
       p.extra ? el("div",{class:"extra"}, p.extra) : null,
       el("div",{class:"foot"},
@@ -422,7 +426,7 @@ function renderPhones(){
   const big = 1e9;
   const by = {
     year:(a,b)=>(a.c.year??big)-(b.c.year??big) || a.c.eff-b.c.eff,
-    walk:(a,b)=>(a.c.walk??big)-(b.c.walk??big) || a.c.eff-b.c.eff,
+    due:(a,b)=>(a.c.due??big)-(b.c.due??big) || a.c.eff-b.c.eff,
     price:(a,b)=>a.c.eff-b.c.eff || (a.c.year??big)-(b.c.year??big)
   }[state.sort];
   rows.sort(by);
@@ -432,6 +436,7 @@ function renderPhones(){
   list.replaceChildren(...rows.map(({d,c},i)=>{
     const n = NET[d.net];
     const free = c.eff <= 0;
+    const scan = AUTO_STATUS?.offers?.[d.id];
     const facts = [
       d.bundle ? "Includes " + d.bundle + " months of service" : (d.planPrice!=null ? "Needs a " + money(d.planPrice) + "/mo plan" : "Needs a premium unlimited plan"),
       d.prepay>1 && !d.bundle && d.id!=="usm-p11" ? "Prepay " + d.prepay + " months" : null,
@@ -448,16 +453,17 @@ function renderPhones(){
         el("div",{class:"plan"}, d.carrier),
         el("div",{class:"net"}, n.name)),
       el("div",{class:"price"},
-        el("div",{class:"now"}, free ? "Free" : money(d.price)),
+        el("div",{class:"now"}, d.price===0 ? "Free" : money(d.price)),
         d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
-        d.rebate ? el("div",{class:"was"}, money(d.rebate) + " rebate") : null),
-      el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null),
+        d.rebate ? el("div",{class:"was"}, money(d.rebate) + " rebate; net phone cost " + money(c.eff)) : null),
+      el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null, scan?.state==="source_unavailable" ? el("li",{class:"warn"}, "Offer link could not be checked") : null, scan?.reviewRequired ? el("li",{class:"warn"}, "Price candidate needs manual review; listed terms are unverified") : null),
       ends ? el("div",{class: ends.expired ? "deal off" : "deal"}, ends.expired ? ends.text + ". Recheck before you go." : ends.text + ".") : null,
       d.note ? el("div",{class:"extra"}, d.note) : null,
       el("div",{class:"foot"},
         el("span",{class:"yr"},
-          c.walk!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Cash to walk away: ", el("b",null, whole(c.walk))) : null,
-          c.year!=null ? el("span",{style:"display:inline-block"}, "First year: ", el("b",null, whole(c.year))) : "Plan price varies by trade-in"),
+          c.due!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Due today (est.): ", el("b",null, money(c.due))) : "Upfront total: ask carrier. ",
+          c.commitment!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Min. commitment: ", el("b",null, money(c.commitment))) : null,
+          c.year!=null ? el("span",{style:"display:inline-block"}, "First year (est.): ", el("b",null, money(c.year))) : "Plan price varies by trade-in"),
         el("a",{href:d.url, target:"_blank", rel:"noopener"}, "See it at " + d.carrier.replace(" at Walmart","")))
     );
   }));
@@ -475,7 +481,7 @@ function showTab(t){
   if(t==="plans") state.mode = "byop";
   if(t==="phones") state.mode = "phone";
   for(const b of document.querySelectorAll(".tab")) b.setAttribute("aria-selected", String(b.dataset.tab===t));
-  for(const id of ["plans","phones","ask","sources"]) $("#p-"+id).hidden = id!==t;
+  for(const id of ["plans","phones","sources"]) $("#p-"+id).hidden = id!==t;
   update(true);
 }
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
@@ -494,78 +500,15 @@ $("#mode").addEventListener("change", e=>{
 
 /* ---------- sources ---------- */
 function renderSources(){
-$("#src-date").textContent = "Last update " + new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"}) + ". Always confirm on the carrier’s site before you buy; promos change weekly.";
+$("#src-date").textContent = "Last full deal review " + new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"}) + ". Always confirm current prices, eligibility and taxes on the carrier’s site.";
+  const n = AUTO_STATUS?.summary;
+  $("#scan-status").textContent = n ? "Last automatic source scan: " + new Date(AUTO_STATUS.generatedAt).toLocaleString("en-US") +
+    ". " + n.sourcesReachable + "/" + n.sourcesChecked + " public sources reachable. " +
+    (n.priceCandidatesForReview??0) + " price candidates need manual review; " + n.reviewAlerts +
+    " link/term alerts. A working link does NOT prove the offer or its conditions." :
+    "No automatic scan has completed yet. Listed deals may be outdated.";
 $("#src-list").replaceChildren(...SOURCES.map(s=>el("li",null, el("a",{href:s.url, target:"_blank", rel:"noopener"}, s.name), ": " + s.what)));
 }
-
-/* ---------- jump to a row ---------- */
-function jumpTo(id){
-  const isPlan = PLANS.some(p=>p.id===id);
-  state.t = {}; state.net = "any";
-  showTab(isPlan ? "plans" : "phones");
-  requestAnimationFrame(()=>{
-    const r = document.getElementById("r-"+id);
-    if(!r) return;
-    r.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
-    r.classList.add("hl"); setTimeout(()=>r.classList.remove("hl"), 2600);
-  });
-}
-
-/* ---------- Ask Claude (sample capability) ---------- */
-(async ()=>{
-  let sample = null;
-  try{ sample = window.claude ? await window.claude.use("sample") : null; }catch(e){ sample = null; }
-  if(!sample) return;
-  $("#t-ask").hidden = false;
-  const go = $("#ask-go"), stop = $("#ask-stop"), out = $("#ask-out"), box = $("#ask-box");
-  let ctl = null;
-  stop.addEventListener("click", ()=>ctl && ctl.abort());
-  go.addEventListener("click", async ()=>{
-    const ask = box.value.trim();
-    if(!ask){ out.replaceChildren(el("p",{class:"status"},"Write a sentence or two about your situation first.")); box.focus(); return; }
-    const plans = PLANS.map(p=>{ const c = planCalc(p); return {id:p.id, carrier:p.carrier, plan:p.plan, network:NET[p.net].name, unlimited:p.unl, data:p.data||"unlimited", priority:p.pri, hotspot:p.hot||"none listed", taxesIncluded:p.tax, monthlyNow:c.now, regularMonthly:p.price, twelveMonthCostOneLine:c.year/state.lines, promo:p.promo? p.promo.text + (c.live?"":" (not available now)") : null, notes:p.extra||""}; });
-    const phones = PHONES.map(d=>{ const c = phoneCalc(d); return {id:d.id, carrier:d.carrier, phone:d.phone, os:d.os, network:NET[d.net].name, phonePrice:c.eff, requiredPlanMonthly:d.planPrice, mustMoveNumber:!!d.port, postpaid:!!d.postpaid, firstYearCost:c.year, cashToWalkAway:c.walk, notes:[d.note,d.warn,c.ei&&c.ei.text].filter(Boolean).join(" ")}; });
-    const prompt =
-      "You help a person in the United States choose a phone plan or a free-phone deal. Today is " + new Date().toDateString() + ".\n" +
-      "Use ONLY the deals in the data below; never invent carriers, prices or deals. Pick up to 3 that best fit what the person says, best first. " +
-      "Weigh network fit, total cost over a year, number of lines, and any must-haves they mention. If something they want is not in the data, say so in the note.\n\n" +
-      "What the person says:\n\"\"\"\n" + ask.slice(0, 2000) + "\n\"\"\"\n\n" +
-      "Reply with only JSON in this shape: {\"picks\":[{\"id\":\"<id from data>\",\"why\":\"<one or two plain sentences, under 40 words>\"}],\"note\":\"<one tip or caution, under 40 words>\"}\n\n" +
-      "PLANS:\n" + JSON.stringify(plans) + "\n\nPHONE DEALS:\n" + JSON.stringify(phones);
-    ctl = new AbortController();
-    go.disabled = true; stop.hidden = false;
-    out.replaceChildren(el("p",{class:"status"},"Thinking…"));
-    try{
-      const res = await sample.json(prompt, {signal: ctl.signal, cache:false});
-      const picks = (res && Array.isArray(res.picks) ? res.picks : []).filter(p=>p && typeof p.id==="string").slice(0,3);
-      const kids = picks.map(p=>{
-        const plan = PLANS.find(x=>x.id===p.id), ph = PHONES.find(x=>x.id===p.id);
-        if(!plan && !ph) return null;
-        const title = plan ? plan.carrier + ", " + plan.plan : ph.phone + " at " + ph.carrier;
-        return el("div",{class:"pick"},
-          el("div",{class:"carrier"}, title),
-          el("div",null, String(p.why||"")),
-          el("button",{type:"button", onclick:()=>jumpTo(p.id)}, "Show it in the list"));
-      }).filter(Boolean);
-      if(!kids.length) kids.push(el("p",{class:"status"},"Claude didn’t find a match in the current deals. Try loosening one requirement."));
-      if(res && res.note) kids.push(el("p",{class:"small"}, String(res.note)));
-      out.replaceChildren(...kids);
-    }catch(e){
-      const code = e && e.code;
-      const msg = {
-        cancelled:"Stopped.",
-        not_granted:"Claude isn’t allowed on this page. You can allow it from the artifact’s permissions menu.",
-        rate_limited:"Too many requests right now. Wait a minute, then try again.",
-        invalid_json:"Claude’s answer came back garbled. Press the button again.",
-        session_expired:"Sign in to Claude again, then retry."
-      }[code] || "Something went wrong reaching Claude. Try again.";
-      out.replaceChildren(el("p",{class:"status"}, msg));
-      if(code==="not_granted" || code==="sampling_disabled"){ $("#t-ask").hidden = true; if(state.tab==="ask") showTab("plans"); }
-    }finally{
-      go.disabled = false; stop.hidden = true; ctl = null;
-    }
-  });
-})();
 
 /* ---------- start ---------- */
 async function boot(){
@@ -581,6 +524,10 @@ async function boot(){
   try{
     const r = await fetch("data/changes.json", {cache:"no-store"});
     if(r.ok){ CHANGES = await r.json(); if(CHANGES.date===CHECKED) NEWIDS = new Set(CHANGES.added||[]); }
+  }catch(e){}
+  try{
+    const r = await fetch("data/status.json", {cache:"no-store"});
+    if(r.ok) AUTO_STATUS = await r.json();
   }catch(e){}
   renderSources();
   if(state.tab==="ask") state.tab = "plans";
