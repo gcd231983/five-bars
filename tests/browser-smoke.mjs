@@ -77,6 +77,8 @@ try {
       {timeout:15000});
     await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
     await page.locator('#t-finder').click();
+    assert.equal(await page.locator('.fb-tab-swipe').isVisible(),view==='mobile',
+      'mobile navigation should offer a swipe hint');
     await page.locator('#t-finder').focus();
     await page.keyboard.press('ArrowRight');
     assert.equal(await page.locator('#p-plans').isVisible(),true,'Arrow key activates next tab');
@@ -99,6 +101,8 @@ try {
     const annualText=await page.locator('#fb-finder-results').innerText();
     assert.match(annualText,/\$60\.00 UPFRONT/i,'annual plan must expose $60 upfront');
     assert.match(annualText,/not a monthly subscription/i);
+    assert.match(annualText,/Phone offers \(0 match the selected filters\)/,
+      'provider preference must exclude other carriers handset promotions');
     await page.screenshot({path:join(output,view+'-mvno-annual.png'),fullPage:true});
     await page.locator('#fb-finder-results .fb-result').first().getByRole('button',{name:'Compare'}).click();
     assert.match(await page.locator('#fb-compare-root').innerText(),/Billing \/ upfront amount/i);
