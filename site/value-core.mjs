@@ -27,7 +27,10 @@ export function offerSignature(offer) {
 }
 export function verificationState(offer, record, today = localDay()) {
   if (!record || typeof record !== 'object') return {status:'unverified',label:'Offer not independently verified'};
-  if (record.scope !== 'full_terms' || record.signature !== offerSignature(offer)) {
+  if (record.scope !== 'full_terms') {
+    return {status:'unverified',label:'Offer not independently verified'};
+  }
+  if (record.signature !== offerSignature(offer)) {
     return {status:'changed',label:'Terms changed since last review'};
   }
   if (!validDay(record.verifiedAt) || record.verifiedAt > today || typeof record.evidenceUrl !== 'string' ||
@@ -48,7 +51,7 @@ export function planCost(plan, count = 1, options = {}) {
   const regular = familyKnown && lines > 1 ? family : regularSingle;
   const promo = plan.promo;
   const promoAllowedLines = lines === 1 || (promo?.familyEligible === true) ||
-    (promo?.family && typeof promo.family[String(lines)] === 'number');
+    (typeof promo?.family?.[String(lines)] === 'number');
   const introAvailable = !!promo && !pastEnd(promo.ends,today) &&
     !(options.cannotPort && promo.req === 'port') &&
     promoAllowedLines && Number.isFinite(promo.price) && Number.isInteger(promo.months) && promo.months > 0;
@@ -103,7 +106,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
     .map(p => {
       const cost = planCost(p,lines,{today,cannotPort});
       return cost && {type:'plan',id:p.id,offer:p,cost,year:cost.year,
-        uncertain:cost.estimatedFamilyPrice || cost.promoFamilyUnconfirmed};
+        uncertain:cost.estimatedFamilyPrice};
     }).filter(Boolean)
     .filter(item=> !hasBudget || item.cost.regularMonthTotal <= budget)
     .sort(trustworthySort);
