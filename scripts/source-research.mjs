@@ -3,7 +3,7 @@
 import {validDay,verificationState,usd,localDay} from '../site/value-core.mjs';
 
 export const BASE='https://gcd231983.github.io/five-bars/';
-export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate'];
+export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired'];
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'
 })[c]);
@@ -31,6 +31,9 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
   typeof record.publishedPortRequired==='boolean'&&
   (record.publishedFirstMonthPlanPrice===undefined||num(record.publishedFirstMonthPlanPrice))&&
   (record.publishedConditionalRebate===undefined||num(record.publishedConditionalRebate))&&
+  ((record.publishedCreditMonthly===undefined&&record.publishedCreditMonths===undefined)||
+    (num(record.publishedCreditMonthly)&&Number.isInteger(record.publishedCreditMonths)&&record.publishedCreditMonths>=1&&record.publishedCreditMonths<=36))&&
+  (record.publishedFullRetailRequired===undefined||typeof record.publishedFullRetailRequired==='boolean')&&
   (record.publishedPrepayMonths===undefined||(Number.isInteger(record.publishedPrepayMonths)&&record.publishedPrepayMonths>0)):
   num(record.publishedMonthly)&&(record.publishedFirstMonthPrice===undefined||num(record.publishedFirstMonthPrice));
  if(!validFields||!Array.isArray(record.sources)||record.sources.length===0||
@@ -51,6 +54,12 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
    issues.push('prepaid service months differ from official conditional headline');
   if(record.publishedConditionalRebate!==undefined&&offer.rebate!==record.publishedConditionalRebate)
    issues.push('conditional reward differs from official published terms');
+  if(record.publishedCreditMonthly!==undefined&&offer.credit!==record.publishedCreditMonthly)
+   issues.push('monthly service credit differs from official published terms');
+  if(record.publishedCreditMonths!==undefined&&offer.creditMonths!==record.publishedCreditMonths)
+   issues.push('promotional credit duration differs from official published terms');
+  if(record.publishedFullRetailRequired!==undefined&&offer.fullRetailRequired!==record.publishedFullRetailRequired)
+   issues.push('mandatory full retail purchase condition differs from official published terms');
  }else{
   if(!num(offer?.price)||Math.abs(offer.price-record.publishedMonthly)>0.0001)
    issues.push('catalog standard monthly equivalent differs from official source');
@@ -151,7 +160,9 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
       (record.publishedFirstMonthPlanPrice!==undefined?'; '+usd(record.publishedFirstMonthPlanPrice)+' first service bill':'')+
       (record.publishedPrepayMonths!==undefined?'; '+record.publishedPrepayMonths+' service months prepaid':'')+
       (record.publishedPortRequired?'; qualifying number transfer':'')+
-      (record.publishedConditionalRebate!==undefined?'; '+usd(record.publishedConditionalRebate)+' conditional later reward NOT deducted':''):
+      (record.publishedConditionalRebate!==undefined?'; '+usd(record.publishedConditionalRebate)+' conditional later reward NOT deducted':'')+
+      (record.publishedCreditMonthly!==undefined?'; '+usd(record.publishedCreditMonthly)+'/mo conditional service credits for '+record.publishedCreditMonths+' months NOT deducted':'')+
+      (record.publishedFullRetailRequired?'; FULL RETAIL handset payment required; financing ineligible':''):
     usd(record.publishedMonthly)+(record.billingMonths===12?
       ' per-month equivalent; '+usd(record.billingUpfront)+' due upfront for 12 months':
       ' regular per month'+(record.publishedFirstMonthPrice!==undefined?'; '+usd(record.publishedFirstMonthPrice)+' first month':''));
