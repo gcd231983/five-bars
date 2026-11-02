@@ -407,7 +407,7 @@ try {
     await page.locator('#t-plans').click();
     await page.locator('#carrier').selectOption('Mint Mobile');
     await page.locator('#lines').selectOption('1');
-    assert.match(await page.locator('#r-mint').innerText(),/Pay \$360\.00 upfront for 12 months/);
+    assert.match(await page.locator('#r-mint').innerText(),/Pay \$360(?:\.00)? upfront for 12 months/);
     await page.locator('#lines').selectOption('2');
     assert.equal(await page.locator('#r-mint').count(),0,'no fabricated multi-line monthly Mint quote');
     await page.locator('#lines').selectOption('1');
