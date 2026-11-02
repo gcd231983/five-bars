@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {Script} from 'node:vm';
+import {Script,runInNewContext} from 'node:vm';
 import {
   localDay, validDay, pastEnd, offerSignature, verificationState,
   planCost, phoneCost, rankMatches, normalizeCompare
@@ -84,9 +84,23 @@ test('household matching puts known multi-line pricing ahead of estimates',()=>{
   const r=rankMatches(sample,{lines:3,network:'att'},'2026-11-01');
   assert.deepEqual(r.plans.slice(0,2).map(x=>x.id),['a','d']);
   assert.equal(r.plans[1].cost.estimatedFamilyPrice,true);
-  assert.ok(r.messages.some(x=>x.includes('single-line')));
+  assert.ok(r.messages.some(x=>x.includes('one-line')));
   assert.ok(r.messages.some(x=>x.includes('Introductory')));
 });
+test('existing page calculator agrees with core and refuses unconfirmed family intro pricing',()=>{
+  const html=readFileSync(new URL('../site/index.html',import.meta.url),'utf8');
+  const source=html.match(/^function planCalc\(p\)\{[\s\S]*?^\}/m)?.[0];
+  assert.ok(source,'page calculator must exist');
+  const plan=sample.plans[0];
+  const browser=runInNewContext(source+'; planCalc(p);',{
+    p:plan,state:{lines:2,t:{}},endInfo:()=>null
+  });
+  const core=planCost(plan,2,{today:'2026-11-01'});
+  assert.equal(browser.year,core.year);
+  assert.equal(browser.live,false);
+  assert.equal(browser.promoFamilyUnconfirmed,true);
+});
+
 test('comparison refuses mixed types, repeated IDs, and more than 3 entries',()=>{
   const entries=normalizeCompare([{type:'plan',id:'a'},{type:'plan',id:'a'},{type:'phone',id:'p1'},
     {type:'plan',id:'b'},{type:'plan',id:'c'},{type:'plan',id:'d'}],sample);
