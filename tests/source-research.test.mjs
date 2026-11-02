@@ -111,7 +111,7 @@ test('static public source audit prints 12 research cards, all 66 unresearched o
  assert.equal((html.match(/class="guide research-article"/g)||[]).length,12);
  assert.match(html,/What our official sources actually confirm/);
  assert.match(html,/Official published baseline/);
- assert.match(html,/\\$360\\.00 due upfront for 12 months/);
+ assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
  assert.match(html,/Not yet confirmed at checkout/);
  assert.match(html,/full-terms sign-offs/);
  assert.match(html,/66/);
