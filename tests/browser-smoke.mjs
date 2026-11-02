@@ -342,6 +342,44 @@ try {
       assert.equal(result.status(),200,name+' must be served');
       assert.match(await result.text(),/<title>/);
     }
+    // Editorial carrier comparisons are fully rendered HTML with source links.
+    const articles=await context.newPage();
+    articles.on('pageerror',e=>errors.push(view+' editorial: '+e.message));
+    await articles.goto(new URL('carrier-comparisons.html',base).href,{waitUntil:'domcontentloaded'});
+    assert.match(await articles.locator('h1').innerText(),/Compare wireless carriers/);
+    assert.equal(await articles.locator('.guide').count(),4,'Four curated carrier comparisons should exist');
+    assert.match(await articles.locator('main').innerText(),/unverified starting point/i);
+    await articles.locator('a[href="compare/us-mobile-vs-visible.html"]').click();
+    assert.match(await articles.locator('h1').innerText(),/US Mobile vs Visible/);
+    assert.ok(await articles.locator('table').count()>=2,'Single-line comparison must be readable without JS');
+    assert.match(await articles.locator('main').innerText(),/not verified checkout pricing/i);
+    assert.match(await articles.locator('main').innerText(),/\$300\.00/);
+    assert.ok(await articles.locator('a[href*="usmobile.com"]').count()>=1);
+    const articleOverflow=await articles.evaluate(()=>document.documentElement.scrollWidth);
+    assert.ok(articleOverflow<=viewport.width+2,'Comparison page must fit '+view+' viewport');
+    await articles.screenshot({path:join(output,view+'-carrier-comparison.png'),fullPage:true});
+    await articles.close();
+
+    // Human reviewer dashboard is read-only and never falsely signs off offers.
+    const editor=await context.newPage();
+    editor.on('pageerror',e=>errors.push(view+' editor: '+e.message));
+    await editor.goto(new URL('review-workbench.html',base).href,{waitUntil:'domcontentloaded'});
+    assert.equal(await editor.locator('meta[name="robots"]').getAttribute('content'),'noindex,nofollow');
+    await editor.locator('.fb-review-offer').first().waitFor({timeout:15000});
+    assert.match(await editor.locator('#fb-review-summary').innerText(),/total catalog offers in the review queue/);
+    await editor.locator('#fb-review-carrier').selectOption('Tello');
+    const tello=editor.locator('.fb-review-offer');
+    assert.ok(await tello.count()>=1,'Tello should be filterable for manual review');
+    await tello.first().locator('summary').click();
+    assert.ok(await tello.first().locator('.fb-review-steps input[type="checkbox"]').count()>=8);
+    await tello.first().locator('.fb-review-steps input[type="checkbox"]').first().check();
+    assert.match(await tello.first().innerText(),/1 of 8 items checked/);
+    assert.match(await editor.locator('main').innerText(),/NOT proof of verification/);
+    assert.equal(await editor.locator('button').filter({hasText:/automatically verify/i}).count(),0);
+    const editorOverflow=await editor.evaluate(()=>document.documentElement.scrollWidth);
+    assert.ok(editorOverflow<=viewport.width+2,'Editor checklist must fit '+view+' viewport');
+    await editor.screenshot({path:join(output,view+'-editor-review.png'),fullPage:true});
+    await editor.close();
     await context.close();
   }
   assert.deepEqual(errors,[],'no JavaScript page errors');
