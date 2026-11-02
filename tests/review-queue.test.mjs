@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {buildReviewQueue} from '../scripts/review-queue.mjs';
-import {offerSignature} from '../site/value-core.mjs';
+import {checkoutRecord} from './helpers/checkout-fixtures.mjs';
 
 const dt='2026-11-02T14:20:00.000Z';
 const today='2026-11-02';
@@ -43,8 +43,8 @@ test('source reachability and price headline match cannot create a manual full-t
 });
 test('only a signed, dated manual record can remove the independent full-review requirement',()=>{
  const catalog=mk();
- const record={scope:'full_terms',signature:offerSignature(catalog.plans[3]),
-   verifiedAt:'2026-11-01',evidenceUrl:'https://annualplans.good2gomobile.com/home-page'};
+ const record=checkoutRecord(catalog.plans[3],'2026-11-01',
+  'https://annualplans.good2gomobile.com/home-page');
  const doc=buildReviewQueue({catalog,generatedAt:dt,today,manualRecords:{good2go:record}});
  assert.equal(doc.summary.withoutCurrentManualReview,4);
  assert.equal(doc.items.find(x=>x.id==='good2go'),undefined);
