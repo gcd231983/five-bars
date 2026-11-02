@@ -28,6 +28,20 @@ function simulate(type,id,opts={}) {
  const {scenario:sc,...rest}=opts;
  return simulateSwitch({catalog,type,id,scenario:{...scenario,...sc},...rest});
 }
+test('Metro delayed gift reward is excluded and $55 first month / $50 renewal are modeled faithfully',()=>{
+ const changed={...catalog,phones:[...catalog.phones,{
+  id:'metro-cash',carrier:'Metro',phone:'iPhone',net:'tmo',price:99.99,planPrice:50,
+  firstMonthPlanPrice:55,stay:3,port:true,rebate:100,url:'https://example.org'
+ }]};
+ const report=simulateSwitch({catalog:changed,type:'phone',id:'metro-cash',
+  scenario:{...scenario,canPort:true,currentMonthly:80}});
+ assert.equal(report.chosen.upfrontDue,154.99);
+ assert.equal(report.chosen.serviceTotal,605);
+ assert.equal(report.chosen.newTotal,704.99);
+ assert.equal(report.results[24].serviceTotal,1205);
+ assert.equal(report.results[36].serviceTotal,1805);
+ assert.ok(report.warnings.some(x=>x.includes('rebates')));
+});
 test('monthly promotion first 3 months then regular service; accurate 12/24/36',()=>{
  const r=simulate('plan','monthly');
  assert.deepEqual(r.results[12],{

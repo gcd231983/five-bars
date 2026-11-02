@@ -16,6 +16,7 @@ test('static site JavaScript parses and uses no misleading cash-to-walk-away lab
   new Script(match[1]);
   assert.ok(!html.includes('Cash to walk away'), 'old cost label removed');
   assert.ok(html.includes('Due today (est.)'));
+  assert.match(html,/gift cards and promotional credits are excluded from ALL estimated totals/i);
   assert.ok(html.includes('Catalog reference date:'));
   assert.ok(html.includes('data/status.json'));
   assert.doesNotMatch(match[1], /\bclaude\b|anthropic|sample\.json/i, 'no model runtime remains');
@@ -29,12 +30,13 @@ test('site and tested phone-cost helper agree on sample checkout math', { skip }
   const browserCalc = runInNewContext(`const endInfo=()=>null; ${source}; phoneCalc;`);
   for (const deal of [
     { price: 49.99, planPrice: 60, stay: 3 },
-    { price: 99.99, rebate: 100, planPrice: 55, stay: 3 },
+    { price: 99.99, rebate: 100, planPrice: 50, firstMonthPlanPrice: 55, stay: 3 },
     { price: 29.99, planPrice: 60, prepay: 3 },
     { price: 579, bundle: 12 },
     { price: 480, bundle: 6, planPrice: 40 },
     { price: 349, planPrice: null },
     { price: 1199, planPrice: 45, credit: 20, creditMonths: 24 },
+    { price: 0, planPrice: 35, firstMonthPlanPrice: 40 },
   ]) {
     const fromPage = browserCalc(deal), fromCore = phoneCosts(deal);
     assert.ok(fromPage.due === fromCore.dueToday || Math.abs(fromPage.due - fromCore.dueToday) < .001);

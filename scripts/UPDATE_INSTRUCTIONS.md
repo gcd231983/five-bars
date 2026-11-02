@@ -23,8 +23,8 @@ Check an official carrier/merchant page and document the actual price, required 
 ### Phone deals
 
 - Required: `id`, `carrier`, `phone`, `os`, `net`, `price`, `port`, `lock`, `url`.
-- Optional: `planPrice`, `prepay` (months actually prepaid), `stay` (months required but **not** necessarily prepaid), `bundle` (months included in device price), `rebate`, `credit`, `creditMonths`, `postpaid`, `store`, `was`, `ends`, `note`, `warn`.
-- The phone's `price` is the **checkout device price before a mail-in or delayed rebate**; do not subtract a rebate from the amount due up front.
+- Optional: `planPrice` (ongoing monthly service), `firstMonthPlanPrice` (different first monthly bill, such as $55 first then $50 with AutoPay; not allowed with multi-month prepaid), `prepay` (months actually prepaid), `stay` (months required but **not** necessarily prepaid), `bundle` (months included in device price), `rebate`, `credit`, `creditMonths`, `postpaid`, `store`, `was`, `ends`, `note`, `warn`.
+- The phone's `price` is the **checkout device price before a mail-in or delayed rebate**. **Never subtract unreceived rebates, conditional gift cards or future bill credits from the due-today, minimum commitment, first-year, or savings ranking.** List those separately with eligibility and redemption caveats.
 - If a price varies with trade-ins or financing, leave unsupported totals unknown rather than asserting a single guaranteed price.
 
 ## Verification procedure

@@ -88,9 +88,14 @@ function buildCashflow(offer,type,scenario,months){
     }else{
       for(let month=0;month<months;month++)service[month]=money(base);
       const billedNow=Math.min(months,prepay);
-      service[0]=money(base*billedNow);
+      const first=Number.isFinite(offer.firstMonthPlanPrice)?offer.firstMonthPlanPrice:base;
+      if(first<0)throw Error('First-month service charge is invalid.');
+      service[0]=money(first+base*(billedNow-1));
       for(let month=1;month<billedNow;month++)service[month]=0;
       serviceUpfront=service[0];
+      if(first!==base)note.push('First service month is $'+money(first).toFixed(2)+
+        '; remaining modeled service months are $'+money(base).toFixed(2)+
+        ' with applicable AutoPay or other eligibility conditions.');
       if(prepay>1)note.push('The offer requires '+prepay+' month(s) of prepaid service, charged in the first modeled month.');
     }
     if(offer.postpaid)note.push('Financed/postpaid terms and recurring device payments are not fully specified. The model assumes the listed device amount is paid upfront, so actual cash timing may differ.');
