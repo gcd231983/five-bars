@@ -1,5 +1,76 @@
 {
   "schema": 1,
-  "description": "Only official plan headline price and billing term observations, not checkout/renewal/tax guarantees.",
-  "offers": {}
+  "description": "Official carrier headline rate and billing period observations, NOT full checkout or eligibility verification.",
+  "offers": {
+    "helium-air": [
+      {
+        "date": "2026-11-02",
+        "price": 15,
+        "upfront": null,
+        "billingMonths": 1,
+        "source": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      }
+    ],
+    "helium-infinity": [
+      {
+        "date": "2026-11-02",
+        "price": 30,
+        "upfront": null,
+        "billingMonths": 1,
+        "source": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      }
+    ],
+    "mobilex-unlimited10": [
+      {
+        "date": "2026-11-02",
+        "price": 14.88,
+        "upfront": null,
+        "billingMonths": 1,
+        "source": "https://mymobilex.com/all-faqs/",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      }
+    ],
+    "mobilex-unlimited30": [
+      {
+        "date": "2026-11-02",
+        "price": 24.88,
+        "upfront": null,
+        "billingMonths": 1,
+        "source": "https://mymobilex.com/all-faqs/",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      }
+    ],
+    "good2go-annual1": [
+      {
+        "date": "2026-11-02",
+        "price": 5,
+        "upfront": 60,
+        "billingMonths": 12,
+        "source": "https://annualplans.good2gomobile.com/home-page",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      }
+    ],
+    "good2go-annual3": [
+      {
+        "date": "2026-11-02",
+        "price": 10,
+        "upfront": 120,
+        "billingMonths": 12,
+        "source": "https://annualplans.good2gomobile.com/home-page",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      }
+    ],
+    "good2go-annual5": [
+      {
+        "date": "2026-11-02",
+        "price": 20,
+        "upfront": 240,
+        "billingMonths": 12,
+        "source": "https://annualplans.good2gomobile.com/home-page",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      }
+    ]
+  }
 }
