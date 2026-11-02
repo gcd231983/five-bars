@@ -135,7 +135,7 @@ function renderFinder() {
       }
     }
     if(showPhones) {
-      root.append(element('h4','Phone offers ('+ranked.phoneMatches+' match the selected filters)'));
+      root.append(element('h4',ranked.lines>1 ? 'Phone leads ('+ranked.phoneMatches+' options; household cost unconfirmed)' : 'Phone offers ('+ranked.phoneMatches+' match the selected filters)'));
       if(!ranked.phones.length) root.append(note('No matching offers. Consider keeping your phone or changing the network filter.'));
       for(const item of ranked.phones.slice(0,3)) {
         const p=item.offer,c=item.cost;
