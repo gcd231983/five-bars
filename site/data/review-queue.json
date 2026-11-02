@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-02T15:59:42.973Z",
+  "generatedAt": "2026-11-02T16:55:17.753Z",
   "today": "2026-11-02",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
@@ -1406,8 +1406,8 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.totalwireless.com/kyop"
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.totalwireless.com/m/plans"
     },
     {
       "id": "total-max-family",
