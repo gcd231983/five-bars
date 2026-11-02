@@ -6,7 +6,7 @@ Five Bars compares US phone plans and advertised phone offers. The website is a 
 
 Every day, it:
 
-1. Fetches the existing 11 public sources from `site/data/deals.json` and checks each listed offer link (without bypassing site protections).
+1. Checks the maintained public-source list in `site/data/deals.json` and each listed offer link (without bypassing site protections). New carrier source URLs are included automatically.
 2. Automatically removes **explicitly expired** promotional plan prices and ended phone deals.
 3. Collects possible Boost Mobile price candidates for **manual review only**. Scraped text can mix products or omit conditions, so it never changes catalog prices or verifies promotions.
 4. Reports price candidates and blocked, failed, or unverifiable links rather than guessing.
@@ -31,7 +31,7 @@ No Claude subscription token or Anthropic secret is used. You may delete `CLAUDE
 
 ## Manual verification and safe edits
 
-- `site/data/deals.json`: verified catalog entries; follow the original schema described in `scripts/UPDATE_INSTRUCTIONS.md`.
+- `site/data/deals.json`: curated listings with date-scoped sources; a listing is **not** fully verified until it has its own human review record. Follow the original schema described in `scripts/UPDATE_INSTRUCTIONS.md`.
 - `site/data/status.json`: machine-generated scan status; **not** a factual price feed.
 - `site/data/changes.json`: latest automatic changes, including explicit expirations.
 - `scripts/auto-core.mjs`: deterministic rules, offer expiry, and phone-cost math used in tests.
@@ -64,7 +64,7 @@ The previous Claude-based workflow has been replaced. The old `scripts/deals.mjs
 
 ## Five Bars value upgrade — finder, comparison and trust
 
-The site has five sections: **Find my plan**, Plans, Phone deals, Compare, and Sources & refresh.
+The site has six sections: **Find my plan**, Plans, Phone deals, Compare, Price watch, and Sources & refresh.
 The new guided finder asks only about network, number of lines, service budget, number-transfer eligibility, data priority, and hotspot needs. It filters locally without a backend or AI calls, using published catalog figures with clearly identified estimates.
 
 - The finder separates service plans from phone/device promotions. Phone offers are per-device quotes; a family bundle is **not** assumed.
@@ -138,3 +138,17 @@ node scripts/auto-update.mjs --dry-run
 ```
 
 The final command makes network requests but never writes to the repository. Google Chrome mobile/desktop UI tests run on the PR workflow. No AI token, credit card or paid API integration is required.
+
+## MVNO expansion — 2 November 2026
+
+Five Bars now lists **38 wireless plans from 18 providers** across the major underlying network choices, plus the existing 40 device promotions. The expansion includes new tiers from Tello, **H2O Wireless**, **Helium Mobile**, MobileX, Red Pocket, and Good2Go Mobile. We could not substantiate a US carrier named "Hydro Mobile"; H2O and Helium are distinct real providers.
+
+- The main **Plans** tab now has a carrier/provider dropdown, separate from the AT&T/Verizon/T-Mobile network filter. The guided plan finder also supports a preferred provider. For multi-network MVNOs, selecting the provider does **not** guarantee all underlying networks or plans are available at the same price; confirm the network and compatible handset before purchase.
+- New entries are sourced from official current carrier pricing pages and include `priceSourceDate` (date the quoted rate was referenced). They are **not** automatically marked `full_terms` verified; the manual-review ledger is unchanged.
+- The five yearly prepaid entries include `billingMonths:12`, `billingUpfront`, and `maxLines:1`. Their `price` is the effective monthly equivalent. The site **must** show `billingUpfront` as the amount due before service begins. For example, Good2Go 1GB is $5/mo effective, but requires **$60 upfront** for 12 months. H2O 10GB annual is $16/mo effective, but requires **$192 upfront**.
+- The 12-month service-cost model, guided recommendations and side-by-side comparisons use exact yearly upfront totals when supplied. Annual plans are unavailable in the results for unsupported multi-line group sizes.
+- Other listed plans remain monthly billing unless otherwise explicitly described. Taxes, cost-recovery fees, eligibility, compatibility and auto-pay discounts are not guaranteed by the comparison.
+
+New official carrier source links are part of `site/data/deals.json`. The no-AI daily scanner checks availability of those links, but this is not an automatic full-price revalidation for the newly added MVNOs. Automatic **partial price evidence** remains limited to the three explicitly supported Boost Mobile devices; expanding that safely is a separate workstream.
+
+Run `node --test tests/*.test.mjs` for pricing/provider/annual-billing checks, then review screenshots from the Chromium mobile and desktop PR workflow.
