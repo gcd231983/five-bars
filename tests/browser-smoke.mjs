@@ -60,7 +60,8 @@ try {
         'helium-air':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:15,observedUpfront:null,billingMonths:1,sourceUrl:'https://support.hellohelium.com/en/articles/17734883-plans-pricing',note:'Official plan rate matched; full terms NOT verified.'},
         'helium-infinity':{state:'headline_mismatch',scope:'official_plan_rate_and_billing_term_headline',observedPrice:35,observedUpfront:null,billingMonths:1,sourceUrl:'https://support.hellohelium.com/en/articles/17734883-plans-pricing',note:'Official plan price differs from the catalog.'},
         'good2go-annual1':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:5,observedUpfront:60,billingMonths:12,sourceUrl:'https://annualplans.good2gomobile.com/home-page',note:'Official annual payment $60 matches the listed monthly equivalent; full terms NOT verified.'},
-        'h2o-10gb':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:20,observedUpfront:null,billingMonths:1,sourceUrl:'https://www.h2owireless.com/',note:'Official homepage featured monthly rate matched; full terms NOT verified.'}
+        'h2o-10gb':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:20,observedUpfront:null,billingMonths:1,sourceUrl:'https://www.h2owireless.com/',note:'Official homepage featured monthly rate matched; full terms NOT verified.'},
+        'h2o-unlimited':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:30,observedUpfront:null,billingMonths:1,sourceUrl:'https://www.h2owireless.com/',note:'Official homepage unlimited plan monthly rate matched; full terms NOT verified.'}
       }
     };
     const mvnoHistory={schema:1,offers:{
@@ -176,7 +177,7 @@ try {
     assert.match(await disputed.locator('.price .now').innerText(),/Price under review/);
     assert.equal(await disputed.locator('.fb-compare-btn').count(),0,'disputed plan cannot be compared at stale price');
     assert.match(await disputed.locator('[data-verification]').innerText(),/Official plan rate differs/);
-    assert.match(await page.locator('#r-h2o-10gb [data-verification]').innerText(),/Official plan rate matches/);
+    assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Official plan rate matches/);
     assert.doesNotMatch(await disputed.locator('.foot').innerText(),/12 months \(est\.\)/);
     await page.locator('#plans-list .fb-compare-btn').first().click();
     assert.equal(await page.locator('#p-compare').isVisible(),true);
@@ -199,8 +200,8 @@ try {
     assert.equal(await page.locator('#p-pricewatch').isVisible(),true);
     assert.equal(await page.locator('#fb-price-watch-root .fb-watch-card:not(.fb-mvno-card)').count(),2,
       'Boost cards still appear in price-watch fixture');
-    assert.equal(await page.locator('#fb-price-watch-root .fb-mvno-card').count(),4,
-      'Four MVNO test records including official H2O homepage price should appear');
+    assert.equal(await page.locator('#fb-price-watch-root .fb-mvno-card').count(),5,
+      'Five MVNO test records including both official H2O homepage prices should appear');
     assert.match(await page.locator('#fb-price-watch-root').innerText(),/MVNO service-plan rate monitoring/);
     assert.match(await page.locator('#fb-price-watch-root').innerText(),/\$60\.00 annual payment/);
     assert.match(await page.locator('#fb-price-watch-root').innerText(),/\$35\.00\/mo/);
