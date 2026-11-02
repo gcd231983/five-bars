@@ -10,7 +10,8 @@ const data={
  catalog:await read('site/data/deals.json'),
  status:await read('site/data/status.json'),
  ledger:await read('site/data/verifications.json'),
- mvnoEvidence:await read('site/data/mvno-evidence.json')
+ mvnoEvidence:await read('site/data/mvno-evidence.json'),
+ research:await read('site/data/research-evidence.json')
 };
 await mkdir(new URL('site/compare/',root),{recursive:true});
 for(const guide of GUIDES){
