@@ -144,7 +144,7 @@ function renderFinder() {
         <label><input name="hotspot" type="checkbox"/> I need hotspot data</label>
         <label><input name="priority" type="checkbox"/> I want priority network data</label>
       </div>
-      <button type="submit" class="btn">Find matching options</button>
+      <button type="submit" class="btn" disabled aria-busy="true">Loading deals...</button>
     </form>
     <div id="fb-finder-results" aria-live="polite" aria-atomic="false"></div>`;
   finderRoot.querySelector('form').addEventListener('submit', e => {
@@ -431,6 +431,8 @@ async function start() {
     reviews=v?.offers && typeof v.offers==='object'?v.offers:{};
     priceEvidence=proof?.schema===1 && typeof proof.offers==='object'?proof:null;
     priceHistory=history?.schema===1 && typeof history.offers==='object'?history:{offers:{}};
+    const submit=finderRoot.querySelector('#fb-finder-form button[type="submit"]');
+    if(submit){submit.disabled=false;submit.removeAttribute('aria-busy');submit.textContent='Find matching options';}
     renderPriceWatch();
     try{selected=normalizeCompare(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'),catalog);}catch{selected=[];}
     try {
