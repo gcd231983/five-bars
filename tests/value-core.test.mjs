@@ -129,10 +129,10 @@ test('pure client-side UI file contains no AI API or paid service dependency',()
   assert.match(js,/aria-live="polite"/);
   assert.match(js,/localStorage/);
 });
-test('verification store is empty initially and never populated by automated scans',()=>{
+test('verification records are human-maintained and never populated by the source scanner',()=>{
   const r=JSON.parse(readFileSync(new URL('../site/data/verifications.json',import.meta.url),'utf8'));
   assert.equal(r.schema,1);
-  assert.deepEqual(r.offers,{});
+  assert.ok(r.offers && !Array.isArray(r.offers) && typeof r.offers === 'object');
   const scanner=readFileSync(new URL('../scripts/auto-update.mjs',import.meta.url),'utf8');
   assert.doesNotMatch(scanner,/verifications\.json|review-offer\.mjs/);
 });
