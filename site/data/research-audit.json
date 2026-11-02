@@ -5,11 +5,11 @@
   "scope": "Public official pages and consumer labels only; NOT checkout validation, actual product eligibility, complete terms or guaranteed pricing.",
   "summary": {
     "offers": 78,
-    "researched": 24,
-    "publishedPriceMatches": 24,
+    "researched": 37,
+    "publishedPriceMatches": 37,
     "conflictingOrInvalid": 0,
     "aged": 0,
-    "notResearched": 54,
+    "notResearched": 41,
     "manuallyFullyReviewed": 0,
     "needingFullTerms": 78
   },
@@ -166,27 +166,31 @@
       "catalogPrice": 25,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.metrobyt-mobile.com/phone-plans"
+      ]
     },
     {
       "id": "metro-premium",
       "carrier": "Metro by T-Mobile",
       "offer": "Unlimited Premium 5G Data",
       "kind": "plan",
-      "catalogPrice": 65,
+      "catalogPrice": 60,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.metrobyt-mobile.com/phone-plans"
+      ]
     },
     {
       "id": "boost",
@@ -196,12 +200,14 @@
       "catalogPrice": 25,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.boostmobile.com/plans"
+      ]
     },
     {
       "id": "straighttalk",
@@ -460,12 +466,14 @@
       "catalogPrice": 15,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
+      ]
     },
     {
       "id": "helium-infinity",
@@ -475,12 +483,14 @@
       "catalogPrice": 30,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
+      ]
     },
     {
       "id": "mobilex-unlimited10",
@@ -520,12 +530,14 @@
       "catalogPrice": 10,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://my.redpocket.com/plans"
+      ]
     },
     {
       "id": "redpocket-plus",
@@ -535,12 +547,14 @@
       "catalogPrice": 20,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://my.redpocket.com/plans"
+      ]
     },
     {
       "id": "redpocket-premium",
@@ -550,12 +564,14 @@
       "catalogPrice": 30,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://my.redpocket.com/plans"
+      ]
     },
     {
       "id": "good2go-annual1",
@@ -565,12 +581,14 @@
       "catalogPrice": 5,
       "billingMonths": 12,
       "billingUpfront": 60,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://annualplans.good2gomobile.com/home-page"
+      ]
     },
     {
       "id": "good2go-annual3",
@@ -580,12 +598,14 @@
       "catalogPrice": 10,
       "billingMonths": 12,
       "billingUpfront": 120,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://annualplans.good2gomobile.com/home-page"
+      ]
     },
     {
       "id": "good2go-annual5",
@@ -595,12 +615,14 @@
       "catalogPrice": 20,
       "billingMonths": 12,
       "billingUpfront": 240,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://annualplans.good2gomobile.com/home-page"
+      ]
     },
     {
       "id": "h2o-annual10",
@@ -610,12 +632,14 @@
       "catalogPrice": 16,
       "billingMonths": 12,
       "billingUpfront": 192,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.h2owireless.com/plan/monthly"
+      ]
     },
     {
       "id": "h2o-annual30",
@@ -625,12 +649,14 @@
       "catalogPrice": 24,
       "billingMonths": 12,
       "billingUpfront": 288,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.h2owireless.com/plan/monthly"
+      ]
     },
     {
       "id": "metro-motog",
