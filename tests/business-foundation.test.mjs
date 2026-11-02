@@ -22,7 +22,7 @@ test('main page exposes functional savings tab and the four honest public polici
 test('public editorial materials do not pretend full terms or actual affiliate deals have been verified',()=>{
  const editorial=read('editorial.html');
  assert.match(editorial,/not a guaranteed checkout quote/i);
- assert.match(editorial,/complete documented human review/i);
+ assert.match(editorial,/documented human checkout scenario/i);
  const disclosure=read('disclosures.html');
  assert.match(disclosure,/material connection/i);
  assert.match(disclosure,/No paid carrier placements|does not identify paid carrier placements/i);

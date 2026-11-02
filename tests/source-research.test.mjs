@@ -125,7 +125,7 @@ test('static public source audit prints 53 dated source cards and 25 unresearche
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
  assert.match(html,/Not yet confirmed at checkout/);
- assert.match(html,/full-terms sign-offs/);
+ assert.match(html,/human checkout-scenario reviews/);
  assert.match(html,/25/);
  assert.match(html,/Research next — prioritized source checklist/);
  assert.match(html,/Stock and checkout holds \(4\)/);

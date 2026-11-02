@@ -7,7 +7,9 @@ export function checkoutFixture(offer,observedAt='2026-11-02'){
  return {
   schema:1,channel:'official_online_checkout',observedAt,
   lineCount:1,customerScenario:port?'new_line_port':newCustomer?'new_line_no_port':'not_required',
-  upfrontCents:10000,renewalCents:2500,billingMonths:offer.billingMonths===12?12:1,
+  upfrontCents:Math.max(10000,Math.round((offer.billingUpfront||0)*100),
+    Math.round((offer.phone&&!offer.postpaid?offer.price:0)*100)),
+  renewalCents:2500,billingMonths:offer.billingMonths===12?12:1,
   requiredServiceMonths:Math.max(1,offer.billingMonths===12?12:1,offer.prepay||0,offer.stay||0),
   taxesAndFeesIncluded:true,stockConfirmed:true,
   checks:Object.fromEntries(CHECKOUT_REVIEW_CHECKS.map(key=>[key,true])),
