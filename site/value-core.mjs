@@ -89,6 +89,8 @@ export function checkoutEvidenceIssues(offer,evidence,verifiedAt) {
     issues.push('Document the full required prepaid or minimum service term');
   if(evidence.taxesAndFeesIncluded!==true)
     issues.push('All taxes and compulsory carrier charges must be included in the observed quote');
+  if(offer.promo&&pastEnd(offer.promo.ends,verifiedAt))
+    issues.push('An expired introductory promotion cannot receive a current checkout attestation; remove the expired promo before reviewing the regular plan');
   if(evidence.stockConfirmed!==true||offer.availability==='out_of_stock'||pastEnd(offer.ends,verifiedAt))
     issues.push('Offer must have confirmed available inventory and not be expired or held out of stock');
   if(!evidence.checks||typeof evidence.checks!=='object'||Array.isArray(evidence.checks)||
