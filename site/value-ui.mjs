@@ -178,7 +178,7 @@ function renderFinder() {
         <label>Can you transfer an eligible phone number?
           <select name="portStatus" id="fb-port-status"><option value="unknown">Not sure / unconfirmed</option><option value="yes">Yes, I confirm I can transfer</option><option value="no">No, I cannot transfer</option></select>
         </label>
-        <label><input name="newCustomer" type="checkbox"/> I qualify for a new-customer promotional rate</label>
+        <label><input name="newCustomer" type="checkbox"/> I qualify for this carrier’s new-customer or eligible new-line promotion</label>
         <label><input name="discountQualified" id="fb-discount-qualified" type="checkbox"/> I meet the carrier’s AutoPay, Auto-Refill and/or eBilling conditions</label>
         <label><input name="hotspot" type="checkbox"/> I need hotspot data</label>
         <label><input name="priority" type="checkbox"/> I want priority network data</label>
