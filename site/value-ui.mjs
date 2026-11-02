@@ -163,14 +163,12 @@ function renderFinder() {
       phones:catalog.phones.filter(phone=>!officialHeadlineUnderReview(phone))
     };
     const suppressed=catalog.phones.length-recommendationCatalog.phones.length;
-    if(suppressed){
-      root.append(note(suppressed+' handset offer(s) with conflicting official price evidence are excluded from these recommendations until reviewed. See Price watch.'));
-    }
     const ranked = rankMatches(recommendationCatalog,prefs,localDay());
     const root = document.querySelector('#fb-finder-results');
     root.replaceChildren();
     root.append(element('h3','Matching options'));
     root.append(note('Estimated costs only, not a coverage guarantee or verified carrier quote. Promotions may have additional requirements.'));
+    if(suppressed)root.append(note(suppressed+' handset offer(s) with conflicting official price evidence are excluded from recommendations until reviewed. See Price watch.'));
     for(const msg of ranked.messages) root.append(note(msg));
     root.append(note(ranked.lines>1 ?
       'Plan results show known family prices first, then estimates; within each group the lowest 12-month cost ranks first.' :
