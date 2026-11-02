@@ -195,23 +195,29 @@
       "sources": [
         {
           "url": "https://tello.com/buy/custom_plans",
-          "supports": "Official Everyday 10GB plan $15 ongoing, $10 for first three qualifying months"
+          "supports": "Official Everyday 10GB plan: $10 per month for the first three qualifying months; $15 regular monthly renewal"
         },
         {
           "url": "https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/",
-          "supports": "Official October 22, 2026 promotion: new lines through November 9, 2026 11:59 PM EST"
+          "supports": "Tello announcement dated October 22, 2026: eligibility, newly activated lines, November 9 deadline at 11:59 p.m. EST, and plan-change exclusion"
+        },
+        {
+          "url": "https://tello.com/broadband_facts/M00245106460000000000002FB",
+          "supports": "Official 10GB plus unlimited talk/text broadband disclosure: $10 intro, $15 renewal, up to $0.30 cost recovery, variable government taxes, no listed one-time purchase fees"
         }
       ],
       "supportedFacts": [
-        "Regular rate $15/mo for 10GB and unlimited talk/text",
-        "Eligible new lines activated by November 9, 2026 11:59 PM EST pay $10/mo for first three months",
-        "A change or cancellation of the plan ends the introductory pricing",
-        "Hotspot shares the plan's 10GB data allotment; government taxes and up to $0.30 cost recovery can apply"
+        "Everyday 10GB with unlimited talk and text has a $15/month ongoing published price",
+        "Published $10/month introductory price applies to first three months on newly activated lines; existing Tello customers adding a new line are also eligible",
+        "Official October 22, 2026 announcement sets enrollment deadline November 9, 2026 at 11:59 p.m. EST",
+        "Promotion is not transferable to a previously activated line and any plan change or cancellation ends the introductory price",
+        "Published broadband disclosure lists provider monthly fees included, one-time purchase fees none, cost recovery up to $0.30, and government taxes varying by location",
+        "Hotspot access is included and uses the plan's data allowance"
       ],
       "unresolved": [
-        "Check whether promotion remains available at actual sign-up and exact qualifying new-line conditions",
-        "Verify area taxes, total upfront charge and eSIM/IMEI compatibility",
-        "Confirm final coverage and tethering/device restrictions"
+        "Check the live purchase path for promotion availability and eligibility for the specific newly activated line",
+        "Observe exact first bill and renewal checkout totals, including location-specific taxes and any applicable cost-recovery charge (up to $0.30, not a confirmed fixed fee)",
+        "Confirm SIM/eSIM and IMEI compatibility, coverage and other account-specific conditions"
       ],
       "observedOn": "2026-11-02"
     },
