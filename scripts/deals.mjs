@@ -1,7 +1,7 @@
 // Five Bars data helper. Node 20+, no dependencies, no API calls.
 //
 //   node scripts/deals.mjs prep    back up today's list and download the deal pages to work/sources/
-//   node scripts/deals.mjs check   validate site/data/deals.json (Claude runs this to check its own work)
+//   node scripts/deals.mjs check   validate site/data/deals.json (also run in GitHub Actions)
 //   node scripts/deals.mjs finish  stamp today's date, validate, write changes.json; restore the backup if invalid
 
 import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
@@ -13,8 +13,9 @@ const WORK = new URL("work/", root);
 const PREV = new URL("work/prev.json", root);
 const SRC_DIR = new URL("work/sources/", root);
 
-// Pages downloaded every run. Add more here; keep it to pages that list current deals or prices.
-// If a page blocks the download, Claude tries it again with its own web tools during the run.
+// Fallback source directory for historical prep/finish commands.
+// Prefer the actively maintained sources list in site/data/deals.json.
+// Do not assume an AI will repair sources or supply missing deal terms.
 const FEEDS = [
   { name: "PrepaidCompare deals", url: "https://prepaidcompare.net/deals/", what: "Daily list of prepaid promos and free-phone deals" },
   { name: "Clark.com new cell phone deals", url: "https://clark.com/cell-phones/new-cell-phone-deals/", what: "Monthly roundup of new carrier deals" },
@@ -160,16 +161,18 @@ async function readPrev() {
 async function prep() {
   await mkdir(SRC_DIR, { recursive: true });
   await copyFile(DATA, PREV);
+  const current = await readJson(DATA);
+  const feeds = Array.isArray(current.sources) && current.sources.length ? current.sources : FEEDS;
   const index = [`Today is ${TODAY}. One file per source below. FAILED means the download was blocked; try that URL with WebFetch.`, ""];
   let n = 0;
-  for (const [i, f] of FEEDS.entries()) {
+  for (const [i, f] of feeds.entries()) {
     const text = await fetchText(f.url);
     const file = String(i + 1).padStart(2, "0") + "-" + f.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".txt";
     if (text) { n++; await writeFile(new URL(file, SRC_DIR), `${f.name}\n${f.url}\n\n${text}\n`); }
     index.push(`${text ? "OK    " : "FAILED"} ${text ? "work/sources/" + file : ""}  ${f.name}  ${f.url}`);
   }
   await writeFile(new URL("INDEX.txt", SRC_DIR), index.join("\n") + "\n");
-  log(`Backed up the deal list; downloaded ${n}/${FEEDS.length} sources to work/sources/`);
+  log(`Backed up the deal list; downloaded ${n}/${feeds.length} sources to work/sources/`);
 }
 
 async function check() {
@@ -192,7 +195,9 @@ async function finish() {
     process.exit(1);
   }
   next.checked = TODAY;
-  next.sources = FEEDS.map(({ name, url, what }) => ({ name, url, what }));
+  // Preserve maintained carrier sources; older hard-coded FEEDS must never erase MVNO integrations.
+  if (!Array.isArray(next.sources) || !next.sources.length)
+    next.sources = FEEDS.map(({ name, url, what }) => ({ name, url, what }));
   const changes = diff(prev, next);
   await writeFile(DATA, JSON.stringify(next, null, 1) + "\n");
   await writeFile(CHANGES, JSON.stringify(changes, null, 1) + "\n");
