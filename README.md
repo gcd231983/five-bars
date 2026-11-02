@@ -256,3 +256,21 @@ Use **Export JSON** to see and optionally copy a local backup, and **Import JSON
 - `tests/browser-smoke.mjs`: mobile/desktop acceptance checks for adding, saving, importing, exporting, acknowledging and restoring after page reload.
 
 The existing no-AI GitHub Actions price monitor continues unchanged. The watchlist needs no new server, dependency, API key or subscription.
+
+## Five Bars 2.7 — Switch & Save and commercial foundation (November 2026)
+
+The new **Switch & Save** tab compares what a visitor currently pays for wireless service against a plan or advertised phone offer over 12, 24, and 36 months, using an intentionally conservative cash-flow model. It asks for the current total wireless bill, existing device payoff, one-time switching expenses, optional extra monthly fees, lines, porting eligibility, and a selected offer. The calculator runs locally without server storage or paid APIs.
+
+- **Service-plan scenario:** recorded family rates where known, monthly introductory discounts only when eligible, normal recurring costs afterward, and full annual prepayments at month 1 and at each assumed 12-month renewal.
+- **Device promotion scenario:** exactly one advertised handset, any required prepaid service and required carrier plan, with device price and fees paid upfront in the illustrative model. It does not combine a restricted phone discount with an unrelated cheap plan.
+- **What is not counted:** guessed trade-in value, conditional bill credits, rebates, financing arrangements or undocumented tax incentives. Some offers cannot be calculated reliably; the tool refuses to provide a total in those cases.
+- **Risk guards:** blocked or contradictory official pricing evidence stops an estimate. Full-terms review and unknown fees are clearly disclosed; an officially reached URL is never treated as proof of price or eligibility.
+- **Customer output:** cash needed initially, line-item breakdown, projected totals and differences for 12/24/36 months, break-even within selected horizon, copyable report, print/PDF option and a shareable offer/period/lines URL with personal financial inputs omitted by default.
+
+The comparison is an **illustration, not a guaranteed price or commitment**. Long-term totals assume that regular service rates, renewal terms and the user's original monthly bill remain stable. This assumption can be especially inaccurate if the original bill includes device installments that end during the comparison.
+
+Four factual static pages support trust and future commercial readiness: the editorial review process, privacy, commercial disclosures and safe switching guide. Search discovery includes a small sitemap and robots file. No partner payments or commissions have been claimed, no affiliate URLs were inserted, and no third-party analytics or subscriber collection was added.
+
+**Business launch:** See BUSINESS_READINESS.md for remaining hard gates: dated complete carrier term reviews, at least 10 real checkout comparisons, accessibility/phone testing, appropriate business and legal registrations, an independent contact channel, signed partner agreements and near-link compensation disclosures. Do not describe these as completed until they have actually been done.
+
+Regression tests: tests/switch-core.test.mjs and tests/business-foundation.test.mjs. Real Chromium mobile and desktop acceptance tests additionally exercise the switching planner, phone prepay requirements, URL privacy and business pages. Existing no-AI monitoring remains unchanged.

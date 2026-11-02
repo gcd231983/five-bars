@@ -297,6 +297,51 @@ try {
     await page.locator('#fb-watchlist-root .fb-watch-saved-card').first().waitFor({timeout:15000});
     assert.equal(await page.locator('#fb-watchlist-root .fb-watch-saved-card').count(),2,
       'watchlist survives reload via localStorage');
+    // Five Bars Switch & Save: conservative quoted monthly totals, upfront costs and safe sharing.
+    await page.locator('#t-plans').click();
+    const switchButton=page.locator('#r-usm-starter .fb-switch-button');
+    await switchButton.waitFor();
+    await switchButton.click();
+    assert.equal(await page.locator('#p-switch').isVisible(),true);
+    assert.equal(await page.locator('#fb-switch-offer').inputValue(),'usm-starter');
+    await page.locator('#fb-switch-current').fill('80');
+    await page.locator('[name="payoff"]').fill('120');
+    await page.locator('[name="switchFees"]').fill('30');
+    await page.locator('[name="extraMonthly"]').fill('5');
+    await page.locator('#fb-switch-form button[type="submit"]').click();
+    const switchResult=page.locator('#fb-switch-results');
+    assert.match(await switchResult.innerText(),/Current 12-month spending/);
+    assert.match(await switchResult.innerText(),/Switched cost estimate/);
+    assert.ok((await switchResult.locator('.fb-switch-metric').count())>=4);
+    assert.equal(await switchResult.locator('tbody tr').count(),3);
+    assert.match(await switchResult.innerText(),/complete offer has NOT received/i);
+    assert.match(await switchResult.innerText(),/cash|initial payment/i);
+    await switchResult.getByRole('button',{name:'Share private-safe link'}).click();
+    await page.waitForTimeout(100);
+    const urlShown=await page.locator('#fb-switch-copy').count()
+      ?await page.locator('#fb-switch-copy').inputValue()
+      :'';
+    if(urlShown){
+      assert.match(urlShown,/switch=plan%3Ausm-starter/);
+      assert.doesNotMatch(urlShown,/payoff=|bill=|monthlyfees=|fees=/);
+    }
+    const mobileOverflow=await page.evaluate(()=>document.documentElement.scrollWidth);
+    assert.ok(mobileOverflow<=viewport.width+2,'Switch & Save exceeds '+view+' viewport');
+    await page.screenshot({path:join(output,view+'-switch-save.png'),fullPage:true});
+    await page.locator('#fb-switch-type').selectOption('phone');
+    await page.locator('#fb-switch-offer').selectOption('cricket-16e');
+    assert.equal(await page.locator('#fb-switch-lines').inputValue(),'1');
+    await page.locator('#fb-switch-canport').check();
+    await page.locator('#fb-switch-form button[type="submit"]').click();
+    assert.match(await switchResult.innerText(),/prepaid service/i,'phone promotion prepay is disclosed');
+    await page.locator('#fb-switch-canport').uncheck();
+    await page.locator('#fb-switch-form button[type="submit"]').click();
+    assert.match(await page.locator('#fb-switch-message').innerText(),/confirmed eligible number transfer/i);
+    for(const name of ['editorial.html','privacy.html','disclosures.html','switching-guide.html']){
+      const result=await page.request.get(new URL(name,base).href);
+      assert.equal(result.status(),200,name+' must be served');
+      assert.match(await result.text(),/<title>/);
+    }
     await context.close();
   }
   assert.deepEqual(errors,[],'no JavaScript page errors');
