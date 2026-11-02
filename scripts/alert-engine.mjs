@@ -65,18 +65,32 @@ export function buildAlertFeed({catalog,phoneEvidence={},mvnoEvidence={},
       const name=shortText(offer.plan||offer.phone||id),carrier=shortText(offer.carrier||'Carrier');
       const offerUrl=safeUrl(offer.url);
       const data={offerId:id,kind,offer:name,carrier,sourceUrl:offerUrl};
-      // A deadline comes from the curated *catalog*, NOT from a fresh checkout.
+      // A deadline comes from the curated catalog. A dated carrier publication
+      // may corroborate the deadline; it is NEVER proof of customer checkout.
       const dueDate=offer.promo?.ends||offer.ends;
       if(validDay(dueDate)){
         const days=dayDiff(today,dueDate);
         if(days>=0&&days<=7){
+          const pub=offer.promo?.officialDeadlineEvidence;
+          const pubUrl=safeUrl(pub?.sourceUrl);
+          const carrierHost=offerUrl?new URL(offerUrl).hostname.replace(/^www\./,''):null;
+          const sourceHost=pubUrl?new URL(pubUrl).hostname.replace(/^www\./,''):null;
+          const corroborated=!!(carrierHost&&sourceHost&&
+            (sourceHost===carrierHost||sourceHost.endsWith('.'+carrierHost))&&
+            validDay(pub?.observedOn)&&pub.observedOn<=today&&pub.observedOn<=dueDate);
           add({...data,key:'deadline:'+kind+':'+id+':'+dueDate,type:'deadline',
-            severity:'high',dueDate,daysUntil:days,notify:true,
-            title:carrier+' '+name+' — catalog promotion end date '+dueDate,
-            description:'The catalog lists a promotion end date '+dueDate+
+            severity:'high',dueDate,daysUntil:days,notify:!corroborated,
+            title:carrier+' '+name+(corroborated?' — carrier-published promotion end date ':' — catalog promotion end date ')+dueDate,
+            description:corroborated?
+              'The official carrier announcement (checked '+pub.observedOn+') corroborates the published promotion end date '+dueDate+
+              ' ('+(days===0?'today':days+' day(s) away')+'). This confirms published terms only, NOT a live or customer-specific checkout total or eligibility.':
+              'The catalog lists a promotion end date '+dueDate+
               ' ('+(days===0?'today':days+' day(s) away')+'). The carrier has not independently reconfirmed this deadline or checkout eligibility.',
-            action:'Open the official offer page; verify end date, eligibility, required plan and checkout terms before updating the listing.',
-            evidenceScope:'catalog_end_date_not_carrier_reconfirmed'});
+            action:corroborated?
+              'Keep the dated deadline visible; the scheduled Eastern-date scan removes only the introductory plan discount after the deadline. Check individual checkout taxes, charges and eligibility before purchase.':
+              'Open the official offer page; verify end date, eligibility, required plan and checkout terms before updating the listing.',
+            evidenceScope:corroborated?'carrier_published_deadline_not_checkout':'catalog_end_date_not_carrier_reconfirmed',
+            ...(corroborated?{sourceUrl:pubUrl,officialEvidenceObservedOn:pub.observedOn}:{})});
         }
       }
       const report=evidenceFor(kind,sources);
