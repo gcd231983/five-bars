@@ -554,6 +554,113 @@
         "Confirm unlock policy and any switch restrictions"
       ],
       "observedOn": "2026-11-02"
+    },
+    "boost-p10a": {
+      "kind": "phone",
+      "carrier": "Boost Mobile",
+      "publishedDevicePrice": 49.99,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "term": "conditional_public_device_headline_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.boostmobile.com/deals",
+          "supports": "Official online Pixel 10a headline $49.99 on $60 Unlimited Premium with qualifying number transfer"
+        }
+      ],
+      "supportedFacts": [
+        "Published online Google Pixel 10a headline is $49.99 conditional on a $60 Unlimited Premium plan and number transfer",
+        "Selected online headline does not itself establish the first checkout bill, future-service commitment or unlock eligibility"
+      ],
+      "unresolved": [
+        "Check if the $49.99 online selection and required $60 plan are available to this customer and ZIP code",
+        "Verify taxes, activation and any prepaid months actually collected online versus separate in-store offers",
+        "Confirm device locking, service-change restrictions, any retail-price clawback and full checkout total"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "boost-razr": {
+      "kind": "phone",
+      "carrier": "Boost Mobile",
+      "publishedDevicePrice": 29.99,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "publishedPrepayMonths": 2,
+      "term": "conditional_public_device_headline_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.boostmobile.com/deals",
+          "supports": "Official online Motorola razr 2025 promotion says $29.99 plus two $60 service months prepaid and number transfer"
+        }
+      ],
+      "supportedFacts": [
+        "Published selected Motorola razr 2025 handset headline is $29.99 with qualifying transfer",
+        "Two required prepaid $60 service months make the device-plus-service initial cash at least $149.99 before taxes/fees",
+        "A three-month stay is separately listed in the catalog but is NOT independently certified by this page"
+      ],
+      "unresolved": [
+        "Confirm the device and $120 prepaid service are in one checkout cart and eligibility is met",
+        "Check exact service stay, possible early-exit clawback and unlocking rules",
+        "Verify device tax, activation fees, storage configuration, online stock and order channel"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "boost-motog": {
+      "kind": "phone",
+      "carrier": "Boost Mobile",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "term": "conditional_public_device_headline_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.boostmobile.com/deals",
+          "supports": "Official online moto g 2026 listed FREE with $60 Unlimited Premium and number transfer"
+        }
+      ],
+      "supportedFacts": [
+        "Published free moto g 2026 handset headline requires a qualifying number transfer and $60/mo plan",
+        "Free device does not imply zero checkout service cash or waived taxes and activation"
+      ],
+      "unresolved": [
+        "Confirm free phone option, port-in, plan tier and new customer requirements",
+        "Confirm first service bill, taxes, upfront fees and inventory",
+        "Check cancellation clawback, device locking and plan-change restrictions"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "visible-18pro": {
+      "kind": "phone",
+      "carrier": "Visible",
+      "publishedDevicePrice": 1199,
+      "publishedPlanMonthly": 45,
+      "publishedPortRequired": false,
+      "publishedCreditMonthly": 20,
+      "publishedCreditMonths": 24,
+      "publishedFullRetailRequired": true,
+      "term": "conditional_public_device_headline_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.visible.com/buy/phones/iphone-18-pro",
+          "supports": "Official iPhone 18 Pro handset price $1199, retail pay-today or optional financing options shown separately"
+        },
+        {
+          "url": "https://www.visible.com/m/deals",
+          "supports": "Official separate iPhone 18 Pro offer: $480 in 24 conditional monthly service credits on Visible+ Pro with FULL RETAIL purchase; financing disqualified"
+        }
+      ],
+      "supportedFacts": [
+        "Apple iPhone 18 Pro base handset is listed for full retail price $1,199, plus applicable taxes",
+        "The specified promotion requires buying the phone at full retail, not on device financing, and activating on the $45/mo Visible+ Pro monthly plan",
+        "$20 in conditional service credits for 24 consecutive eligible months is a future benefit, not $480 cash or an upfront price reduction",
+        "Leaving an eligible plan or canceling service can stop remaining noncash bill credits"
+      ],
+      "unresolved": [
+        "Confirm selected storage, full-retail price, eligible device SKU and exact purchase channel",
+        "Check Visible+ Pro eligibility, credit posting, promotional exclusivity, activation timing and whether offer remains available",
+        "Confirm sales taxes, carrier checkout total, unlocking terms and any separate financing selection"
+      ],
+      "observedOn": "2026-11-02"
     }
   }
 }
