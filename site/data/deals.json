@@ -442,7 +442,9 @@
       "pri": false,
       "hot": null,
       "video": null,
-      "url": "https://www.usmobile.com/plans"
+      "url": "https://www.usmobile.com/plans",
+      "priceSourceDate": "2026-11-02",
+      "extra": "US Mobile's published Light 2GB monthly broadband label lists $10/mo with taxes and fees included; discounted annual purchase is a separate option."
     },
     {
       "id": "ultra-4",
