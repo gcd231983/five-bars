@@ -39,7 +39,7 @@ try {
     page.on('pageerror',e=>errors.push(view+': '+e.message));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
-    await page.locator('#r-usm-starter').waitFor({timeout:15000});
+    await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
     await page.locator('#t-finder').click();
     await page.locator('#fb-net').selectOption('att');
     await page.locator('#fb-lines').selectOption('2');
