@@ -173,6 +173,10 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
 .fb-evidence-match{border-color:var(--accent);color:var(--accent)}
 .fb-evidence-warning{border-color:var(--bad);color:var(--bad)}
 .fb-evidence-neutral{color:var(--muted)}
+.fb-carrier-select{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.94rem;margin:12px 0}
+.fb-carrier-select select{padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);max-width:100%}
+.fb-carrier-hint{font-size:.78rem;color:var(--muted);flex-basis:100%}
+.fb-plan-source{margin-top:6px;color:var(--muted);font-size:.76rem}
 [hidden]{display:none !important}
 @media (max-width:520px){
   .fb-form .fb-fields{grid-template-columns:1fr}
@@ -217,6 +221,11 @@ main section[role="tabpanel"]{scroll-margin-top:68px}
     <select id="sort" aria-label="Rank by"></select>.
   </p>
 
+  <p class="fb-carrier-select" id="carrier-select-row">
+    Show provider
+    <select id="carrier" aria-label="Filter wireless provider"><option value="any">All providers</option></select>.
+    <span class="fb-carrier-hint">Network filter and carrier filter work together. A multi-network provider may offer different networks at activation.</span>
+  </p>
   <div class="toggles" id="toggles" role="group" aria-label="Must-haves"></div>
   <p class="fresh" id="fresh"></p>
 </header>
@@ -294,7 +303,7 @@ const SORTS = {
   byop:[["year","lowest 12-month cost"],["reg","lowest regular price"],["save","biggest intro savings"],["pri","priority data first"]],
   phone:[["year","lowest first-year cost"],["due","least estimated due today"],["price","lowest phone price"]]
 };
-const state = {lines:1, net:"any", mode:"byop", sort:"year", tab:"finder", t:{unl:true}};
+const state = {lines:1, net:"any", provider:"any", mode:"byop", sort:"year", tab:"finder", t:{unl:true}};
 try{
   const saved = JSON.parse(localStorage.getItem("fivebars-prefs")||"null");
   if(saved && typeof saved==="object"){Object.assign(state, saved); state.t = saved.t||{};}
@@ -350,12 +359,16 @@ function planCalc(p){
   const promoPrice = live ? Math.min(introPerLine, reg) : null;
   const m = live ? Math.min(promo.months, 12) : 0;
   const year1 = live ? promoPrice*m + reg*(12-m) : reg*12;
+  const annualPrepaid = p.billingMonths===12 && Number.isFinite(p.billingUpfront) && p.billingUpfront>0 && L===1;
+  const year = annualPrepaid ? p.billingUpfront : year1*L;
   const vals = p.family ? Object.values(p.family) : [];
   return {
     now: live ? promoPrice : reg,
-    year: year1*L,
+    year,
+    annualPrepaid,
+    upfrontDue: annualPrepaid ? p.billingUpfront : (live ? promoPrice : reg) * L,
     reg,
-    save: (reg*12 - year1)*L,
+    save: (reg*12*L)-year,
     live, promoState,
     promoFamilyUnconfirmed: !!promo && L>1 && !familyPromoEligible,
     famKnown: L===1 || fam != null,
@@ -364,6 +377,7 @@ function planCalc(p){
 }
 function planVisible(p){
   if(state.net!=="any" && p.net!==state.net && p.net!=="multi") return false;
+  if(state.provider && state.provider!=="any" && p.carrier!==state.provider) return false;
   if(p.maxLines && state.lines > p.maxLines) return false;
   const t = state.t;
   if(t.unl && !p.unl) return false;
@@ -413,6 +427,12 @@ function fit(sel){
   sel.style.width = Math.ceil(meas.getBoundingClientRect().width + 10) + "px";
 }
 function renderControls(){
+  const carriers=[...new Set(PLANS.map(p=>p.carrier))].sort((a,b)=>a.localeCompare(b));
+  const carrierSelect=$("#carrier");
+  carrierSelect.replaceChildren(el("option",{value:"any"},"All providers"),...carriers.map(name=>el("option",{value:name},name)));
+  if(state.provider!=="any" && !carriers.includes(state.provider))state.provider="any";
+  carrierSelect.value=state.provider||"any";
+  $("#carrier-select-row").hidden=state.mode!=="byop";
   $("#lines").value = String(state.lines);
   $("#net").value = state.net;
   $("#mode").value = state.mode;
@@ -420,7 +440,7 @@ function renderControls(){
   if(!sorts.some(s=>s[0]===state.sort)) state.sort = sorts[0][0];
   $("#sort").replaceChildren(...sorts.map(([v,t])=>el("option",{value:v},t)));
   $("#sort").value = state.sort;
-  for(const id of ["#lines","#net","#mode","#sort"]) fit($(id));
+  for(const id of ["#lines","#net","#mode","#sort","#carrier"]) fit($(id));
   const togs = state.mode==="byop" ? (state.lines>1 ? [...PLAN_TOGS.slice(0,4), ["fam","Multi-line price listed"], PLAN_TOGS[4]] : PLAN_TOGS) : PHONE_TOGS;
   $("#toggles").replaceChildren(...togs.map(([k,label])=>
     el("button",{class:"tog", type:"button", "aria-pressed": String(!!state.t[k]), onclick:()=>{state.t[k]=!state.t[k]; update();}}, label)));
@@ -461,7 +481,7 @@ function renderPlans(){
   const L = state.lines;
   $("#plans-note").textContent = L>1
     ? "12-month cost covers all " + L + " lines. Unknown multi-line prices are estimated from single-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
-    : "12-month cost includes any intro price, then the regular price for the rest of the year.";
+    : "12-month cost includes any intro price, then the regular price for the rest of the year. Annual prepaid offers show a monthly EQUIVALENT, but require full payment in advance.";
   const list = $("#plans-list");
   if(!rows.length){ list.replaceChildren(emptyState()); return; }
   list.replaceChildren(...rows.map(({p,c},i)=>{
@@ -469,6 +489,7 @@ function renderPlans(){
     const scan = AUTO_STATUS?.offers?.[p.id];
     const facts = [
       p.unl ? "Unlimited data" : (p.data + " data"),
+      c.annualPrepaid ? "Pay "+money(c.upfrontDue)+" upfront for 12 months" : "Pay monthly",
       p.pri===true ? "Priority data" : (p.pri===false && p.unl ? "Deprioritized when busy" : null),
       L>1 ? (c.flat ? "Same price for every line" : (c.famKnown ? money(c.reg) + "/line at " + L + " lines" : "Multi-line price not listed")) : null,
       p.hot || (p.unl ? "No hotspot listed" : null),
@@ -489,16 +510,17 @@ function renderPlans(){
         el("div",{class:"plan"}, p.plan),
         el("div",{class:"net"}, n.name)),
       el("div",{class:"price"},
-        el("div",{class:"now"}, money(c.now), el("span",{class:"per"},"/mo")),
+        el("div",{class:"now"}, money(c.now), el("span",{class:"per"},c.annualPrepaid?"/mo eq.":"/mo")),
         c.live ? el("div",{class:"then"}, "then " + money(c.reg)) : (p.priceNote ? el("div",{class:"then"}, p.priceNote) : null),
-        L>1 ? el("div",{class:"then"}, "per line") : null),
+        L>1 ? el("div",{class:"then"}, "per line") : (c.annualPrepaid ? el("div",{class:"then"},"Billed annually: "+money(c.upfrontDue)+" upfront") : null)),
       el("ul",{class:"facts"}, NEWIDS.has(p.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), scan?.state==="source_unavailable" ? el("li",{class:"warn"},"Plan source could not be checked") : null,
          c.promoFamilyUnconfirmed ? el("li",{class:"warn"},"Multi-line intro discount not verified") : null),
       deal,
       p.extra ? el("div",{class:"extra"}, p.extra) : null,
+      p.priceSourceDate ? el("div",{class:"fb-plan-source"},"Official carrier price listed as of "+p.priceSourceDate+". Full plan terms not independently verified.") : null,
       el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
-        el("span",{class:"yr"}, "12 months (est.): ", el("b",null, whole(c.year)), L>1 ? " for " + L + " lines" : ""),
+        el("span",{class:"yr"}, "12 months (est.): ", el("b",null, whole(c.year)), L>1 ? " for " + L + " lines" : "", c.annualPrepaid ? "; paid upfront" : ""),
         el("a",{href:p.url, target:"_blank", rel:"noopener noreferrer"}, "See it at " + p.carrier),
         el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("plan",p.id)},"Compare"))
     );
@@ -602,6 +624,7 @@ function update(skipTab){
 
 $("#lines").addEventListener("change", e=>{state.lines=+e.target.value; update();});
 $("#net").addEventListener("change", e=>{state.net=e.target.value; update();});
+$("#carrier").addEventListener("change", e=>{state.provider=e.target.value; update();});
 $("#sort").addEventListener("change", e=>{state.sort=e.target.value; update();});
 $("#mode").addEventListener("change", e=>{
   state.mode=e.target.value; state.sort = SORTS[state.mode][0][0];
