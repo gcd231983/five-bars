@@ -20,6 +20,7 @@ let mvnoEvidence = null;
 let mvnoHistory = {offers:{}};
 let reviewQueue = null;
 let alertFeed = null;
+let researchAudit = null;
 const EVIDENCE_FRESH_MS = 48*60*60*1000;
 
 function element(tag, content, className) {
@@ -58,7 +59,9 @@ function priceProofFor(offer) {
 }
 function officialHeadlineUnderReview(offer) {
   const state=mvnoEvidence?.offers?.[offer?.id]?.state || priceEvidence?.offers?.[offer?.id]?.state;
-  return ['headline_mismatch','ambiguous','unresolved_mismatch'].includes(state);
+  const published=researchAudit?.offers?.find(x=>x.id===offer?.id)?.researchState;
+  return ['headline_mismatch','ambiguous','unresolved_mismatch'].includes(state)||
+    ['conflict','invalid'].includes(published);
 }
 function statusNode(offer) {
   const s=verificationState(offer,reviews[offer.id]);
@@ -82,6 +85,18 @@ function statusNode(offer) {
     const badge=element('span',label,'fb-status '+cls);
     badge.title=proof.note || 'Only selected public rate and billing headline fields were checked; full offer terms are not independently verified';
     wrapper.append(badge);
+  }
+  const record=researchAudit?.offers?.find(x=>x.id===offer.id);
+  if(record && record.researchState!=='not_researched'){
+    const days=Math.round((Date.parse(localDay()+'T12:00:00Z')-Date.parse(record.researchedOn+'T12:00:00Z'))/86400000);
+    const status=record.researchState==='published_match'&&days>21?'aged':record.researchState;
+    const checked=status==='published_match';
+    const label=checked?'Dated carrier source · partial':status==='aged'?'Carrier source outdated':
+      status==='conflict'||status==='invalid'?'Official source conflict':'Research needs review';
+    const link=element('a',label,'fb-status '+(checked?'fb-evidence-match':'fb-evidence-warning'));
+    link.href='source-research.html#research-'+encodeURIComponent(offer.id);
+    link.title='Dated official published-price evidence; NOT independent checkout validation. Open the carrier-source audit.';
+    wrapper.append(link);
   }
   return wrapper;
 }
@@ -634,7 +649,7 @@ function renderPriceWatch(){
 async function start() {
   renderFinder();
   try {
-    const [c,v,proof,history,mvnoProof,mvnoRecords,queue,alerts,status,research] = await Promise.all([
+    const [c,v,proof,history,mvnoProof,mvnoRecords,queue,alerts,status,research,audit] = await Promise.all([
       fetch('data/deals.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}),
       fetch('data/verifications.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
       fetch('data/price-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
@@ -645,6 +660,7 @@ async function start() {
       fetch('data/alerts.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('data/status.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('data/research-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('data/research-audit.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
     ]);
     catalog={plans:Array.isArray(c.plans)?c.plans:[],phones:Array.isArray(c.phones)?c.phones:[]};
     const providerSelect=finderRoot.querySelector('#fb-provider');
@@ -662,6 +678,7 @@ async function start() {
     mvnoHistory=mvnoRecords?.schema===1 && typeof mvnoRecords.offers==='object'?mvnoRecords:{offers:{}};
     reviewQueue=queue?.schema===1 && Array.isArray(queue.items)?queue:null;
     alertFeed=alerts?.schema===1 && Array.isArray(alerts.events)?alerts:null;
+    researchAudit=audit?.schema===1 && Array.isArray(audit.offers)?audit:null;
     window.fiveBarsWatchData={
       catalog,phoneEvidence:priceEvidence||{offers:{}},
       mvnoEvidence:mvnoEvidence||{offers:{}},siteAlerts:alertFeed||{events:[]},
