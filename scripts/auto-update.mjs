@@ -138,9 +138,10 @@ alerts.push(...priceEvidence.alerts);
 // periods (not arbitrary nearby dollar amounts). Blocked/changed pages are
 // reported as unavailable or not found; no price edits are inferred.
 const oldMvnoHistory = await json(mvnoHistoryFile,{schema:1,offers:{}});
+const oldMvnoEvidence = await json(mvnoEvidenceFile,{schema:1,offers:{}});
 const {report:mvnoEvidence,history:mvnoHistory} = evaluateMvnoEvidence({
   catalog:next, sources, checkedAt:now.toISOString(), day:today,
-  previousHistory:oldMvnoHistory,
+  previousHistory:oldMvnoHistory,previousReport:oldMvnoEvidence,
 });
 alerts.push(...mvnoEvidence.alerts);
 
@@ -174,7 +175,7 @@ for (const [id,proof] of Object.entries(mvnoEvidence.offers)) {
     offerStatuses[id].mvnoPriceEvidenceState = proof.state;
     offerStatuses[id].mvnoPriceEvidenceScope = proof.scope;
     offerStatuses[id].mvnoPriceEvidenceNote = proof.note;
-    if (proof.state === 'headline_mismatch' || proof.state === 'ambiguous') {
+    if (['headline_mismatch','ambiguous','unresolved_mismatch'].includes(proof.state)) {
       offerStatuses[id].reviewRequired = true;
     }
   }
