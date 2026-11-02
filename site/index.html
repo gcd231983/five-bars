@@ -173,7 +173,7 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
     </svg>
     <h1>Five Bars</h1>
   </div>
-  <p class="tagline">Find affordable wireless plans and phone deals, see the real costs, and check the conditions before you switch. No AI subscription required.</p>
+  <p class="tagline">Find affordable wireless plans and phone deals, see the real costs, and check the conditions before you switch. No account required.</p>
 
   <p class="sentence">
     I need
@@ -259,7 +259,7 @@ const PLAN_TOGS = [
   ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"]
 ];
 const PHONE_TOGS = [
-  ["free","Free phones only"],["iphone","iPhone"],["android","Android"],["prepaid","No 36-month contracts"],["noport","Can’t move my number"]
+  ["free","$0 upfront device price"],["iphone","iPhone"],["android","Android"],["prepaid","Prepaid offers only"],["noport","Can’t move my number"]
 ];
 const SORTS = {
   byop:[["year","lowest 12-month cost"],["reg","lowest regular price"],["save","biggest intro savings"],["pri","priority data first"]],
@@ -364,7 +364,7 @@ function phoneVisible(d){
   const t = state.t;
   if(endInfo(d.ends)?.expired) return false;
   if(state.net!=="any" && d.net!==state.net && d.net!=="multi") return false;
-  if(t.free && phoneCalc(d).eff > 0) return false;
+  if(t.free && !(d.price===0 && !d.postpaid)) return false;
   if(t.iphone && !t.android && d.os!=="iphone") return false;
   if(t.android && !t.iphone && d.os!=="android") return false;
   if(t.prepaid && d.postpaid) return false;
