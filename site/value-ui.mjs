@@ -203,6 +203,7 @@ function renderFinder() {
         const actions=element('div',null,'fb-card-actions');
         actions.append(button('Compare',()=>addToCompare('plan',p.id)));
         actions.append(button('See in plan list',()=>goToRow(p.id,'plan')));
+        actions.append(button('Watch plan',()=>window.fiveBarsWatch?.('plan',p.id)));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
         root.append(card);
@@ -221,6 +222,7 @@ function renderFinder() {
         const actions=element('div',null,'fb-card-actions');
         actions.append(button('Compare',()=>addToCompare('phone',p.id)));
         actions.append(button('See offer',()=>goToRow(p.id,'phone')));
+        actions.append(button('Watch phone',()=>window.fiveBarsWatch?.('phone',p.id)));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
         root.append(card);
@@ -619,7 +621,7 @@ function renderPriceWatch(){
 async function start() {
   renderFinder();
   try {
-    const [c,v,proof,history,mvnoProof,mvnoRecords,queue,alerts] = await Promise.all([
+    const [c,v,proof,history,mvnoProof,mvnoRecords,queue,alerts,status] = await Promise.all([
       fetch('data/deals.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}),
       fetch('data/verifications.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
       fetch('data/price-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
@@ -628,6 +630,7 @@ async function start() {
       fetch('data/mvno-history.json',{cache:'no-store'}).then(r=>r.ok?r.json():{offers:{}}).catch(()=>({offers:{}})),
       fetch('data/review-queue.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('data/alerts.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('data/status.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
     ]);
     catalog={plans:Array.isArray(c.plans)?c.plans:[],phones:Array.isArray(c.phones)?c.phones:[]};
     const providerSelect=finderRoot.querySelector('#fb-provider');
@@ -645,6 +648,12 @@ async function start() {
     mvnoHistory=mvnoRecords?.schema===1 && typeof mvnoRecords.offers==='object'?mvnoRecords:{offers:{}};
     reviewQueue=queue?.schema===1 && Array.isArray(queue.items)?queue:null;
     alertFeed=alerts?.schema===1 && Array.isArray(alerts.events)?alerts:null;
+    window.fiveBarsWatchData={
+      catalog,phoneEvidence:priceEvidence||{offers:{}},
+      mvnoEvidence:mvnoEvidence||{offers:{}},siteAlerts:alertFeed||{events:[]},
+      status:status?.schema===1?status:{}
+    };
+    window.dispatchEvent(new Event('fivebars:watch-data'));
     const submit=finderRoot.querySelector('#fb-finder-form button[type="submit"]');
     if(submit){submit.disabled=false;submit.removeAttribute('aria-busy');submit.textContent='Find matching options';}
     renderPriceWatch();
