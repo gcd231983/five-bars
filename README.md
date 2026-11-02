@@ -61,3 +61,41 @@ Phone listings show separate **estimated due today**, **estimated minimum commit
 - **Outdated full-review date:** Intentional. Automated link scans are not a substitute for verifying the complete offer catalog.
 
 The previous Claude-based workflow has been replaced. The old `scripts/deals.mjs` remains solely as a structural validator and backwards-compatible maintenance utility; it is not used to run Claude.
+
+## Five Bars value upgrade — finder, comparison and trust
+
+The site has five sections: **Find my plan**, Plans, Phone deals, Compare, and Sources & refresh.
+The new guided finder asks only about network, number of lines, service budget, number-transfer eligibility, data priority, and hotspot needs. It filters locally without a backend or AI calls, using published catalog figures with clearly identified estimates.
+
+- The finder separates service plans from phone/device promotions. Phone offers are per-device quotes; a family bundle is **not** assumed.
+- Up to three plans or three phone deals can be compared side by side (not mixed together); the comparison selection is stored only in the browser's local storage.
+- The existing plan list now excludes promotional rates for multiple lines unless `promo.familyEligible=true` or an explicit `promo.family[LINES]` rate is recorded. Unknown household prices are shown as estimates and ranked after known household rates.
+- The phone list distinguishes estimated upfront payment, minimum commitments, first-year cost and potential rebates. Phone deals are no longer mislabeled as exclusively free offers.
+- A carrier link returning HTTP 200 **does not** validate the price. Each listing shows a conservative verification indicator; all records start unverified.
+- The Finder links to the official FCC coverage map and reminds visitors to check indoor coverage and carrier IMEI/eSIM compatibility.
+
+### How to record a human verification
+
+**The daily scanner cannot create or refresh verification records.** When you have personally checked an offer's device price, plan cost, signup requirements, number porting, financed installment terms, rebate timing, potential clawbacks and official source:
+
+1. Update the terms in `site/data/deals.json` first, using only the details you confirmed.
+2. Run `node scripts/review-offer.mjs verify OFFER_ID https://official-carrier-offer-page --full-terms-reviewed`.
+3. Review and commit both `site/data/deals.json` and `site/data/verifications.json`.
+4. The badge will say **Manually checked** for 14 days, provided the material offer fields and evidence still match. Changes to terms automatically invalidate the badge; older reviews become stale.
+5. Run `node scripts/review-offer.mjs audit` to check evidence consistency. Use `node scripts/review-offer.mjs invalidate OFFER_ID` to revoke a mistaken review.
+
+The records contain a signature of material offer terms and a public evidence URL; they do not collect the consumer's location, credentials or phone number. This is an evidence workflow, not a guarantee of final checkout pricing. Taxes, fees and carrier requirements still must be confirmed at purchase.
+
+### Tests and browser acceptance
+
+```sh
+node --test tests/*.test.mjs
+node scripts/deals.mjs check
+node scripts/review-offer.mjs audit
+node --check site/value-core.mjs
+node --check site/value-ui.mjs
+```
+
+A separate pull-request workflow runs `tests/browser-smoke.mjs` on Chromium at phone and desktop viewports and uploads screenshots as a CI artifact. It installs Playwright only in CI, not for ordinary website visitors. The published site remains static, client-side and AI-independent.
+
+**Remaining work:** independently verify and refresh the current offer catalog. The automatic scanner currently checks public page availability and expiration dates; it does not discover or certify every new price. Avoid marketing the listings as fully verified or exhaustive.
