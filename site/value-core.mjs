@@ -125,6 +125,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
     planMatches:plans.length,phoneMatches:phones.length,lines,
     messages:[
       ...(lines>1 ? ['Phone offers are priced per device; do not treat them as a multi-line household quote.'] : []),
+      ...(lines>1 && hasBudget ? ['Your household budget is not applied to per-device phone offers because qualifying family pricing is unknown.'] : []),
       ...(plans.some(x=>x.cost.estimatedFamilyPrice) ?
         ['Some plans have no published multi-line price. Those figures extrapolate the one-line rate.'] : []),
       ...(plans.some(x=>x.cost.promoFamilyUnconfirmed) ?
