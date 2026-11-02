@@ -18,10 +18,10 @@
 <main class="wrap">
   <p class="crumb">Five Bars / Editorial operations</p>
   <h1>Offer verification workbench</h1>
-  <p class="lede">Read the <a href="source-research.html">dated official-source research audit</a> for 12 launch plans. It shows documented published prices, official links and remaining checkout questions. Then work through the current catalog in priority order, open each carrier’s official terms and complete a documented review. This browser tool cannot verify prices, change the catalog, or sign anything for you.</p>
+  <p class="lede">Read the <a href="source-research.html">dated official-source research audit</a> for the current catalog. It shows documented published prices, official links and remaining checkout questions. Then work through the current catalog in priority order, open each carrier’s official terms and complete a documented review. This browser tool cannot verify prices, change the catalog, or sign anything for you.</p>
   <div class="caution" role="note">
     <strong>For authorized reviewers only.</strong> This is a public read-only worksheet, not an authentication gate.
-    Checking boxes here is NOT proof of verification. A reviewer with GitHub write permission must inspect the exact terms themselves and use the protected GitHub Actions workflow to sign an offer.
+    Checking boxes or producing a JSON worksheet here is NOT proof of verification. A reviewer with GitHub write permission must inspect the exact carrier checkout/quote, include all mandatory taxes and fees and use the protected GitHub Actions workflow to sign a <em>specific reviewed scenario</em>.
     Never type account numbers, transfer PINs, payment information or other private details into GitHub issues or workflow fields.
   </div>
   <section>
@@ -61,8 +61,9 @@
   </section>
   <section>
     <h2>Human verification sign-off</h2>
-    <p>When you have personally reviewed a listing’s full source terms and resolved discrepancies, open the <a href="https://github.com/gcd231983/five-bars/actions/workflows/human-review.yml" target="_blank" rel="noopener noreferrer">protected human review workflow</a>. Choose <strong>verify</strong>, enter the exact offer ID and carrier’s official public HTTPS URL, then enter the specified attestation phrase. That workflow changes the signed verification ledger after validating inputs. The website does not automatically approve any offers.</p>
-    <p>Recheck complete terms at least every 14 days and whenever prices, financing, prepayment, hotspot, taxes or device-lock conditions change. Full details are in <a href="editorial.html">the editorial methodology</a>.</p>
+    <p>After inspecting an actual carrier checkout or written quote, open the relevant offer worksheet above, check all ten material conditions, enter exact first and renewal payments <strong>including taxes and compulsory fees</strong>, and copy its anonymized checkout JSON. Open the <a href="https://github.com/gcd231983/five-bars/actions/workflows/human-review.yml" target="_blank" rel="noopener noreferrer">human review workflow</a>. Choose <strong>verify</strong>, enter the offer ID, same-provider official public HTTPS evidence URL, paste the JSON into <code>review_details</code>, and type the exact attestation phrase. GitHub records the attributed reviewer and the selected scenario; the website does not automatically approve offers.</p>
+    <p><a href="https://github.com/gcd231983/five-bars/blob/main/CHECKOUT_VERIFICATION.md" target="_blank" rel="noopener noreferrer">Detailed checkout verification instructions</a>. Never enter payment credentials, phone number, transfer PIN, subscriber identity or other private account information in any review field. Missing fee amounts or uncertain enrollment means <strong>do not sign off</strong>.</p>
+    <p>A reviewed checkout scenario is NOT a guarantee that a different visitor qualifies, and human review does not make advertised financed-device estimates safe. Recheck complete terms at least every 14 days and whenever prices, financing, prepayment, hotspot, taxes or device-lock conditions change. Full details are in <a href="editorial.html">the editorial methodology</a>.</p>
   </section>
 </main>
 <footer class="wrap"><p>Five Bars — internal editorial worksheet served publicly without login. All publication and sign-off actions remain restricted by GitHub permissions. No personal information is collected by this page.</p></footer>
