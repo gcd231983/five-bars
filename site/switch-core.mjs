@@ -146,7 +146,10 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
        offer.port!==published.publishedPortRequired||
        (published.publishedPrepayMonths!==undefined&&offer.prepay!==published.publishedPrepayMonths)||
        (published.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==published.publishedFirstMonthPlanPrice)||
-       (published.publishedConditionalRebate!==undefined&&offer.rebate!==published.publishedConditionalRebate)):
+       (published.publishedConditionalRebate!==undefined&&offer.rebate!==published.publishedConditionalRebate)||
+       (published.publishedCreditMonthly!==undefined&&offer.credit!==published.publishedCreditMonthly)||
+       (published.publishedCreditMonths!==undefined&&offer.creditMonths!==published.publishedCreditMonths)||
+       (published.publishedFullRetailRequired!==undefined&&offer.fullRetailRequired!==published.publishedFullRetailRequired)):
       (!Number.isFinite(published.publishedMonthly)||
        Math.abs(offer.price-published.publishedMonthly)>0.0001||
        (published.billingMonths===12?
