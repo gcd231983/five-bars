@@ -384,10 +384,13 @@
       "unresolved": [
         "Confirm AutoPay enrollment, first-month checkout and taxes",
         "Confirm new-line and IMEI/eSIM eligibility, including prior Verizon-brand devices",
-        "Confirm exact roaming, network coverage, extra charges and renewal conditions"
+        "Confirm exact roaming, network coverage, extra charges and renewal conditions",
+        "Confirm the qualifying payment/billing enrollment before assuming the discounted recurring rate; the full rate is the conservative default."
       ],
       "observedOn": "2026-11-02",
-      "publishedFirstMonthPrice": 30
+      "publishedFirstMonthPrice": 30,
+      "publishedUndiscountedPrice": 30,
+      "publishedDiscountCondition": "autopay"
     },
     "h2o-10gb": {
       "carrier": "H2O Wireless",
@@ -921,10 +924,13 @@
       "unresolved": [
         "Confirm new BYOD service eligibility and correct activation channel.",
         "Check whether AutoPay qualifies and initial checkout including any activation fees.",
-        "Confirm the selected single-line plan and IMEI/eSIM acceptance."
+        "Confirm the selected single-line plan and IMEI/eSIM acceptance.",
+        "Confirm the qualifying payment/billing enrollment before assuming the discounted recurring rate; the full rate is the conservative default."
       ],
       "observedOn": "2026-11-02",
-      "publishedFirstMonthPrice": 30
+      "publishedFirstMonthPrice": 30,
+      "publishedUndiscountedPrice": 30,
+      "publishedDiscountCondition": "autopay"
     },
     "metro-premium": {
       "carrier": "Metro by T-Mobile",
@@ -943,10 +949,13 @@
       "unresolved": [
         "Confirm the actual single-line selected plan and AutoPay setup.",
         "Check any activation cost, taxes and eligibility for premium features.",
-        "Confirm selected device, hotspot, network-priority and multi-line alternatives."
+        "Confirm selected device, hotspot, network-priority and multi-line alternatives.",
+        "Confirm the qualifying payment/billing enrollment before assuming the discounted recurring rate; the full rate is the conservative default."
       ],
       "observedOn": "2026-11-02",
-      "publishedFirstMonthPrice": 65
+      "publishedFirstMonthPrice": 65,
+      "publishedUndiscountedPrice": 65,
+      "publishedDiscountCondition": "autopay"
     },
     "boost": {
       "carrier": "Boost Mobile",
@@ -1088,19 +1097,29 @@
         {
           "url": "https://www.consumercellular.com/shopping/choose/plan",
           "supports": "Carrier one-line 1GB monthly disclosure shows $20 including $5 AutoPay/eBilling discount and additional fees."
+        },
+        {
+          "url": "https://www.consumercellular.com/shopping/choose/plan",
+          "supports": "Official Broadband Facts: $3.99 operational compliance/phone, $1.00 federal universal service fund, $0.01 FCC regulatory monthly; $10 per-line activation."
         }
       ],
       "supportedFacts": [
         "Consumer Cellular's published 1GB monthly service is $20 only with the stated $5 AutoPay/eBilling discount.",
         "Official Broadband Facts disclose additional operational compliance, federal fund, tax and eligible activation charges not included in the service base model.",
-        "Without AutoPay/eBilling qualification, the effective plan base is $25/month before extra fees."
+        "Without AutoPay/eBilling qualification, the effective plan base is $25/month before extra fees.",
+        "Current official broadband-facts label separately lists $3.99 operational compliance, $1.00 federal universal service fund and $0.01 FCC regulatory fees, totaling $5.00 monthly on a single phone; a $10 network activation fee applies per line."
       ],
       "unresolved": [
         "Confirm both AutoPay and eBilling enrollment and whether the $5 discount begins on bill one.",
         "Verify specific mandatory recurring regulatory/operational fees, government taxes and any activation charge.",
-        "Check device eligibility, underlying coverage and AARP or other discount stacking rules."
+        "Check device eligibility, underlying coverage and AARP or other discount stacking rules.",
+        "Confirm the qualifying payment/billing enrollment before assuming the discounted recurring rate; the full rate is the conservative default."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedUndiscountedPrice": 25,
+      "publishedDiscountCondition": "autopay_ebilling",
+      "publishedKnownMonthlyFee": 5,
+      "publishedKnownActivationFee": 10
     },
     "tracfone": {
       "carrier": "Tracfone",
@@ -1115,34 +1134,45 @@
       "supportedFacts": [
         "Tracfone Freedom 30-day Unlimited costs $45 with Auto-Refill or $50 without, plus taxes/fees, with 15GB hotspot.",
         "The publicly displayed Tracfone anniversary promotion ended October 26, 2026 and should not affect current service estimates.",
-        "Carrier states this Freedom offer uses its Verizon network."
+        "Carrier states this Freedom offer uses its Verizon network.",
+        "Official plan disclosures indicate the Auto-Refill discount begins after the first service month, so the published $50 undiscounted first month is modeled once."
       ],
       "unresolved": [
         "Confirm activation channel, Auto-Refill enrollment and first due amount.",
         "Confirm eligible veteran/military discount and any other stackable discounts, taxes and charges.",
-        "Verify hotspot cap, phone compatibility and full usage limitations."
+        "Verify hotspot cap, phone compatibility and full usage limitations.",
+        "Confirm the qualifying payment/billing enrollment before assuming the discounted recurring rate; the full rate is the conservative default."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedUndiscountedPrice": 50,
+      "publishedDiscountCondition": "auto_refill",
+      "publishedFirstMonthPrice": 50
     },
     "straighttalk": {
       "carrier": "Straight Talk",
       "publishedMonthly": 25,
-      "term": "standard_monthly_with_optional_new_byop_autopay",
+      "term": "conditional_new_byop_25_no_autopay_stack",
       "sources": [
         {
+          "url": "https://www.straighttalk.com/devices/byop-simkit",
+          "supports": "Carrier's StraightSAVINGS selected BYOP $25/month; $29.88 physical SIM starter bundle; explicitly cannot combine with AutoPay discount."
+        },
+        {
           "url": "https://www.straighttalk.com/whyst/bring-your-own-phone",
-          "supports": "Official standard StraightSAVINGS $25 monthly; separate conditional new-line BYOP AutoPay $20, SIM fee applies."
+          "supports": "Selected $25/mo BYOP new-line offer, device history/eligibility and $50 conditional later credit."
         }
       ],
       "supportedFacts": [
-        "StraightSAVINGS normal listed monthly service is $25; qualifying new BYOP lines can receive $20 after the stated discount conditions.",
-        "Eligible service requires compatible unlocked device not used on Straight Talk in the preceding twelve months and a new line; an ineligible device forfeits the offer.",
-        "A $4.88 physical SIM purchase and taxes/fees may be due; discount continuation requires AutoPay enrollment in month one and ongoing eligible service."
+        "Selected StraightSAVINGS! plan costs $25 per month only for a qualifying new BYOP line and compatible unlocked device.",
+        "Carrier says StraightSAVINGS is not combinable with AutoPay discounts; the previous suggested $20 AutoPay amount is withdrawn.",
+        "Online physical SIM starter bundle lists $29.88 including $25 service and $4.88 physical SIM; extra taxes/fees and conditions may apply.",
+        "Potential $50 device credit arrives only after 12 months of eligible active service and qualifying rewards registration."
       ],
       "unresolved": [
-        "Check exact checkout enrollment, device IMEI, line status and whether the $20 promotion is offered.",
-        "Confirm optional eSIM versus physical SIM charge, taxes, service due, and any activation fees.",
-        "Confirm AutoPay renewal, potential discount loss, early plan change and network restrictions."
+        "Confirm the actual eligible new-line and prior-device usage criteria with an IMEI at checkout.",
+        "Confirm whether the shopper needs a physical SIM bundle or can activate by eSIM without its $4.88 charge.",
+        "Verify checkout taxes/fees and whether the promotional plan remains offered for the device/ZIP.",
+        "Confirm exact credit redemption conditions; no delayed device credit is included in base estimates."
       ],
       "observedOn": "2026-11-02"
     }
