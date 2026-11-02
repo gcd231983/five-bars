@@ -128,3 +128,12 @@ Official-publication source coverage now includes 15 wireless plan rates and fiv
 - The Visible iPhone 18 Pro program is annotated **full retail purchase required**, with $20 monthly conditional service credits for up to 24 months; those future credits remain outside guaranteed cost and savings totals. Material credit and payment-method conditions invalidate a matching published source record if edited.
 - Dated public source research includes three additional Boost online device headlines and the Visible retail-only offer: 24 of 78 research records (15 plans, nine devices). 54 still lack first-level research; all 78 still lack human checkout/full-term signatures.
 - Buyer-protection goal: require actual device retail price, installment term, down payment, plan requirement, credit schedule, trade-in eligibility and early-exit payoff before offering a numerical model on financed postpaid deals. No invented savings, affiliate proof or automatic promotion verification.
+
+## Five Bars 3.5 — eligible-only promotions and source provenance
+
+- New-line discounts no longer lower a default cost comparison without explicit visitor eligibility confirmation. This applies consistently across the main plans screen, guided finder, side-by-side comparison and Switch & Save. Carrier publication of a promotion does not make every shopper eligible.
+- Correct Metro BYOP ($30 first, $25 subsequent qualifying AutoPay) and Premium ($65 first, $60 subsequent qualifying AutoPay) single-line plans; remove undocumented introductory pricing and unsupported initial family quotes.
+- Correct Boost Unlimited taxes as extra and retain the six-month new-line price only when qualified; Red Pocket Plus/Premium one-month new-line offers have the same eligibility guard.
+- Dated source coverage expands from 24 to **37 of 78** entries, including official H2O and Good2Go annual-prepay values, which must not be mistaken for monthly cash bills.
+- The public cards now link directly to the dated official-source research, with an explicit **partial evidence, not checkout verified** label. Material source-research disagreements stop comparisons and legacy price cards.
+- **Full checkout-reviewed count remains zero.** Further expansion, independent checkout documentation, complaints/contact paths, and affiliate disclosure review are still required before any verified deal claims or referral monetization.
