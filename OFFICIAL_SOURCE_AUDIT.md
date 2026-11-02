@@ -6,12 +6,13 @@
 
 - **Total catalog**: 78 items — 38 plans, 40 device promotions.
 - **15 published plan baselines researched**: original 12 plus Total Wireless MAX 5G BYO and H2O 10GB and Unlimited monthly plans.
-- **63 catalog items lack documented first-level research**: 23 additional plans and all 40 phone promotions. Their catalog prices should still be treated as unconfirmed starting points.
+- **5 conditional handset headlines added**: Metro iPhone 16e, Total Wireless Galaxy A17, Cricket iPhone 16e, Cricket Moto G Stylus 2025 and Cricket Galaxy A17.
+- **58 entries remain without recorded official-publication research**: 23 other service plans and 35 phone offers. A matching conditional handset headline does not establish checkout eligibility.
 - **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Official source research and a rate match do not change this.
 - **Research date**: 2026-11-02. The generator marks price-source observations aged after 21 days; the separately signed full-terms review expires after 14 days or a material data change.
 
 Public record: https://gcd231983.github.io/five-bars/source-research.html
-Underlying 15-item source file: `site/data/research-evidence.json`.
+Underlying 20-item source file: `site/data/research-evidence.json`.
 Machine-readable coverage report: `site/data/research-audit.json`.
 
 ## Confirmed public-rate baselines (not checkout)
@@ -64,3 +65,17 @@ Prioritize device offers with unusual terms (free phone with minimum service, re
 - Boost Pixel 10a: online page advertises $49.99 handset and $60 plan with number transfer, while the separate in-store page says two prepaid months. These are not necessarily the same channel or checkout conditions. https://www.boostmobile.com/deals and https://www.boostmobile.com/offers . This phone does NOT count toward the 15 plan-baseline records.
 
 None of this establishes customer-specific checkout costs or a human full-terms sign-off.
+
+## Five Bars 3.3 — conditional handset source audit (November 2, 2026)
+
+Five selected device offers have separate official publication records, distinct from 15 supported plan-rate baselines. These records validate specifically quoted handset prices and required service rates/port-in/prepay fields. A conditional price match is not a complete checkout review, device compatibility check or verified customer savings.
+
+| Device listing | Selected publication findings | Official source |
+|---|---|---|
+| Metro iPhone 16e | $99.99 handset; $55 first service month then eligible $50 AutoPay; separate conditional $100 virtual Mastercard | https://www.metrobyt-mobile.com/deals/apple |
+| Total Wireless Galaxy A17 | $0 on selected switch option; Total STARTER $40 first month then eligible $35 AutoPay | https://www.totalwireless.com/buy/smartphones/samsung-galaxy-a17-5g-prepaid |
+| Cricket iPhone 16e | $0 for selected online new-account port-in; 3 prepaid $60 service months; other price/prepay selections also appear | https://www.cricketwireless.com/shop/smartphones/apple-iphone-16e-128gb-black |
+| Cricket Moto G Stylus 2025 | $0 on selected online port-in; 2 prepaid $60 service months; other handset price selections also appear | https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea |
+| Cricket Galaxy A17 | $0 on selected new-line port-in; $60 Supreme Unlimited plan and first service month due | https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a17-5g-black |
+
+Carrier offer pages may show different prices across customer types, locations, selected service tiers or revisions. In the daily site generator, aging evidence does not refresh its original observation date. A source conflict suppresses a savings calculation; it does not automatically edit a carrier promotion. Customer-specific checkout, taxes, early-exit conditions and full unlock policies still need human review. **20/78 public-source researched; 0/78 human checkout/full-terms reviewed.**
