@@ -5,11 +5,11 @@
   "scope": "Public official pages and consumer labels only; NOT checkout validation, actual product eligibility, complete terms or guaranteed pricing.",
   "summary": {
     "offers": 78,
-    "researched": 37,
-    "publishedPriceMatches": 37,
+    "researched": 45,
+    "publishedPriceMatches": 45,
     "conflictingOrInvalid": 0,
     "aged": 0,
-    "notResearched": 41,
+    "notResearched": 33,
     "manuallyFullyReviewed": 0,
     "needingFullTerms": 78
   },
@@ -30,7 +30,8 @@
       "sourceUrls": [
         "https://www.usmobile.com/broadband-facts",
         "https://www.usmobile.com/plans",
-        "https://www.usmobile.com/help/docs/our-plans/core-plans/unlimited-data-plans"
+        "https://www.usmobile.com/help/docs/our-plans/core-plans/unlimited-data-plans",
+        "https://www.usmobile.com/blog/cell-phone-plans/"
       ]
     },
     {
@@ -49,7 +50,8 @@
       "sourceUrls": [
         "https://www.usmobile.com/broadband-facts",
         "https://www.usmobile.com/plans",
-        "https://www.usmobile.com/help/docs/our-plans/core-plans/unlimited-data-plans"
+        "https://www.usmobile.com/help/docs/our-plans/core-plans/unlimited-data-plans",
+        "https://www.usmobile.com/blog/cell-phone-plans/"
       ]
     },
     {
@@ -214,15 +216,17 @@
       "carrier": "Straight Talk",
       "offer": "StraightSavings Unlimited",
       "kind": "plan",
-      "catalogPrice": 20,
+      "catalogPrice": 25,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.straighttalk.com/whyst/bring-your-own-phone"
+      ]
     },
     {
       "id": "cricket-25",
@@ -266,12 +270,14 @@
       "catalogPrice": 45,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.tracfone.com/plans/tracfone-freedom-30-days"
+      ]
     },
     {
       "id": "ultra",
@@ -281,27 +287,31 @@
       "catalogPrice": 49,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.ultramobile.com/product/unlimited-prepaid-plan/"
+      ]
     },
     {
       "id": "fi",
       "carrier": "Google Fi",
-      "offer": "Unlimited",
+      "offer": "Unlimited Essentials",
       "kind": "plan",
       "catalogPrice": 35,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://fi.google.com/about/plans"
+      ]
     },
     {
       "id": "usm-light",
@@ -329,12 +339,14 @@
       "catalogPrice": 19,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.ultramobile.com/product/4gb-prepaid-plan/"
+      ]
     },
     {
       "id": "tello",
@@ -362,12 +374,14 @@
       "catalogPrice": 20,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.consumercellular.com/shopping/choose/plan"
+      ]
     },
     {
       "id": "tello-starter",
@@ -500,12 +514,14 @@
       "catalogPrice": 14.88,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://mymobilex.com/all-faqs/"
+      ]
     },
     {
       "id": "mobilex-unlimited30",
@@ -515,12 +531,14 @@
       "catalogPrice": 24.88,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official published baseline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://mymobilex.com/all-faqs/"
+      ]
     },
     {
       "id": "redpocket-essentials",

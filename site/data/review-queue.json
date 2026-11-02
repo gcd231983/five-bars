@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-02T18:23:47.932Z",
+  "generatedAt": "2026-11-02T18:41:50.483Z",
   "today": "2026-11-02",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
@@ -72,13 +72,6 @@
       ]
     },
     {
-      "carrier": "AT&T Prepaid",
-      "affected": 1,
-      "offerIds": [
-        "att-pre-motog"
-      ]
-    },
-    {
       "carrier": "Consumer Cellular",
       "affected": 1,
       "offerIds": [
@@ -90,6 +83,13 @@
       "affected": 1,
       "offerIds": [
         "fi"
+      ]
+    },
+    {
+      "carrier": "Metro by T-Mobile",
+      "affected": 1,
+      "offerIds": [
+        "metro-16e"
       ]
     }
   ],
@@ -118,27 +118,6 @@
       "link": "https://tello.com/buy/custom_plans"
     },
     {
-      "id": "att-pre-motog",
-      "carrier": "AT&T Prepaid",
-      "offer": "Motorola moto g 2026",
-      "kind": "phone",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html"
-    },
-    {
       "id": "cc",
       "carrier": "Consumer Cellular",
       "offer": "Basic 1GB",
@@ -156,13 +135,13 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.consumercellular.com"
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.consumercellular.com/shopping/choose/plan"
     },
     {
       "id": "fi",
       "carrier": "Google Fi",
-      "offer": "Unlimited",
+      "offer": "Unlimited Essentials",
       "kind": "plan",
       "priority": "medium",
       "score": 60,
@@ -177,8 +156,8 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://fi.google.com"
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://fi.google.com/about/plans"
     },
     {
       "id": "h2o-10gb",
@@ -267,6 +246,27 @@
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
+    },
+    {
+      "id": "metro-16e",
+      "carrier": "Metro by T-Mobile",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": null,
+      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
       "id": "mint",
@@ -475,7 +475,7 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
+      "lastCatalogReference": "2026-11-02",
       "link": "https://www.ultramobile.com/product/unlimited-prepaid-plan/"
     },
     {
@@ -496,7 +496,7 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
+      "lastCatalogReference": "2026-11-02",
       "link": "https://www.ultramobile.com/product/4gb-prepaid-plan/"
     },
     {
@@ -601,6 +601,25 @@
       "manualReviewStatus": "unverified",
       "lastCatalogReference": null,
       "link": "https://www.att.com"
+    },
+    {
+      "id": "att-pre-motog",
+      "carrier": "AT&T Prepaid",
+      "offer": "Motorola moto g 2026",
+      "kind": "phone",
+      "priority": "routine",
+      "score": 20,
+      "reasonCodes": [
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": null,
+      "link": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html"
     },
     {
       "id": "boost",
@@ -1059,25 +1078,6 @@
       "link": "https://www.metrobyt-mobile.com/phone-plans"
     },
     {
-      "id": "metro-16e",
-      "carrier": "Metro by T-Mobile",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
-    },
-    {
       "id": "metro-a17",
       "carrier": "Metro by T-Mobile",
       "offer": "Samsung Galaxy A17 5G",
@@ -1264,8 +1264,8 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.straighttalk.com/devices/byop-simkit"
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.straighttalk.com/whyst/bring-your-own-phone"
     },
     {
       "id": "wm-st-a17",
@@ -1454,7 +1454,7 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
+      "lastCatalogReference": "2026-11-02",
       "link": "https://www.tracfone.com/plans/tracfone-freedom-30-days"
     },
     {
