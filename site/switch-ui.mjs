@@ -20,9 +20,10 @@ const pageParts=[
 '<label>My current total monthly wireless bill ($)<input name="currentMonthly" id="fb-switch-current" type="number" min="0" max="5000" step=".01" required placeholder="e.g. 95.00"></label>',
 '<label>Current phone payoff ($)<input name="payoff" type="number" min="0" max="100000" step=".01" value="0" required></label>',
 '<label>Other one-time switching expenses ($)<input name="switchFees" type="number" min="0" max="100000" step=".01" value="0" required></label>',
-'<label>Additional estimated monthly fees ($)<input name="extraMonthly" type="number" min="0" max="1000" step=".01" value="0" required></label>',
+'<label>Other monthly fees NOT already listed by the carrier ($)<input name="extraMonthly" type="number" min="0" max="1000" step=".01" value="0" required></label>',
 '</div><label class="fb-switch-check"><input type="checkbox" name="canPort" id="fb-switch-canport"> I confirm I can transfer an eligible number to the new carrier</label>',
 '<label class="fb-switch-check"><input type="checkbox" name="newCustomer" id="fb-switch-newcustomer"> I am eligible for this carrier’s new-customer offer</label>',
+'<label class="fb-switch-check"><input type="checkbox" name="discountQualified" id="fb-switch-discountqualified"> I meet all required AutoPay, Auto-Refill or eBilling conditions</label>',
 '<p class="fb-subtle">Conservative model: conditional credits, rebates, and hypothetical trade-in values are NOT counted as savings.</p>',
 '<button type="submit" class="btn" id="fb-switch-submit" disabled>Loading deals…</button></form>',
 '<p id="fb-switch-message" role="status" aria-live="polite"></p>',
@@ -164,7 +165,8 @@ form.addEventListener('submit',event=>{
         lines:Number(f.get('lines')||1),horizon:Number(f.get('horizon')||12),
         currentMonthly:f.get('currentMonthly'),payoff:f.get('payoff'),
         switchFees:f.get('switchFees'),extraMonthly:f.get('extraMonthly'),
-        cannotPort:!f.has('canPort'),canPort:f.has('canPort'),newCustomer:f.has('newCustomer')
+        cannotPort:!f.has('canPort'),canPort:f.has('canPort'),newCustomer:f.has('newCustomer'),
+        discountQualified:f.has('discountQualified')
       },phoneEvidence,mvnoEvidence,status,verifications,researchEvidence
     });
     render(report);notice('Estimated locally. Please review all assumptions and verify checkout terms with the carrier.');
@@ -187,6 +189,7 @@ function updateData(){
       choose('horizon').value=String(share.scenario.horizon);
       choose('canport').checked=share.scenario.canPort;
       choose('newcustomer').checked=share.scenario.newCustomer;
+      choose('discountqualified').checked=share.scenario.discountQualified;
       if(share.hasFinancials)for(const [key,field] of [
         ['currentMonthly','fb-switch-current'],['payoff','payoff'],
         ['switchFees','switchFees'],['extraMonthly','extraMonthly']
