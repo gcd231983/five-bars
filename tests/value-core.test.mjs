@@ -51,6 +51,15 @@ test('expired Tello intro cannot be signed after deadline while the $15 plan rem
  const regular={...offer,promo:undefined};
  assert.equal(verificationState(regular,checkoutRecord(regular,'2026-11-10',regular.url),'2026-11-10').status,'verified');
 });
+test('Tello intro cannot be signed after expiration; regular plan remains reviewable',()=>{
+ const offer={id:'tello',carrier:'Tello',plan:'Everyday 10GB',price:15,promo:{price:10,months:3,req:'new',ends:'2026-11-09'},url:'https://tello.com/buy/custom_plans'};
+ const finalDay=checkoutRecord(offer,'2026-11-09',offer.url);
+ assert.equal(verificationState(offer,finalDay,'2026-11-09').status,'verified');
+ const expired=checkoutRecord(offer,'2026-11-10',offer.url);
+ assert.equal(verificationState(offer,expired,'2026-11-10').status,'unverified');
+ const regular={...offer,promo:undefined};
+ assert.equal(verificationState(regular,checkoutRecord(regular,'2026-11-10',regular.url),'2026-11-10').status,'verified');
+});
 test('unreviewed offers never acquire a verified label from link checks',()=>{
   const offer=sample.plans[0];
   assert.equal(verificationState(offer,undefined,'2026-11-01').status,'unverified');
