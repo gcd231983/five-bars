@@ -59,13 +59,26 @@ try {
       offers:{
         'helium-air':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:15,observedUpfront:null,billingMonths:1,sourceUrl:'https://support.hellohelium.com/en/articles/17734883-plans-pricing',note:'Official plan rate matched; full terms NOT verified.'},
         'helium-infinity':{state:'headline_mismatch',scope:'official_plan_rate_and_billing_term_headline',observedPrice:35,observedUpfront:null,billingMonths:1,sourceUrl:'https://support.hellohelium.com/en/articles/17734883-plans-pricing',note:'Official plan price differs from the catalog.'},
-        'good2go-annual1':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:5,observedUpfront:60,billingMonths:12,sourceUrl:'https://annualplans.good2gomobile.com/home-page',note:'Official annual payment $60 matches the listed monthly equivalent; full terms NOT verified.'}
+        'good2go-annual1':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:5,observedUpfront:60,billingMonths:12,sourceUrl:'https://annualplans.good2gomobile.com/home-page',note:'Official annual payment $60 matches the listed monthly equivalent; full terms NOT verified.'},
+        'h2o-10gb':{state:'headline_matched',scope:'official_plan_rate_and_billing_term_headline',observedPrice:20,observedUpfront:null,billingMonths:1,sourceUrl:'https://www.h2owireless.com/',note:'Official homepage featured monthly rate matched; full terms NOT verified.'}
       }
     };
     const mvnoHistory={schema:1,offers:{
       'helium-infinity':[{date:'2026-11-01',price:30,source:'https://support.hellohelium.com/en/articles/17734883-plans-pricing'},{date:'2026-11-02',price:35,source:'https://support.hellohelium.com/en/articles/17734883-plans-pricing'}],
       'good2go-annual1':[{date:'2026-11-02',price:5,upfront:60,billingMonths:12,source:'https://annualplans.good2gomobile.com/home-page'}]
     }};
+    const reviewQueue={schema:1,generatedAt:checkedAt,
+      summary:{offers:78,needAttention:3,critical:1,high:1,medium:1,routine:0,withoutCurrentManualReview:78,blockedProviders:2},
+      blockedProviders:[{carrier:'Tello',affected:1},{carrier:'Red Pocket Mobile',affected:1}],
+      items:[
+        {id:'helium-infinity',carrier:'Helium Mobile',offer:'Infinity Unlimited',kind:'plan',priority:'critical',manualReviewStatus:'unverified',
+         reasons:['Official price differs from the catalog.'],link:'https://support.hellohelium.com/en/articles/17734883-plans-pricing'},
+        {id:'tello',carrier:'Tello',offer:'Everyday 10GB',kind:'plan',priority:'high',manualReviewStatus:'unverified',
+         reasons:['Promotion ends soon.'],link:'https://tello.com/buy/custom_plans'},
+        {id:'redpocket-plus',carrier:'Red Pocket Mobile',offer:'Plus 20GB',kind:'plan',priority:'medium',manualReviewStatus:'unverified',
+         reasons:['Carrier purchase page could not be checked automatically.'],link:'https://my.redpocket.com/plans'}
+      ]
+    };
     await page.route('**/data/status.json',async route=>{
       const response=await route.fetch();
       const saved=await response.json();
@@ -92,6 +105,8 @@ try {
       status:200,contentType:'application/json',body:JSON.stringify(mvno)}));
     await page.route('**/data/mvno-history.json',route=>route.fulfill({
       status:200,contentType:'application/json',body:JSON.stringify(mvnoHistory)}));
+    await page.route('**/data/review-queue.json',route=>route.fulfill({
+      status:200,contentType:'application/json',body:JSON.stringify(reviewQueue)}));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
     await page.waitForFunction(()=>
@@ -161,6 +176,7 @@ try {
     assert.match(await disputed.locator('.price .now').innerText(),/Price under review/);
     assert.equal(await disputed.locator('.fb-compare-btn').count(),0,'disputed plan cannot be compared at stale price');
     assert.match(await disputed.locator('[data-verification]').innerText(),/Official plan rate differs/);
+    assert.match(await page.locator('#r-h2o-10gb [data-verification]').innerText(),/Official plan rate matches/);
     assert.doesNotMatch(await disputed.locator('.foot').innerText(),/12 months \(est\.\)/);
     await page.locator('#plans-list .fb-compare-btn').first().click();
     assert.equal(await page.locator('#p-compare').isVisible(),true);
@@ -183,11 +199,21 @@ try {
     assert.equal(await page.locator('#p-pricewatch').isVisible(),true);
     assert.equal(await page.locator('#fb-price-watch-root .fb-watch-card:not(.fb-mvno-card)').count(),2,
       'Boost cards still appear in price-watch fixture');
-    assert.equal(await page.locator('#fb-price-watch-root .fb-mvno-card').count(),3,
-      'Three MVNO test records should appear under a separate group');
+    assert.equal(await page.locator('#fb-price-watch-root .fb-mvno-card').count(),4,
+      'Four MVNO test records including official H2O homepage price should appear');
     assert.match(await page.locator('#fb-price-watch-root').innerText(),/MVNO service-plan rate monitoring/);
     assert.match(await page.locator('#fb-price-watch-root').innerText(),/\$60\.00 annual payment/);
     assert.match(await page.locator('#fb-price-watch-root').innerText(),/\$35\.00\/mo/);
+    const review=page.locator('#fb-review-queue');
+    assert.equal(await review.locator('.fb-review-item').count(),3);
+    assert.match(await review.innerText(),/1 critical, 1 high, 1 medium/i);
+    await review.locator('select').selectOption('high');
+    assert.equal(await review.locator('.fb-review-item').count(),1,'filter must narrow queue by priority');
+    assert.match(await review.locator('.fb-review-item').innerText(),/Tello/);
+    await review.locator('select').selectOption('all');
+    assert.equal(await review.locator('.fb-review-item').count(),3);
+    const reviewOverflow=await page.evaluate(()=>document.documentElement.scrollWidth);
+    assert.ok(reviewOverflow<=viewport.width+2,'review dashboard must fit '+view+' width');
     assert.match(await page.locator('#fb-price-watch-root').innerText(),
       /A match never proves full eligibility/i);
     assert.ok(await page.locator('#fb-price-watch-root svg.fb-watch-chart').count()>0,
