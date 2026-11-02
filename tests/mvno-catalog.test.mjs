@@ -80,12 +80,15 @@ test('provider filter only lists that carrier and network requirements still app
   const tello=rankMatches(data,{provider:'Tello',network:'tmo',lines:1},'2026-11-02');
   assert.ok(tello.plans.length>=4);
   assert.ok(tello.plans.every(x=>x.offer.carrier==='Tello'));
+  assert.equal(tello.phoneMatches,0,'choosing Tello cannot show unrelated device promotions');
   assert.equal(rankMatches(data,{provider:'Tello',network:'att',lines:1},'2026-11-02').planMatches,0);
   const h2o=rankMatches(data,{provider:'H2O Wireless',network:'att',lines:1},'2026-11-02');
   assert.equal(h2o.plans.length,4);
   assert.ok(h2o.plans.every(x=>x.offer.net==='att'));
 });
 test('prepaid annual plans do not claim unsupported multi-line eligibility',()=>{
+  const single=rankMatches(data,{provider:'Good2Go Mobile',lines:1},'2026-11-02');
+  assert.equal(single.phoneMatches,0,'Good2Go provider selection excludes other carriers phones');
   assert.equal(rankMatches(data,{provider:'Good2Go Mobile',lines:2},'2026-11-02').planMatches,0);
   assert.equal(rankMatches(data,{provider:'Good2Go Mobile',lines:1,budget:12},'2026-11-02').planMatches,2);
   const h2o=rankMatches(data,{provider:'H2O Wireless',lines:1,network:'att'},'2026-11-02');
