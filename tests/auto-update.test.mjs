@@ -39,6 +39,23 @@ test('expiration rules remove only known-expired promos and phone offers', () =>
   assert.equal(result.next.checked, '2026-10-29', 'do not fake full review');
 });
 
+test('Tello published November 9 deadline retires ONLY introductory pricing on November 10 Eastern date', () => {
+  const before=original();
+  const tello=before.plans.find(plan=>plan.id==='tello');
+  tello.promo={price:10,months:3,req:'new',ends:'2026-11-09',
+    officialDeadlineEvidence:{sourceUrl:'https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/',observedOn:'2026-11-02'}};
+  const finalDay=expireKnownOffers(before,'2026-11-09');
+  assert.equal(finalDay.next.plans.find(plan=>plan.id==='tello').promo.price,10);
+  const nextDay=expireKnownOffers(before,'2026-11-10');
+  const saved=nextDay.next.plans.find(plan=>plan.id==='tello');
+  assert.ok(saved,'never delete the standard Everyday 10GB plan');
+  assert.equal(saved.price,15,'the regular rate remains $15/month');
+  assert.equal(saved.promo,undefined,'expired introductory price and dated evidence removed together');
+  assert.deepEqual(nextDay.changed.filter(change=>change.id==='tello').map(change=>change.field),['promo']);
+  assert.equal(nextDay.removed.some(item=>item.id==='tello'),false);
+  assert.ok(before.plans.find(plan=>plan.id==='tello').promo,'input remains unchanged');
+});
+
 test('Boost text yields review candidates when price, plan, and port language appear nearby', () => {
   const html = `<html><body>
   <h2>SHOP OUR DEALS</h2>

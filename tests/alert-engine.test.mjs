@@ -32,6 +32,42 @@ test('expiring catalog deadlines generate only one narrowly qualified alert',()=
  assert.match(e.description,/carrier has not independently reconfirmed/);
  assert.doesNotMatch(JSON.stringify(feed),/source_unavailable|full_terms_not_verified/);
 });
+test('officially corroborated Tello deadline is visible but does not issue another unconfirmed-deadline notification',()=>{
+  const before=catalog();
+  const tello=before.plans.find(p=>p.id==='tello');
+  tello.promo.officialDeadlineEvidence={
+    sourceUrl:'https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/',
+    observedOn:'2026-11-02'
+  };
+  const feed=run({catalog:before});
+  const alert=feed.events.find(event=>event.offerId==='tello');
+  assert.equal(alert.key,'deadline:plan:tello:2026-11-09','stable event key preserves issue deduplication');
+  assert.equal(alert.active,true,'date should remain visible until expiration');
+  assert.equal(alert.notify,false,'published deadline is resolved, not another owner notification');
+  assert.equal(alert.evidenceScope,'carrier_published_deadline_not_checkout');
+  assert.equal(alert.officialEvidenceObservedOn,'2026-11-02');
+  assert.match(alert.description,/NOT a live or customer-specific checkout/);
+  assert.equal(alert.sourceUrl,tello.promo.officialDeadlineEvidence.sourceUrl);
+  const next=run({catalog:before,today:'2026-11-10',generatedAt:'2026-11-10T15:00:00Z',previousFeed:feed});
+  assert.equal(next.summary.active,0);
+  assert.equal(next.events.find(event=>event.offerId==='tello').active,false);
+});
+
+test('unattributed or future-dated deadline evidence cannot suppress unresolved owner review',()=>{
+  const variants=[
+    {sourceUrl:'https://example.com/promotion',observedOn:'2026-11-02'},
+    {sourceUrl:'https://blog.tello.com/promotion',observedOn:'2026-11-10'},
+    {sourceUrl:'http://blog.tello.com/promotion',observedOn:'2026-11-02'}
+  ];
+  for(const proof of variants){
+    const before=catalog();
+    before.plans[0].promo.officialDeadlineEvidence=proof;
+    const alert=run({catalog:before}).events[0];
+    assert.equal(alert.notify,true);
+    assert.equal(alert.evidenceScope,'catalog_end_date_not_carrier_reconfirmed');
+  }
+});
+
 test('same expiration stays one event despite repeated daily scans',()=>{
  const first=run();
  const next=run({today:'2026-11-03',generatedAt:'2026-11-03T14:00:00Z',previousFeed:first});
