@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Five Bars: phone plans and free-phone deals</title>
+<title>Five Bars | Find a better phone plan, compare true costs</title>
+<meta name="description" content="Compare prepaid and MVNO wireless plans, phone deals, estimated first-year cost, service requirements, and network fit. See review status before buying.">
+<meta name="theme-color" content="#0A6B62">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Five Bars — Compare the real cost of phone plans">
+<meta property="og:description" content="Find phone plans and deals with clear upfront estimates, restrictions, and review status.">
+<meta property="og:url" content="https://gcd231983.github.io/five-bars/">
+<link rel="canonical" href="https://gcd231983.github.io/five-bars/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
@@ -119,10 +126,37 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
 .srcs{padding-left:1.1em}
 .srcs li{margin:6px 0}
 .small{font-size:.86rem;color:var(--muted)}
+/* Guided plan finder, verification status and narrow-screen comparison */
+.fb-tool{margin:16px 0 36px}
+.fb-form{padding:18px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.fb-form .fb-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
+.fb-fields label{display:flex;flex-direction:column;gap:6px;font-size:.92rem;font-weight:650}
+.fb-fields input,.fb-fields select{width:100%;border-radius:8px;border:1px solid var(--line);padding:10px;background:var(--paper);color:var(--ink);min-width:0}
+.fb-checks{display:flex;flex-wrap:wrap;gap:10px 20px;margin-bottom:16px;font-size:.9rem}
+.fb-checks label{display:flex;align-items:center;gap:7px}
+.fb-result{padding:14px 16px;border:1px solid var(--line);border-radius:10px;margin:12px 0;background:var(--surface)}
+.fb-result p{margin:7px 0}
+.fb-card-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px}
+.fb-card-actions a{font-size:.9rem}
+.fb-subtle{color:var(--muted);font-size:.9rem}
+.fb-review{grid-column:1/-1;margin-top:8px;color:var(--muted);font-size:.8rem}
+.fb-status{display:inline-block;margin:6px 0;padding:3px 7px;border-radius:6px;border:1px solid var(--line);font-size:.78rem;font-weight:650}
+.fb-status.fb-verified{border-color:var(--accent);color:var(--accent)}
+.fb-status.fb-stale,.fb-status.fb-changed{color:var(--bad)}
+.fb-compare-btn,.fb-remove{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 10px;color:var(--accent);cursor:pointer;font-weight:700}
+.fb-table-wrap{max-width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.fb-table{width:100%;border-collapse:collapse;background:var(--surface);min-width:580px;font-size:.88rem}
+.fb-table th,.fb-table td{padding:12px;vertical-align:top;text-align:left;border-bottom:1px solid var(--line);min-width:138px}
+.fb-table th:first-child{min-width:142px}
+.fb-table thead th{background:var(--chip)}
+.fb-table tbody th{font-weight:700}
+.fb-table .fb-status{white-space:normal}
 [hidden]{display:none !important}
-@media (max-width:420px){
+@media (max-width:520px){
+  .fb-form .fb-fields{grid-template-columns:1fr}
   .row{padding:12px 12px 10px}
   .price .now{font-size:1.45rem}
+  .foot{align-items:center}
 }
 </style>
 </head>
@@ -139,7 +173,7 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
     </svg>
     <h1>Five Bars</h1>
   </div>
-  <p class="tagline">Phone plans from the big carriers and the MVNOs that ride their networks, plus every free-phone deal worth knowing about. Promo math done for you.</p>
+  <p class="tagline">Find affordable wireless plans and phone deals, see the real costs, and check the conditions before you switch. No AI subscription required.</p>
 
   <p class="sentence">
     I need
@@ -155,7 +189,7 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
     </select>,
     <select id="mode" aria-label="Phone">
       <option value="byop">bringing my own phone</option>
-      <option value="phone">and want a free phone</option>
+      <option value="phone">and want to compare phone deals</option>
     </select>.
     Rank by
     <select id="sort" aria-label="Rank by"></select>.
@@ -166,15 +200,24 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
 </header>
 
 <nav class="tabs" aria-label="Sections">
-  <div class="wrap" role="tablist">
-    <button class="tab" role="tab" data-tab="plans" id="t-plans">Plans<span class="count" id="c-plans"></span></button>
-    <button class="tab" role="tab" data-tab="phones" id="t-phones">Free phones<span class="count" id="c-phones"></span></button>
-    <button class="tab" role="tab" data-tab="sources" id="t-sources">Sources &amp; refresh</button>
+  <div class="wrap" role="tablist" aria-label="Five Bars tools">
+    <button class="tab" role="tab" data-tab="finder" id="t-finder" aria-controls="p-finder">Find my plan</button>
+    <button class="tab" role="tab" data-tab="plans" id="t-plans" aria-controls="p-plans">Plans<span class="count" id="c-plans"></span></button>
+    <button class="tab" role="tab" data-tab="phones" id="t-phones" aria-controls="p-phones">Phone deals<span class="count" id="c-phones"></span></button>
+    <button class="tab" role="tab" data-tab="compare" id="t-compare" aria-controls="p-compare">Compare</button>
+    <button class="tab" role="tab" data-tab="sources" id="t-sources" aria-controls="p-sources">Sources &amp; refresh</button>
   </div>
 </nav>
 
 <main class="wrap">
-  <section id="p-plans" role="tabpanel" aria-labelledby="t-plans">
+  <section id="p-finder" role="tabpanel" aria-labelledby="t-finder">
+    <div class="panel">
+      <h2>Find a better wireless plan</h2>
+      <p class="note">Quick questions, transparent estimates, and direct carrier links. No personal information collected.</p>
+      <div id="fb-finder-root" class="fb-tool"></div>
+    </div>
+  </section>
+  <section id="p-plans" role="tabpanel" aria-labelledby="t-plans" hidden>
     <p class="note" id="plans-note"></p>
     <ol class="list" id="plans-list"></ol>
   </section>
@@ -182,6 +225,11 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
   <section id="p-phones" role="tabpanel" aria-labelledby="t-phones" hidden>
     <p class="note">Costs are per line. “Due today” estimates the device plus service required at signup. “Minimum commitment” also counts required future service. Rebates are excluded from the upfront estimate. All totals exclude taxes, fees, conditional clawbacks and financing; always confirm checkout terms with the carrier.</p>
     <ol class="list" id="phones-list"></ol>
+  </section>
+
+  <section id="p-compare" class="panel" role="tabpanel" aria-labelledby="t-compare" hidden>
+    <h2>Compare plans and phone deals</h2>
+    <div id="fb-compare-root" class="fb-tool"></div>
   </section>
 
   <section id="p-sources" class="panel" role="tabpanel" aria-labelledby="t-sources" hidden>
@@ -217,7 +265,7 @@ const SORTS = {
   byop:[["year","lowest 12-month cost"],["reg","lowest regular price"],["save","biggest intro savings"],["pri","priority data first"]],
   phone:[["year","lowest first-year cost"],["due","least estimated due today"],["price","lowest phone price"]]
 };
-const state = {lines:1, net:"any", mode:"byop", sort:"year", tab:"plans", t:{unl:true}};
+const state = {lines:1, net:"any", mode:"byop", sort:"year", tab:"finder", t:{unl:true}};
 try{
   const saved = JSON.parse(localStorage.getItem("fivebars-prefs")||"null");
   if(saved && typeof saved==="object"){Object.assign(state, saved); state.t = saved.t||{};}
@@ -263,10 +311,14 @@ function planCalc(p){
     else if(state.t.noport && promo.req==="port") promoState = {off:true, why:"Intro price needs you to move your number."};
     else promoState = {off:false, ends:ei};
   }
+  const familyPromoEligible = L===1 || promo?.familyEligible===true ||
+    (typeof promo?.family?.[String(L)] === "number");
+  if(promo && L>1 && !familyPromoEligible) promoState = {off:true, why:"Intro rate for multiple lines has not been verified."};
   const live = promo && promoState && !promoState.off;
   const fam = L>1 && p.family ? p.family[String(L)] : null;
   const reg = fam != null ? fam : p.price;
-  const promoPrice = live ? Math.min(promo.price, reg) : null;
+  const introPerLine = L>1 && typeof promo?.family?.[String(L)]==="number" ? promo.family[String(L)] : promo?.price;
+  const promoPrice = live ? Math.min(introPerLine, reg) : null;
   const m = live ? Math.min(promo.months, 12) : 0;
   const year1 = live ? promoPrice*m + reg*(12-m) : reg*12;
   const vals = p.family ? Object.values(p.family) : [];
@@ -276,6 +328,7 @@ function planCalc(p){
     reg,
     save: (reg*12 - year1)*L,
     live, promoState,
+    promoFamilyUnconfirmed: !!promo && L>1 && !familyPromoEligible,
     famKnown: L===1 || fam != null,
     flat: vals.length===4 && vals.every(v=>v===p.price)
   };
@@ -374,11 +427,11 @@ function renderPlans(){
     save:(a,b)=>b.c.save-a.c.save || a.c.year-b.c.year,
     pri:(a,b)=>((b.p.pri===true)-(a.p.pri===true)) || a.c.year-b.c.year
   }[state.sort];
-  rows.sort(by);
+  rows.sort((a,b)=> state.lines>1 && a.c.famKnown!==b.c.famKnown ? (a.c.famKnown?-1:1) : by(a,b));
   $("#c-plans").textContent = rows.length;
   const L = state.lines;
   $("#plans-note").textContent = L>1
-    ? "12-month cost covers all " + L + " lines. Multi-line prices are used where the carrier lists them; otherwise it’s the single-line price times " + L + "."
+    ? "12-month cost covers all " + L + " lines. Unknown multi-line prices are estimated from single-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
     : "12-month cost includes any intro price, then the regular price for the rest of the year.";
   const list = $("#plans-list");
   if(!rows.length){ list.replaceChildren(emptyState()); return; }
@@ -410,12 +463,15 @@ function renderPlans(){
         el("div",{class:"now"}, money(c.now), el("span",{class:"per"},"/mo")),
         c.live ? el("div",{class:"then"}, "then " + money(c.reg)) : (p.priceNote ? el("div",{class:"then"}, p.priceNote) : null),
         L>1 ? el("div",{class:"then"}, "per line") : null),
-      el("ul",{class:"facts"}, NEWIDS.has(p.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), scan?.state==="source_unavailable" ? el("li",{class:"warn"},"Plan source could not be checked") : null),
+      el("ul",{class:"facts"}, NEWIDS.has(p.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), scan?.state==="source_unavailable" ? el("li",{class:"warn"},"Plan source could not be checked") : null,
+         c.promoFamilyUnconfirmed ? el("li",{class:"warn"},"Multi-line intro discount not verified") : null),
       deal,
       p.extra ? el("div",{class:"extra"}, p.extra) : null,
+      el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
-        el("span",{class:"yr"}, "12 months: ", el("b",null, whole(c.year)), L>1 ? " for " + L + " lines" : ""),
-        el("a",{href:p.url, target:"_blank", rel:"noopener"}, "See it at " + p.carrier))
+        el("span",{class:"yr"}, "12 months (est.): ", el("b",null, whole(c.year)), L>1 ? " for " + L + " lines" : ""),
+        el("a",{href:p.url, target:"_blank", rel:"noopener noreferrer"}, "See it at " + p.carrier),
+        el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("plan",p.id)},"Compare"))
     );
   }));
 }
@@ -453,18 +509,20 @@ function renderPhones(){
         el("div",{class:"plan"}, d.carrier),
         el("div",{class:"net"}, n.name)),
       el("div",{class:"price"},
-        el("div",{class:"now"}, d.price===0 ? "Free" : money(d.price)),
+        el("div",{class:"now"}, d.price===0 ? (d.postpaid ? "$0 advertised" : "Free") : money(d.price)),
         d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
         d.rebate ? el("div",{class:"was"}, money(d.rebate) + " rebate; net phone cost " + money(c.eff)) : null),
       el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null, scan?.state==="source_unavailable" ? el("li",{class:"warn"}, "Offer link could not be checked") : null, scan?.reviewRequired ? el("li",{class:"warn"}, "Price candidate needs manual review; listed terms are unverified") : null),
       ends ? el("div",{class: ends.expired ? "deal off" : "deal"}, ends.expired ? ends.text + ". Recheck before you go." : ends.text + ".") : null,
       d.note ? el("div",{class:"extra"}, d.note) : null,
+      el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
         el("span",{class:"yr"},
           c.due!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Due today (est.): ", el("b",null, money(c.due))) : "Upfront total: ask carrier. ",
           c.commitment!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Min. commitment: ", el("b",null, money(c.commitment))) : null,
           c.year!=null ? el("span",{style:"display:inline-block"}, "First year (est.): ", el("b",null, money(c.year))) : "Plan price varies by trade-in"),
-        el("a",{href:d.url, target:"_blank", rel:"noopener"}, "See it at " + d.carrier.replace(" at Walmart","")))
+        el("a",{href:d.url, target:"_blank", rel:"noopener noreferrer"}, "See it at " + d.carrier.replace(" at Walmart","")),
+        el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("phone",d.id)},"Compare"))
     );
   }));
 }
@@ -481,13 +539,14 @@ function showTab(t){
   if(t==="plans") state.mode = "byop";
   if(t==="phones") state.mode = "phone";
   for(const b of document.querySelectorAll(".tab")) b.setAttribute("aria-selected", String(b.dataset.tab===t));
-  for(const id of ["plans","phones","sources"]) $("#p-"+id).hidden = id!==t;
+  for(const id of ["finder","plans","phones","compare","sources"]) $("#p-"+id).hidden = id!==t;
   update(true);
 }
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
 
 function update(skipTab){
   renderControls(); renderPlans(); renderPhones(); save();
+  window.dispatchEvent(new Event("fivebars:render"));
 }
 
 $("#lines").addEventListener("change", e=>{state.lines=+e.target.value; update();});
@@ -536,5 +595,6 @@ async function boot(){
 }
 boot();
 </script>
+<script type="module" src="value-ui.mjs"></script>
 </body>
 </html>
