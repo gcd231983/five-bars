@@ -1175,6 +1175,208 @@
         "Confirm exact credit redemption conditions; no delayed device credit is included in base estimates."
       ],
       "observedOn": "2026-11-02"
+    },
+    "total-all-access": {
+      "carrier": "Total Wireless",
+      "publishedMonthly": 60,
+      "publishedFirstMonthPrice": 65,
+      "publishedUndiscountedPrice": 65,
+      "publishedDiscountCondition": "autopay",
+      "term": "single_line_all_access_autopay",
+      "sources": [
+        {
+          "url": "https://www.totalwireless.com/m/plans",
+          "supports": "Official Total ALL ACCESS plan lists $60/month with AutoPay, $65 in first month; separate 4-line ALL ACCESS total is $115 and MAX 5G differs."
+        }
+      ],
+      "supportedFacts": [
+        "Total ALL ACCESS is $60 per month with qualifying AutoPay and $65 for the first month of one line.",
+        "The provider's posted four-line $115/month with AutoPay corresponds to ALL ACCESS, NOT Total MAX 5G.",
+        "The separate MAX 5G column lists $50 for one line with AutoPay and $105 for four lines; conflating plan names misstates the included features and household price."
+      ],
+      "unresolved": [
+        "Confirm actual AutoPay eligibility, first-bill total, taxes and exact checkout channel",
+        "Confirm premium hotspot speed and plan perks for selected service",
+        "Determine a reliable multi-line first payment and AutoPay setup before offering family cash totals"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "metro-motog": {
+      "kind": "phone",
+      "carrier": "Metro by T-Mobile",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 55,
+      "publishedPortRequired": true,
+      "publishedFirstMonthPlanPrice": 60,
+      "term": "conditional_public_device_offer_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.metrobyt-mobile.com/cell-phone/motorola-moto-g-2026",
+          "supports": "Carrier product selector displays $0 moto g 2026 for qualifying port-in; $55 per month with AutoPay and $60 first month"
+        }
+      ],
+      "supportedFacts": [
+        "The selected Moto G 2026 promotional handset headline is $0 with a qualifying number transfer.",
+        "Carrier shows $55 monthly service with AutoPay, $60 first service month; an older $40 plan value was not supported."
+      ],
+      "unresolved": [
+        "Confirm that the selected $0 price and port-in qualify with this customer's IMEI/number",
+        "Verify $60 first service payment, carrier/device taxes and any $25 store activation",
+        "Verify device locking, in-stock ZIP and how eligible AutoPay is established"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "boost-16e": {
+      "kind": "phone",
+      "carrier": "Boost Mobile",
+      "publishedDevicePrice": 29.99,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "term": "conditional_public_device_offer_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.boostmobile.com/deals",
+          "supports": "Official online iPhone 16e headline $29.99 with Unlimited Premium service and eligible existing-number transfer"
+        }
+      ],
+      "supportedFacts": [
+        "Selected online iPhone 16e device price $29.99 is conditional on porting the number and selecting the $60 Unlimited Premium plan.",
+        "Published online price is a conditional headline; in-store prepay/trade-in selections are different offers and not automatically interchangeable."
+      ],
+      "unresolved": [
+        "Confirm online selection, exact $29.99 device cash and qualifying port-in",
+        "Confirm first service bill, taxes, activation and any upfront prepayment",
+        "Confirm lock/cancellation restrictions, 3-month conditions, retail clawback and available storage"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "boost-a17": {
+      "kind": "phone",
+      "carrier": "Boost Mobile",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 50,
+      "publishedPortRequired": true,
+      "term": "conditional_public_device_offer_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.boostmobile.com/deals",
+          "supports": "Boost Galaxy A17 5G free phone headline with qualifying transfer and $50 Unlimited+ plan"
+        }
+      ],
+      "supportedFacts": [
+        "The official online deals page advertises Galaxy A17 5G at $0 with eligible transfer and the $50/mo Unlimited+ plan.",
+        "Taxes, service dues and additional restrictions can still apply to free-device advertising."
+      ],
+      "unresolved": [
+        "Confirm device option stock, new customer transfer and checkout device tax",
+        "Confirm actual first service bill and any activation or shipping fees",
+        "Check device unlock policy, 3-month stay and potential retail clawback"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "boost-gplay": {
+      "kind": "phone",
+      "carrier": "Boost Mobile",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 50,
+      "publishedPortRequired": true,
+      "term": "conditional_public_device_offer_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.boostmobile.com/deals",
+          "supports": "Boost free Moto G Play 2026 on $50 Unlimited+ with number transfer"
+        }
+      ],
+      "supportedFacts": [
+        "Boost's online deal listing advertises a free Moto G Play 2026 conditioned on $50 Unlimited+ service and eligible number transfer.",
+        "A free headline does not guarantee $0 activation or taxes and separate offers may apply in stores."
+      ],
+      "unresolved": [
+        "Confirm qualifying number transfer and online stock for selected model",
+        "Check service prepayment, activation, taxes and all checkout charges",
+        "Confirm lock period, required 3-month service and retail-price clawback"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "cricket-s25fe": {
+      "kind": "phone",
+      "carrier": "Cricket",
+      "publishedDevicePrice": 29.99,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "publishedPrepayMonths": 3,
+      "publishedAvailability": "out_of_stock",
+      "term": "conditional_public_device_offer_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-s25-fe-jetblack",
+          "supports": "Carrier device selector offers selected $29.99 Galaxy S25 FE with 3 prepaid $60 Supreme Unlimited months; product currently out of stock"
+        }
+      ],
+      "supportedFacts": [
+        "Selected new-account port-in promotional handset headline is $29.99 with $60/month Supreme Unlimited service.",
+        "Three months of $60 service ($180) must be paid at online checkout, making minimum device plus first prepaid service $209.99 before taxes/fees.",
+        "Carrier page currently says the selected phone is out of stock; it is NOT an immediately purchasable offer."
+      ],
+      "unresolved": [
+        "Check device availability again before buying or quote a replacement",
+        "Confirm new account, transfer, prepaid service and taxes at checkout",
+        "Confirm financing versus full-pay selection and unlocking/return terms"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "cricket-razr": {
+      "kind": "phone",
+      "carrier": "Cricket",
+      "publishedDevicePrice": 29.99,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "publishedPrepayMonths": 3,
+      "publishedAvailability": "out_of_stock",
+      "term": "conditional_public_device_offer_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/shop/smartphones/motorola-razr-2025-parfait-pink",
+          "supports": "Official Motorola razr 2025 selected online $29.99 with 3 prepaid $60 service months; currently out of stock"
+        }
+      ],
+      "supportedFacts": [
+        "Selected razr 2025 option advertises $29.99 when a new line ports in on a qualifying $60/month plan.",
+        "Three $60 service months must be prepaid online ($180), at least $209.99 device and service before taxes and fees.",
+        "The selected phone is out of stock on the official carrier page as of the observation date."
+      ],
+      "unresolved": [
+        "Confirm future stock, selected device model and promotional amount",
+        "Confirm port eligibility, the $180 prepaid service due and checkout taxes",
+        "Confirm unlock, store-versus-online activation fees and penalties"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "cricket-a37": {
+      "kind": "phone",
+      "carrier": "Cricket",
+      "publishedDevicePrice": 59.99,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": true,
+      "publishedAvailability": "out_of_stock",
+      "term": "conditional_public_device_offer_not_checkout",
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal",
+          "supports": "Official Galaxy A37 5G carrier page lists $59.99 with new number-transfer line and Supreme Unlimited $60; currently out of stock"
+        }
+      ],
+      "supportedFacts": [
+        "Selected Galaxy A37 5G price is $59.99 requiring a new line with eligible number transfer and Supreme Unlimited plan.",
+        "Cricket's Supreme Unlimited plan is $60/month before separate discounts; page advertises first service payment and taxes at sale.",
+        "The selected device is currently out of stock on the carrier page; no available checkout has been certified."
+      ],
+      "unresolved": [
+        "Confirm stock, port-in requirement and exact 128GB device SKU",
+        "Verify online tax, service bill and any in-store activation fee",
+        "Verify device unlock rules and current promotional terms"
+      ],
+      "observedOn": "2026-11-02"
     }
   }
 }
