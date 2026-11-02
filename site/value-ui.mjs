@@ -229,7 +229,7 @@ function renderCompare() {
   const labels=type==='plan'
     ? [['network','Network'],['monthly','Current rate ('+comparePrefs.lines+' lines)'],['year','12-month total ('+comparePrefs.lines+' lines)'],['data','Data'],['hotspot','Hotspot'],['priority','Data priority'],['taxes','Taxes'],['eligibility','Promo requirements']]
     : [['network','Network'],['monthly','Required plan'],['year','Estimated 12-month cost'],['data','Due today (est.)'],['hotspot','Minimum commitment (est.)'],['priority','Carrier lock'],['taxes','Plan type'],['eligibility','Transfer requirement']];
-  compareRoot.append(note('On a phone, swipe the table sideways to see every comparison.')).classList.add('fb-swipe-hint');
+  compareRoot.append(element('p','On a phone, swipe the table sideways to see every comparison.','fb-subtle fb-swipe-hint'));
   const wrap=element('div',null,'fb-table-wrap');
   const table=element('table',null,'fb-table');
   const head=element('thead'),header=element('tr');
