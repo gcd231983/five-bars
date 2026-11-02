@@ -380,7 +380,7 @@ test('four unavailable handset promotions are not saleable, rankable or able to 
  const mint=catalog.phones.find(x=>x.id==='mint-p11');
  assert.equal(mint.bundle,12);
  assert.equal(phoneCost(mint).due,579);
- assert.match(mint.note,/\$399.*\+ \$180|\\$399.*\$180/);
+ assert.match(mint.note,/\$399.*\$180/);
  const html=renderResearchPage({catalog,ledger,research,today:date});
  assert.match(html,/Financing priority/);
  assert.match(html,/Recheck stock at listed carrier page/);
