@@ -68,6 +68,22 @@ try {
       'helium-infinity':[{date:'2026-11-01',price:30,source:'https://support.hellohelium.com/en/articles/17734883-plans-pricing'},{date:'2026-11-02',price:35,source:'https://support.hellohelium.com/en/articles/17734883-plans-pricing'}],
       'good2go-annual1':[{date:'2026-11-02',price:5,upfront:60,billingMonths:12,source:'https://annualplans.good2gomobile.com/home-page'}]
     }};
+    const alertFeed={
+      schema:1,generatedAt:checkedAt,today:'2026-11-02',
+      summary:{active:2,critical:1,high:1,historical:1},
+      events:[
+        {key:'conflict:plan:helium-infinity:2026-11-02',type:'conflict',active:true,notify:true,severity:'critical',
+          title:'Helium Mobile Infinity — official rate differs',carrier:'Helium Mobile',offerId:'helium-infinity',
+          description:'Catalog rate conflicts with a partial official headline observation. Not a checkout quote.',
+          action:'Check the current carrier offer.',sourceUrl:'https://support.hellohelium.com/en/articles/17734883-plans-pricing'},
+        {key:'deadline:plan:tello:2026-11-09',type:'deadline',active:true,notify:true,severity:'high',
+          title:'Tello introductory promotion ends November 9',carrier:'Tello',offerId:'tello',
+          description:'Catalog end date is coming soon, pending carrier confirmation.',
+          action:'Confirm current eligibility and expiration.',sourceUrl:'https://tello.com/buy/custom_plans'},
+        {key:'rate-change:phone:boost-motog:2026-11-01',type:'rate-change',active:false,severity:'high',
+          title:'Old observed rate change',offerId:'boost-motog'}
+      ]
+    };
     const reviewQueue={schema:1,generatedAt:checkedAt,
       summary:{offers:78,needAttention:3,critical:1,high:1,medium:1,routine:0,withoutCurrentManualReview:78,blockedProviders:2},
       blockedProviders:[{carrier:'Tello',affected:1},{carrier:'Red Pocket Mobile',affected:1}],
@@ -108,6 +124,8 @@ try {
       status:200,contentType:'application/json',body:JSON.stringify(mvnoHistory)}));
     await page.route('**/data/review-queue.json',route=>route.fulfill({
       status:200,contentType:'application/json',body:JSON.stringify(reviewQueue)}));
+    await page.route('**/data/alerts.json',route=>route.fulfill({
+      status:200,contentType:'application/json',body:JSON.stringify(alertFeed)}));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
     await page.waitForFunction(()=>
@@ -198,6 +216,12 @@ try {
       'Price-under-review row must not cause page overflow on '+view+': '+phoneOverflow);
     await page.locator('#t-pricewatch').click();
     assert.equal(await page.locator('#p-pricewatch').isVisible(),true);
+    const alerts=page.locator('#fb-action-alerts');
+    assert.equal(await alerts.locator('.fb-action-card').count(),2,'only actionable alerts may appear');
+    assert.match(await alerts.innerText(),/1 critical price conflicts/i);
+    assert.match(await alerts.innerText(),/Tello introductory promotion ends November 9/);
+    assert.match(await alerts.innerText(),/not a checkout quote/i);
+    assert.ok(await alerts.getByText('View GitHub alerts').count()>=1,'link to notification issues is visible');
     assert.equal(await page.locator('#fb-price-watch-root .fb-watch-card:not(.fb-mvno-card)').count(),2,
       'Boost cards still appear in price-watch fixture');
     assert.equal(await page.locator('#fb-price-watch-root .fb-mvno-card').count(),5,

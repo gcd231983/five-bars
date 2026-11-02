@@ -196,3 +196,33 @@ An access diagnostic checked the regular, public plan pages for Tello, H2O and R
 The public H2O homepage `https://www.h2owireless.com/` advertises a standard 10GB monthly rate and a 30GB-high-speed unlimited monthly rate. The parser requires the *price, monthly billing wording and corresponding 10GB/30GB slowdown statement* in one short sequence. If its official homepage is blocked during a scheduled scan, the report says `source_unavailable`; **no match badge or invented observation is published**. The plan URLs remain available for users to open directly. AutoPay discounts and H2O annual packages are not inferred.
 
 The new files and tests are `scripts/review-queue.mjs`, `tests/review-queue.test.mjs`, `tests/mvno-evidence.test.mjs`, and the updated mobile/desktop browser acceptance suite. The publication workflow commits the review queue only after running the regression tests and full source scan.
+
+## 2.5 — Low-noise GitHub alerts for actionable price events
+
+The daily no-AI monitor now records **`site/data/alerts.json`**, a durable event feed of only **three scoped alert categories**:
+
+- **Catalog promotion deadlines** within seven days, including the published end date and an explicit warning that the carrier has not independently reconfirmed that deadline.
+- **Disputed or conflicting official price headlines**, including conflicts that remain unresolved because a carrier page later becomes unavailable.
+- **Newly changed official headline observations** when two distinct dated observations show a device price, required plan price, monthly rate, or annual upfront amount changed. The new observation must also be an exact match to current catalog headline fields; source outages, HTTP 200 alone, and vague marketing language never trigger these alerts.
+
+**Source failures, ordinary inaccessible pages and the 78 routine unreviewed listings do not generate automatic notifications.** They remain visible in the separate maintenance queue. These alerts are *not* full checkout, tax, renewal, coverage or eligibility verification. Nothing updates catalog prices without human review.
+
+### How notifications work
+
+Each active event is turned into one GitHub Issue under <https://github.com/gcd231983/five-bars/issues>, assigned to the repository owner. Issue creation uses the existing GitHub Actions runner's **ephemeral `GITHUB_TOKEN`** with `issues: write`. No Claude credits, paid API, email credentials, phone number, third-party alert service or extra subscription is required. Actual email/push delivery depends on the user's own GitHub notification settings.
+
+The bot stores a **stable hidden event key** in each issue and checks **both open and closed issues** before posting. Repeated daily runs do not create a new issue for the same alert. Closing an issue manually will not cause the bot to reopen it. A *different future catalog deadline* or a new, separately dated price change can legitimately create a new issue.
+
+The website also shows **Actionable price & deadline alerts** at the top of Price Watch, including source links, prioritized review actions and a link to GitHub Issues. Historical events remain in the JSON feed without being presented as new active alerts.
+
+For safety, notification failures do not stop GitHub Pages deployment: review the `Open deduplicated GitHub Issues` step in the daily workflow for failures. When authentication or GitHub Issue settings prevent an alert from being posted, its durable event remains accessible on Price Watch. An operator can rerun the workflow after fixing the permission issue.
+
+### Code and tests
+
+- `scripts/alert-engine.mjs`: pure deterministic alert feed, stable keys, 80-event bounded history, no source-network activity.
+- `scripts/issue-alerts.mjs`: validates and deduplicates issue notifications, avoids pinging arbitrary usernames or posting injected carrier markdown.
+- `scripts/notify-issues.mjs`: GitHub Actions entrypoint. Does not touch catalog values or close existing issues.
+- `site/data/alerts.json`: public actionable feed refreshed by safe daily scan.
+- `tests/alert-engine.test.mjs`, `tests/issue-alerts.test.mjs`, and expanded browser smoke checks: deadline changes, source outages, price conflicts, manual closure, duplicate prevention, XSS/markdown safety and mobile layout.
+
+Run `node --test tests/*.test.mjs` for fast checks. Chrome browser acceptance tests run on each pull request. The unchanged daily scan at 10:17 UTC also runs on push to `main` and can be started manually from GitHub Actions.

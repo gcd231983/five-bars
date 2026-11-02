@@ -101,7 +101,7 @@ test('scanner publishes review alerts without verified-price claims or catalog m
   try {
     await mkdir(join(fixture, 'scripts'));
     await mkdir(join(fixture, 'site/data'), { recursive: true });
-    for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs', 'mvno-evidence.mjs', 'review-queue.mjs']) {
+    for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs', 'mvno-evidence.mjs', 'review-queue.mjs', 'alert-engine.mjs']) {
       await copyFile(new URL('../scripts/' + name, import.meta.url), join(fixture, 'scripts', name));
     }
 
@@ -130,6 +130,7 @@ test('scanner publishes review alerts without verified-price claims or catalog m
     const mvnoProof = JSON.parse(await readFile(join(fixture, 'site/data/mvno-evidence.json'), 'utf8'));
     const mvnoHistory = JSON.parse(await readFile(join(fixture, 'site/data/mvno-history.json'), 'utf8'));
     const queue=JSON.parse(await readFile(join(fixture,'site/data/review-queue.json'),'utf8'));
+    const alertsFeed=JSON.parse(await readFile(join(fixture,'site/data/alerts.json'),'utf8'));
     assert.deepEqual(saved, data);
     assert.deepEqual(status.automaticChanges, []);
     assert.equal(status.summary.priceCandidatesForReview, 1);
@@ -147,6 +148,10 @@ test('scanner publishes review alerts without verified-price claims or catalog m
     assert.equal(queue.summary.withoutCurrentManualReview,16);
     assert.equal(status.summary.offersNeedingReview,queue.summary.needAttention);
     assert.equal(queue.items.length,16);
+    assert.equal(alertsFeed.schema,1);
+    assert.equal(alertsFeed.summary.active,0,'mocked source failures and routine missing reviews must not send owner alerts');
+    assert.deepEqual(alertsFeed.events,[]);
+    assert.equal(status.summary.actionablePriceAlerts,0);
     assert.equal(status.summary.pricesMatchedOnCarrierPage, undefined);
     assert.equal(status.offers['boost-a17'].state, 'source_reachable');
     assert.equal(status.offers['boost-a17'].priceEvidenceState,'not_found');

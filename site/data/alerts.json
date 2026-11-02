@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "generatedAt": null,
+  "today": null,
+  "scope": "Catalog promotion deadlines and narrowly scoped, official headline price changes/conflicts only. Not checkout verification.",
+  "summary": {
+    "active": 0,
+    "critical": 0,
+    "high": 0,
+    "historical": 0
+  },
+  "events": []
+}
