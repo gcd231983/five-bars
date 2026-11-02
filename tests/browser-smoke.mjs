@@ -317,7 +317,7 @@ try {
       const card=page.locator('#r-'+id);
       assert.match(await card.innerText(),/Out of stock/i);
       assert.doesNotMatch(await card.innerText(),/First year \(est\.\)/);
-      assert.equal(await card.locator('.fb-compare-btn').count(),0);
+      assert.equal(await card.getByRole('button',{name:'Compare',exact:true}).count(),0);
       assert.equal(await card.locator('.fb-switch-button').count(),0);
     }
     assert.match(await page.locator('#r-mint-p11').innerText(),/phone \+ 12 months service/);
