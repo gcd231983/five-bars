@@ -7,7 +7,10 @@ const ISSUE_API='https://api.github.com';
 const REPO_PATTERN=/^[A-Za-z0-9_.-]{1,100}\/[A-Za-z0-9_.-]{1,100}$/;
 const KEY_PATTERN=/^(?:deadline|conflict|rate-change):(plan|phone):[a-z0-9._:-]{1,110}$/i;
 const safe=(value,n=320)=>String(value??'').replace(/[\r\n\t<>]/g,' ').replace(/\s+/g,' ').trim().slice(0,n);
-const quote=s=>safe(s,1000).replace(/([\\*_\[\]#|])/g,'\\$1');
+const quote=s=>safe(s,1000)
+  .replace(/https?:\/\/\S+/gi,'[external link omitted]')
+  .replace(/@/g,'at ')
+  .replace(/([\\*_\[\]#|])/g,'\\$1');
 function safeSource(url){
   try{
     const u=new URL(url);
@@ -21,7 +24,7 @@ export function marker(key){
 export function issueTitle(event){
   return '[Five Bars] '+(event.type==='deadline'?'Promotion deadline':
     event.type==='conflict'?'Price discrepancy':'Headline price change')+
-    ': '+safe(event.carrier+' — '+event.offer,130);
+    ': '+safe(event.carrier+' — '+event.offer,130).replace(/@/g,'at ');
 }
 export function issueBody(event){
   const id=marker(event.key);
