@@ -3,7 +3,7 @@
 import {validDay,verificationState,usd,localDay} from '../site/value-core.mjs';
 
 export const BASE='https://gcd231983.github.io/five-bars/';
-export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired'];
+export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired','publishedPromoPrice','publishedPromoMonths','publishedPromoRequirement'];
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'
 })[c]);
@@ -35,7 +35,10 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
     (num(record.publishedCreditMonthly)&&Number.isInteger(record.publishedCreditMonths)&&record.publishedCreditMonths>=1&&record.publishedCreditMonths<=36))&&
   (record.publishedFullRetailRequired===undefined||typeof record.publishedFullRetailRequired==='boolean')&&
   (record.publishedPrepayMonths===undefined||(Number.isInteger(record.publishedPrepayMonths)&&record.publishedPrepayMonths>0)):
-  num(record.publishedMonthly)&&(record.publishedFirstMonthPrice===undefined||num(record.publishedFirstMonthPrice));
+  num(record.publishedMonthly)&&(record.publishedFirstMonthPrice===undefined||num(record.publishedFirstMonthPrice))&&
+  ((record.publishedPromoPrice===undefined&&record.publishedPromoMonths===undefined&&record.publishedPromoRequirement===undefined)||
+    (num(record.publishedPromoPrice)&&Number.isInteger(record.publishedPromoMonths)&&record.publishedPromoMonths>=1&&
+     record.publishedPromoMonths<=12&&['new','port'].includes(record.publishedPromoRequirement)));
  if(!validFields||!Array.isArray(record.sources)||record.sources.length===0||
     record.sources.some(v=>!officialUrl(v?.url))||
     !Array.isArray(record.supportedFacts)||!Array.isArray(record.unresolved))
@@ -70,6 +73,10 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
    issues.push('catalog annual billing is not supported by official record');
   if(record.publishedFirstMonthPrice!==undefined&&offer.firstMonthPrice!==record.publishedFirstMonthPrice)
    issues.push('first-month plan charge differs from official source');
+  if(record.publishedPromoPrice!==undefined&&
+     (offer.promo?.price!==record.publishedPromoPrice||offer.promo?.months!==record.publishedPromoMonths||
+      offer.promo?.req!==record.publishedPromoRequirement))
+   issues.push('conditional promotional price, duration or customer eligibility differs from official source');
  }
  if(issues.length)return {state:'conflict',label:'Published-source terms conflict with catalog',issues};
  const age=dayGap(today,record.observedOn);
@@ -165,8 +172,9 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
       (record.publishedFullRetailRequired?'; FULL RETAIL handset payment required; financing ineligible':''):
     usd(record.publishedMonthly)+(record.billingMonths===12?
       ' per-month equivalent; '+usd(record.billingUpfront)+' due upfront for 12 months':
-      ' regular per month'+(record.publishedFirstMonthPrice!==undefined?'; '+usd(record.publishedFirstMonthPrice)+' first month':''));
-  sections.push('<article class="guide research-article" data-offer-id="'+safe(id)+'">'+
+      ' regular per month'+(record.publishedFirstMonthPrice!==undefined?'; '+usd(record.publishedFirstMonthPrice)+' first month':'')+
+      (record.publishedPromoPrice!==undefined?'; '+usd(record.publishedPromoPrice)+'/mo for first '+record.publishedPromoMonths+' month(s) ONLY for eligible '+(record.publishedPromoRequirement==='new'?'new customers':'number transfers')+'; not assumed without confirmation':''));
+  sections.push('<article class="guide research-article" id="research-'+safe(id)+'" data-offer-id="'+safe(id)+'">'+
    '<h3>'+safe(item.carrier)+' — '+safe(item.offer)+'</h3>'+
    '<p><strong>'+safe(item.researchLabel)+'</strong> · Manual full-terms review: '+safe(item.manualReview)+'</p>'+
    '<p><strong>'+(isPhone?'Official conditional DEVICE HEADLINE (not checkout)':'Official published baseline')+':</strong> '+safe(rate)+'</p>');
