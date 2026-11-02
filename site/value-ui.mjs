@@ -4,6 +4,7 @@ import {
   MAX_COMPARE, localDay, usd, verificationState, planCost, phoneCost,
   rankMatches, normalizeCompare
 } from './value-core.mjs';
+import {reportLink} from './report-core.mjs';
 
 const finderRoot = document.querySelector('#fb-finder-root');
 const compareRoot = document.querySelector('#fb-compare-root');
@@ -416,13 +417,12 @@ function priceSparkline(rows,kind='advertised device') {
   }
   return svg;
 }
-function reportOfferLink(id,offer){
-  const title='Review Five Bars deal: '+id;
-  const body='The advertised price or eligibility may be wrong.\n\nOffer: '+(offer?.phone||id)+
-    '\nCatalog page: '+(offer?.url||'https://gcd231983.github.io/five-bars/')+
-    '\nWhat needs correcting: ';
-  return linkTo('https://github.com/gcd231983/five-bars/issues/new?title='+
-    encodeURIComponent(title)+'&body='+encodeURIComponent(body),'Report incorrect price (GitHub login)');
+function reportOfferLink(id){
+  // Put only curated public offer ID into our URL, never free-text in GitHub
+  // query parameters, browser history or hosting logs.
+  const a=element('a','Report a correction');
+  a.href=reportLink(id);
+  return a;
 }
 
 function appendMvnoWatch(root){
