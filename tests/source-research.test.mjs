@@ -150,12 +150,12 @@ test('Total BYO first month is modeled once across standalone and Switch & Save 
  assert.equal(report.results[12].serviceTotal,250);
  assert.equal(report.results[24].serviceTotal,490);
  assert.equal(report.results[36].serviceTotal,730);
- const calc=read('site/index.html').match(/^function planCalc\\(p\\)\\{[\\s\\S]*?^\\}/m)?.[0];
+ const calc=read('site/index.html').match(/^function planCalc\(p\)\{[\s\S]*?^\}/m)?.[0];
  assert.ok(calc);
  const main=runInNewContext(calc+'; planCalc(p);',{p,state:{lines:1,t:{}},endInfo:()=>null});
  assert.equal(main.upfrontDue,30);
  assert.equal(main.year,250);
- assert.match(renderResearchPage({catalog,ledger,research,today:date}),/\\$30\\.00 first month/);
+ assert.match(renderResearchPage({catalog,ledger,research,today:date}),/\$30\.00 first month/);
  const bad={...p,firstMonthPrice:20};
  assert.equal(researchStatus(bad,research.records['total-max'],{today:date}).state,'conflict');
  assert.throws(()=>simulateSwitch({catalog:{...catalog,plans:catalog.plans.map(v=>v.id===p.id?bad:v)},
