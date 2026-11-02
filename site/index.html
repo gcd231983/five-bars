@@ -543,11 +543,28 @@ function showTab(t){
   state.tab = t;
   if(t==="plans") state.mode = "byop";
   if(t==="phones") state.mode = "phone";
-  for(const b of document.querySelectorAll(".tab")) b.setAttribute("aria-selected", String(b.dataset.tab===t));
+  for(const b of document.querySelectorAll(".tab")){
+    const active=b.dataset.tab===t;
+    b.setAttribute("aria-selected", String(active));
+    b.tabIndex=active ? 0 : -1;
+  }
   for(const id of ["finder","plans","phones","compare","sources"]) $("#p-"+id).hidden = id!==t;
   update(true);
 }
-document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+document.querySelectorAll(".tab").forEach(b=>{
+  b.addEventListener("click",()=>showTab(b.dataset.tab));
+  b.addEventListener("keydown",event=>{
+    const tabs=[...document.querySelectorAll(".tab")];
+    const current=tabs.indexOf(b);
+    const index= event.key==="ArrowRight" ? (current+1)%tabs.length :
+      event.key==="ArrowLeft" ? (current+tabs.length-1)%tabs.length :
+      event.key==="Home" ? 0 : event.key==="End" ? tabs.length-1 : -1;
+    if(index<0)return;
+    event.preventDefault();
+    showTab(tabs[index].dataset.tab);
+    tabs[index].focus();
+  });
+});
 
 function update(skipTab){
   renderControls(); renderPlans(); renderPhones(); save();
