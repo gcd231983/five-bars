@@ -156,3 +156,13 @@ Official-publication source coverage now includes 15 wireless plan rates and fiv
 - Corrected unsupported $20 AutoPay pricing language for Straight Talk StraightSAVINGS. The selected $25 BYOP offer explicitly says it does NOT stack AutoPay; $29.88 physical SIM starter bundle is conditional on purchase channel. No promised $50 delayed device credit is subtracted from guaranteed cash.
 - Official-source research count remains **45/78**, and **0/78** checkout/full-terms signatures are confirmed. This improvement corrects math/terms on dated sources; it does not claim comprehensive mandatory charges for other 73 listings or independently validated transactions.
 - For monetization readiness, future per-offer checklists must include state- and ZIP-specific taxes, complete carrier and payment-processing fees, SIM/eSIM charges, first-service discount timing, required funding methods, activation channel and renewal pricing. Never advertise service estimates as checkout totals.
+
+
+## Five Bars 3.8 — inventory-aware comparisons and official proof completion
+
+- Corrected the highest-risk plan-name/billing mixup: Total ALL ACCESS vs Total MAX 5G, and Metro Moto G 2026's previously understated qualifying service plan and initial service month.
+- Added eight source-checked public carrier-price records, raising partial research coverage to **53/78**. A source match is NOT a checkout signoff; **25** listings are unresearched and **0/78** fully reviewed.
+- Introduced a **dated unavailable-inventory hold**: out-of-stock Mint Galaxy S26 FE, Cricket Galaxy S25 FE, Cricket razr 2025 and Cricket Galaxy A37 5G remain in the historical audit but cannot produce estimated buying costs, finder recommendations, compare actions or Switch & Save reports. Source and signed review checks include availability changes.
+- The Mint Pixel 11's $579 *bundle* is now called out as **$399 device + $180 annual prepaid Unlimited**, not misrepresented as a $579 handset-only cost.
+- The official audit shows current inventory holds and a deterministic high-priority remaining-research list. Research priority is a workflow aid, NOT an affiliate ranking or proof of customer eligibility.
+- Next commercialization gates: inventory rechecks (with dated evidence), first/renewal billing by ZIP and channel, compulsory fee review, line-count eligibility, independent sign-offs with a responsible human and timestamp, complaint/price-reporting workflow, and clear affiliate/no-affiliate disclosures.

@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {Script,runInNewContext} from 'node:vm';
 import {buildResearchAudit,researchStatus,renderResearchPage}
  from '../scripts/source-research.mjs';
-import {planCost,verificationState,offerSignature} from '../site/value-core.mjs';
+import {planCost,phoneCost,rankMatches,verificationState,offerSignature} from '../site/value-core.mjs';
 import {simulateSwitch} from '../site/switch-core.mjs';
 
 const read=file=>readFileSync(new URL('../'+file,import.meta.url),'utf8');
@@ -14,14 +14,15 @@ const ledger=JSON.parse(read('site/data/verifications.json'));
 const date='2026-11-02';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
-test('36 plan baselines and 9 device headlines remain separate from checkout verification',()=>{
- assert.equal(Object.keys(research.records).length,45);
+test('37 plan baselines and 16 device headlines remain separate from checkout verification',()=>{
+ assert.equal(Object.keys(research.records).length,53);
  const audit=build();
  assert.equal(audit.summary.offers,78);
- assert.equal(audit.summary.researched,45);
- assert.equal(audit.summary.notResearched,33);
+ assert.equal(audit.summary.researched,53);
+ assert.equal(audit.summary.notResearched,25);
+ assert.equal(audit.summary.availabilityHolds,4);
  assert.equal(audit.summary.conflictingOrInvalid,0);
- assert.equal(audit.summary.publishedPriceMatches,45);
+ assert.equal(audit.summary.publishedPriceMatches,53);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  assert.equal(audit.summary.needingFullTerms,78);
  assert.ok(audit.offers.every(x=>x.manualReview!=='verified'));
@@ -117,15 +118,18 @@ test('published source matches do not create human verification records',()=>{
  assert.equal(signed.status,'unverified');
  assert.equal(researchStatus(offer,research.records[offer.id],{today:date}).state,'published_match');
 });
-test('static public source audit prints 45 dated source cards and 33 unresearched offers',()=>{
+test('static public source audit prints 53 dated source cards and 25 unresearched offers',()=>{
  const html=renderResearchPage({catalog,ledger,research,today:date});
- assert.equal((html.match(/class="guide research-article"/g)||[]).length,45);
+ assert.equal((html.match(/class="guide research-article"/g)||[]).length,53);
  assert.match(html,/What our official sources actually confirm/);
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
  assert.match(html,/Not yet confirmed at checkout/);
  assert.match(html,/full-terms sign-offs/);
- assert.match(html,/33/);
+ assert.match(html,/25/);
+ assert.match(html,/Research next — prioritized source checklist/);
+ assert.match(html,/Stock and checkout holds \(4\)/);
+ assert.match(html,/OUT OF STOCK on recorded date; no live checkout quote/);
  assert.match(html,/\$10\.00\/mo for first 6 month\(s\) ONLY for eligible new customers/);
  assert.match(html,/id="research-redpocket-plus"/);
  assert.match(html,/FULL RETAIL handset payment required; financing ineligible/);
@@ -327,6 +331,59 @@ test('published non-discount pricing and fixed provider charges are independentl
  assert.throws(()=>simulateSwitch({catalog:{...catalog,plans:catalog.plans.map(x=>x.id===bad.id?bad:x)},
   type:'plan',id:'cc',researchEvidence:research,scenario:{lines:1,currentMonthly:80,horizon:12,today:date}}),
   /official published-source research conflicts/i);
+});
+test('Total ALL ACCESS identity and Metro Moto G first bill are published as chosen, not copied from unrelated plan',()=>{
+ const plan=get('total-all-access');
+ assert.ok(plan);
+ assert.equal(get('total-max-family'),undefined,'mixed-up MAX family entry was replaced');
+ assert.equal(plan.plan,'Total ALL ACCESS');
+ assert.equal(plan.price,60);
+ assert.equal(plan.firstMonthPrice,65);
+ assert.equal(plan.maxLines,1);
+ assert.equal(planCost(plan,1,{today:date}).year,780);
+ assert.equal(planCost(plan,1,{today:date,discountQualified:true}).year,725);
+ assert.equal(planCost(plan,4,{today:date}),null);
+ assert.equal(researchStatus(plan,research.records['total-all-access'],{today:date}).state,'published_match');
+ const phone=catalog.phones.find(x=>x.id==='metro-motog');
+ assert.equal(phone.planPrice,60);
+ assert.equal(phone.firstMonthPlanPrice,60);
+ assert.equal(researchStatus(phone,research.records['metro-motog'],{today:date}).state,'published_match');
+ assert.equal(phoneCost(phone).due,60);
+ assert.equal(phoneCost(phone).year,720);
+ const mismatch={...phone,firstMonthPlanPrice:40};
+ assert.equal(researchStatus(mismatch,research.records['metro-motog'],{today:date}).state,'conflict');
+ assert.throws(()=>simulateSwitch({catalog:{...catalog,phones:catalog.phones.map(x=>x.id===phone.id?mismatch:x)},
+  type:'phone',id:phone.id,researchEvidence:research,
+  scenario:{lines:1,currentMonthly:80,canPort:true,horizon:12,today:date}}),/official published-source research conflicts/i);
+});
+test('four unavailable handset promotions are not saleable, rankable or able to generate switch cash estimates',()=>{
+ const unavailable=['mint-s26fe','cricket-s25fe','cricket-razr','cricket-a37'];
+ const audit=build();
+ assert.equal(audit.summary.availabilityHolds,4);
+ for(const id of unavailable){
+  const phone=catalog.phones.find(x=>x.id===id);
+  assert.equal(phone.availability,'out_of_stock');
+  assert.equal(phone.availabilityObservedOn,date);
+  assert.equal(phoneCost(phone).due,null);
+  assert.equal(phoneCost(phone).year,null);
+  assert.equal(phoneCost(phone).unavailable,true);
+  assert.throws(()=>simulateSwitch({catalog,type:'phone',id,researchEvidence:research,
+   scenario:{lines:1,currentMonthly:100,canPort:true,horizon:12,today:date}}),/out of stock/i);
+  assert.ok(!rankMatches(catalog,{lines:1,canPort:true},date).phones.some(x=>x.id===id));
+  if(research.records[id]){
+   const record=research.records[id];
+   assert.equal(record.publishedAvailability,'out_of_stock');
+   assert.equal(researchStatus(phone,record,{today:date}).state,'published_match');
+   assert.equal(researchStatus({...phone,availability:undefined},record,{today:date}).state,'conflict');
+  }
+ }
+ const mint=catalog.phones.find(x=>x.id==='mint-p11');
+ assert.equal(mint.bundle,12);
+ assert.equal(phoneCost(mint).due,579);
+ assert.match(mint.note,/\$399.*\$180/);
+ const html=renderResearchPage({catalog,ledger,research,today:date});
+ assert.match(html,/Financing priority/);
+ assert.match(html,/Recheck stock at listed carrier page/);
 });
 test('unrelated phone offers remain not researched; official source research does not sneak into signed ledger',()=>{
  assert.equal(Object.keys(ledger.offers).length,0);

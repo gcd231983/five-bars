@@ -201,6 +201,13 @@ test('automatic device math withholds financing and trade-in cash totals',()=>{
   assert.equal(c.financingUncertain,true);
  }
 });
+test('stock-unavailable device estimates are withheld rather than published as free handset cash',()=>{
+ const d=phoneCosts({price:0,planPrice:60,availability:'out_of_stock'});
+ assert.equal(d.dueToday,null);
+ assert.equal(d.firstYear,null);
+ assert.equal(d.minCommitment,null);
+ assert.equal(d.unavailable,true);
+});
 test('catalog diff records expiry and price change, not mere last-check timestamps', () => {
   const before = original();
   const after = expireKnownOffers(before, '2026-11-01').next;

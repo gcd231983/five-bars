@@ -165,3 +165,23 @@ Carrier public rates are **not** guaranteed customer-specific quotes. The 45 off
 - A blank discount-eligibility input means **not confirmed**. Payment discount eligibility and new-customer/port-in confirmation are different controls.
 - Changes to recorded undiscounted rate, discount requirements, fixed recurring provider fee or activation charge invalidate earlier manual review signatures and generate a source-material conflict before showing switch savings.
 - All non-recorded taxes, region-dependent levies and provider fees remain **unknown**, not silently represented as $0 in a final bill.
+
+
+## Five Bars 3.8 — offer identity, available inventory and research-priority register (November 2, 2026)
+
+**Verified public-page findings, not completed checkout validation:**
+
+- The former `total-max-family` mixed the **Total MAX 5G** plan name with a price belonging to **Total ALL ACCESS**. It has been replaced with a properly named `total-all-access` single-line entry: $65 first bill, then $60 monthly with eligible AutoPay or $65 without qualifying AutoPay. The carrier publishes four-line **ALL ACCESS $115/mo with AutoPay**, while four-line **MAX 5G is $105/mo**. This catalog option deliberately **does not extrapolate** undocumented household first-payment/AutoPay conditions. Source: https://www.totalwireless.com/m/plans .
+- Metro by T-Mobile's selected Moto G 2026 $0 phone promotion advertises a **$55/mo AutoPay qualifying plan, $60 first month**, not an old $40 required plan. Device tax and a possible $25 in-store activation fee remain conditional; only eligible new/port selections may qualify. Source: https://www.metrobyt-mobile.com/cell-phone/motorola-moto-g-2026 .
+- Three more Boost Mobile advertised device headlines were recorded with their selected $60/$50/$50 qualifying plans: iPhone 16e, Galaxy A17 5G, and Moto G Play 2026. These are only partial publications and require number-transfer, checkout-tax, retail clawback, first service billing and inventory confirmation. Source: https://www.boostmobile.com/deals .
+- Selected Cricket Galaxy S25 FE and razr 2025 offers each advertise **$29.99 device plus THREE $60 service months prepaid online** ($209.99 device and service before taxes). Cricket Galaxy A37 5G advertises $59.99 device plus first qualifying Supreme Unlimited service month; exact eligibility and taxes remain unresolved. Device pages: https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-s25-fe-jetblack , https://www.cricketwireless.com/shop/smartphones/motorola-razr-2025-parfait-pink , and https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal .
+
+**Four dated out-of-stock observations are now held from consumer savings:** Mint Samsung Galaxy S26 FE, Cricket Galaxy S25 FE, Cricket razr 2025, and Cricket Galaxy A37 5G. These device headlines remain visible for transparent historical research, with an **OUT OF STOCK** label, but cannot be recommended as available, compared with fabricated current cash totals, or selected for Switch & Save. Mint's active Pixel 11 bundle has an expressly itemized **$399 handset + $180 for 12 prepaid Unlimited months = $579 combined**. Neither expired nor sold-out inventory is silently promoted. Inventory status is **point-in-time, not real-time**; a future carrier source check is required to clear the hold.
+
+The dated public-source register now covers **53 of 78** listings: **37 plan-rate baselines plus 16 conditional device headlines**. **25 listings** still need first-level official research. **Zero of 78** have documented human full-checkout, full-terms reviews. The public audit now includes a *Stock and checkout holds* section and a prioritized list of unresearched offers with links to starting points and risk-specific checkout checklist prompts. Source links alone DO NOT certify the price.
+
+### Remaining readiness risk
+
+- The majority of advertised phone deals lack a validated first-month service total, device tax, exact activation channel, number-transfer history, phone-unlock terms and actual availability.
+- Future research should document *required retail price and installment schedule* for postpaid offers before calculating any advertised $0 device as a real cash purchase.
+- Reconfirm inventory before restoring an unavailable offer. Do not automatically interpret an HTTP 200 response as in-stock status.

@@ -38,6 +38,7 @@ test('site and tested phone-cost helper agree on sample checkout math', { skip }
     { price: 1199, planPrice: 45, credit: 20, creditMonths: 24 },
     { price: 0, planPrice: 35, firstMonthPlanPrice: 40 },
     { price: 0, planPrice: 80, postpaid: true },
+    { price: 0, planPrice: 60, availability:'out_of_stock',availabilityObservedOn:'2026-11-02' },
     { price: 199.99, planPrice: null, postpaid: true },
   ]) {
     const fromPage = browserCalc(deal), fromCore = phoneCosts(deal);

@@ -144,6 +144,10 @@ function validate(d, prev) {
     if (!isNum(p.price, 0, 3000)) errs.push(at + ": bad price");
     if (p.planPrice != null && !isNum(p.planPrice, 0, 300)) errs.push(at + ": bad planPrice");
     if (p.postpaid != null && typeof p.postpaid !== 'boolean') errs.push(at + ': postpaid must be boolean');
+    if (p.availability!=null && !['out_of_stock'].includes(p.availability))
+      errs.push(at + ': availability must be out_of_stock when an offer is known unavailable');
+    if (p.availability==='out_of_stock' && !isDate(p.availabilityObservedOn))
+      errs.push(at + ': out-of-stock offers require a dated inventory observation');
     if (p.fullRetailRequired != null && typeof p.fullRetailRequired !== 'boolean') errs.push(at + ': fullRetailRequired must be boolean');
     if (p.fullRetailRequired===true && p.postpaid===true) errs.push(at + ': full retail promotion must not require financed postpaid purchase');
     if (p.firstMonthPlanPrice != null) {
