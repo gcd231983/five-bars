@@ -7,6 +7,7 @@ export const MVNO_SOURCES = Object.freeze({
   helium: 'https://support.hellohelium.com/en/articles/17734883-plans-pricing',
   mobilex: 'https://mymobilex.com/all-faqs/',
   good2go: 'https://annualplans.good2gomobile.com/home-page',
+  h2o: 'https://www.h2owireless.com/',
 });
 
 export const MVNO_PLAN_RULES = Object.freeze({
@@ -17,6 +18,8 @@ export const MVNO_PLAN_RULES = Object.freeze({
   'good2go-annual1':{source:'good2go',carrier:'Good2Go Mobile',months:12},
   'good2go-annual3':{source:'good2go',carrier:'Good2Go Mobile',months:12},
   'good2go-annual5':{source:'good2go',carrier:'Good2Go Mobile',months:12},
+  'h2o-10gb':{source:'h2o',carrier:'H2O Wireless',months:1},
+  'h2o-unlimited':{source:'h2o',carrier:'H2O Wireless',months:1},
 });
 
 function validSource(sourceKey, url) {
@@ -72,6 +75,20 @@ export function parseMvnoHeadlines(sourceKey,html){
       const id=m[1]==='10'?'mobilex-unlimited10':'mobilex-unlimited30';
       const price=currency(m[2]);
       if(price!==null)add(matches,id,proof(m[0],price));
+    }
+  }else if(sourceKey==='h2o'){
+    // Official H2O homepage featured plans: "$ 20 00 per month 10GB data"
+    // and "$ 30 00 per month Unlimited 3 Speeds reduced after 30GB".
+    // Decimal groups are explicitly bound to plan/data in the SAME short card.
+    const cards=[
+      {id:'h2o-10gb',match:/\$\s*(\d{1,3})(?:\.|\s+)(\d{2})\s+per\s+month\s+10GB\s+data\b[\s\S]{0,45}?Speeds\s+reduced\s+after\s+10GB\b/gi},
+      {id:'h2o-unlimited',match:/\$\s*(\d{1,3})(?:\.|\s+)(\d{2})\s+per\s+month\s+Unlimited\b[\s\S]{0,35}?Speeds\s+reduced\s+after\s+30GB\b/gi},
+    ];
+    for(const card of cards){
+      for(const m of plain.matchAll(card.match)){
+        const price=currency(m[1]+'.'+m[2]);
+        if(price!==null)add(matches,card.id,proof(m[0],price));
+      }
     }
   }else if(sourceKey==='good2go'){
     // Cards show "$60 Annual Payment ... 1GB high speed data per month".
@@ -188,7 +205,7 @@ export function evaluateMvnoEvidence({catalog,sources,checkedAt=new Date().toISO
     report:{
       schema:1,generatedAt:checkedAt,
       scope:'Official plan headline price and billing term ONLY; no taxes, renewal, eligibility or checkout confirmation.',
-      method:'Strict plan-card or plan-FAQ extraction from allowlisted official carrier pages; no AI and no automatic catalog rate edits.',
+      method:'Strict exact featured plan-card or plan-FAQ extraction from allowlisted official carrier pages; no AI and no automatic catalog rate edits.',
       summary:{
         plansChecked:values.length,
         headlineMatches:values.filter(x=>x.state==='headline_matched').length,
