@@ -506,6 +506,35 @@ try {
     await research.screenshot({path:join(output,view+'-source-audit.png'),fullPage:true});
     await research.close();
 
+    // Reader correction assistant: no PII, no background POST and no public
+    // GitHub issue until the visitor explicitly chooses to submit it.
+    const report=await context.newPage();
+    report.on('pageerror',e=>errors.push(view+' corrections: '+e.message));
+    await report.goto(new URL('report.html?offer=usm-starter',base).href,{waitUntil:'domcontentloaded'});
+    await report.locator('#fb-report-form:not([hidden])').waitFor({timeout:15000});
+    assert.equal(await report.locator('#fb-report-offer').inputValue(),'usm-starter');
+    assert.equal(await report.locator('#fb-report-result').isHidden(),true);
+    await report.locator('#fb-report-category').selectOption('price');
+    await report.locator('#fb-report-source').fill('https://www.usmobile.com/plans');
+    await report.locator('#fb-report-details').fill('The carrier page lists a first-month payment that appears higher than the Five Bars service estimate.');
+    await report.locator('#fb-report-public').check();
+    await report.getByRole('button',{name:'Prepare report draft'}).click();
+    assert.equal(await report.locator('#fb-report-result').isVisible(),true);
+    assert.match(await report.locator('#fb-report-draft').inputValue(),/Offer ID:\*\* usm-starter/);
+    assert.match(await report.locator('#fb-report-draft').inputValue(),/NOT verified/);
+    const issue=await report.locator('#fb-issue-open').getAttribute('href');
+    assert.equal(issue,'https://github.com/gcd231983/five-bars/issues/new?template=offer-correction.yml');
+    assert.doesNotMatch(issue,/body=|The carrier page lists/);
+    await report.locator('#fb-report-details').fill('My contact email is reader@example.com. The plan is wrong.');
+    assert.equal(await report.locator('#fb-report-result').isHidden(),true);
+    await report.getByRole('button',{name:'Prepare report draft'}).click();
+    assert.match(await report.locator('#fb-report-status').innerText(),/private/i);
+    assert.equal(await report.locator('#fb-report-result').isHidden(),true);
+    const reportWidth=await report.evaluate(()=>document.documentElement.scrollWidth);
+    assert.ok(reportWidth<=viewport.width+2,'Correction assistant must fit '+view+' width');
+    await report.screenshot({path:join(output,view+'-reader-correction.png'),fullPage:true});
+    await report.close();
+
     // Mint annual-plan cash must NEVER be disguised as ordinary month-to-month billing.
     await page.locator('#t-plans').click();
     await page.locator('#carrier').selectOption('Mint Mobile');
