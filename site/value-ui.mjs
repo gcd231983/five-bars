@@ -75,7 +75,7 @@ window.addEventListener('fivebars:render', decorateCards);
 function renderFinder() {
   finderRoot.innerHTML = `
     <form id="fb-finder-form" class="fb-form">
-      <p class="fb-subtle">Answer a few questions. Your choices stay on this device; no account or AI is needed.</p>
+      <p class="fb-subtle">Answer a few questions. Your choices stay on this device; no account or AI is needed.</p>\n      <p class="fb-subtle">Not sure which network works where you live? <a href="https://broadbandmap.fcc.gov/" target="_blank" rel="noopener noreferrer">Check the FCC mobile coverage map</a>. Its modeled outdoor coverage is not a guarantee of indoor reception. Always confirm device IMEI/eSIM compatibility with the carrier.</p>
       <div class="fb-fields">
         <label for="fb-net">Network preference
           <select id="fb-net" name="net"><option value="any">Help me compare all</option><option value="att">AT&amp;T</option><option value="vzw">Verizon</option><option value="tmo">T-Mobile</option></select>
