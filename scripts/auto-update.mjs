@@ -43,7 +43,7 @@ async function download(url) {
     const r = await fetch(url, {
       headers: {
         'user-agent': 'FiveBarsDealMonitor/2.0 (+https://github.com/gcd231983/five-bars)',
-        accept: 'text/html,application/xhtml+xml,application/xml,text/xml,text/plain;q=0.9',
+        accept: url==='https://www.h2owireless.com/' ? 'text/html,application/xhtml+xml,text/plain;q=0.9' : 'text/html,application/xhtml+xml,application/xml,text/xml,text/plain;q=0.9',
       },
       redirect: 'follow', signal: AbortSignal.timeout(requestTimeoutMs),
     });
