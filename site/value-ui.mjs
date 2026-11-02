@@ -218,7 +218,9 @@ function renderFinder() {
         const p=item.offer,c=item.cost;
         const card=element('article',null,'fb-result');
         card.append(element('strong',p.phone+' — '+p.carrier));
-        card.append(element('p','Estimated upfront '+usd(c.due)+'; first year '+usd(c.year)+' (one device).'));
+        card.append(element('p',c.financingUncertain?
+          'Financed or trade-in promotion: no reliable upfront, device payoff or first-year quote without the installment agreement.':
+          'Estimated upfront '+usd(c.due)+'; first year '+usd(c.year)+' (one device).'));
         card.append(statusNode(p));
         if(item.uncertain) card.append(note('Financing, per-device or incomplete service terms prevent a complete household quote.'));
         if(p.rebate||p.credit) card.append(note('Conditional rewards and bill credits are NOT subtracted from these upfront or first-year estimates.'));
@@ -227,7 +229,8 @@ function renderFinder() {
         actions.append(button('Compare',()=>addToCompare('phone',p.id)));
         actions.append(button('See offer',()=>goToRow(p.id,'phone')));
         actions.append(button('Watch phone',()=>window.fiveBarsWatch?.('phone',p.id)));
-        actions.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('phone',p.id)));
+        if(!p.postpaid)actions.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('phone',p.id)));
+        else card.append(note('Savings comparison unavailable until full financing and bill-credit terms are documented.'));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
         root.append(card);
@@ -262,6 +265,8 @@ function fieldValue(type,offer,key) {
     }
   }
   const c=phoneCost(offer);
+  if(offer.postpaid&&['monthly','year','data','hotspot'].includes(key))
+    return 'Financing / trade-in terms not documented';
   switch(key) {
     case 'network':return offer.net==='multi'?'Network varies':offer.net==='att'?'AT&T':offer.net==='vzw'?'Verizon':'T-Mobile';
     case 'monthly':return c?.planPrice===null?'Variable':usd(c?.planPrice)+'/mo';
@@ -270,7 +275,8 @@ function fieldValue(type,offer,key) {
     case 'hotspot':return usd(c?.commitment);
     case 'priority':return offer.lock ? offer.lock+' months listed' : 'Unspecified; check carrier';
     case 'taxes':return offer.postpaid?'Postpaid/financing may apply':'Prepaid or bundled';
-    case 'eligibility':return offer.port?'Number transfer required':'No transfer listed';
+    case 'eligibility':return offer.fullRetailRequired?'Full retail payment required; financing ineligible':
+      offer.port?'Number transfer required':'No transfer listed';
     default:return '—';
   }
 }
