@@ -1,12 +1,12 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-02T09:31:55.327Z",
+  "generatedAt": "2026-11-02T09:58:11.711Z",
   "timezone": "America/New_York",
   "lastFullReview": "2026-10-29",
   "method": "Deterministic public-source monitoring (no AI). HTTP availability does not prove a deal is valid.",
   "summary": {
-    "sourcesChecked": 17,
-    "sourcesReachable": 9,
+    "sourcesChecked": 18,
+    "sourcesReachable": 10,
     "offerLinksChecked": 61,
     "offerLinksReachable": 47,
     "priceCandidatesForReview": 3,
@@ -16,11 +16,13 @@
     "officialPriceObservations": 3,
     "mvnoHeadlineMatches": 7,
     "mvnoHeadlineMismatches": 0,
-    "mvnoReviewAlerts": 0,
+    "mvnoReviewAlerts": 2,
     "mvnoObservations": 7,
     "automaticChanges": 0,
     "expiredPhoneDealsRemoved": 0,
-    "reviewAlerts": 27
+    "reviewAlerts": 29,
+    "offersNeedingReview": 78,
+    "highPriorityReviews": 1
   },
   "sources": [
     {
@@ -91,7 +93,7 @@
       "status": 200,
       "note": "Fetched public page; deal terms are not independently confirmed",
       "changedSincePreviousScan": true,
-      "hash": "d92570d40c8696172d85a93e66ef12ef92033fbb708811d96b771d46fddd3252"
+      "hash": "9f77805756328932a9886fe83de3201ccc20ada32e071cd059b7d5fd571c6dd4"
     },
     {
       "name": "r/NoContract (Reddit)",
@@ -101,7 +103,7 @@
       "status": 200,
       "note": "Fetched public page; deal terms are not independently confirmed",
       "changedSincePreviousScan": true,
-      "hash": "3efb4116cbf95e0871ef137f92b9bbd267308df8516258a682aa4cfb433f0088"
+      "hash": "5f485e0021afdc52ae5384739e225d588f7b25508adb36f71db9a905fee2a5fd"
     },
     {
       "name": "Visible deals",
@@ -144,16 +146,6 @@
       "hash": null
     },
     {
-      "name": "H2O Wireless monthly plans",
-      "url": "https://www.h2owireless.com/plan/monthly",
-      "ok": false,
-      "finalUrl": null,
-      "status": 403,
-      "note": "HTTP 403",
-      "changedSincePreviousScan": false,
-      "hash": null
-    },
-    {
       "name": "Helium Mobile plan help",
       "url": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
       "ok": true,
@@ -161,7 +153,7 @@
       "status": 200,
       "note": "Fetched public page; deal terms are not independently confirmed",
       "changedSincePreviousScan": true,
-      "hash": "8a308faa2d733c7989381176db36a5dbf40888ed7d812cba27a5427653f4ff1c"
+      "hash": "8f807618761aff4c4b78fda3aae591ecebf1d2937e28c50634c61c03ee7b29d1"
     },
     {
       "name": "MobileX plan FAQs",
@@ -192,142 +184,168 @@
       "note": "Fetched public page; deal terms are not independently confirmed",
       "changedSincePreviousScan": false,
       "hash": "6800d7701f909bb94d24b9a6770fb6ae5ef982434a5960feef11aed649935eec"
+    },
+    {
+      "name": "Red Pocket official 2026 prepaid guide (background only)",
+      "url": "https://blog.redpocket.com/blog/2026-prepaid-cell-phone-plan-guide-costs-features-and-savings",
+      "ok": true,
+      "finalUrl": "https://blog.redpocket.com/blog/2026-prepaid-cell-phone-plan-guide-costs-features-and-savings",
+      "status": 200,
+      "note": "Fetched public page; deal terms are not independently confirmed",
+      "changedSincePreviousScan": false,
+      "hash": "1b5873e2c488f2656ae72f167ecab465aeffaaf6ec8b3fb60679fe639e7a24ac"
+    },
+    {
+      "name": "H2O Wireless official homepage rates",
+      "url": "https://www.h2owireless.com/",
+      "ok": false,
+      "finalUrl": null,
+      "status": 403,
+      "note": "HTTP 403",
+      "changedSincePreviousScan": false,
+      "hash": null
     }
   ],
   "offers": {
     "usm-starter": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "usm-premium": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "visible": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "visible-plus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "visible-pro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-max": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-max-family": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "mint": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "metro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "metro-premium": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "boost": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "straighttalk": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-25": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-supreme": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "tracfone": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "ultra": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "fi": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Page exceeded 1.5 MB safety limit"
     },
     "usm-light": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "ultra-4": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "tello": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "cc": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "tello-starter": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "tello-power": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "tello-max": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "h2o-10gb": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
-      "note": "HTTP 403"
+      "checkedAt": "2026-11-02T09:58:11.711Z",
+      "note": "HTTP 403",
+      "mvnoPriceEvidenceState": "source_unavailable",
+      "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
+      "mvnoPriceEvidenceNote": "Official carrier page blocked or failed; no current price validation available."
     },
     "h2o-unlimited": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
-      "note": "HTTP 403"
+      "checkedAt": "2026-11-02T09:58:11.711Z",
+      "note": "HTTP 403",
+      "mvnoPriceEvidenceState": "source_unavailable",
+      "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
+      "mvnoPriceEvidenceNote": "Official carrier page blocked or failed; no current price validation available."
     },
     "helium-air": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -335,7 +353,7 @@
     },
     "helium-infinity": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -343,7 +361,7 @@
     },
     "mobilex-unlimited10": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -351,7 +369,7 @@
     },
     "mobilex-unlimited30": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -359,22 +377,22 @@
     },
     "redpocket-essentials": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "redpocket-plus": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "redpocket-premium": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "good2go-annual1": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -382,7 +400,7 @@
     },
     "good2go-annual3": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -390,7 +408,7 @@
     },
     "good2go-annual5": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -398,97 +416,97 @@
     },
     "h2o-annual10": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "h2o-annual30": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "metro-motog": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "metro-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "metro-a37": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "metro-16e": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Page exceeded 1.5 MB safety limit"
     },
     "cricket-power": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-motog": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-stylus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-16e": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-s25fe": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-razr": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-a37": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "att-pre-motog": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "boost-16e": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "boost-p10a": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "boost-razr": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "boost-motog": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified; unverified price candidate requires manual review; catalog unchanged",
       "priceEvidenceState": "headline_matched",
       "priceEvidenceScope": "advertised_device_and_plan_headline",
@@ -497,7 +515,7 @@
     },
     "boost-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified; unverified price candidate requires manual review; catalog unchanged",
       "priceEvidenceState": "headline_matched",
       "priceEvidenceScope": "advertised_device_and_plan_headline",
@@ -506,7 +524,7 @@
     },
     "boost-gplay": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified; unverified price candidate requires manual review; catalog unchanged",
       "priceEvidenceState": "headline_matched",
       "priceEvidenceScope": "advertised_device_and_plan_headline",
@@ -515,107 +533,107 @@
     },
     "boost-stylus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-stylus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-a27": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-a36": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-16e": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "vzpre-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "vzpre-16e": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 500"
     },
     "wm-vzpre-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "wm-st-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "st-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "st-stylus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "tracfone-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "simple-a16": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "mint-p11": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "mint-s26fe": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "usm-p11": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "HTTP 403"
     },
     "visible-18pro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "tmo-18pro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "vz-18pro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "att-18pro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-02T09:31:55.327Z",
+      "checkedAt": "2026-11-02T09:58:11.711Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     }
   },
@@ -653,6 +671,26 @@
       "candidatePlanPrice": 50,
       "source": "https://www.boostmobile.com/deals",
       "evidence": "$0.00 $249.99 On our $50 Unlimited&#43; Plan and keep your number. Get This Deal → FREE PHONE moto g stylus for $0.00 $299.99 On our $50 Unlimited&#43; Pla"
+    },
+    {
+      "id": "h2o-10gb",
+      "type": "mvno_price_source_unavailable",
+      "reason": "Official carrier page blocked or failed; no current price validation available.",
+      "currentPrice": 20,
+      "observedPrice": null,
+      "currentUpfront": null,
+      "observedUpfront": null,
+      "source": "https://www.h2owireless.com/"
+    },
+    {
+      "id": "h2o-unlimited",
+      "type": "mvno_price_source_unavailable",
+      "reason": "Official carrier page blocked or failed; no current price validation available.",
+      "currentPrice": 30,
+      "observedPrice": null,
+      "currentUpfront": null,
+      "observedUpfront": null,
+      "source": "https://www.h2owireless.com/"
     },
     {
       "id": "usm-starter",
