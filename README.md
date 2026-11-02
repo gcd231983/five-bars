@@ -226,3 +226,33 @@ For safety, notification failures do not stop GitHub Pages deployment: review th
 - `tests/alert-engine.test.mjs`, `tests/issue-alerts.test.mjs`, and expanded browser smoke checks: deadline changes, source outages, price conflicts, manual closure, duplicate prevention, XSS/markdown safety and mobile layout.
 
 Run `node --test tests/*.test.mjs` for fast checks. Chrome browser acceptance tests run on each pull request. The unchanged daily scan at 10:17 UTC also runs on push to `main` and can be started manually from GitHub Actions.
+
+## Five Bars 2.6 — Privacy-first personal watchlist
+
+Visitors can now use **My watchlist** to track up to **30 saved phone offers, service plans, and entire providers**, including optional price targets. Any plan or phone offer in the catalog has a **Watch** button. The guided finder also offers **Watch plan** and **Watch phone** controls.
+
+### Price semantics (important)
+
+- **Plan target:** Standard catalog *per-line monthly rate*, or **monthly equivalent** for prepaid annual plans. It is NOT the lowest promotional rate, a family bundle, or necessarily the amount billed today. Annual upfront totals are shown separately.
+- **Phone target:** Advertised handset sticker price, **excluding** required wireless service, taxes, financing, rebates, and other checkout charges.
+- **Provider target:** Standard listed *service-plan* monthly-equivalent rate at that carrier only. Phones from that carrier can still produce official site alerts, but are **not** compared to a monthly service-price threshold.
+- **No target:** Keep an offer or provider saved and see related site price-change/conflict/promotion-deadline alerts without requiring a number.
+- Price conflicts detected by the official evidence engine **never** qualify for a threshold match. Ended phone promotions are excluded. Target matches are **paused** if the last source scan is over 48 hours old or unavailable.
+- A threshold match means that the **published catalog estimate** meets your budget. It does **not** certify live stock, eligibility, checkout cost, taxes, port-in availability, renewal, network coverage or full offer terms. Users should open the carrier's actual offer page before purchasing.
+
+### Notifications and privacy
+
+The watchlist works **only in the visitor's own browser** using `localStorage` under the key `fivebars-watchlist-v1`. Five Bars collects **no account, email, phone number, address, user identity, or saved preferences on its server**. When a visitor opens or refreshes the website, the watchlist compares their saved choices with the latest published catalog and official partial-headline alert feed. "New or unreviewed" matches can be marked reviewed; duplicate events are recognized by stable local keys. Watching a provider and an individual plan does not duplicate the same underlying alert.
+
+**It does not run in the background, send personalized email/SMS/push notifications, or sync across browsers and phones.** The GitHub Issues notifications built in 2.5 are **repository-owner operational notifications**, not personal visitor alerts.
+
+Use **Export JSON** to see and optionally copy a local backup, and **Import JSON** to restore it in another browser. Import replaces the existing local watchlist and validates known offer IDs, provider names, list sizes, pricing bounds, and event keys. Clearing site data or private-browsing mode can erase a watchlist; users should export a copy first.
+
+### Implementation and checks
+
+- `site/watchlist-core.mjs`: dependency-free state normalization, 30-watch limit, rate target matching, dispute/expiry/staleness safeguards, alert de-duplication and reviewed state.
+- `site/watchlist-ui.mjs`: responsive saved-offer cards, provider selection, price target editing, current matches, unread reviewed actions and export/import; it uses `textContent` for untrusted source text.
+- `tests/watchlist.test.mjs`: no account, malformed pricing, nested watchers, annual prepay, source outages, conflict hold, expired offers, backup/restore and duplicate prevention.
+- `tests/browser-smoke.mjs`: mobile/desktop acceptance checks for adding, saving, importing, exporting, acknowledging and restoring after page reload.
+
+The existing no-AI GitHub Actions price monitor continues unchanged. The watchlist needs no new server, dependency, API key or subscription.
