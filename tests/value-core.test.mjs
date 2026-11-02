@@ -85,6 +85,21 @@ test('phone costs separate first-payment estimate and future commitment',()=>{
   assert.ok(Math.abs(c.commitment-229.99)<.001);
   assert.ok(Math.abs(c.year-769.99)<.001);
 });
+test('conditional future rewards never lower guaranteed phone cashflow and differing first-month service counts once',()=>{
+  const m={price:99.99,planPrice:50,firstMonthPlanPrice:55,stay:3,rebate:100};
+  const core=phoneCost(m);
+  assert.equal(core.due,154.99);
+  assert.equal(core.commitment,254.99);
+  assert.equal(core.year,704.99);
+  assert.equal(core.netDevice,99.99);
+  assert.equal(core.conditionalRewardsExcluded,true);
+  const annual=phoneCost({price:0,planPrice:35,firstMonthPlanPrice:40});
+  assert.equal(annual.due,40);
+  assert.equal(annual.year,425);
+  const prepaid=phoneCost({price:0,planPrice:60,prepay:3});
+  assert.equal(prepaid.due,180);
+  assert.equal(prepaid.year,720);
+});
 test('guided matching respects network, budget, port-in and needs',()=>{
   const r=rankMatches(sample,{lines:1,network:'att',budget:30,cannotPort:true,priority:true,hotspot:true},'2026-11-01');
   assert.deepEqual(r.plans.map(x=>x.id),['a']);

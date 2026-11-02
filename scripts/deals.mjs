@@ -126,6 +126,11 @@ function validate(d, prev) {
     if (!NETS.includes(p.net)) errs.push(at + ": net must be one of " + NETS.join(", "));
     if (!isNum(p.price, 0, 3000)) errs.push(at + ": bad price");
     if (p.planPrice != null && !isNum(p.planPrice, 0, 300)) errs.push(at + ": bad planPrice");
+    if (p.firstMonthPlanPrice != null) {
+      if (!isNum(p.firstMonthPlanPrice, 0, 300)) errs.push(at + ": invalid firstMonthPlanPrice");
+      if (p.planPrice == null || p.bundle || (p.prepay != null && p.prepay > 1))
+        errs.push(at + ": firstMonthPlanPrice is only for first-billed monthly service, not an unquoted prepaid bundle");
+    }
     if (typeof p.port !== "boolean") errs.push(at + ": port must be true/false");
     if (!Number.isInteger(p.lock) || p.lock < 0 || p.lock > 48) errs.push(at + ": lock must be whole months 0-48");
     if (!isUrl(p.url)) errs.push(at + ": url must start with https://");

@@ -221,6 +221,8 @@ function renderFinder() {
         card.append(element('p','Estimated upfront '+usd(c.due)+'; first year '+usd(c.year)+' (one device).'));
         card.append(statusNode(p));
         if(item.uncertain) card.append(note('Financing, per-device or incomplete service terms prevent a complete household quote.'));
+        if(p.rebate||p.credit) card.append(note('Conditional rewards and bill credits are NOT subtracted from these upfront or first-year estimates.'));
+        if(c.firstMonthPlanPrice!==null && c.firstMonthPlanPrice!==c.planPrice) card.append(note('First service bill '+usd(c.firstMonthPlanPrice)+'; continuing service '+usd(c.planPrice)+'/mo subject to eligibility.'));
         const actions=element('div',null,'fb-card-actions');
         actions.append(button('Compare',()=>addToCompare('phone',p.id)));
         actions.append(button('See offer',()=>goToRow(p.id,'phone')));

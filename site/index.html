@@ -321,7 +321,7 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
   </section>
 
   <section id="p-phones" role="tabpanel" aria-labelledby="t-phones" hidden>
-    <p class="note">Costs are per line. “Due today” estimates the device plus service required at signup. “Minimum commitment” also counts required future service. Rebates are excluded from the upfront estimate. All totals exclude taxes, fees, conditional clawbacks and financing; always confirm checkout terms with the carrier.</p>
+    <p class="note">Costs are per line. “Due today” estimates the device plus service required at signup. “Minimum commitment” also counts required future service. Delayed rebates, gift cards and promotional credits are excluded from ALL estimated totals until eligibility and redemption are confirmed. Taxes, fees, financing and clawbacks may cost extra; confirm actual carrier checkout.</p>
     <ol class="list" id="phones-list"></ol>
   </section>
 
@@ -491,18 +491,18 @@ function planVisible(p){
 
 /* ---------- phone math ---------- */
 function phoneCalc(d){
-  const ei = endInfo(d.ends);
-  const price = d.price;
-  const plan = d.planPrice == null ? null : d.planPrice;
-  const rebate = Math.max(0, d.rebate||0);
-  const prepay = Math.max(0, d.prepay||0);
-  const stay = Math.max(0, d.stay||0);
-  const bundle = Math.max(0, d.bundle||0);
-  const due = bundle ? price : (plan == null ? null : price + plan*Math.max(1,prepay));
-  const commitment = bundle ? price : (plan == null ? null : price-rebate+plan*Math.max(1,prepay,stay));
-  const year = bundle ? (bundle>=12 ? price : (plan == null ? null : price+plan*(12-bundle)))
-    : (plan == null ? null : price+12*plan-rebate-(d.credit||0)*Math.min(12,d.creditMonths||0));
-  return {due, commitment, year, eff: Math.max(0, price-rebate), ei};
+  const ei=endInfo(d.ends);
+  const price=d.price;
+  const plan=d.planPrice==null?null:d.planPrice;
+  const prepay=Math.max(0,d.prepay||0);
+  const stay=Math.max(0,d.stay||0);
+  const bundle=Math.max(0,d.bundle||0);
+  const first=plan==null?null:(Number.isFinite(d.firstMonthPlanPrice)?d.firstMonthPlanPrice:plan);
+  const due=bundle?price:(plan==null?null:price+first+plan*(Math.max(1,prepay)-1));
+  const commitment=bundle?price:(plan==null?null:price+first+plan*(Math.max(1,prepay,stay)-1));
+  const year=bundle?(bundle>=12?price:(plan==null?null:price+plan*(12-bundle))):
+    (plan==null?null:price+first+11*plan);
+  return {due,commitment,year,eff:price,ei};
 }
 function phoneVisible(d){
   const t = state.t;
@@ -668,6 +668,7 @@ function renderPhones(){
     const facts = [
       d.bundle ? "Includes " + d.bundle + " months of service" : (d.planPrice!=null ? "Needs a " + money(d.planPrice) + "/mo plan" : "Needs a premium unlimited plan"),
       d.prepay>1 && !d.bundle && d.id!=="usm-p11" ? "Prepay " + d.prepay + " months" : null,
+      Number.isFinite(d.firstMonthPlanPrice) ? "First service bill " + money(d.firstMonthPlanPrice) + "; then " + money(d.planPrice) + "/mo with eligible discount" : null,
       d.port ? "Must move your number" : "No number move needed",
       d.store ? "In store only" : null,
       d.postpaid ? "Postpaid contract" : "Prepaid",
@@ -683,7 +684,7 @@ function renderPhones(){
       el("div",{class:"price"},
         el("div",{class:priceDisputed?"now fb-under-review":"now"}, priceDisputed ? "Price under review" : d.price===0 ? (d.postpaid ? "$0 advertised" : "Free") : money(d.price)),
         !priceDisputed && d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
-        !priceDisputed && d.rebate ? el("div",{class:"was"}, money(d.rebate) + " rebate; net phone cost " + money(c.eff)) : null),
+        !priceDisputed && d.rebate ? el("div",{class:"was"}, money(d.rebate) + " conditional later reward; NOT deducted") : null),
       el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null, scan?.state==="source_unavailable" ? el("li",{class:"warn"}, "Offer link could not be checked") : null, scan?.reviewRequired ? el("li",{class:"warn"}, "Price candidate needs manual review; listed terms are unverified") : null,
       priceDisputed ? el("li",{class:"warn"},"Official price evidence conflicts with this listing; stale totals suppressed") : null),
       ends ? el("div",{class: ends.expired ? "deal off" : "deal"}, ends.expired ? ends.text + ". Recheck before you go." : ends.text + ".") : null,

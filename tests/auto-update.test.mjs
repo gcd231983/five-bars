@@ -175,8 +175,8 @@ test('phone upfront and commitment are different; a future-service requirement i
 test('rebate does not reduce payment due at checkout; prepaid months do', () => {
   const metro = phoneCosts({ price: 99.99, rebate: 100, planPrice: 55, stay: 3 });
   assert.ok(Math.abs(metro.dueToday - 154.99) < .001);
-  assert.ok(Math.abs(metro.minCommitment - 164.99) < .001);
-  assert.equal(metro.netDevice, 0);
+  assert.ok(Math.abs(metro.minCommitment - 264.99) < .001);
+  assert.equal(metro.netDevice, 99.99);
   const cricket = phoneCosts({ price: 29.99, planPrice: 60, prepay: 3 });
   assert.ok(Math.abs(cricket.dueToday - 209.99) < .001);
 });
@@ -184,7 +184,7 @@ test('rebate does not reduce payment due at checkout; prepaid months do', () => 
 test('bundled services and monthly credits do not double charge included months', () => {
   assert.equal(phoneCosts({ price: 579, bundle: 12 }).firstYear, 579);
   assert.equal(phoneCosts({ price: 480, bundle: 6, planPrice: 40 }).firstYear, 720);
-  assert.equal(phoneCosts({ price: 1199, planPrice: 45, credit: 20, creditMonths: 24 }).firstYear, 1499);
+  assert.equal(phoneCosts({ price: 1199, planPrice: 45, credit: 20, creditMonths: 24 }).firstYear, 1739);
   assert.equal(phoneCosts({ price: 349, planPrice: null }).dueToday, null);
 });
 

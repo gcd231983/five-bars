@@ -31,26 +31,21 @@ export function expireKnownOffers(data, today) {
 }
 
 export function phoneCosts(d) {
-  const device = Number(d.price);
-  const plan = Number.isFinite(d.planPrice) ? Number(d.planPrice) : null;
-  const rebate = Math.max(0, Number(d.rebate) || 0);
-  const prepay = Math.max(0, Number(d.prepay) || 0);
-  const stay = Math.max(0, Number(d.stay) || 0);
-  const bundle = Math.max(0, Number(d.bundle) || 0);
-  const credit = Math.max(0, Number(d.credit) || 0);
-  const creditMonths = Math.min(12, Math.max(0, Number(d.creditMonths) || 0));
-  const netDevice = Math.max(0, device - rebate);
-  // These are estimates before taxes, fees, financed-device terms, and any
-  // conditional discount clawback. The first month is assumed due at signup
-  // unless the phone bundle already includes it.
-  const dueToday = bundle ? device : (plan == null ? null : device + plan * Math.max(1, prepay));
-  const minCommitment = bundle ? device : (plan == null ? null : (device - rebate) + plan * Math.max(1, prepay, stay));
-  const firstYear = bundle
-    ? (bundle >= 12 ? device : (plan == null ? null : device + plan * (12 - bundle)))
-    : (plan == null ? null : Math.max(0, device + 12 * plan - rebate - credit * creditMonths));
-  return { dueToday, minCommitment, firstYear, netDevice, rebate, firstMonthAssumed: !bundle && !prepay };
+  const device=Number(d.price);
+  const plan=Number.isFinite(d.planPrice)?Number(d.planPrice):null;
+  const prepay=Math.max(0,Number(d.prepay)||0);
+  const stay=Math.max(0,Number(d.stay)||0);
+  const bundle=Math.max(0,Number(d.bundle)||0);
+  const rebate=Math.max(0,Number(d.rebate)||0);
+  const first=plan===null?null:(Number.isFinite(d.firstMonthPlanPrice)?Number(d.firstMonthPlanPrice):plan);
+  // Rewards, credits, and conditional rebates cannot be counted as guaranteed cash.
+  const dueToday=bundle?device:plan===null?null:device+first+plan*(Math.max(1,prepay)-1);
+  const minCommitment=bundle?device:plan===null?null:device+first+plan*(Math.max(1,prepay,stay)-1);
+  const firstYear=bundle?(bundle>=12?device:plan===null?null:device+plan*(12-bundle)):
+    (plan===null?null:device+first+11*plan);
+  return {dueToday,minCommitment,firstYear,netDevice:device,rebate,
+    firstMonthAssumed:!bundle&&!prepay,conditionalRewardsExcluded:!!(rebate||Number(d.credit)>0)};
 }
-
 function decodeHtml(html) {
   return html
     .replace(/<(script|style|noscript|svg|head)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ')

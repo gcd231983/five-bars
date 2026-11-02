@@ -23,7 +23,7 @@ export function offerSignature(offer) {
   const fields = ['id','carrier','plan','phone','net','os','price','planPrice','priceNote','promo',
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
     'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
-    'billingMonths','billingUpfront','firstMonthPrice','priceSourceDate'];
+    'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
 export function verificationState(offer, record, today = localDay()) {
@@ -81,22 +81,27 @@ export function planCost(plan, count = 1, options = {}) {
     promoSuppressedForNoPort:!!promo && !!options.cannotPort && promo.req==='port'};
 }
 export function phoneCost(phone) {
-  const price = Number(phone.price);
-  if (!Number.isFinite(price) || price < 0) return null;
-  const plan = phone.planPrice == null ? null : Number(phone.planPrice);
-  const validPlan = Number.isFinite(plan) && plan >= 0 ? plan : null;
-  const rebate = Math.max(0, Number(phone.rebate) || 0);
-  const credit = Math.max(0, Number(phone.credit) || 0);
-  const creditMonths = Math.min(12,Math.max(0,Number(phone.creditMonths)||0));
-  const prepay = Math.max(0,Number(phone.prepay)||0);
-  const stay = Math.max(0,Number(phone.stay)||0);
-  const bundle = Math.max(0,Number(phone.bundle)||0);
-  const due = bundle ? price : validPlan===null ? null : price + validPlan*Math.max(1,prepay);
-  const commitment = bundle ? price : validPlan===null ? null : price-rebate+validPlan*Math.max(1,prepay,stay);
-  const year = bundle ? (bundle>=12 ? price : validPlan===null ? null : price+validPlan*(12-bundle))
-    : (validPlan===null ? null : Math.max(0,price + 12*validPlan - rebate - credit*creditMonths));
-  return {due,commitment,year,netDevice:Math.max(0,price-rebate),
-    financingUncertain:!!phone.postpaid,planPrice:validPlan,prepay,stay};
+  const price=Number(phone.price);
+  if(!Number.isFinite(price)||price<0)return null;
+  const plan=phone.planPrice==null?null:Number(phone.planPrice);
+  const validPlan=Number.isFinite(plan)&&plan>=0?plan:null;
+  const prepay=Math.max(0,Number(phone.prepay)||0);
+  const stay=Math.max(0,Number(phone.stay)||0);
+  const bundle=Math.max(0,Number(phone.bundle)||0);
+  const first=validPlan===null?null:(Number.isFinite(phone.firstMonthPlanPrice)?
+    Number(phone.firstMonthPlanPrice):validPlan);
+  if(first!==null && first<0)return null;
+  // Conditional rebates and monthly credits are NOT cash received at checkout
+  // and are excluded from due, commitment, year and recommendation rankings.
+  const prepaidMonths=Math.max(1,prepay);
+  const minimumMonths=Math.max(1,prepay,stay);
+  const due=bundle?price:validPlan===null?null:price+first+validPlan*(prepaidMonths-1);
+  const commitment=bundle?price:validPlan===null?null:price+first+validPlan*(minimumMonths-1);
+  const year=bundle?(bundle>=12?price:validPlan===null?null:price+validPlan*(12-bundle)):
+    (validPlan===null?null:price+first+11*validPlan);
+  return {due,commitment,year,netDevice:price,financingUncertain:!!phone.postpaid,
+    planPrice:validPlan,firstMonthPlanPrice:first,prepay,stay,
+    conditionalRewardsExcluded:!!(Number(phone.rebate)>0||Number(phone.credit)>0)};
 }
 function networkOK(net, preference) {
   return !preference || preference==='any' || net===preference || net==='multi';
