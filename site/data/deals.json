@@ -365,14 +365,8 @@
       "pri": false,
       "hot": "50GB hotspot",
       "video": null,
-      "extra": "Standard Supreme Unlimited is $60/mo before AutoPay. Eligible AutoPay may reduce recurring price by $5 from month 2. Taxes included; $25 activation/upgrade fee applies in Cricket stores. Family rate tables may reflect AutoPay starting in month 2; initial due can be higher.",
+      "extra": "Standard Supreme Unlimited is $60/mo before AutoPay. Eligible AutoPay may reduce recurring price by $5 from month 2. Taxes included; $25 activation/upgrade fee applies in Cricket stores. Family rate tables may reflect AutoPay starting in month 2; initial due can be higher. Multi-line AutoPay table rates are excluded from the calculator until actual first-month eligibility and payment amounts are reviewed.",
       "url": "https://www.cricketwireless.com",
-      "family": {
-        "2": 45,
-        "3": 36.67,
-        "4": 32.5,
-        "5": 32
-      },
       "priceSourceDate": "2026-11-02"
     },
     {
