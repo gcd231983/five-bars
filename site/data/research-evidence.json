@@ -32,7 +32,8 @@
         "Confirm current port-in promotion code and whether your number/line qualifies at checkout",
         "Confirm selected underlying network, device acceptance and priority/high-speed allowances",
         "Confirm any extra multi-line, smartwatch and activation charges for the intended order"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "usm-premium": {
       "carrier": "US Mobile",
@@ -62,7 +63,8 @@
         "Verify activation's specific network and current premium data/hotspot policy, including throttling",
         "Verify promo code, eligibility, subscription date, roaming terms and any add-on charges",
         "Confirm video quality options, taxes/fees and all checkout totals"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "usm-light": {
       "carrier": "US Mobile",
@@ -87,7 +89,8 @@
         "Check the exact available networks and device/IMEI support",
         "Confirm data after 2GB and hotspot allowance, top-ups and any bundle discounts",
         "Confirm activation, payment and taxes for the intended line"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "visible": {
       "carrier": "Visible",
@@ -112,7 +115,8 @@
         "Check latest promotional code and eligibility separately from regular $25 rate",
         "Check device eSIM/IMEI, exact coverage and any speed-prioritization limitations",
         "Confirm checkout and any activation or optional add-on charges"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "visible-plus": {
       "carrier": "Visible",
@@ -138,7 +142,8 @@
         "Confirm current discount code terms, duration, eligibility and actual billing",
         "Verify premium data policy on the intended device and coverage",
         "Check smartwatch, international and activation/checkout details"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "visible-pro": {
       "carrier": "Visible",
@@ -164,7 +169,8 @@
         "Confirm current promotion duration, eligibility, and cancellation/port rules",
         "Check 5G Ultra Wideband coverage, international availability and smartwatch conditions",
         "Confirm checkout charges and plan feature conditions"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "tello": {
       "carrier": "Tello",
@@ -190,7 +196,8 @@
         "Check whether promotion remains available at actual sign-up and exact qualifying new-line conditions",
         "Verify area taxes, total upfront charge and eSIM/IMEI compatibility",
         "Confirm final coverage and tethering/device restrictions"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "tello-starter": {
       "carrier": "Tello",
@@ -215,7 +222,8 @@
         "Confirm exact taxes/cost-recovery and activation charges at checkout",
         "Confirm 2GB high-speed use and what happens afterward",
         "Confirm device compatibility and coverage"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "tello-power": {
       "carrier": "Tello",
@@ -240,7 +248,8 @@
         "Confirm throttling after the monthly high-speed data cap",
         "Confirm local taxes, cost-recovery charges and actual bill",
         "Confirm device and coverage suitability"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "tello-max": {
       "carrier": "Tello",
@@ -270,7 +279,8 @@
         "Confirm after-threshold data speeds and priority under intended coverage",
         "Confirm actual taxes/cost-recovery and any current new-line price",
         "Confirm device compatibility and hotspot policies"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "mint": {
       "carrier": "Mint Mobile",
@@ -302,7 +312,8 @@
         "Verify actual checkout plan duration, whether the $180 new-customer prepaid offer still applies to the exact customer and cart",
         "Confirm taxes/fees, refund/cancellation rules, renewal rate and family payment plans",
         "Confirm IMEI/eSIM and account eligibility; do not assume household monthly billing"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     },
     "cricket-supreme": {
       "carrier": "Cricket",
@@ -332,7 +343,8 @@
         "Confirm customer eligibility, AutoPay timing, and 2-5 line first-month checkout totals",
         "Confirm store versus online activation charges and device promotion requirements",
         "Confirm international, cancellation and phone unlocking terms"
-      ]
+      ],
+      "observedOn": "2026-11-02"
     }
   }
 }
