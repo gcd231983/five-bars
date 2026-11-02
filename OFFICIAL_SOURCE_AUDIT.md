@@ -5,13 +5,13 @@
 ## Current coverage and meanings
 
 - **Total catalog**: 78 items — 38 plans, 40 device promotions.
-- **12 initial plan baselines researched**: US Mobile (Starter, Premium, Light), Visible (Visible, Visible+, Visible+ Pro), Tello (Everyday, Starter, Power, Max), Mint Unlimited, Cricket Supreme Unlimited.
-- **66 items lack this documented first-level research**: 26 other plans and all 40 phone promotions. Their catalog prices should still be treated as unconfirmed starting points.
+- **15 published plan baselines researched**: original 12 plus Total Wireless MAX 5G BYO and H2O 10GB and Unlimited monthly plans.
+- **63 catalog items lack documented first-level research**: 23 additional plans and all 40 phone promotions. Their catalog prices should still be treated as unconfirmed starting points.
 - **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Official source research and a rate match do not change this.
 - **Research date**: 2026-11-02. The generator marks price-source observations aged after 21 days; the separately signed full-terms review expires after 14 days or a material data change.
 
 Public record: https://gcd231983.github.io/five-bars/source-research.html
-Underlying 12-item source file: `site/data/research-evidence.json`.
+Underlying 15-item source file: `site/data/research-evidence.json`.
 Machine-readable coverage report: `site/data/research-audit.json`.
 
 ## Confirmed public-rate baselines (not checkout)
@@ -56,3 +56,11 @@ Prioritize device offers with unusual terms (free phone with minimum service, re
 - `scripts/source-research.mjs` checks dated evidence vs recorded monthly and annual upfront fields, marks old evidence and conflicts, and escapes untrusted text/URLs for HTML publication.
 - The no-AI daily workflow refreshes publication pages and sitemap, but never changes the original human research date.
 - See `tests/source-research.test.mjs` and browser smoke checks for regression verification.
+
+## Additional public carrier evidence — November 2, 2026
+
+- Total Wireless MAX 5G BYO: official $30 first month, then $20/month with eligible AutoPay, yielding $250 service cost in the first 12 months before unspecified costs. https://www.totalwireless.com/m/plans and https://www.totalwireless.com/m/byop
+- H2O monthly 10GB: $20 regular / $18 with eligible AutoPay, 2GB hotspot. H2O monthly unlimited (30GB high-speed): $30 regular / $27 with AutoPay, 5GB hotspot. https://www.h2owireless.com/plan/monthly
+- Boost Pixel 10a: online page advertises $49.99 handset and $60 plan with number transfer, while the separate in-store page says two prepaid months. These are not necessarily the same channel or checkout conditions. https://www.boostmobile.com/deals and https://www.boostmobile.com/offers . This phone does NOT count toward the 15 plan-baseline records.
+
+None of this establishes customer-specific checkout costs or a human full-terms sign-off.

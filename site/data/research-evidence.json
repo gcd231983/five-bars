@@ -345,6 +345,77 @@
         "Confirm international, cancellation and phone unlocking terms"
       ],
       "observedOn": "2026-11-02"
+    },
+    "total-max": {
+      "carrier": "Total Wireless",
+      "publishedMonthly": 20,
+      "term": "monthly_with_autopay",
+      "sources": [
+        {
+          "url": "https://www.totalwireless.com/m/plans",
+          "supports": "MAX 5G BYO: $20 with AutoPay and $30 for the first month"
+        },
+        {
+          "url": "https://www.totalwireless.com/m/byop",
+          "supports": "BYO eligibility, $20 recurring AutoPay rate and $30 first month"
+        }
+      ],
+      "supportedFacts": [
+        "Published eligible single-line BYO plan costs $30 for the first month, then $20/month with AutoPay",
+        "First-year modeled service cost is $250 rather than $240, excluding unknown additions",
+        "Plan requires a qualifying new BYO activation, compatible device and AutoPay for the discounted recurring rate"
+      ],
+      "unresolved": [
+        "Confirm AutoPay enrollment, first-month checkout and taxes",
+        "Confirm new-line and IMEI/eSIM eligibility, including prior Verizon-brand devices",
+        "Confirm exact roaming, network coverage, extra charges and renewal conditions"
+      ],
+      "observedOn": "2026-11-02",
+      "publishedFirstMonthPrice": 30
+    },
+    "h2o-10gb": {
+      "carrier": "H2O Wireless",
+      "publishedMonthly": 20,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://www.h2owireless.com/plan/monthly",
+          "supports": "10GB monthly card lists $20 standard, $18 AutoPay, 2GB hotspot"
+        }
+      ],
+      "supportedFacts": [
+        "Published monthly standard price $20; eligible AutoPay rate $18",
+        "High-speed data slows after 10GB; 2GB mobile hotspot",
+        "Multi-month discounted plans are different advance-payment offers"
+      ],
+      "unresolved": [
+        "Confirm AutoPay qualification and price after enrollment",
+        "Confirm taxes, activation, renewal and any roaming fees",
+        "Confirm device acceptance, coverage and high-speed/hotspot terms"
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "h2o-unlimited": {
+      "carrier": "H2O Wireless",
+      "publishedMonthly": 30,
+      "term": "monthly_standard",
+      "sources": [
+        {
+          "url": "https://www.h2owireless.com/plan/monthly",
+          "supports": "Unlimited monthly card lists $30 standard, $27 AutoPay, speeds reduced after 30GB"
+        }
+      ],
+      "supportedFacts": [
+        "Published monthly standard price $30; eligible AutoPay rate $27",
+        "Unlimited-label service reduces speed after 30GB with 5GB hotspot",
+        "Different prepaid durations have different upfront payment obligations"
+      ],
+      "unresolved": [
+        "Confirm AutoPay qualification, expiration and renewal terms",
+        "Confirm taxes, activation and extra international charges",
+        "Confirm handset, underlying network and coverage"
+      ],
+      "observedOn": "2026-11-02"
     }
   }
 }

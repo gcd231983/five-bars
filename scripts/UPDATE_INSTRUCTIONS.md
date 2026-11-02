@@ -17,7 +17,7 @@ Check an official carrier/merchant page and document the actual price, required 
 ### Plans
 
 - `id`, `carrier`, `plan`, `net` (`vzw`, `att`, `tmo`, `multi`), `unl`, `price`, `tax`, `pri`, `url` are required.
-- Optional `family` keys are **per-line** prices for counts `2`–`5`; `promo` may include `price`, `months`, `req`, `ends`, `text`; `maxLines`, `data`, `hot`, `video`, `extra`, `priceNote` are optional.
+- Optional `firstMonthPrice` is an explicitly sourced one-line, first-month service charge that differs from the continuing rate; count it only once. Do not infer a family first bill. Optional `family` keys are **per-line** prices for counts `2`–`5`; `promo` may include `price`, `months`, `req`, `ends`, `text`; `maxLines`, `data`, `hot`, `video`, `extra`, `priceNote` are optional.
 - Never treat a price available only with a special enrollment condition as the regular one-line price.
 
 ### Phone deals

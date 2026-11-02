@@ -198,6 +198,7 @@ function renderFinder() {
           usd(c.monthTotal)+(c.annualPrepaid?'/mo equivalent, PAID '+usd(c.upfrontDue)+' UPFRONT for 12 months.':'/mo at the modeled current rate.')));
         card.append(statusNode(p));
         if (c.annualPrepaid) card.append(note('This is a prepaid ANNUAL plan, not a monthly subscription. Pay the full '+usd(c.upfrontDue)+' before service starts.'));
+        if (c.firstMonthAdjusted) card.append(note('Published first bill '+usd(c.upfrontDue)+'; later estimated service '+usd(c.regularMonthTotal)+'/month. Included in first-year total; confirm eligibility and AutoPay.'));
         if (c.promoFamilyUnconfirmed) card.append(note('Intro promo was NOT assumed for multiple lines; eligibility is unconfirmed.'));
         if (c.estimatedFamilyPrice) card.append(note('Multi-line price was not published in our catalog; this is a single-line extrapolation.'));
         const actions=element('div',null,'fb-card-actions');

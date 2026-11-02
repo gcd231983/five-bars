@@ -25,7 +25,9 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
   return {state:'invalid',label:'Invalid research date',issues:['research date invalid or in the future']};
  if(record.kind!=='plan' && record.kind!==undefined)
   return {state:'invalid',label:'Wrong source research offer kind',issues:['kind is not a plan']};
- if(!num(record.publishedMonthly)||!Array.isArray(record.sources)||record.sources.length===0||
+ if(!num(record.publishedMonthly)||
+    (record.publishedFirstMonthPrice!==undefined&&!num(record.publishedFirstMonthPrice))||
+    !Array.isArray(record.sources)||record.sources.length===0||
     record.sources.some(v=>!officialUrl(v?.url))||
     !Array.isArray(record.supportedFacts)||!Array.isArray(record.unresolved))
   return {state:'invalid',label:'Evidence structure incomplete',issues:['missing or unsafe official source facts']};
@@ -38,6 +40,8 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
  }else if(offer.billingMonths===12){
   issues.push('catalog annual billing is not supported by this official-source record');
  }
+ if(record.publishedFirstMonthPrice!==undefined&&offer.firstMonthPrice!==record.publishedFirstMonthPrice)
+  issues.push('first-month plan charge differs from recorded carrier source');
  if(issues.length)return {state:'conflict',label:'Published-source price does not match catalog',issues};
  const age=dayGap(today,record.observedOn);
  if(age>maxAgeDays)return {state:'aged',label:'Published price evidence is '+age+' days old; reconfirm',issues:[]};
@@ -121,7 +125,9 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
   const status=item.researchState;
   const issues=item.issues||[];
   const rate=status==='conflict'||status==='invalid'?'Rate WITHHELD (mismatch)':
-    usd(record.publishedMonthly)+(record.billingMonths===12?' per-month equivalent; '+usd(record.billingUpfront)+' due upfront for 12 months':' regular per month');
+    usd(record.publishedMonthly)+(record.billingMonths===12?
+      ' per-month equivalent; '+usd(record.billingUpfront)+' due upfront for 12 months':
+      ' regular per month'+(record.publishedFirstMonthPrice!==undefined?'; '+usd(record.publishedFirstMonthPrice)+' first month':''));
   sections.push('<article class="guide research-article" data-offer-id="'+safe(id)+'">'+
    '<h3>'+safe(item.carrier)+' — '+safe(item.offer)+'</h3>'+
    '<p><strong>'+safe(item.researchLabel)+'</strong> · Manual full-terms review: '+safe(item.manualReview)+'</p>'+

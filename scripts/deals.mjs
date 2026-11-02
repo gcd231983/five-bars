@@ -92,6 +92,10 @@ function validate(d, prev) {
     if (typeof p.unl !== "boolean") errs.push(at + ": unl must be true/false");
     if (!p.unl && typeof p.data !== "string") errs.push(at + ": limited plans need a data string like \"5GB\"");
     if (!isNum(p.price, 0, 200)) errs.push(at + ": bad price");
+    if (p.firstMonthPrice != null) {
+      if (!isNum(p.firstMonthPrice, 0, 200)) errs.push(at + ": invalid firstMonthPrice");
+      if (p.maxLines!==1 || p.billingMonths===12) errs.push(at + ": firstMonthPrice requires single-line monthly offer");
+    }
     if (typeof p.tax !== "boolean") errs.push(at + ": tax must be true/false");
     if (p.maxLines != null && (!Number.isInteger(p.maxLines) || p.maxLines < 1)) errs.push(at + ": maxLines must be a whole number");
     if (p.pri !== null && typeof p.pri !== "boolean") errs.push(at + ": pri must be true, false, or null if unknown");
