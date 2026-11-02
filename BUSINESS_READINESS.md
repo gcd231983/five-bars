@@ -91,3 +91,7 @@ Each item includes a full-terms worksheet covering rate, promotion, tax, prepaym
 - GitHub Pages deployment still runs on main, without paid AI, a backend, visitor account, affiliate links or tracking pixels.
 
 Commercial readiness still depends on actual dated human full-terms reviews and documented partner agreements (see BUSINESS_READINESS.md). These pages should be used for beta testing and legitimate educational search discovery, not claims of verified promotions.
+
+## Real publisher programs researched (not activated)
+
+See AFFILIATE_PIPELINE.md for current official program references and application requirements. The published programs include Tello (CJ), US Mobile (Impact), and Mint Mobile (Impact). Mint lists traffic/follower criteria; none has approved this site. The commercial launch still requires business decisions and signed partner terms. No commission-bearing links or visitor tracking were added.
