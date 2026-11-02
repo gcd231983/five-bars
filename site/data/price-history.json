@@ -1,5 +1,33 @@
 {
   "schema": 1,
-  "description": "Observed official carrier headline prices only, not independently verified checkout or total ownership cost.",
-  "offers": {}
+  "description": "Observed official carrier headline prices only. NOT verified checkout or total ownership cost.",
+  "offers": {
+    "boost-motog": [
+      {
+        "date": "2026-11-02",
+        "price": 0,
+        "planPrice": 60,
+        "source": "https://www.boostmobile.com/deals",
+        "scope": "advertised_device_and_plan_headline"
+      }
+    ],
+    "boost-a17": [
+      {
+        "date": "2026-11-02",
+        "price": 0,
+        "planPrice": 50,
+        "source": "https://www.boostmobile.com/deals",
+        "scope": "advertised_device_and_plan_headline"
+      }
+    ],
+    "boost-gplay": [
+      {
+        "date": "2026-11-02",
+        "price": 0,
+        "planPrice": 50,
+        "source": "https://www.boostmobile.com/deals",
+        "scope": "advertised_device_and_plan_headline"
+      }
+    ]
+  }
 }
