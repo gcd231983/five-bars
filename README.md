@@ -102,7 +102,7 @@ A separate pull-request workflow runs `tests/browser-smoke.mjs` on Chromium at p
 
 ## Price Watch: official headline checks and observed history
 
-The `Price watch` tab adds **strict, source-scoped, partial price validation** independent of Claude. It currently supports **three Boost Mobile phone offers** only: Moto G 2026, Galaxy A17 5G, and Moto G Play 2026.
+The `Price watch` tab adds **strict, source-scoped, partial price checks** independent of Claude. Its Boost subsection tracks **three selected phone offers**: Moto G 2026, Galaxy A17 5G, and Moto G Play 2026. Separate MVNO subsections monitor some service-plan rates.
 
 Every successful daily source scan:
 1. Downloads Boost Mobile's public offers page using the existing safe HTTP fetcher.
@@ -155,24 +155,44 @@ Run `node --test tests/*.test.mjs` for pricing/provider/annual-billing checks, t
 
 ## Automatic MVNO rate evidence — rollout November 2, 2026
 
-This upgrade extends the existing no-AI **Price watch** system beyond Boost device offers to **seven specific service plans** on public official carrier pages:
+This upgrade extends the existing no-AI **Price watch** system beyond Boost device offers to **seven established service-plan checks**, plus **two H2O monthly checks that activate only when its public homepage can be fetched**:
 
 | Provider | Scoped plans | Evidence scope |
 |---|---|---|
 | Helium Mobile | Air 10GB, Infinity Unlimited | Exact advertised monthly plan-rate heading |
 | MobileX | Basic Unlimited 10GB, Basic Unlimited 30GB | Exact advertised allowance and monthly price in the plan FAQ |
 | Good2Go Mobile | Annual 1GB, 3GB, 5GB | Exact **annual upfront payment**, matching data allowance, and 12-month equivalent |
+| H2O Wireless | Featured monthly 10GB and unlimited (30GB high-speed) | Exact homepage monthly rate bound to corresponding data allowance; checkout/annual plans not validated |
 
-**Important:** These are *partial headline checks*, not checkout or full plan verification. Tax, fees, auto-pay requirements, throttling, new-customer terms, renewals, financing, coverage and phone compatibility are **not** independently verified by the parser. The three sources are allowlisted. Blocked or changed pages fail closed; they never trigger price guesses or automatic catalog edits.
+**Important:** These are *partial headline checks*, not checkout or full plan verification. Tax, fees, auto-pay requirements, throttling, new-customer terms, renewals, financing, coverage and phone compatibility are **not** independently verified by the parser. These exact official source locations are allowlisted. Blocked or changed pages fail closed; they never trigger price guesses or automatic catalog edits.
 
 - Every successful daily scan stores `site/data/mvno-evidence.json` and `site/data/mvno-history.json` (up to **90 observation days** per supported plan).
 - Matching headlines display a clearly labeled **partial official-rate match** badge. Missing/unavailable official pages display review-needed messaging, not a success badge.
 - If the official price or annual amount **differs**, the site keeps the plan visible but **hides its advertised costs**, disables its comparison button, and removes it from finder recommendations.
 - A mismatch remains **unresolved** even if the next scan is blocked or the plan wording disappears. Only a fresh exact official headline match lifts the hold.
 - Automatic scans will **not modify `site/data/deals.json`** based on observed pricing. A human must review a new rate and its full plan terms.
-- **Tello, H2O Wireless and Red Pocket** remain in the main comparison catalog but are **not yet automatically rate-validated**: their official pricing pages have returned HTTP 403 to the scheduled scanner. This implementation will not bypass access controls.
+- **Tello and Red Pocket** remain in the catalog without automatic live rate validation because their pricing pages return HTTP 403. H2O's **monthly plan directory** also returns 403; the alternate official **homepage** has been accessible in a separate ordinary browser request, but may still block the scheduled scanner. H2O **annual plans** have no automated price proof. The monitor never bypasses access controls or equates access with price confirmation.
 - Historical entries represent observed official **headline rates**, not guaranteed checkout prices or actual consumer transactions.
 
 Technical implementation: `scripts/mvno-evidence.mjs` implements strict extraction, allowlisted source provenance, conflicting-variant detection, mismatch persistence, and history limits. The no-AI update coordinator writes the files; the static site reads them; Node regression tests and Chromium mobile/desktop smoke checks cover the critical behavior.
 
 To inspect current evidence, open Five Bars → **Price watch**. To diagnose a run, open GitHub Actions → **Five Bars - no-AI deal checks and website**. Do not rely on ordinary HTTP 200 page availability as evidence of a specific price.
+
+## 2.4 — Review queue and official-source resilience
+
+The daily scanner also writes **`site/data/review-queue.json`**. Under **Price watch → Price & terms review queue**, visitors can inspect current maintenance priorities and filter them by urgency.
+
+- **Critical:** A documented official price discrepancy, an unresolved conflict, or a catalog promotion past its explicit end date.
+- **High:** A promotion approaching its recorded deadline (within seven days).
+- **Medium:** A monitored rate not found, an inaccessible carrier offer page, or a price reference older than 21 days.
+- **Routine:** A listed offer has no current *documented human full-terms review*. This is a transparency disclosure, **not an accusation** that the carrier's price is incorrect.
+
+Queue entries include the original carrier, the reason, a public carrier link, and a prefilled GitHub correction link. Flags are derived from **existing evidence and dates**; no AI, tracking of visitors, login, or automatic claim of review is involved. Reviewing an offer's source URL or seeing a matching headline does **not** create a manual full-terms review record. Only `node scripts/review-offer.mjs verify ID OFFICIAL_URL --full-terms-reviewed`, following direct human inspection, can record that step.
+
+### Official pages with access restrictions
+
+An access diagnostic checked the regular, public plan pages for Tello, H2O and Red Pocket. The plan pages returned HTTP 403 in GitHub Actions and are **not scraped or bypassed**. A Red Pocket official 2026 editorial plan guide is readable at `https://blog.redpocket.com/blog/2026-prepaid-cell-phone-plan-guide-costs-features-and-savings`, but it is **not a current checkout quote** and must not be used to certify live rates. Tello's blog homepage is similarly background-only.
+
+The public H2O homepage `https://www.h2owireless.com/` advertises a standard 10GB monthly rate and a 30GB-high-speed unlimited monthly rate. The parser requires the *price, monthly billing wording and corresponding 10GB/30GB slowdown statement* in one short sequence. If its official homepage is blocked during a scheduled scan, the report says `source_unavailable`; **no match badge or invented observation is published**. The plan URLs remain available for users to open directly. AutoPay discounts and H2O annual packages are not inferred.
+
+The new files and tests are `scripts/review-queue.mjs`, `tests/review-queue.test.mjs`, `tests/mvno-evidence.test.mjs`, and the updated mobile/desktop browser acceptance suite. The publication workflow commits the review queue only after running the regression tests and full source scan.
