@@ -54,6 +54,18 @@ try {
       'boost-a17':[{date:'2026-10-31',price:0,planPrice:50,source:'https://www.boostmobile.com/deals'},
         {date:'2026-11-02',price:19.99,planPrice:50,source:'https://www.boostmobile.com/deals'}]
     }};
+    await page.route('**/data/status.json',async route=>{
+      const response=await route.fetch();
+      const saved=await response.json();
+      saved.offers ||= {};
+      saved.offers['boost-a17']={
+        ...(saved.offers['boost-a17']||{}),
+        state:'source_reachable',
+        priceEvidenceState:'headline_mismatch',
+        reviewRequired:true,
+      };
+      await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(saved)});
+    });
     await page.route('**/data/price-evidence.json',route=>route.fulfill({
       status:200,contentType:'application/json',body:JSON.stringify(evidence)}));
     await page.route('**/data/price-history.json',route=>route.fulfill({
@@ -98,6 +110,12 @@ try {
       /Official headline matches/i);
     assert.match(await page.locator('#r-boost-a17 [data-verification]').innerText(),
       /Official headline differs/i);
+    assert.match(await page.locator('#r-boost-a17 .price .now').innerText(),
+      /Price under review/,'conflicting official price must never display as Free');
+    assert.match(await page.locator('#r-boost-a17').innerText(),
+      /stale totals suppressed/i);
+    assert.equal(await page.locator('#r-boost-a17 .fb-compare-btn').count(),0,
+      'disputed offer cannot be compared at stale catalog price');
     await page.locator('#t-pricewatch').click();
     assert.equal(await page.locator('#p-pricewatch').isVisible(),true);
     assert.equal(await page.locator('#fb-price-watch-root .fb-watch-card').count(),2,
