@@ -4,7 +4,7 @@ import {validDay,verificationState,usd,localDay} from '../site/value-core.mjs';
 
 export const BASE='https://gcd231983.github.io/five-bars/';
 export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired','publishedPromoPrice','publishedPromoMonths','publishedPromoRequirement',
-  'publishedUndiscountedPrice','publishedDiscountCondition','publishedKnownMonthlyFee','publishedKnownActivationFee'];
+  'publishedUndiscountedPrice','publishedDiscountCondition','publishedKnownMonthlyFee','publishedKnownActivationFee','publishedAvailability'];
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'
 })[c]);
@@ -35,6 +35,7 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
   ((record.publishedCreditMonthly===undefined&&record.publishedCreditMonths===undefined)||
     (num(record.publishedCreditMonthly)&&Number.isInteger(record.publishedCreditMonths)&&record.publishedCreditMonths>=1&&record.publishedCreditMonths<=36))&&
   (record.publishedFullRetailRequired===undefined||typeof record.publishedFullRetailRequired==='boolean')&&
+  (record.publishedAvailability===undefined||record.publishedAvailability==='out_of_stock')&&
   (record.publishedPrepayMonths===undefined||(Number.isInteger(record.publishedPrepayMonths)&&record.publishedPrepayMonths>0)):
   num(record.publishedMonthly)&&(record.publishedFirstMonthPrice===undefined||num(record.publishedFirstMonthPrice))&&
   ((record.publishedUndiscountedPrice===undefined&&record.publishedDiscountCondition===undefined)||
@@ -69,6 +70,8 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
    issues.push('promotional credit duration differs from official published terms');
   if(record.publishedFullRetailRequired!==undefined&&offer.fullRetailRequired!==record.publishedFullRetailRequired)
    issues.push('mandatory full retail purchase condition differs from official published terms');
+  if(record.publishedAvailability!==undefined&&offer.availability!==record.publishedAvailability)
+   issues.push('device availability differs from the dated official carrier observation');
  }else{
   if(!num(offer?.price)||Math.abs(offer.price-record.publishedMonthly)>0.0001)
    issues.push('catalog standard monthly equivalent differs from official source');
@@ -183,7 +186,8 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
       (record.publishedPortRequired?'; qualifying number transfer':'')+
       (record.publishedConditionalRebate!==undefined?'; '+usd(record.publishedConditionalRebate)+' conditional later reward NOT deducted':'')+
       (record.publishedCreditMonthly!==undefined?'; '+usd(record.publishedCreditMonthly)+'/mo conditional service credits for '+record.publishedCreditMonths+' months NOT deducted':'')+
-      (record.publishedFullRetailRequired?'; FULL RETAIL handset payment required; financing ineligible':''):
+      (record.publishedFullRetailRequired?'; FULL RETAIL handset payment required; financing ineligible':'')+
+      (record.publishedAvailability==='out_of_stock'?'; OUT OF STOCK on recorded date; no live checkout quote':''):
     usd(record.publishedMonthly)+(record.billingMonths===12?
       ' per-month equivalent; '+usd(record.billingUpfront)+' due upfront for 12 months':
       ' regular per month'+(record.publishedFirstMonthPrice!==undefined?'; '+usd(record.publishedFirstMonthPrice)+' first month':'')+

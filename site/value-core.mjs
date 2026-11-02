@@ -24,6 +24,7 @@ export function offerSignature(offer) {
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
     'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
     'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','fullRetailRequired',
+    'availability','availabilityObservedOn',
     'undiscountedPrice','discountCondition','knownMonthlyFee','knownActivationFee','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
@@ -97,6 +98,9 @@ export function planCost(plan, count = 1, options = {}) {
     promoSuppressedForNotNew:!!promo && promo.req==='new' && options.newCustomer!==true};
 }
 export function phoneCost(phone) {
+  if(phone.availability==='out_of_stock')return {due:null,commitment:null,year:null,
+    netDevice:null,unavailable:true,financingUncertain:false,planPrice:null,
+    firstMonthPlanPrice:null,conditionalRewardsExcluded:true};
   const price=Number(phone.price);
   if(!Number.isFinite(price)||price<0)return null;
   const plan=phone.planPrice==null?null:Number(phone.planPrice);
@@ -141,7 +145,8 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
   const network = preferences.network || 'any';
   const cannotPort = !!preferences.cannotPort;
   const canPort = preferences.canPort===true && !cannotPort;
-  const unconfirmedPhonePorts=(catalog.phones||[]).filter(d=>d.port===true && !canPort).length;
+  const unconfirmedPhonePorts=(catalog.phones||[]).filter(d=>d.port===true && d.availability!=='out_of_stock' && !canPort).length;
+  const unavailablePhones=(catalog.phones||[]).filter(d=>d.availability==='out_of_stock').length;
   const plans = (catalog.plans || [])
     .filter(p => networkOK(p.net,network) && (!preferences.provider || preferences.provider==='any' || p.carrier===preferences.provider) && (!p.maxLines || lines<=p.maxLines) &&
       (!preferences.priority || p.pri===true) && (!preferences.hotspot || !!p.hot))
@@ -156,7 +161,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
   const phones = (catalog.phones || [])
     .filter(d => networkOK(d.net,network) &&
       (!preferences.provider || preferences.provider==='any' || d.carrier===preferences.provider) &&
-      !pastEnd(d.ends,today) && !(d.port && !canPort))
+      !pastEnd(d.ends,today) && d.availability!=='out_of_stock' && !(d.port && !canPort))
     .map(d => {
       const cost = phoneCost(d);
       return cost && {type:'phone',id:d.id,offer:d,cost,year:cost.year,
@@ -177,6 +182,8 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
         ['Introductory discounts are excluded for multiple lines unless family eligibility is explicitly recorded.'] : []),
       ...(plans.some(x=>x.cost.promoSuppressedForUnconfirmedPort) ?
         ['Port-in introductory discounts are excluded until you confirm you can transfer an eligible number.'] : []),
+      ...(unavailablePhones>0 ?
+        [unavailablePhones+' phone promotion(s) observed out of stock are excluded from recommendations and savings estimates.'] : []),
       ...(unconfirmedPhonePorts>0 ?
         ['Port-in-only phone promotions are excluded from recommendations until you confirm number-transfer eligibility. You can still browse them under Phone Deals.'] : []),
       ...(plans.some(x=>x.cost.conditionalDiscountUnconfirmed)?

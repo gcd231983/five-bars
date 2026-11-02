@@ -42,7 +42,7 @@ let catalog=null,phoneEvidence={},mvnoEvidence={},status={},verifications={},res
 let pending=null;
 function listOffers(){
   if(!catalog)return [];
-  return choose('type').value==='phone'?catalog.phones:catalog.plans;
+  return choose('type').value==='phone'?catalog.phones.filter(x=>x.availability!=='out_of_stock'):catalog.plans;
 }
 function updateOptions(){
   const existing=choose('offer').value;
@@ -60,7 +60,7 @@ function updateOptions(){
 }
 function pick(type,id,open=true){
   if(!catalog){pending={type,id};return;}
-  const found=(type==='plan'?catalog.plans:catalog.phones).some(x=>x.id===id);
+  const found=(type==='plan'?catalog.plans:catalog.phones.filter(x=>x.availability!=='out_of_stock')).some(x=>x.id===id);
   if(!found){notice('Offer not available in the catalog.');return;}
   pending={type,id};choose('type').value=type;updateOptions();choose('offer').value=id;
   if(open){
@@ -75,7 +75,7 @@ function addCardActions(){
   for(const [type,items] of [['plan',catalog.plans],['phone',catalog.phones]]){
     for(const p of items){
       const foot=document.getElementById('r-'+p.id)?.querySelector('.foot');
-      if(!foot||foot.querySelector('.fb-switch-button'))continue;
+      if(!foot||(type==='phone'&&p.availability==='out_of_stock')||foot.querySelector('.fb-switch-button'))continue;
       const btn=button('Switch & save',()=>pick(type,p.id));
       btn.classList.add('fb-switch-button');
       btn.setAttribute('aria-label','Estimate switch savings for '+p.carrier+' '+(p.plan||p.phone));

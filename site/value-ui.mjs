@@ -70,6 +70,11 @@ function statusNode(offer) {
   manual.title=s.status==='verified'?'Manually checked full terms; confirm again before purchase':
     'The catalog price and all promotion terms have not been fully verified';
   wrapper.append(manual);
+  if(offer.availability==='out_of_stock'){
+    const missing=element('span','Out of stock on '+(offer.availabilityObservedOn||'recorded date'),'fb-status fb-evidence-warning');
+    missing.title='Carrier stock was unavailable on this observed date. Prices remain historic advertised headlines, NOT purchasable checkout quotes.';
+    wrapper.append(missing);
+  }
   const proof=priceProofFor(offer);
   if(proof){
     const labels={
@@ -119,6 +124,10 @@ function saveCompare() {
 }
 function addToCompare(type,id) {
   const offer=(type==='phone'?catalog.phones:catalog.plans).find(p=>p.id===id);
+  if(type==='phone'&&offer?.availability==='out_of_stock'){
+    window.alert('This phone was observed out of stock. Cost comparisons are paused until the carrier confirms inventory.');
+    return;
+  }
   if(offer && officialHeadlineUnderReview(offer)){
     window.alert('This offer has conflicting official price evidence and is temporarily excluded from cost comparisons. Check Price watch.');
     return;
@@ -200,7 +209,7 @@ function renderFinder() {
     const root = document.querySelector('#fb-finder-results');
     root.replaceChildren();
     root.append(element('h3','Matching options'));
-    root.append(note('Estimated costs include recorded fixed carrier fees and one-time activation charges when available. Unknown taxes and fees are NOT estimated. Discounts require your eligibility confirmation. These are not checkout quotes.'));
+    root.append(note('Estimated costs include recorded fixed carrier fees and one-time activation charges when available. Unknown taxes and fees are NOT estimated. Out-of-stock offers are excluded from recommendations. Discounts require your eligibility confirmation. These are not checkout quotes.'));
     if(suppressedPhones || suppressedPlans)root.append(note(
       suppressedPlans+' plan(s) and '+suppressedPhones+' handset offer(s) with conflicting official price evidence have been excluded from recommendations. See Price watch.'));
     for(const msg of ranked.messages) root.append(note(msg));
@@ -267,6 +276,8 @@ function fieldValue(type,offer,key) {
     return 'Not offered for '+comparePrefs.lines+' lines';
   if(type==='plan' && officialHeadlineUnderReview(offer) &&
       ['monthly','year','billing'].includes(key))return 'Price under review';
+  if(type==='phone' && offer.availability==='out_of_stock' &&
+      ['monthly','year','data','hotspot','eligibility'].includes(key))return 'Out of stock — no current cost quote';
   if(type==='phone' && officialHeadlineUnderReview(offer) &&
       ['monthly','year','data','hotspot'].includes(key)) {
     return 'Price under review';
