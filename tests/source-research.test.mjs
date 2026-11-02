@@ -14,15 +14,15 @@ const ledger=JSON.parse(read('site/data/verifications.json'));
 const date='2026-11-02';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
-test('37 plan baselines and 16 device headlines remain separate from checkout verification',()=>{
- assert.equal(Object.keys(research.records).length,53);
+test('37 plan baselines and 28 device headlines remain separate from checkout verification',()=>{
+ assert.equal(Object.keys(research.records).length,65);
  const audit=build();
  assert.equal(audit.summary.offers,78);
- assert.equal(audit.summary.researched,53);
- assert.equal(audit.summary.notResearched,25);
- assert.equal(audit.summary.availabilityHolds,4);
+ assert.equal(audit.summary.researched,65);
+ assert.equal(audit.summary.notResearched,13);
+ assert.equal(audit.summary.availabilityHolds,6);
  assert.equal(audit.summary.conflictingOrInvalid,0);
- assert.equal(audit.summary.publishedPriceMatches,53);
+ assert.equal(audit.summary.publishedPriceMatches,65);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  assert.equal(audit.summary.needingFullTerms,78);
  assert.ok(audit.offers.every(x=>x.manualReview!=='verified'));
@@ -118,9 +118,9 @@ test('published source matches do not create human verification records',()=>{
  assert.equal(signed.status,'unverified');
  assert.equal(researchStatus(offer,research.records[offer.id],{today:date}).state,'published_match');
 });
-test('static public source audit prints 53 dated source cards and 25 unresearched offers',()=>{
+test('static public source audit prints 65 dated source cards and 13 unresearched offers',()=>{
  const html=renderResearchPage({catalog,ledger,research,today:date});
- assert.equal((html.match(/class="guide research-article"/g)||[]).length,53);
+ assert.equal((html.match(/class="guide research-article"/g)||[]).length,65);
  assert.match(html,/What our official sources actually confirm/);
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
@@ -128,7 +128,7 @@ test('static public source audit prints 53 dated source cards and 25 unresearche
  assert.match(html,/human checkout-scenario reviews/);
  assert.match(html,/25/);
  assert.match(html,/Research next — prioritized source checklist/);
- assert.match(html,/Stock and checkout holds \(4\)/);
+ assert.match(html,/Stock and checkout holds \(6\)/);
  assert.match(html,/report\.html\?offer=usm-starter/);
  assert.match(html,/Report a correction to this listing/);
  assert.match(html,/OUT OF STOCK on recorded date; no live checkout quote/);
@@ -240,7 +240,7 @@ test('Boost razr prepaid service is documented without promoting an online headl
  assert.equal(researchStatus({...offer,prepay:1},record,{today:date}).state,'conflict');
  const report=simulateSwitch({catalog,type:'phone',id:offer.id,researchEvidence:research,
   scenario:{lines:1,currentMonthly:100,canPort:true,today:date,horizon:12}});
- assert.equal(report.chosen.upfrontDue,149.99);
+ assert.equal(report.chosen.upfrontDue,159.99);
  assert.equal(report.confidence,'indicative_not_fully_verified');
 });
 test('Metro first bill and optional new-line Boost/Red Pocket discounts are checked against official sources',()=>{
@@ -358,10 +358,10 @@ test('Total ALL ACCESS identity and Metro Moto G first bill are published as cho
   type:'phone',id:phone.id,researchEvidence:research,
   scenario:{lines:1,currentMonthly:80,canPort:true,horizon:12,today:date}}),/official published-source research conflicts/i);
 });
-test('four unavailable handset promotions are not saleable, rankable or able to generate switch cash estimates',()=>{
- const unavailable=['mint-s26fe','cricket-s25fe','cricket-razr','cricket-a37'];
+test('six unavailable handset promotions are not saleable, rankable or able to generate switch cash estimates',()=>{
+ const unavailable=['mint-s26fe','cricket-s25fe','cricket-razr','cricket-a37','cricket-power','cricket-motog'];
  const audit=build();
- assert.equal(audit.summary.availabilityHolds,4);
+ assert.equal(audit.summary.availabilityHolds,6);
  for(const id of unavailable){
   const phone=catalog.phones.find(x=>x.id===id);
   assert.equal(phone.availability,'out_of_stock');

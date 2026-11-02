@@ -5,14 +5,14 @@
   "scope": "Public official pages and consumer labels only; NOT checkout validation, actual product eligibility, complete terms or guaranteed pricing.",
   "summary": {
     "offers": 78,
-    "researched": 53,
-    "publishedPriceMatches": 53,
+    "researched": 65,
+    "publishedPriceMatches": 65,
     "conflictingOrInvalid": 0,
     "aged": 0,
-    "notResearched": 25,
+    "notResearched": 13,
     "manuallyFullyReviewed": 0,
     "needingFullTerms": 78,
-    "availabilityHolds": 4
+    "availabilityHolds": 6
   },
   "offers": [
     {
@@ -826,12 +826,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a17-5g",
+        "https://www.metrobyt-mobile.com/deals/40period"
+      ]
     },
     {
       "id": "metro-a37",
@@ -844,12 +847,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a37-5g",
+        "https://www.metrobyt-mobile.com/deals/40period"
+      ]
     },
     {
       "id": "metro-16e",
@@ -877,36 +883,42 @@
       "carrier": "Cricket",
       "offer": "Moto G Power 2026",
       "kind": "phone",
-      "availability": null,
-      "availabilityObservedOn": null,
+      "availability": "out_of_stock",
+      "availabilityObservedOn": "2026-11-02",
       "listedUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue",
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue",
+        "https://www.cricketwireless.com/plans/phone"
+      ]
     },
     {
       "id": "cricket-motog",
       "carrier": "Cricket",
       "offer": "Moto G 2026",
       "kind": "phone",
-      "availability": null,
-      "availabilityObservedOn": null,
+      "availability": "out_of_stock",
+      "availabilityObservedOn": "2026-11-02",
       "listedUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream",
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream",
+        "https://www.cricketwireless.com/plans/phone"
+      ]
     },
     {
       "id": "cricket-a17",
@@ -1178,12 +1190,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.boostmobile.com/deals",
+        "https://www.boostmobile.com/shop/moto-g-stylus-2025.html"
+      ]
     },
     {
       "id": "total-a17",
@@ -1216,12 +1231,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.totalwireless.com/buy/phones/moto-g-stylus-5g-2025-prepaid",
+        "https://www.totalwireless.com/m/plans"
+      ]
     },
     {
       "id": "total-a27",
@@ -1234,12 +1252,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid",
+        "https://www.totalwireless.com/m/plans"
+      ]
     },
     {
       "id": "total-a36",
@@ -1252,12 +1273,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid",
+        "https://www.totalwireless.com/m/plans"
+      ]
     },
     {
       "id": "total-16e",
@@ -1270,12 +1294,15 @@
       "catalogPrice": 199.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.totalwireless.com/buy/phones/apple-iphone-16e-prepaid",
+        "https://www.totalwireless.com/m/plans"
+      ]
     },
     {
       "id": "vzpre-a17",
@@ -1360,12 +1387,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid",
+        "https://www.straighttalk.com/all-plans"
+      ]
     },
     {
       "id": "st-stylus",
@@ -1378,12 +1408,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid",
+        "https://www.straighttalk.com/all-plans"
+      ]
     },
     {
       "id": "tracfone-a17",
@@ -1396,12 +1429,16 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid",
+        "https://www.tracfone.com/plans/tracfone-freedom-90-days",
+        "https://www.tracfone.com/products/plans-and-services/phone-service-plans.html"
+      ]
     },
     {
       "id": "simple-a16",

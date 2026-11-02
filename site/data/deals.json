@@ -840,7 +840,9 @@
       "port": true,
       "lock": 12,
       "url": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a17-5g",
-      "note": "ID check required."
+      "note": "Selected $40 Period offer requires an eligible number transfer; other new-number promotions have different plan requirements. Confirm recent-carrier exclusions, identity checks and channel-specific activation charges.",
+      "firstMonthPlanPrice": 40,
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "metro-a37",
@@ -853,7 +855,9 @@
       "port": true,
       "lock": 12,
       "url": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a37-5g",
-      "note": "Newest free Samsung in this list. ID check required."
+      "note": "Selected $40 Period offer requires an eligible number transfer; other new-number promotions have different plan requirements. Confirm recent-carrier exclusions, identity checks and channel-specific activation charges.",
+      "firstMonthPlanPrice": 40,
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "metro-16e",
@@ -882,7 +886,11 @@
       "planPrice": 60,
       "port": false,
       "lock": 12,
-      "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue"
+      "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue",
+      "availability": "out_of_stock",
+      "availabilityObservedOn": "2026-11-02",
+      "warn": "Official product page presented a back-in-stock signup on November 2, 2026. Checkout estimates are held until selected inventory is reconfirmed.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "cricket-motog",
@@ -894,7 +902,11 @@
       "planPrice": 60,
       "port": false,
       "lock": 12,
-      "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream"
+      "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream",
+      "availability": "out_of_stock",
+      "availabilityObservedOn": "2026-11-02",
+      "warn": "Official product page presented a back-in-stock signup on November 2, 2026. Checkout estimates are held until selected inventory is reconfirmed.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "cricket-a17",
@@ -1010,7 +1022,11 @@
       "port": true,
       "lock": 12,
       "url": "https://www.boostmobile.com/shop/iphone-16e.html",
-      "warn": "Leave within 3 months and Boost can charge full retail. No cheaper plan for 12 months."
+      "warn": "Leave within 3 months and Boost can charge full retail. No cheaper plan for 12 months.",
+      "undiscountedPlanPrice": 65,
+      "planDiscountCondition": "autopay",
+      "priceSourceDate": "2026-11-02",
+      "note": "Advertised $60/mo service requires AutoPay; otherwise $65/mo. Calculators exclude this discount until eligibility is confirmed."
     },
     {
       "id": "boost-p10a",
@@ -1024,7 +1040,11 @@
       "port": true,
       "lock": 12,
       "url": "https://www.boostmobile.com/shop/pixel-10a-002729.html",
-      "warn": "Leave within 3 months and Boost can charge full retail. No cheaper plan for 12 months. In-store Pixel 10a promotion lists two prepaid months; do not assume in-store and online checkout terms are identical."
+      "warn": "Leave within 3 months and Boost can charge full retail. No cheaper plan for 12 months. In-store Pixel 10a promotion lists two prepaid months; do not assume in-store and online checkout terms are identical.",
+      "undiscountedPlanPrice": 65,
+      "planDiscountCondition": "autopay",
+      "priceSourceDate": "2026-11-02",
+      "note": "Advertised $60/mo service requires AutoPay; otherwise $65/mo. Calculators exclude this discount until eligibility is confirmed."
     },
     {
       "id": "boost-razr",
@@ -1040,7 +1060,11 @@
       "port": true,
       "lock": 12,
       "url": "https://www.boostmobile.com/shop/razr-2025.html",
-      "warn": "Leave within 3 months and Boost can charge full retail."
+      "warn": "Leave within 3 months and Boost can charge full retail.",
+      "undiscountedPlanPrice": 65,
+      "planDiscountCondition": "autopay",
+      "priceSourceDate": "2026-11-02",
+      "note": "Advertised $60/mo service requires AutoPay; otherwise $65/mo. Calculators exclude this discount until eligibility is confirmed."
     },
     {
       "id": "boost-motog",
@@ -1055,7 +1079,11 @@
       "port": true,
       "lock": 12,
       "url": "https://www.boostmobile.com/shop/moto-g-2026.html",
-      "warn": "Leave within 3 months and Boost can charge full retail. No cheaper plan for 12 months."
+      "warn": "Leave within 3 months and Boost can charge full retail. No cheaper plan for 12 months.",
+      "undiscountedPlanPrice": 65,
+      "planDiscountCondition": "autopay",
+      "priceSourceDate": "2026-11-02",
+      "note": "Advertised $60/mo service requires AutoPay; otherwise $65/mo. Calculators exclude this discount until eligibility is confirmed."
     },
     {
       "id": "boost-a17",
@@ -1070,7 +1098,11 @@
       "port": true,
       "lock": 12,
       "url": "https://www.boostmobile.com/shop/galaxy-a17-5g.html",
-      "warn": "Leave within 3 months and Boost can charge full retail."
+      "warn": "Leave within 3 months and Boost can charge full retail.",
+      "undiscountedPlanPrice": 55,
+      "planDiscountCondition": "autopay",
+      "priceSourceDate": "2026-11-02",
+      "note": "Advertised $50/mo service requires AutoPay; otherwise $55/mo. Calculators exclude this discount until eligibility is confirmed."
     },
     {
       "id": "boost-gplay",
@@ -1085,7 +1117,11 @@
       "port": true,
       "lock": 12,
       "url": "https://www.boostmobile.com/shop/moto-g-play-002722.html",
-      "warn": "Leave within 3 months and Boost can charge full retail."
+      "warn": "Leave within 3 months and Boost can charge full retail.",
+      "undiscountedPlanPrice": 55,
+      "planDiscountCondition": "autopay",
+      "priceSourceDate": "2026-11-02",
+      "note": "Advertised $50/mo service requires AutoPay; otherwise $55/mo. Calculators exclude this discount until eligibility is confirmed."
     },
     {
       "id": "boost-stylus",
@@ -1100,7 +1136,11 @@
       "port": true,
       "lock": 12,
       "url": "https://www.boostmobile.com/shop/moto-g-stylus-2025.html",
-      "warn": "Leave within 3 months and Boost can charge full retail."
+      "warn": "Leave within 3 months and Boost can charge full retail.",
+      "priceSourceDate": "2026-11-02",
+      "undiscountedPlanPrice": 55,
+      "planDiscountCondition": "autopay",
+      "note": "Advertised $50/mo service requires AutoPay; otherwise $55/mo. Calculators exclude this discount until eligibility is confirmed."
     },
     {
       "id": "total-a17",
@@ -1129,7 +1169,9 @@
       "planPrice": 55,
       "port": true,
       "lock": 12,
-      "url": "https://www.totalwireless.com/buy/phones/moto-g-stylus-5g-2025-prepaid"
+      "url": "https://www.totalwireless.com/buy/phones/moto-g-stylus-5g-2025-prepaid",
+      "note": "Selected cash-price promotion requires switching and 1 month(s) of Total MAX 5G service. Estimates use the regular service rate without optional AutoPay discounts. Confirm the selected plan block and final charges.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "total-a27",
@@ -1144,7 +1186,8 @@
       "port": true,
       "lock": 12,
       "url": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid",
-      "note": "Requires the $110 two-month plan."
+      "note": "Selected cash-price promotion requires switching and 2 month(s) of Total MAX 5G service. Estimates use the regular service rate without optional AutoPay discounts. Confirm the selected plan block and final charges.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "total-a36",
@@ -1156,10 +1199,11 @@
       "was": 279.99,
       "planPrice": 55,
       "prepay": 3,
-      "port": false,
+      "port": true,
       "lock": 12,
       "url": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid",
-      "note": "Requires the $165 three-month plan. No number transfer needed."
+      "note": "Selected cash-price promotion requires switching and 3 month(s) of Total MAX 5G service. Estimates use the regular service rate without optional AutoPay discounts. Confirm the selected plan block and final charges.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "total-16e",
@@ -1174,7 +1218,8 @@
       "port": true,
       "lock": 12,
       "url": "https://www.totalwireless.com/buy/phones/apple-iphone-16e-prepaid",
-      "note": "Requires the $195 three-month plan."
+      "note": "Selected cash-price promotion requires switching and 3 month(s) of Total ALL ACCESS service. Estimates use the regular service rate without optional AutoPay discounts. Confirm the selected plan block and final charges.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "vzpre-a17",
@@ -1247,7 +1292,9 @@
       "planPrice": 45,
       "port": false,
       "lock": 12,
-      "url": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid"
+      "url": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid",
+      "note": "Published free handset requires activation on Silver Unlimited or higher. Service baseline is $45 per 30 days before any optional discount; taxes and fees are additional. Selected checkout eligibility and stock remain unconfirmed.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "st-stylus",
@@ -1260,7 +1307,9 @@
       "planPrice": 45,
       "port": false,
       "lock": 12,
-      "url": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid"
+      "url": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid",
+      "note": "Published free handset requires activation on Silver Unlimited or higher. Service baseline is $45 per 30 days before any optional discount; taxes and fees are additional. Selected checkout eligibility and stock remain unconfirmed.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "tracfone-a17",
@@ -1270,12 +1319,14 @@
       "net": "vzw",
       "price": 0,
       "was": 119.99,
-      "planPrice": 45,
+      "planPrice": 50,
       "prepay": 3,
       "port": false,
       "lock": 12,
       "url": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid",
-      "note": "Requires the $135 three-month plan."
+      "note": "Free handset headline requires a 3-month Tracfone Freedom ($50 tier) plan. The separately published 90-day Freedom block costs $135 upfront; confirm that block with this device at checkout. After the initial block, estimates assume $50 per service month without Auto-Refill, not a guaranteed $45 monthly renewal.",
+      "prepaidServiceTotal": 135,
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "simple-a16",

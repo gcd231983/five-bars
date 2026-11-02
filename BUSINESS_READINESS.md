@@ -186,3 +186,16 @@ Official-publication source coverage now includes 15 wireless plan rates and fiv
 - [ ] Provide a **private, no-GitHub-account** contact channel for ordinary consumers once the owner selects a provider and funds/approves moderation, privacy, retention and abuse controls. No mailbox, live support or response-time guarantee is invented.
 - [ ] Complete at least ten independently reviewed real checkout scenarios across carriers, tax regions and service terms. A GitHub reader issue is not a customer-specific quote.
 - [ ] Obtain actual partner contracts, owner-approved commercial identity and near-link material-connection disclosure before enabling commissions. The current site remains free of paid affiliate placements.
+
+
+## Five Bars 4.1 — service-payment accuracy (November 2, 2026)
+
+- [x] Expand dated partial source coverage to 65 of 78 listings; 13 remain without a complete first-level source record.
+- [x] Prevent unconfirmed AutoPay discounts from lowering required phone-service cost estimates.
+- [x] Separate a fixed initial prepaid service block from subsequent monthly modeling assumptions.
+- [x] Enforce the Total A36 number-transfer condition and hold two additional Cricket promotions for inventory review.
+- [x] Cover new payment fields in source-conflict checks, catalog validation and human-review signatures.
+- [ ] Complete real, independently recorded checkout scenarios: still **0/78**.
+- [ ] Establish the owner-selected private consumer support channel and actual partner agreements before commercial launch.
+
+These changes improve source coverage and calculation behavior. They do not establish carrier-approved prices, a completed business launch or human review of customer-specific quotes.

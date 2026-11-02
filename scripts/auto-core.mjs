@@ -30,11 +30,12 @@ export function expireKnownOffers(data, today) {
   return { next, removed, changed };
 }
 
-export function phoneCosts(d) {
+export function phoneCosts(d, options = {}) {
   if(d.availability==='out_of_stock')return {dueToday:null,minCommitment:null,firstYear:null,netDevice:null,
     unavailable:true,rebate:0,firstMonthAssumed:false,conditionalRewardsExcluded:true};
   const device=Number(d.price);
-  const plan=Number.isFinite(d.planPrice)?Number(d.planPrice):null;
+  const conditional=Number.isFinite(d.undiscountedPlanPrice)&&d.planDiscountCondition==='autopay';
+  const plan=Number.isFinite(d.planPrice)?Number(conditional&&options.discountQualified!==true?d.undiscountedPlanPrice:d.planPrice):null;
   if(d.postpaid===true)return {dueToday:null,minCommitment:null,firstYear:null,netDevice:null,
     rebate:Math.max(0,Number(d.rebate)||0),firstMonthAssumed:false,
     conditionalRewardsExcluded:true,financingUncertain:true};
@@ -44,10 +45,13 @@ export function phoneCosts(d) {
   const rebate=Math.max(0,Number(d.rebate)||0);
   const first=plan===null?null:(Number.isFinite(d.firstMonthPlanPrice)?Number(d.firstMonthPlanPrice):plan);
   // Rewards, credits, and conditional rebates cannot be counted as guaranteed cash.
-  const dueToday=bundle?device:plan===null?null:device+first+plan*(Math.max(1,prepay)-1);
-  const minCommitment=bundle?device:plan===null?null:device+first+plan*(Math.max(1,prepay,stay)-1);
+  const prepaidMonths=Math.max(1,prepay);
+  const prepaidService=Number.isFinite(d.prepaidServiceTotal)?d.prepaidServiceTotal:
+    plan===null?null:first+plan*(prepaidMonths-1);
+  const dueToday=bundle?device:prepaidService===null?null:device+prepaidService;
+  const minCommitment=bundle?device:plan===null?null:device+prepaidService+plan*(Math.max(1,prepay,stay)-prepaidMonths);
   const firstYear=bundle?(bundle>=12?device:plan===null?null:device+plan*(12-bundle)):
-    (plan===null?null:device+first+11*plan);
+    (plan===null?null:device+prepaidService+plan*(12-prepaidMonths));
   return {dueToday,minCommitment,firstYear,netDevice:device,rebate,
     firstMonthAssumed:!bundle&&!prepay,conditionalRewardsExcluded:!!(rebate||Number(d.credit)>0)};
 }
