@@ -101,6 +101,22 @@ test('existing page calculator agrees with core and refuses unconfirmed family i
   assert.equal(browser.promoFamilyUnconfirmed,true);
 });
 
+test('free-only handset filter does not mistake delayed rebates for no upfront device cost',()=>{
+  const html=readFileSync(new URL('../site/index.html',import.meta.url),'utf8');
+  const source=html.match(/^function phoneVisible\(d\)\{[\s\S]*?^\}/m)?.[0];
+  assert.ok(source,'page phone filter exists');
+  const check=d=>runInNewContext(source+'; phoneVisible(d);',{
+    d,state:{net:'any',t:{free:true}},endInfo:()=>null
+  });
+  assert.equal(check({net:'att',price:99.99,rebate:100,postpaid:false}),false);
+  assert.equal(check({net:'att',price:0,postpaid:true}),false);
+  assert.equal(check({net:'att',price:0,postpaid:false}),true);
+});
+test('multi-line finder never claims handset prices fit an unknown family budget',()=>{
+  const r=rankMatches(sample,{lines:2,network:'any',budget:100},'2026-11-01');
+  assert.ok(r.messages.some(x=>x.includes('budget is not applied')));
+});
+
 test('comparison refuses mixed types, repeated IDs, and more than 3 entries',()=>{
   const entries=normalizeCompare([{type:'plan',id:'a'},{type:'plan',id:'a'},{type:'phone',id:'p1'},
     {type:'plan',id:'b'},{type:'plan',id:'c'},{type:'plan',id:'d'}],sample);
