@@ -122,6 +122,9 @@ function display(){
       info.append(create('p','Official published baseline: '+usd(official.publishedMonthly)+
         basis+(official.publishedPromoPrice!==undefined?'; eligible '+(official.publishedPromoRequirement==='new'?'new customers':'number transfers')+
         ' may receive '+usd(official.publishedPromoPrice)+'/mo for '+official.publishedPromoMonths+' month(s); not assumed automatically':'')+
+        (official.publishedUndiscountedPrice!==undefined?'; full standard monthly rate without confirmed '+official.publishedDiscountCondition.replaceAll('_',' and ')+': '+usd(official.publishedUndiscountedPrice):'')+
+        (official.publishedKnownMonthlyFee!==undefined?'; known monthly provider fees '+usd(official.publishedKnownMonthlyFee):'')+
+        (official.publishedKnownActivationFee!==undefined?'; known one-time activation fee '+usd(official.publishedKnownActivationFee):'')+
         '. This is NOT a full-terms sign-off.'));
     }
     info.append(create('h4','Official published source links'));
