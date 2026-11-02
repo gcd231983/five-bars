@@ -25,3 +25,7 @@ jobs:
       - run: node --check site/value-core.mjs
       - run: node --check site/value-ui.mjs
       - run: node scripts/review-offer.mjs audit
+      - name: Temporary MVNO official-source dry-run probe
+        if: github.ref == 'refs/heads/feature/mvno-price-evidence-20261102'
+        continue-on-error: true
+        run: node scripts/auto-update.mjs --dry-run
