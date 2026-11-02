@@ -345,11 +345,11 @@ test('Total ALL ACCESS identity and Metro Moto G first bill are published as cho
  assert.equal(planCost(plan,4,{today:date}),null);
  assert.equal(researchStatus(plan,research.records['total-all-access'],{today:date}).state,'published_match');
  const phone=catalog.phones.find(x=>x.id==='metro-motog');
- assert.equal(phone.planPrice,55);
+ assert.equal(phone.planPrice,60);
  assert.equal(phone.firstMonthPlanPrice,60);
  assert.equal(researchStatus(phone,research.records['metro-motog'],{today:date}).state,'published_match');
  assert.equal(phoneCost(phone).due,60);
- assert.equal(phoneCost(phone).year,665);
+ assert.equal(phoneCost(phone).year,720);
  const mismatch={...phone,firstMonthPlanPrice:40};
  assert.equal(researchStatus(mismatch,research.records['metro-motog'],{today:date}).state,'conflict');
  assert.throws(()=>simulateSwitch({catalog:{...catalog,phones:catalog.phones.map(x=>x.id===phone.id?mismatch:x)},
