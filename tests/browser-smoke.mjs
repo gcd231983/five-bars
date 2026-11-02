@@ -194,7 +194,7 @@ try {
     assert.ok(await page.locator('#plans-list .fb-review').count()>0,'verification labels on plan rows');
     const disputed=page.locator('#r-helium-infinity');
     assert.match(await disputed.locator('.price .now').innerText(),/Price under review/);
-    assert.equal(await disputed.locator('.fb-compare-btn').count(),0,'disputed plan cannot be compared at stale price');
+    assert.equal(await disputed.getByRole('button',{name:'Compare',exact:true}).count(),0,'disputed plan cannot be compared at stale price');
     assert.match(await disputed.locator('[data-verification]').innerText(),/Official plan rate differs/);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Official plan rate matches/);
     assert.doesNotMatch(await disputed.locator('.foot').innerText(),/12 months \(est\.\)/);
@@ -210,7 +210,7 @@ try {
       /Price under review/,'conflicting official price must never display as Free');
     assert.match(await page.locator('#r-boost-a17').innerText(),
       /stale totals suppressed/i);
-    assert.equal(await page.locator('#r-boost-a17 .fb-compare-btn').count(),0,
+    assert.equal(await page.locator('#r-boost-a17').getByRole('button',{name:'Compare',exact:true}).count(),0,
       'disputed offer cannot be compared at stale catalog price');
     const phoneOverflow=await page.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(phoneOverflow<=viewport.width+2,
