@@ -68,6 +68,23 @@ test('family discount is not silently multiplied across every line',()=>{
   const confirmed=planCost({...sample.plans[0],promo:{price:15,months:6,familyEligible:true}},2,{today:'2026-11-01'});
   assert.equal(confirmed.year,444);
 });
+test('new-customer discount needs active confirmation in shared calculator and guided finder',()=>{
+ const p={id:'new',carrier:'New Mobile',plan:'New only',net:'att',price:25,unl:true,
+  promo:{price:10,months:6,req:'new'}};
+ const normal=planCost(p,1,{today:'2026-11-02'});
+ assert.equal(normal.promoUsed,false);
+ assert.equal(normal.year,300);
+ assert.equal(normal.promoSuppressedForNotNew,true);
+ const eligible=planCost(p,1,{today:'2026-11-02',newCustomer:true});
+ assert.equal(eligible.promoUsed,true);
+ assert.equal(eligible.year,210);
+ const catalog={plans:[p],phones:[]};
+ const defaultRank=rankMatches(catalog,{network:'att',lines:1},'2026-11-02');
+ assert.equal(defaultRank.plans[0].year,300);
+ assert.ok(defaultRank.messages.some(x=>x.includes('New-customer introductory discounts')));
+ const newRank=rankMatches(catalog,{network:'att',lines:1,newCustomer:true},'2026-11-02');
+ assert.equal(newRank.plans[0].year,210);
+});
 test('unknown family rates are extrapolations, never called confirmed',()=>{
   const c=planCost(sample.plans[3],3,{today:'2026-11-01'});
   assert.equal(c.estimatedFamilyPrice,true);
