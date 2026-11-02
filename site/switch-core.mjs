@@ -62,7 +62,7 @@ function buildCashflow(offer,type,scenario,months){
           '; government taxes, other fees and price changes remain unknown.');
       if(cost.conditionalDiscountUnconfirmed)
         note.push('AutoPay/Auto-Refill/eBilling conditional rate not assumed: use published undiscounted base until eligibility is confirmed.');
-      if(requiresNew)note.push('New-customer introductory pricing excluded because eligibility was not confirmed.');
+      if(requiresNew)note.push('New-customer/new-line introductory pricing excluded because carrier eligibility was not confirmed.');
       if(offer.promo?.req==='port'&&!scenario.canPort)
         note.push('Port-in introductory pricing excluded unless the visitor confirms an eligible number transfer.');
       if(cost.promoUsed)note.push('Intro rate applies only for the recorded '+offer.promo.months+
