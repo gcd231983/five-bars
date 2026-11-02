@@ -135,16 +135,23 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
   // A dated, manually researched public official price baseline may contradict
   // future catalog edits. Stop showing savings until the discrepancy is resolved.
   // A baseline match is NOT independent full checkout verification.
-  const published=type==='plan'?researchEvidence?.records?.[id]:null;
+  const published=researchEvidence?.records?.[id]||null;
   if(published){
-    const mismatch=!Number.isFinite(published.publishedMonthly) ||
-      Math.abs(offer.price-published.publishedMonthly)>0.0001 ||
-      (published.billingMonths===12 ?
-       offer.billingMonths!==12 || !Number.isFinite(published.billingUpfront) ||
-       offer.billingUpfront!==published.billingUpfront :
-       offer.billingMonths===12) ||
-      (published.publishedFirstMonthPrice!==undefined && offer.firstMonthPrice!==published.publishedFirstMonthPrice);
-    if(mismatch)throw Error('Official published-source research conflicts with this plan price or upfront billing. Switch estimates are paused pending review.');
+    const mismatch=type==='phone'?
+      (published.kind!=='phone'||!Number.isFinite(published.publishedDevicePrice)||
+       offer.price!==published.publishedDevicePrice||
+       offer.planPrice!==published.publishedPlanMonthly||
+       offer.port!==published.publishedPortRequired||
+       (published.publishedPrepayMonths!==undefined&&offer.prepay!==published.publishedPrepayMonths)||
+       (published.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==published.publishedFirstMonthPlanPrice)||
+       (published.publishedConditionalRebate!==undefined&&offer.rebate!==published.publishedConditionalRebate)):
+      (!Number.isFinite(published.publishedMonthly)||
+       Math.abs(offer.price-published.publishedMonthly)>0.0001||
+       (published.billingMonths===12?
+        offer.billingMonths!==12||!Number.isFinite(published.billingUpfront)||offer.billingUpfront!==published.billingUpfront:
+        offer.billingMonths===12)||
+       (published.publishedFirstMonthPrice!==undefined&&offer.firstMonthPrice!==published.publishedFirstMonthPrice));
+    if(mismatch)throw Error('Official published-source research conflicts with this offer price or required payment terms. Switch estimates are paused pending review.');
   }
   const proof=evidenceStatus(id,type,opts);
   if(!healthy(proof)||status?.offers?.[id]?.reviewRequired===true)
@@ -186,7 +193,7 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
   if(published && validDay(published.observedOn)){
     const researchAge=(Date.parse(config.today+'T12:00:00Z')-Date.parse(published.observedOn+'T12:00:00Z'))/86400000;
     if(researchAge>21)facts.unshift('The dated official public price research is older than 21 days; reconfirm it before switching.');
-    else facts.unshift('Only the published official plan baseline was cross-checked on '+published.observedOn+'; checkout terms remain unverified.');
+    else facts.unshift('Only the published official '+(type==='phone'?'conditional device headline':'plan baseline')+' was cross-checked on '+published.observedOn+'; checkout terms remain unverified.');
   }
   const summary={
     schema:1,offer:{id:offer.id,kind:type,carrier:offer.carrier,name:type==='plan'?offer.plan:offer.phone,
