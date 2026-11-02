@@ -22,6 +22,17 @@ const sample = {
   ]
 };
 
+test('verified annual prepay terms lose review status when amount or billing period changes',()=>{
+  const before={id:'yearly',carrier:'Example',plan:'Annual 1GB',price:5,
+    billingMonths:12,billingUpfront:60,priceSourceDate:'2026-11-02',
+    url:'https://example.org/annual'};
+  const record={scope:'full_terms',signature:offerSignature(before),
+    verifiedAt:'2026-11-02',evidenceUrl:'https://example.org/annual'};
+  assert.equal(verificationState(before,record,'2026-11-02').status,'verified');
+  assert.equal(verificationState({...before,billingUpfront:120},record,'2026-11-02').status,'changed');
+  assert.equal(verificationState({...before,billingMonths:1},record,'2026-11-02').status,'changed');
+  assert.equal(verificationState({...before,priceSourceDate:'2026-11-03'},record,'2026-11-03').status,'changed');
+});
 test('Eastern date and end-date parser use strict calendar days',()=>{
   assert.equal(localDay(new Date('2026-11-02T01:47:36Z')),'2026-11-01');
   assert.equal(validDay('2026-02-29'),false);
