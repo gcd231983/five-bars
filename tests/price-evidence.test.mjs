@@ -78,6 +78,12 @@ test('redirect to an unrelated domain is treated as unavailable, never trusted a
  assert.equal(result.report.summary.sourceUnavailable,3);
  assert.equal(result.report.summary.headlineMatches,0);
  assert.deepEqual(result.history.offers,{});
+ for(const unsafe of ['http://www.boostmobile.com/deals','https://victim@www.boostmobile.com/deals',
+   'https://www.boostmobile.com:8080/deals']){
+   const unsafeRun=run(html(g('0'),m('0'),p('0')),null,unsafe);
+   assert.equal(unsafeRun.report.summary.headlineMatches,0,unsafe);
+   assert.equal(unsafeRun.report.summary.sourceUnavailable,3,unsafe);
+ }
 });
 test('source failure preserves earlier history while preventing a fresh matched status',()=>{
  const before=run(html(g('0'),m('0'),p('0'))).history;
