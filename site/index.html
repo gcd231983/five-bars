@@ -476,8 +476,15 @@ function renderControls(){
       (n.reviewAlerts??0) + " alerts).";
     if(age>2) freshness += " CAUTION: automated checks are overdue.";
   } else freshness += " Automated source scan not yet available.";
+  const urgent=AUTO_STATUS?.summary?.highPriorityReviews;
+  if(Number.isFinite(urgent)&&urgent>0)freshness+=" "+urgent+" high-priority price review(s).";
   $("#fresh").replaceChildren(freshness + " ",
-    el("button",{type:"button", onclick:()=>showTab("sources")}, "Sources"));
+    el("button",{type:"button", onclick:()=>showTab("sources")}, "Sources"),
+    " ",
+    el("button",{type:"button", onclick:()=>{
+      showTab("pricewatch");
+      document.getElementById("fb-review-queue")?.scrollIntoView({block:"start",behavior:"smooth"});
+    }}, "Review prices"));
 }
 
 /* ---------- render: plans ---------- */
