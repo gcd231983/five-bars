@@ -542,7 +542,7 @@ function renderControls(){
     if(CHANGES.removed.length) parts.push(CHANGES.removed.length + " gone");
     if(parts.length) summary = " Since the last update: " + parts.join(", ") + ".";
   }
-  let freshness = "Last full deal review: " + d + "." + summary;
+  let freshness = "Catalog reference date: " + d + "." + summary;
   if(AUTO_STATUS?.generatedAt){
     const scanDate = new Date(AUTO_STATUS.generatedAt);
     const age = (Date.now()-scanDate.getTime())/86400000;
@@ -739,7 +739,7 @@ $("#mode").addEventListener("change", e=>{
 
 /* ---------- sources ---------- */
 function renderSources(){
-$("#src-date").textContent = "Last full deal review " + new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"}) + ". Always confirm current prices, eligibility and taxes on the carrier’s site.";
+$("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"}) + ". Always confirm current prices, eligibility and taxes on the carrier’s site.";
   const n = AUTO_STATUS?.summary;
   $("#scan-status").textContent = n ? "Last automatic source scan: " + new Date(AUTO_STATUS.generatedAt).toLocaleString("en-US") +
     ". " + n.sourcesReachable + "/" + n.sourcesChecked + " public sources reachable. " +
