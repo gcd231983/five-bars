@@ -770,7 +770,10 @@ async function boot(){
   }catch(e){}
   renderSources();
   if(state.tab==="ask") state.tab = "plans";
-  showTab(state.tab || "plans");
+  const requested=location.hash.slice(1);
+  const target=requested==="switch-save"?"switch":requested;
+  const available=["finder","plans","phones","compare","switch","watchlist","pricewatch","sources"];
+  showTab(available.includes(target)?target:(state.tab || "plans"));
   if(document.fonts) document.fonts.ready.then(()=>renderControls());
 }
 boot();
