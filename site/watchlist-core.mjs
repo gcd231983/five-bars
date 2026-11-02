@@ -76,7 +76,6 @@ export function checkWatchlist(data,{catalog,phoneEvidence={},mvnoEvidence={},
   const fresh=scanIsFresh(status,nowMs);
   const evidence={phoneEvidence,mvnoEvidence};
   const plans=catalog?.plans||[], phones=catalog?.phones||[];
-  const savedKeys=new Set(state.watches.map(watchKey));
   const seen=new Set(state.seen);
   const alerts=new Map();
   const targets=new Map();
@@ -93,7 +92,7 @@ export function checkWatchlist(data,{catalog,phoneEvidence={},mvnoEvidence={},
     const key=kind+':'+offer.id;
     if(!targets.has(key)){
       targets.set(key,{
-        key:'target|'+watchKey(watch)+'|'+key+'|'+price.toFixed(2),
+        key:'target|'+key+'|'+price.toFixed(2),
         kind,id:offer.id,carrier:offer.carrier,name:kind==='plan'?offer.plan:offer.phone,
         rate:round(price),threshold:watch.target,annual:kind==='plan'&&offer.billingMonths===12,
         upfront:kind==='plan'&&offer.billingMonths===12?offer.billingUpfront:null,
