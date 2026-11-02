@@ -313,6 +313,14 @@ try {
     await page.screenshot({path:join(output,view+'-price-watch.png'),fullPage:true});
     await page.locator('#t-phones').click();
     assert.match(await page.locator('#phones-list').innerText(),/Due today \(est\.\)/);
+    for(const id of ['mint-s26fe','cricket-s25fe','cricket-razr','cricket-a37']){
+      const card=page.locator('#r-'+id);
+      assert.match(await card.innerText(),/Out of stock/i);
+      assert.doesNotMatch(await card.innerText(),/First year \(est\.\)/);
+      assert.equal(await card.locator('.fb-compare-btn').count(),0);
+      assert.equal(await card.locator('.fb-switch-button').count(),0);
+    }
+    assert.match(await page.locator('#r-mint-p11').innerText(),/phone \+ 12 months service/);
     await page.locator('#phones-list .fb-compare-btn').first().click();
     assert.equal(await page.locator('#p-compare').isVisible(),true);
     assert.ok((await page.locator('#fb-compare-root').innerText()).includes('Due today (est.)'));
@@ -393,6 +401,7 @@ try {
     assert.ok(mobileOverflow<=viewport.width+2,'Switch & Save exceeds '+view+' viewport');
     await page.screenshot({path:join(output,view+'-switch-save.png'),fullPage:true});
     await page.locator('#fb-switch-type').selectOption('phone');
+    assert.equal(await page.locator('#fb-switch-offer option[value="mint-s26fe"]').count(),0);
     await page.locator('#fb-switch-offer').selectOption('cricket-16e');
     assert.equal(await page.locator('#fb-switch-lines').inputValue(),'1');
     await page.locator('#fb-switch-canport').check();
@@ -455,9 +464,10 @@ try {
     research.on('pageerror',e=>errors.push(view+' source research: '+e.message));
     await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
     assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
-    assert.equal(await research.locator('.research-article').count(),45);
+    assert.equal(await research.locator('.research-article').count(),53);
     assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human full-terms sign-offs/i);
-    assert.match(await research.locator('main').innerText(),/33.*without documented official-source research/s);
+    assert.match(await research.locator('main').innerText(),/25.*without documented official-source research/s);
+    assert.match(await research.locator('main').innerText(),/Stock and checkout holds \(4\)/);
     const mint=research.locator('[data-offer-id="mint"]');
     assert.match(await mint.innerText(),/\$360\.00 due upfront for 12 months/);
     assert.match(await mint.innerText(),/\$180/);
@@ -484,6 +494,9 @@ try {
     assert.match(await research.locator('[data-offer-id="tracfone"]').innerText(),/October 26, 2026/);
     assert.match(await research.locator('[data-offer-id="cc"]').innerText(),/\$5\.00\/mo documented provider fees/);
     assert.match(await research.locator('[data-offer-id="straighttalk"]').innerText(),/not combinable with AutoPay discounts/i);
+    assert.match(await research.locator('[data-offer-id="metro-motog"]').innerText(),/\$60\.00 first service bill/);
+    assert.match(await research.locator('[data-offer-id="cricket-razr"]').innerText(),/OUT OF STOCK on recorded date/);
+    assert.match(await research.locator('[data-offer-id="total-all-access"]').innerText(),/\$65\.00 first month/);
     const researchOverflow=await research.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(researchOverflow<=viewport.width+2,'Research audit should not overflow '+view+' width');
     await research.screenshot({path:join(output,view+'-source-audit.png'),fullPage:true});

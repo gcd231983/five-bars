@@ -188,6 +188,20 @@ test('conditional future rewards never lower guaranteed phone cashflow and diffe
   assert.equal(prepaid.due,180);
   assert.equal(prepaid.year,720);
 });
+test('out-of-stock device offers withhold pricing and cannot be placed in a valid recommendation shortlist',()=>{
+ const stock={id:'gone',carrier:'Cricket',phone:'Promo',net:'att',price:0,planPrice:60,
+  port:true,availability:'out_of_stock',availabilityObservedOn:'2026-11-02'};
+ assert.equal(phoneCost(stock).due,null);
+ assert.equal(phoneCost(stock).year,null);
+ assert.equal(phoneCost(stock).unavailable,true);
+ const found=rankMatches({plans:[],phones:[stock]}, {lines:1,canPort:true},'2026-11-02');
+ assert.equal(found.phoneMatches,0);
+ assert.ok(found.messages.some(x=>x.includes('out of stock')));
+ const reviewed={scope:'full_terms',signature:offerSignature(stock),verifiedAt:'2026-11-02',
+   evidenceUrl:'https://cricketwireless.com/shop'};
+ assert.equal(verificationState(stock,reviewed,'2026-11-02').status,'verified');
+ assert.equal(verificationState({...stock,availability:undefined},reviewed,'2026-11-02').status,'changed');
+});
 test('unquoted financed-device promotions never return zero checkout or twelve-month cash',()=>{
  for(const offer of [
   {id:'v',carrier:'Verizon',phone:'Premium',net:'vzw',price:0,planPrice:80,postpaid:true},

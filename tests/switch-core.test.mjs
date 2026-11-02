@@ -42,6 +42,15 @@ test('Metro delayed gift reward is excluded and $55 first month / $50 renewal ar
  assert.equal(report.results[36].serviceTotal,1805);
  assert.ok(report.warnings.some(x=>x.includes('rebates')));
 });
+test('out-of-stock device remains browseable but cannot generate switch savings',()=>{
+ const gone={...catalog,phones:[...catalog.phones,{
+  id:'out-of-stock',carrier:'Cricket',phone:'Sold out',net:'att',price:0,
+  planPrice:60,availability:'out_of_stock',availabilityObservedOn:'2026-11-02',
+  port:true,url:'https://example.org'
+ }]};
+ assert.throws(()=>simulateSwitch({catalog:gone,type:'phone',id:'out-of-stock',scenario}),
+   /observed out of stock/i);
+});
 test('incomplete financed device promotions cannot show positive switch savings',()=>{
  const financed={...catalog,phones:[...catalog.phones,{
   id:'conditional',carrier:'Carrier',phone:'Promotional $0 phone',net:'att',
