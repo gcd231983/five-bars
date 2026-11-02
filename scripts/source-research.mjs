@@ -164,7 +164,7 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
   '<div class="caution" role="note"><strong>No invented verification.</strong> Official research observed on '+
    safe(research.observedOn)+'. Status calculated for '+safe(today)+'. Currently '+
    sum.manuallyFullyReviewed+' of '+sum.offers+
-   ' listings have valid, documented human full-terms sign-offs. Actual carrier checkout must still be checked.</div>',
+   ' listings have valid, documented human checkout-scenario reviews. Those reviews do not guarantee another shopper’s price or eligibility.</div>',
   '<section><h2>Evidence coverage</h2><div class="guides">'+
    '<div class="guide"><h3>'+sum.publishedPriceMatches+'</h3>Partial official plan and device headlines within 21 days (not full checkout)</div>'+
    '<div class="guide"><h3>'+sum.aged+'</h3>Published baselines over 21 days old</div>'+

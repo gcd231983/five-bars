@@ -70,6 +70,12 @@ export function checkoutEvidenceIssues(offer,evidence,verifiedAt) {
     issues.push('New-customer promotion requires a new-line scenario');
   if(!cents(evidence.upfrontCents)||!cents(evidence.renewalCents))
     issues.push('Enter actual initial and recurring quote amounts as integer cents');
+  if(offer.billingMonths===12&&Number.isFinite(offer.billingUpfront)&&
+     cents(evidence.upfrontCents)&&evidence.upfrontCents<Math.round(offer.billingUpfront*100))
+    issues.push('A 12-month prepaid first payment cannot be below the catalog mandatory prepayment');
+  if(offer.phone&&offer.postpaid!==true&&Number.isFinite(offer.price)&&
+     cents(evidence.upfrontCents)&&evidence.upfrontCents<Math.round(offer.price*100))
+    issues.push('An upfront handset or bundle quote cannot be below the catalog required cash price');
   if(![1,12].includes(evidence.billingMonths)||
      (offer.billingMonths===12&&evidence.billingMonths!==12))
     issues.push('Renewal billing period must match the selected monthly or annual service');
