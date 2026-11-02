@@ -48,6 +48,16 @@ test('site and tested phone-cost helper agree on sample checkout math', { skip }
   }
 });
 
+test('legacy plan finder never silently applies new-only intro, even when it is published', {skip},()=>{
+ const html=readFileSync(sitePath,'utf8');
+ const code=html.match(/^function planCalc\(p\)\{[\s\S]*?^\}/m)?.[0];
+ assert.ok(code);
+ const p={price:25, promo:{price:10,months:6,req:'new'}};
+ const testCalc=t=>runInNewContext(code+';planCalc(p);',{p,state:{lines:1,t},endInfo:()=>null});
+ assert.equal(testCalc({}).year,300);
+ assert.equal(testCalc({newcustomer:true}).year,210);
+ assert.match(html,/I qualify as a new customer/);
+});
 test('source status describes candidates as needing review rather than verified prices', { skip }, () => {
   const html = readFileSync(sitePath, 'utf8');
   const source = html.match(/^function renderSources\(\)\{[\s\S]*?^\}/m)?.[0];
