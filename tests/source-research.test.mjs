@@ -60,6 +60,23 @@ test('official dated evidence is auditable, sourced with HTTPS, exact offer IDs,
   assert.equal(record.kind==='phone'?record.publishedDevicePrice:record.publishedMonthly,offer.price);
  }
 });
+test('Tello official documentation confirms new-line-only promotion without fabricating checkout fees',()=>{
+ const offer=get('tello'),record=research.records.tello;
+ assert.equal(offer.price,15);
+ assert.deepEqual({price:offer.promo.price,months:offer.promo.months,req:offer.promo.req,ends:offer.promo.ends},
+   {price:10,months:3,req:'new',ends:'2026-11-09'});
+ assert.equal(record.observedOn,'2026-11-02');
+ assert.ok(record.sources.some(s=>s.url.includes('/halloween-deal-10gb-for-10-mo-first-3-months/')));
+ assert.ok(record.sources.some(s=>s.url.includes('/broadband_facts/M00245106460000000000002FB')));
+ assert.ok(record.supportedFacts.some(s=>s.includes('existing Tello customers adding a new line')));
+ assert.ok(record.supportedFacts.some(s=>s.includes('up to $0.30')));
+ assert.ok(record.unresolved.some(s=>s.includes('exact first bill')));
+ assert.equal(offer.knownMonthlyFee,undefined,'variable cost recovery is NOT a fixed known fee');
+ assert.equal(offer.knownActivationFee,undefined,'no invented checkout charge');
+ assert.equal(verificationState(offer,ledger.offers?.tello,date).status,'unverified');
+ assert.equal(researchStatus(offer,record,{today:date}).state,'published_match');
+});
+
 test('Mint annual $360 upfront is never shown as $30 monthly cash due; $180 promo is disclosed but not assumed',()=>{
  const mint=get('mint');
  assert.equal(mint.price,30);
