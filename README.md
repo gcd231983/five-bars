@@ -149,7 +149,7 @@ Five Bars now lists **38 wireless plans from 18 providers** across the major und
 - The 12-month service-cost model, guided recommendations and side-by-side comparisons use exact yearly upfront totals when supplied. Annual plans are unavailable in the results for unsupported multi-line group sizes.
 - Other listed plans remain monthly billing unless otherwise explicitly described. Taxes, cost-recovery fees, eligibility, compatibility and auto-pay discounts are not guaranteed by the comparison.
 
-New official carrier source links are part of `site/data/deals.json`. The no-AI daily scanner checks availability of those links, but this is not an automatic full-price revalidation for the newly added MVNOs. Automatic **partial price evidence** remains limited to the three explicitly supported Boost Mobile devices; expanding that safely is a separate workstream.
+New official carrier source links are part of `site/data/deals.json`. The no-AI daily scanner checks their availability. Separately, narrow partial-price extractors monitor three selected Boost devices and selected MVNO plans when their official pages are accessible. Neither source reachability nor matching headline prices constitutes an independent full-terms review.
 
 Run `node --test tests/*.test.mjs` for pricing/provider/annual-billing checks, then review screenshots from the Chromium mobile and desktop PR workflow.
 
