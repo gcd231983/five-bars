@@ -151,6 +151,11 @@ textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:
 .fb-table thead th{background:var(--chip)}
 .fb-table tbody th{font-weight:700}
 .fb-table .fb-status{white-space:normal}
+.fb-compare-household{display:flex;gap:8px;align-items:center;font-weight:650;font-size:.9rem}
+.fb-compare-household select{border:1px solid var(--line);border-radius:7px;padding:6px;color:var(--ink);background:var(--surface)}
+.fb-swipe-hint{display:none}
+main section[role="tabpanel"]{scroll-margin-top:68px}
+@media (max-width:620px){.fb-swipe-hint{display:block}}
 [hidden]{display:none !important}
 @media (max-width:520px){
   .fb-form .fb-fields{grid-template-columns:1fr}
