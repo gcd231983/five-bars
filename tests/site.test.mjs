@@ -58,6 +58,23 @@ test('legacy plan finder never silently applies new-only intro, even when it is 
  assert.equal(testCalc({newcustomer:true}).year,210);
  assert.match(html,/I qualify as a new customer/);
 });
+test('legacy plan list estimates AutoPay and published provider fees like the shared model',()=>{
+ const html=readFileSync(sitePath,'utf8');
+ const fn=html.match(/^function planCalc\(p\)\{[\s\S]*?^\}/m)?.[0];
+ assert.ok(fn);
+ const p={price:20,undiscountedPrice:25,discountCondition:'autopay_ebilling',
+  knownMonthlyFee:5,knownActivationFee:10,maxLines:1};
+ const calc=t=>runInNewContext(fn+';planCalc(p);',{p,state:{lines:1,t},endInfo:()=>null});
+ const full=calc({});
+ assert.equal(full.now,25);
+ assert.equal(full.upfrontDue,40);
+ assert.equal(full.year,370);
+ const discounted=calc({discountqualified:true});
+ assert.equal(discounted.now,20);
+ assert.equal(discounted.upfrontDue,35);
+ assert.equal(discounted.year,310);
+ assert.match(html,/I meet AutoPay \/ eBilling \/ Auto-Refill conditions/);
+});
 test('source status describes candidates as needing review rather than verified prices', { skip }, () => {
   const html = readFileSync(sitePath, 'utf8');
   const source = html.match(/^function renderSources\(\)\{[\s\S]*?^\}/m)?.[0];

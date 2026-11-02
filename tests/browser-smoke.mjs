@@ -158,6 +158,18 @@ try {
     await page.locator('#fb-port-status').selectOption('unknown');
     await page.locator('#fb-device').selectOption('either');
     // MVNO expansion: find an exact provider, and verify annual billing on mobile and desktop.
+    await page.locator('#fb-net').selectOption('att');
+    await page.locator('#fb-provider').selectOption('Consumer Cellular');
+    await page.locator('#fb-lines').selectOption('1');
+    await page.locator('#fb-budget').fill('');
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$370\.00 estimated over 12 months/);
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$10\.00 activation fee/);
+    await page.locator('#fb-discount-qualified').check();
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$310\.00 estimated over 12 months/);
+    await page.locator('#fb-discount-qualified').uncheck();
+    await page.locator('#fb-provider').selectOption('any');
     await page.locator('#fb-net').selectOption('tmo');
     await page.locator('#fb-provider').selectOption('Tello');
     await page.locator('#fb-lines').selectOption('1');
@@ -215,6 +227,13 @@ try {
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Official plan rate matches/);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Dated carrier source.*partial/i);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification] a').getAttribute('href'),/research-h2o-unlimited/);
+    await page.locator('#carrier').selectOption('Consumer Cellular');
+    assert.match(await page.locator('#r-cc .price .now').innerText(),/\$25/);
+    assert.match(await page.locator('#r-cc').innerText(),/Known carrier fees \$5\/mo included/);
+    await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
+    assert.match(await page.locator('#r-cc .price .now').innerText(),/\$20/);
+    await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
+    assert.match(await page.locator('#r-cc .price .now').innerText(),/\$25/);
     await page.locator('#carrier').selectOption('Boost Mobile');
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/);
     await page.getByRole('button',{name:'I qualify as a new customer'}).click();
@@ -460,6 +479,8 @@ try {
     assert.match(await ultra.innerText(),/NOT month-to-month introductory discounts/);
     assert.match(await research.locator('[data-offer-id="fi"]').innerText(),/Unlimited Essentials/);
     assert.match(await research.locator('[data-offer-id="tracfone"]').innerText(),/October 26, 2026/);
+    assert.match(await research.locator('[data-offer-id="cc"]').innerText(),/\$5\.00\/mo documented provider fees/);
+    assert.match(await research.locator('[data-offer-id="straighttalk"]').innerText(),/not combinable with AutoPay discounts/i);
     const researchOverflow=await research.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(researchOverflow<=viewport.width+2,'Research audit should not overflow '+view+' width');
     await research.screenshot({path:join(output,view+'-source-audit.png'),fullPage:true});

@@ -68,6 +68,36 @@ test('family discount is not silently multiplied across every line',()=>{
   const confirmed=planCost({...sample.plans[0],promo:{price:15,months:6,familyEligible:true}},2,{today:'2026-11-01',canPort:true});
   assert.equal(confirmed.year,444);
 });
+test('documented provider fees and conditional payment discounts are counted without inventing unknown taxes',()=>{
+ const plan={id:'cc',carrier:'Consumer Cellular',plan:'1GB',price:20,
+  undiscountedPrice:25,discountCondition:'autopay_ebilling',
+  knownMonthlyFee:5,knownActivationFee:10,maxLines:1};
+ const defaultCost=planCost(plan,1,{today:'2026-11-02'});
+ assert.equal(defaultCost.monthTotal,30);
+ assert.equal(defaultCost.regularMonthTotal,30);
+ assert.equal(defaultCost.upfrontDue,40);
+ assert.equal(defaultCost.year,370);
+ assert.equal(defaultCost.knownMonthlyFeeTotal,5);
+ assert.equal(defaultCost.knownActivationFeeTotal,10);
+ assert.equal(defaultCost.conditionalDiscountUnconfirmed,true);
+ const confirmed=planCost(plan,1,{today:'2026-11-02',discountQualified:true});
+ assert.equal(confirmed.monthTotal,25);
+ assert.equal(confirmed.upfrontDue,35);
+ assert.equal(confirmed.year,310);
+ assert.equal(confirmed.conditionalDiscountUnconfirmed,false);
+ const before={...plan,url:'https://www.consumercellular.com/shopping/choose/plan'};
+ const record={scope:'full_terms',signature:offerSignature(before),verifiedAt:'2026-11-02',
+  evidenceUrl:before.url};
+ assert.equal(verificationState(before,record,'2026-11-02').status,'verified');
+ assert.equal(verificationState({...before,knownMonthlyFee:0},record,'2026-11-02').status,'changed');
+ assert.equal(verificationState({...before,discountCondition:'autopay'},record,'2026-11-02').status,'changed');
+ const catalog={plans:[plan],phones:[]};
+ const unconfirmed=rankMatches(catalog,{lines:1},'2026-11-02');
+ assert.equal(unconfirmed.plans[0].year,370);
+ assert.ok(unconfirmed.messages.some(x=>x.includes('AutoPay')));
+ const qualified=rankMatches(catalog,{lines:1,discountQualified:true},'2026-11-02');
+ assert.equal(qualified.plans[0].year,310);
+});
 test('new-customer discount needs active confirmation in shared calculator and guided finder',()=>{
  const p={id:'new',carrier:'New Mobile',plan:'New only',net:'att',price:25,unl:true,
   promo:{price:10,months:6,req:'new'}};
