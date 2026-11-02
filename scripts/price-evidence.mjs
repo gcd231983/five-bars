@@ -29,8 +29,10 @@ function money(str) {
 }
 function sourceIdentity(url) {
   try {
-    const host = new URL(url).hostname.toLowerCase();
-    return ['boostmobile.com','www.boostmobile.com','my.boostmobile.com'].includes(host);
+    const parsed = new URL(url);
+    const host=parsed.hostname.toLowerCase();
+    return parsed.protocol==='https:' && !parsed.username && !parsed.password && !parsed.port &&
+      ['boostmobile.com','www.boostmobile.com'].includes(host);
   } catch {return false;}
 }
 export function parseBoostHeadlineProofs(html) {
