@@ -16,6 +16,8 @@ let reviews = {};
 let selected = [];
 let priceEvidence = null;
 let priceHistory = {offers:{}};
+let mvnoEvidence = null;
+let mvnoHistory = {offers:{}};
 const EVIDENCE_FRESH_MS = 48*60*60*1000;
 
 function element(tag, content, className) {
@@ -41,17 +43,20 @@ function linkTo(url,text) {
   } catch { return element('span','Source unavailable'); }
 }
 function priceProofFor(offer) {
-  const proof=priceEvidence?.offers?.[offer.id];
-  if(!proof || !priceEvidence?.generatedAt) return null;
-  const age=Date.now()-Date.parse(priceEvidence.generatedAt);
+  const forPlan=Object.hasOwn(mvnoEvidence?.offers||{},offer.id);
+  const report=forPlan?mvnoEvidence:priceEvidence;
+  const proof=report?.offers?.[offer.id];
+  if(!proof || !report?.generatedAt) return null;
+  const age=Date.now()-Date.parse(report.generatedAt);
   if(!Number.isFinite(age) || age<0 || age>EVIDENCE_FRESH_MS) {
     return {state:'outdated',note:'Last official headline scan is older than 48 hours. Refresh before trusting advertised prices.'};
   }
   // A successful headline match is NOT checkout or full-offer validation.
-  return proof;
+  return {...proof,isPlan:forPlan};
 }
 function officialHeadlineUnderReview(offer) {
-  return ['headline_mismatch','ambiguous'].includes(priceEvidence?.offers?.[offer?.id]?.state);
+  const state=mvnoEvidence?.offers?.[offer?.id]?.state || priceEvidence?.offers?.[offer?.id]?.state;
+  return ['headline_mismatch','ambiguous','unresolved_mismatch'].includes(state);
 }
 function statusNode(offer) {
   const s=verificationState(offer,reviews[offer.id]);
@@ -63,16 +68,17 @@ function statusNode(offer) {
   const proof=priceProofFor(offer);
   if(proof){
     const labels={
-      headline_matched:['Official headline matches · partial','fb-evidence-match'],
-      headline_mismatch:['Official headline differs','fb-evidence-warning'],
-      not_found:['Official headline not found','fb-evidence-warning'],
-      ambiguous:['Conflicting official headlines','fb-evidence-warning'],
-      source_unavailable:['Official source unavailable','fb-evidence-neutral'],
+      headline_matched:[proof.isPlan?'Official plan rate matches · partial':'Official headline matches · partial','fb-evidence-match'],
+      headline_mismatch:[proof.isPlan?'Official plan rate differs':'Official headline differs','fb-evidence-warning'],
+      not_found:[proof.isPlan?'Official plan price not found':'Official headline not found','fb-evidence-warning'],
+      ambiguous:['Conflicting official prices','fb-evidence-warning'],
+      unresolved_mismatch:['Previous price conflict unresolved','fb-evidence-warning'],
+      source_unavailable:['Official price source unavailable','fb-evidence-neutral'],
       outdated:['Price evidence scan is outdated','fb-evidence-neutral']
     };
     const [label,cls]=labels[proof.state]||['Official evidence requires review','fb-evidence-neutral'];
     const badge=element('span',label,'fb-status '+cls);
-    badge.title=proof.note || 'Only the advertised device price, required plan and porting wording were checked, not the complete deal';
+    badge.title=proof.note || 'Only selected public rate and billing headline fields were checked; full offer terms are not independently verified';
     wrapper.append(badge);
   }
   return wrapper;
@@ -95,12 +101,10 @@ function saveCompare() {
   } catch {}
 }
 function addToCompare(type,id) {
-  if(type==='phone'){
-    const d=catalog.phones.find(p=>p.id===id);
-    if(d && officialHeadlineUnderReview(d)){
-      window.alert('This promotion has conflicting official price evidence and is temporarily excluded from cost comparisons. Check Price watch.');
-      return;
-    }
+  const offer=(type==='phone'?catalog.phones:catalog.plans).find(p=>p.id===id);
+  if(offer && officialHeadlineUnderReview(offer)){
+    window.alert('This offer has conflicting official price evidence and is temporarily excluded from cost comparisons. Check Price watch.');
+    return;
   }
   if (!comparePrefs.fromFinder) {
     const selectedLines=Number(document.querySelector('#lines')?.value);
@@ -163,15 +167,18 @@ function renderFinder() {
     renderCompare();
     const recommendationCatalog={
       ...catalog,
+      plans:catalog.plans.filter(plan=>!officialHeadlineUnderReview(plan)),
       phones:catalog.phones.filter(phone=>!officialHeadlineUnderReview(phone))
     };
-    const suppressed=catalog.phones.length-recommendationCatalog.phones.length;
+    const suppressedPhones=catalog.phones.length-recommendationCatalog.phones.length;
+    const suppressedPlans=catalog.plans.length-recommendationCatalog.plans.length;
     const ranked = rankMatches(recommendationCatalog,prefs,localDay());
     const root = document.querySelector('#fb-finder-results');
     root.replaceChildren();
     root.append(element('h3','Matching options'));
     root.append(note('Estimated costs only, not a coverage guarantee or verified carrier quote. Promotions may have additional requirements.'));
-    if(suppressed)root.append(note(suppressed+' handset offer(s) with conflicting official price evidence are excluded from recommendations until reviewed. See Price watch.'));
+    if(suppressedPhones || suppressedPlans)root.append(note(
+      suppressedPlans+' plan(s) and '+suppressedPhones+' handset offer(s) with conflicting official price evidence have been excluded from recommendations. See Price watch.'));
     for(const msg of ranked.messages) root.append(note(msg));
     root.append(note(ranked.lines>1 ?
       'Plan results show known family prices first, then estimates; within each group the lowest 12-month cost ranks first.' :
@@ -222,6 +229,8 @@ function renderFinder() {
 function fieldValue(type,offer,key) {
   if(type==='plan' && offer.maxLines && comparePrefs.lines>offer.maxLines)
     return 'Not offered for '+comparePrefs.lines+' lines';
+  if(type==='plan' && officialHeadlineUnderReview(offer) &&
+      ['monthly','year','billing'].includes(key))return 'Price under review';
   if(type==='phone' && officialHeadlineUnderReview(offer) &&
       ['monthly','year','data','hotspot'].includes(key)) {
     return 'Price under review';
@@ -311,8 +320,8 @@ function renderCompare() {
   const links=element('tr'); const source=element('th','Carrier website');source.scope='row';links.append(source);
   for(const item of records){const cell=element('td');cell.append(linkTo(item.url,'View published offer'));links.append(cell);}
   body.append(links);table.append(body);wrap.append(table);compareRoot.append(wrap);
-  if(type==='phone' && records.some(officialHeadlineUnderReview)){
-    compareRoot.append(element('p','A selected handset offer has conflicting official price evidence; its dollar totals are suppressed pending review.','fb-watch-warning'));
+  if(records.some(officialHeadlineUnderReview)){
+    compareRoot.append(element('p','Selected offers with conflicting official price evidence have their dollar totals suppressed pending review.','fb-watch-warning'));
   }
   compareRoot.append(note(type==='plan' ?
     'Household estimates for '+comparePrefs.lines+' '+(comparePrefs.lines===1?'line':'lines')+'. Annual prepaid offers are paid upfront, not monthly; unavailable family tiers are marked. Unknown multi-line prices extrapolate one-line rates; unconfirmed family intro offers are excluded. Taxes and eligibility may change actual costs.' :
