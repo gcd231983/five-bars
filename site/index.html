@@ -384,7 +384,7 @@ const NET = {
   multi:{name:"Your pick of Verizon, AT&T or T-Mobile", c:"var(--multi)"}
 };
 
-let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), CHANGES = null, AUTO_STATUS = null;
+let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), CHANGES = null, AUTO_STATUS = null, RESEARCH_AUDIT = null;
 
 /* ---------- state ---------- */
 const PLAN_TOGS = [
@@ -586,7 +586,8 @@ function renderPlans(){
     save:(a,b)=>b.c.save-a.c.save || a.c.year-b.c.year,
     pri:(a,b)=>((b.p.pri===true)-(a.p.pri===true)) || a.c.year-b.c.year
   }[state.sort];
-  const priceUnderReview=p=>['headline_mismatch','ambiguous','unresolved_mismatch'].includes(AUTO_STATUS?.offers?.[p.id]?.mvnoPriceEvidenceState);
+  const priceUnderReview=p=>['headline_mismatch','ambiguous','unresolved_mismatch'].includes(AUTO_STATUS?.offers?.[p.id]?.mvnoPriceEvidenceState)||
+    ['conflict','invalid'].includes(RESEARCH_AUDIT?.offers?.find(x=>x.id===p.id)?.researchState);
   rows.sort((a,b)=> Number(priceUnderReview(a.p))-Number(priceUnderReview(b.p)) ||
     (state.lines>1 && a.c.famKnown!==b.c.famKnown ? (a.c.famKnown?-1:1) : by(a,b)));
   $("#c-plans").textContent = rows.length;
@@ -657,7 +658,8 @@ function renderPhones(){
     due:(a,b)=>(a.c.due??big)-(b.c.due??big) || (a.c.eff??big)-(b.c.eff??big),
     price:(a,b)=>(a.c.eff??big)-(b.c.eff??big) || (a.c.year??big)-(b.c.year??big)
   }[state.sort];
-  const underReview=d=>['headline_mismatch','ambiguous'].includes(AUTO_STATUS?.offers?.[d.id]?.priceEvidenceState);
+  const underReview=d=>['headline_mismatch','ambiguous','unresolved_mismatch'].includes(AUTO_STATUS?.offers?.[d.id]?.priceEvidenceState)||
+    ['conflict','invalid'].includes(RESEARCH_AUDIT?.offers?.find(x=>x.id===d.id)?.researchState);
   rows.sort((a,b)=>Number(underReview(a.d))-Number(underReview(b.d)) ||
     Number(!!a.d.postpaid)-Number(!!b.d.postpaid) || by(a,b));
   $("#c-phones").textContent = rows.length;
@@ -789,6 +791,10 @@ async function boot(){
   try{
     const r = await fetch("data/status.json", {cache:"no-store"});
     if(r.ok) AUTO_STATUS = await r.json();
+  }catch(e){}
+  try{
+    const r=await fetch('data/research-audit.json',{cache:'no-store'});
+    if(r.ok){const data=await r.json();if(data?.schema===1&&Array.isArray(data.offers))RESEARCH_AUDIT=data;}
   }catch(e){}
   renderSources();
   if(state.tab==="ask") state.tab = "plans";
