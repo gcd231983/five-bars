@@ -6,6 +6,7 @@ import { readFile, writeFile, rename } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { BOOST_SOURCE, evaluatePriceEvidence } from './price-evidence.mjs';
 import { evaluateMvnoEvidence } from './mvno-evidence.mjs';
+import { buildReviewQueue } from './review-queue.mjs';
 import {
   easternDate, expireKnownOffers, offerDiff,
   parseBoostCandidates, reviewBoostCandidates, safeSourceUrl,
@@ -19,6 +20,8 @@ const priceEvidenceFile = new URL('site/data/price-evidence.json', root);
 const priceHistoryFile = new URL('site/data/price-history.json', root);
 const mvnoEvidenceFile = new URL('site/data/mvno-evidence.json', root);
 const mvnoHistoryFile = new URL('site/data/mvno-history.json', root);
+const reviewQueueFile = new URL('site/data/review-queue.json',root);
+const manualReviewsFile = new URL('site/data/verifications.json',root);
 const dryRun = process.argv.includes('--dry-run');
 const concurrency = 5;
 const requestTimeoutMs = 12000;
@@ -221,6 +224,14 @@ const status = {
   automaticChanges,
   alerts: alerts.slice(0, 100),
 };
+const manualReviews = await json(manualReviewsFile,{offers:{}});
+const reviewQueue = buildReviewQueue({
+  catalog:next, status, mvnoEvidence, phoneEvidence:priceEvidence,
+  manualRecords:manualReviews?.offers||{},
+  generatedAt:now.toISOString(),today
+});
+status.summary.offersNeedingReview=reviewQueue.summary.needAttention;
+status.summary.highPriorityReviews=reviewQueue.summary.critical+reviewQueue.summary.high;
 const newChanges = { date: today, ...diff };
 
 if (!dryRun) {
@@ -233,6 +244,7 @@ if (!dryRun) {
   await writeJson(priceHistoryFile, priceHistory);
   await writeJson(mvnoEvidenceFile, mvnoEvidence);
   await writeJson(mvnoHistoryFile, mvnoHistory);
+  await writeJson(reviewQueueFile, reviewQueue);
 }
 console.log(JSON.stringify({
   date: today, dryRun,
@@ -246,6 +258,7 @@ console.log(JSON.stringify({
   mvnoReviewAlerts: mvnoEvidence.summary.needReview,
   mvnoPriceObservations: mvnoEvidence.summary.observationsRecorded,
   mvnoStates: Object.fromEntries(Object.entries(mvnoEvidence.offers).map(([id,p])=>[id,p.state])),
+  reviewQueue: reviewQueue.summary,
   catalogChanges: diff,
   alerts: alerts.length,
   wroteFiles: !dryRun,
