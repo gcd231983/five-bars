@@ -34,7 +34,7 @@ test('Eastern date and end-date parser use strict calendar days',()=>{
 test('unreviewed offers never acquire a verified label from link checks',()=>{
   const offer=sample.plans[0];
   assert.equal(verificationState(offer,undefined,'2026-11-01').status,'unverified');
-  assert.equal(verificationState(offer,{scope:'link_reachable'},'2026-11-01').status,'changed');
+  assert.equal(verificationState(offer,{scope:'link_reachable'},'2026-11-01').status,'unverified');
 });
 test('manual full-terms verification requires matching exact terms and a fresh date',()=>{
   const offer=sample.plans[0];
@@ -110,7 +110,7 @@ test('new HTML keeps legacy JS parseable and exposes accessible finder/compare p
 });
 test('pure client-side UI file contains no AI API or paid service dependency',()=>{
   const js=readFileSync(new URL('../site/value-ui.mjs',import.meta.url),'utf8');
-  new Script(js.replace(/^import\s*\{[\s\S]*?\}\s*from\s*'\.\/value-core\.mjs';/,''));
+  new Script(js.replace(/^import\s*\{[\s\S]*?\}\s*from\s*'\.\/value-core\.mjs';/m,''));
   assert.doesNotMatch(js,/anthropic|openai\.com|api\.key|claude\.use/i);
   assert.match(js,/aria-live="polite"/);
   assert.match(js,/localStorage/);
