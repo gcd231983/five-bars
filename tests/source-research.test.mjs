@@ -122,6 +122,21 @@ test('static public source audit prints 12 research cards, all 66 unresearched o
  assert.ok(page.includes('&lt;script&gt;alert(1)&lt;/script&gt;'));
  assert.ok(!page.includes('<script>alert(1)</script>'));
 });
+test('Switch & Save refuses sourced rate or annual cash discrepancies but never treats a match as checkout verification',()=>{
+ const original=simulateSwitch({catalog,type:'plan',id:'mint',
+  researchEvidence:research,
+  scenario:{currentMonthly:60,lines:1,horizon:12,today:date}});
+ assert.equal(original.chosen.serviceTotal,360);
+ assert.ok(original.warnings.some(x=>x.includes('published official plan baseline')));
+ assert.equal(original.confidence,'indicative_not_fully_verified');
+ const bad=structuredClone(catalog);
+ bad.plans.find(p=>p.id==='mint').billingUpfront=30;
+ assert.throws(()=>simulateSwitch({catalog:bad,type:'plan',id:'mint',researchEvidence:research,
+  scenario:{currentMonthly:60,lines:1,horizon:12,today:date}}),/official published-source research conflicts/i);
+ const stale=simulateSwitch({catalog,type:'plan',id:'mint',researchEvidence:research,
+  scenario:{currentMonthly:60,lines:1,horizon:12,today:'2026-11-26'}});
+ assert.ok(stale.warnings.some(x=>x.includes('older than 21 days')));
+});
 test('unrelated phone offers remain not researched; official source research does not sneak into signed ledger',()=>{
  assert.equal(Object.keys(ledger.offers).length,0);
  assert.equal(researchStatus(catalog.phones[0],null,{today:date}).state,'not_researched');
