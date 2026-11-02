@@ -6,13 +6,13 @@
 
 - **Total catalog**: 78 items — 38 plans, 40 device promotions.
 - **37 dated plan-rate baselines researched**: including the corrected Total ALL ACCESS single-line offer; earlier historical expansion notes below are retained for reference.
-- **16 dated conditional handset headlines researched**, including newer Metro, Cricket and Boost device observations; availability is only known at the recorded observation time.
-- **25 entries remain without recorded official-publication research**: 1 other service plan and 24 phone offers. A matching conditional handset headline does not establish checkout eligibility.
+- **28 dated conditional handset headlines researched**, including newer Metro, Cricket and Boost device observations; availability is only known at the recorded observation time.
+- **13 entries remain without recorded official-publication research**: 1 other service plan and 12 phone offers. A matching conditional handset headline does not establish checkout eligibility.
 - **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Official source research and a rate match do not change this.
 - **Research date**: 2026-11-02. The generator marks price-source observations aged after 21 days; the separately signed full-terms review expires after 14 days or a material data change.
 
 Public record: https://gcd231983.github.io/five-bars/source-research.html
-Underlying 53-item source file: `site/data/research-evidence.json`.
+Underlying 65-item source file: `site/data/research-evidence.json`.
 Machine-readable coverage report: `site/data/research-audit.json`.
 
 ## Confirmed public-rate baselines (not checkout)
@@ -191,3 +191,12 @@ The dated public-source register now covers **53 of 78** listings: **37 plan-rat
 The public research register contains dated *carrier-publication claims*, not a retailer checkout. In contrast, the new checkout sign-off requires a human to observe a specific carrier online checkout or receive a carrier written quote and separately document its initial payment, renewal charge, taxes/fees, line count, qualifying eligibility, required service duration, offer stock and ten material term groups. A GitHub workflow then validates the schema and stores an actor-attributed scenario record bound to exact current catalog terms. A single scenario review does not mean **everyone qualifies** or that the listed price will apply in other ZIPs, channels or customer circumstances.
 
 All current public records still have **zero completed checkout sign-offs**. Source links, scanner access, checkboxes, synthetic examples or AI summaries must never be converted into checkout verification. See [CHECKOUT_VERIFICATION.md](CHECKOUT_VERIFICATION.md).
+
+
+## November 2 continuation — payment conditions and remaining handset research
+
+Added records: `metro-a17`, `metro-a37`, `cricket-power`, `cricket-motog`, `total-stylus`, `total-a27`, `total-a36`, `total-16e`, `st-a17`, `st-stylus`, `tracfone-a17`, and `boost-stylus`. Each ledger entry links the exact official product/plan material and separates supported public facts from unresolved checkout questions. Search-indexed or cached publications can lag the live checkout; an observation date is the research date, not a guarantee that a source was updated that day.
+
+The Total A36 transfer requirement is now enforced by the finder and savings planner. Cricket's Motorola product pages presented restock forms; both listings are held until inventory is reconfirmed. All seven Boost device offers now distinguish their advertised AutoPay service rate from the rate without AutoPay. The separately published Tracfone 90-day service amount is no longer treated as evidence of an ongoing $45 monthly bill.
+
+The generated public audit shows 65 partial source matches, 13 remaining research gaps, six inventory holds and zero human checkout scenarios. A stock-held record can match a historical conditional price while remaining excluded from purchase estimates. The 13 missing records and all 78 real checkout reviews remain open work.

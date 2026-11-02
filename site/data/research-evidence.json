@@ -595,14 +595,17 @@
       ],
       "supportedFacts": [
         "Published online Google Pixel 10a headline is $49.99 conditional on a $60 Unlimited Premium plan and number transfer",
-        "Selected online headline does not itself establish the first checkout bill, future-service commitment or unlock eligibility"
+        "Selected online headline does not itself establish the first checkout bill, future-service commitment or unlock eligibility",
+        "Service is $60/mo with AutoPay or $65/mo without it; default estimates use the latter."
       ],
       "unresolved": [
         "Check if the $49.99 online selection and required $60 plan are available to this customer and ZIP code",
         "Verify taxes, activation and any prepaid months actually collected online versus separate in-store offers",
         "Confirm device locking, service-change restrictions, any retail-price clawback and full checkout total"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedUndiscountedPlanPrice": 65,
+      "publishedPlanDiscountCondition": "autopay"
     },
     "boost-razr": {
       "kind": "phone",
@@ -620,15 +623,18 @@
       ],
       "supportedFacts": [
         "Published selected Motorola razr 2025 handset headline is $29.99 with qualifying transfer",
-        "Two required prepaid $60 service months make the device-plus-service initial cash at least $149.99 before taxes/fees",
-        "A three-month stay is separately listed in the catalog but is NOT independently certified by this page"
+        "A three-month stay is separately listed in the catalog but is NOT independently certified by this page",
+        "Service is $60/mo with AutoPay or $65/mo without it; default estimates use the latter.",
+        "Two prepaid service months remain required; the estimated initial amount varies with confirmed AutoPay eligibility."
       ],
       "unresolved": [
         "Confirm the device and $120 prepaid service are in one checkout cart and eligibility is met",
         "Check exact service stay, possible early-exit clawback and unlocking rules",
         "Verify device tax, activation fees, storage configuration, online stock and order channel"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedUndiscountedPlanPrice": 65,
+      "publishedPlanDiscountCondition": "autopay"
     },
     "boost-motog": {
       "kind": "phone",
@@ -645,14 +651,17 @@
       ],
       "supportedFacts": [
         "Published free moto g 2026 handset headline requires a qualifying number transfer and $60/mo plan",
-        "Free device does not imply zero checkout service cash or waived taxes and activation"
+        "Free device does not imply zero checkout service cash or waived taxes and activation",
+        "Service is $60/mo with AutoPay or $65/mo without it; default estimates use the latter."
       ],
       "unresolved": [
         "Confirm free phone option, port-in, plan tier and new customer requirements",
         "Confirm first service bill, taxes, upfront fees and inventory",
         "Check cancellation clawback, device locking and plan-change restrictions"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedUndiscountedPlanPrice": 65,
+      "publishedPlanDiscountCondition": "autopay"
     },
     "visible-18pro": {
       "kind": "phone",
@@ -1248,14 +1257,17 @@
       ],
       "supportedFacts": [
         "Selected online iPhone 16e device price $29.99 is conditional on porting the number and selecting the $60 Unlimited Premium plan.",
-        "Published online price is a conditional headline; in-store prepay/trade-in selections are different offers and not automatically interchangeable."
+        "Published online price is a conditional headline; in-store prepay/trade-in selections are different offers and not automatically interchangeable.",
+        "Service is $60/mo with AutoPay or $65/mo without it; default estimates use the latter."
       ],
       "unresolved": [
         "Confirm online selection, exact $29.99 device cash and qualifying port-in",
         "Confirm first service bill, taxes, activation and any upfront prepayment",
         "Confirm lock/cancellation restrictions, 3-month conditions, retail clawback and available storage"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedUndiscountedPlanPrice": 65,
+      "publishedPlanDiscountCondition": "autopay"
     },
     "boost-a17": {
       "kind": "phone",
@@ -1272,14 +1284,17 @@
       ],
       "supportedFacts": [
         "The official online deals page advertises Galaxy A17 5G at $0 with eligible transfer and the $50/mo Unlimited+ plan.",
-        "Taxes, service dues and additional restrictions can still apply to free-device advertising."
+        "Taxes, service dues and additional restrictions can still apply to free-device advertising.",
+        "Service is $50/mo with AutoPay or $55/mo without it; default estimates use the latter."
       ],
       "unresolved": [
         "Confirm device option stock, new customer transfer and checkout device tax",
         "Confirm actual first service bill and any activation or shipping fees",
         "Check device unlock policy, 3-month stay and potential retail clawback"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedUndiscountedPlanPrice": 55,
+      "publishedPlanDiscountCondition": "autopay"
     },
     "boost-gplay": {
       "kind": "phone",
@@ -1296,14 +1311,17 @@
       ],
       "supportedFacts": [
         "Boost's online deal listing advertises a free Moto G Play 2026 conditioned on $50 Unlimited+ service and eligible number transfer.",
-        "A free headline does not guarantee $0 activation or taxes and separate offers may apply in stores."
+        "A free headline does not guarantee $0 activation or taxes and separate offers may apply in stores.",
+        "Service is $50/mo with AutoPay or $55/mo without it; default estimates use the latter."
       ],
       "unresolved": [
         "Confirm qualifying number transfer and online stock for selected model",
         "Check service prepayment, activation, taxes and all checkout charges",
         "Confirm lock period, required 3-month service and retail-price clawback"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedUndiscountedPlanPrice": 55,
+      "publishedPlanDiscountCondition": "autopay"
     },
     "cricket-s25fe": {
       "kind": "phone",
@@ -1384,6 +1402,358 @@
         "Verify device unlock rules and current promotional terms"
       ],
       "observedOn": "2026-11-02"
+    },
+    "metro-a17": {
+      "carrier": "Metro by T-Mobile",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 40,
+      "publishedPortRequired": true,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a17-5g",
+          "supports": "Selected handset price and customer-option differences."
+        },
+        {
+          "url": "https://www.metrobyt-mobile.com/deals/40period",
+          "supports": "Selected $40 Period promotion, transfer eligibility and initial service payment."
+        }
+      ],
+      "supportedFacts": [
+        "Selected $40 Period promotion lists a free handset with an eligible number transfer.",
+        "The first service month is $40; device sales tax and eligibility checks remain."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ],
+      "publishedFirstMonthPlanPrice": 40
+    },
+    "metro-a37": {
+      "carrier": "Metro by T-Mobile",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 40,
+      "publishedPortRequired": true,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a37-5g",
+          "supports": "Selected handset price and customer-option differences."
+        },
+        {
+          "url": "https://www.metrobyt-mobile.com/deals/40period",
+          "supports": "Selected $40 Period promotion, transfer eligibility and initial service payment."
+        }
+      ],
+      "supportedFacts": [
+        "Selected $40 Period promotion lists a free handset with an eligible number transfer.",
+        "The first service month is $40; device sales tax and eligibility checks remain."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ],
+      "publishedFirstMonthPlanPrice": 40
+    },
+    "cricket-power": {
+      "carrier": "Cricket",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": false,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue",
+          "supports": "Conditional free handset, initial service payment and restock messaging."
+        },
+        {
+          "url": "https://www.cricketwireless.com/plans/phone",
+          "supports": "Supreme Unlimited standard $60 monthly rate before optional AutoPay discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Published $0 handset promotion requires a new Supreme Unlimited line.",
+        "The $60 first service month and device tax are payable initially. The retrieved page presented restock signup messaging; this listing is held pending an inventory recheck."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ],
+      "publishedAvailability": "out_of_stock"
+    },
+    "cricket-motog": {
+      "carrier": "Cricket",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 60,
+      "publishedPortRequired": false,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream",
+          "supports": "Conditional free handset, initial service payment and restock messaging."
+        },
+        {
+          "url": "https://www.cricketwireless.com/plans/phone",
+          "supports": "Supreme Unlimited standard $60 monthly rate before optional AutoPay discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Published $0 handset promotion requires a new Supreme Unlimited line.",
+        "The $60 first service month and device tax are payable initially. The retrieved page presented restock signup messaging; this listing is held pending an inventory recheck."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ],
+      "publishedAvailability": "out_of_stock"
+    },
+    "total-stylus": {
+      "carrier": "Total Wireless",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 55,
+      "publishedPortRequired": true,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.totalwireless.com/buy/phones/moto-g-stylus-5g-2025-prepaid",
+          "supports": "Selected switcher offer and required service block; separate finance options excluded."
+        },
+        {
+          "url": "https://www.totalwireless.com/m/plans",
+          "supports": "Regular MAX 5G and ALL ACCESS rates before optional AutoPay discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Selected handset price is $0.00 when switching with the required Total MAX 5G plan.",
+        "The selected offer requires 1 service month(s); the regular service reference is $55/month. Optional AutoPay savings are not assumed."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ]
+    },
+    "total-a27": {
+      "carrier": "Total Wireless",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 55,
+      "publishedPortRequired": true,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid",
+          "supports": "Selected switcher offer and required service block; separate finance options excluded."
+        },
+        {
+          "url": "https://www.totalwireless.com/m/plans",
+          "supports": "Regular MAX 5G and ALL ACCESS rates before optional AutoPay discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Selected handset price is $0.00 when switching with the required Total MAX 5G plan.",
+        "The selected offer requires 2 service month(s); the regular service reference is $55/month. Optional AutoPay savings are not assumed."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ],
+      "publishedPrepayMonths": 2
+    },
+    "total-a36": {
+      "carrier": "Total Wireless",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 55,
+      "publishedPortRequired": true,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid",
+          "supports": "Selected switcher offer and required service block; separate finance options excluded."
+        },
+        {
+          "url": "https://www.totalwireless.com/m/plans",
+          "supports": "Regular MAX 5G and ALL ACCESS rates before optional AutoPay discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Selected handset price is $0.00 when switching with the required Total MAX 5G plan.",
+        "The selected offer requires 3 service month(s); the regular service reference is $55/month. Optional AutoPay savings are not assumed."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ],
+      "publishedPrepayMonths": 3
+    },
+    "total-16e": {
+      "carrier": "Total Wireless",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 199.99,
+      "publishedPlanMonthly": 65,
+      "publishedPortRequired": true,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.totalwireless.com/buy/phones/apple-iphone-16e-prepaid",
+          "supports": "Selected switcher offer and required service block; separate finance options excluded."
+        },
+        {
+          "url": "https://www.totalwireless.com/m/plans",
+          "supports": "Regular MAX 5G and ALL ACCESS rates before optional AutoPay discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Selected handset price is $199.99 when switching with the required Total ALL ACCESS plan.",
+        "The selected offer requires 3 service month(s); the regular service reference is $65/month. Optional AutoPay savings are not assumed."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ],
+      "publishedPrepayMonths": 3
+    },
+    "st-a17": {
+      "carrier": "Straight Talk",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 45,
+      "publishedPortRequired": false,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid",
+          "supports": "Free device headline tied to Silver Unlimited activation."
+        },
+        {
+          "url": "https://www.straighttalk.com/all-plans",
+          "supports": "Silver Unlimited standard $45 service rate and separate optional discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Official product headline offers the handset free with Silver Unlimited activation or higher.",
+        "Silver Unlimited has a $45 standard 30-day rate; optional AutoPay discounts are not assumed."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ]
+    },
+    "st-stylus": {
+      "carrier": "Straight Talk",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 45,
+      "publishedPortRequired": false,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid",
+          "supports": "Free device headline tied to Silver Unlimited activation."
+        },
+        {
+          "url": "https://www.straighttalk.com/all-plans",
+          "supports": "Silver Unlimited standard $45 service rate and separate optional discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Official product headline offers the handset free with Silver Unlimited activation or higher.",
+        "Silver Unlimited has a $45 standard 30-day rate; optional AutoPay discounts are not assumed."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ]
+    },
+    "tracfone-a17": {
+      "carrier": "Tracfone",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 50,
+      "publishedPortRequired": false,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid",
+          "supports": "Free handset headline tied to the three-month Freedom tier."
+        },
+        {
+          "url": "https://www.tracfone.com/plans/tracfone-freedom-90-days",
+          "supports": "Published $135 total for one 90-day Freedom service block."
+        },
+        {
+          "url": "https://www.tracfone.com/products/plans-and-services/phone-service-plans.html",
+          "supports": "Freedom regular monthly rate of $50, with optional Auto-Refill discount."
+        }
+      ],
+      "supportedFacts": [
+        "The A17 headline requires three months of the Freedom $50 tier or higher.",
+        "The separate 90-day Freedom plan is $135 upfront. Later monthly service is modeled at the $50 standard rate; the selected bundle and renewal interval require confirmation."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences.",
+        "Confirm that the published $135 90-day block qualifies for this selected device and whether renewal is another block or monthly service."
+      ],
+      "publishedPrepayMonths": 3,
+      "publishedPrepaidServiceTotal": 135
+    },
+    "boost-stylus": {
+      "carrier": "Boost Mobile",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 50,
+      "publishedPortRequired": true,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.boostmobile.com/deals",
+          "supports": "Selected free Stylus promotion and Unlimited+ AutoPay rate condition."
+        },
+        {
+          "url": "https://www.boostmobile.com/shop/moto-g-stylus-2025.html",
+          "supports": "Device identity and regular retail price; selected promotion must be reconfirmed."
+        }
+      ],
+      "supportedFacts": [
+        "Official deal offers the handset at $0 with an eligible number transfer and Unlimited+ service.",
+        "The advertised $50 service price requires AutoPay; without AutoPay the rate is $55."
+      ],
+      "unresolved": [
+        "Confirm the selected customer and number-transfer eligibility at checkout.",
+        "Confirm device taxes, activation, shipping and other mandatory charges.",
+        "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
+      ],
+      "publishedUndiscountedPlanPrice": 55,
+      "publishedPlanDiscountCondition": "autopay"
     }
   }
 }

@@ -178,7 +178,7 @@ function renderFinder() {
         <label>Can you transfer an eligible phone number?
           <select name="portStatus" id="fb-port-status"><option value="unknown">Not sure / unconfirmed</option><option value="yes">Yes, I confirm I can transfer</option><option value="no">No, I cannot transfer</option></select>
         </label>
-        <label><input name="newCustomer" type="checkbox"/> I qualify for a new-customer promotional rate</label>
+        <label><input name="newCustomer" type="checkbox"/> I qualify for this carrier’s new-customer or eligible new-line promotion</label>
         <label><input name="discountQualified" id="fb-discount-qualified" type="checkbox"/> I meet the carrier’s AutoPay, Auto-Refill and/or eBilling conditions</label>
         <label><input name="hotspot" type="checkbox"/> I need hotspot data</label>
         <label><input name="priority" type="checkbox"/> I want priority network data</label>
@@ -259,6 +259,7 @@ function renderFinder() {
         card.append(statusNode(p));
         if(item.uncertain) card.append(note('Financing, per-device or incomplete service terms prevent a complete household quote.'));
         if(p.rebate||p.credit) card.append(note('Conditional rewards and bill credits are NOT subtracted from these upfront or first-year estimates.'));
+        if(c.conditionalDiscountUnconfirmed) card.append(note('Required service is '+usd(c.planPrice)+'/mo without AutoPay; the advertised '+usd(p.planPrice)+'/mo discount is not assumed.'));
         if(c.firstMonthPlanPrice!==null && c.firstMonthPlanPrice!==c.planPrice) card.append(note('First service bill '+usd(c.firstMonthPlanPrice)+'; continuing service '+usd(c.planPrice)+'/mo subject to eligibility.'));
         const actions=element('div',null,'fb-card-actions');
         actions.append(button('Compare',()=>addToCompare('phone',p.id)));
@@ -305,12 +306,12 @@ function fieldValue(type,offer,key) {
       default:return '—';
     }
   }
-  const c=phoneCost(offer);
+  const c=phoneCost(offer,{discountQualified:comparePrefs.discountQualified});
   if(offer.postpaid&&['monthly','year','data','hotspot'].includes(key))
     return 'Financing / trade-in terms not documented';
   switch(key) {
     case 'network':return offer.net==='multi'?'Network varies':offer.net==='att'?'AT&T':offer.net==='vzw'?'Verizon':'T-Mobile';
-    case 'monthly':return c?.planPrice===null?'Variable':usd(c?.planPrice)+'/mo';
+    case 'monthly':return c?.planPrice===null?'Variable':usd(c?.planPrice)+'/mo'+(c?.conditionalDiscountUnconfirmed?' (AutoPay discount not assumed)':'');
     case 'year':return usd(c?.year);
     case 'data':return usd(c?.due);
     case 'hotspot':return usd(c?.commitment);

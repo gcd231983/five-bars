@@ -22,7 +22,7 @@ const pageParts=[
 '<label>Other one-time switching expenses ($)<input name="switchFees" type="number" min="0" max="100000" step=".01" value="0" required></label>',
 '<label>Other monthly fees NOT already listed by the carrier ($)<input name="extraMonthly" type="number" min="0" max="1000" step=".01" value="0" required></label>',
 '</div><label class="fb-switch-check"><input type="checkbox" name="canPort" id="fb-switch-canport"> I confirm I can transfer an eligible number to the new carrier</label>',
-'<label class="fb-switch-check"><input type="checkbox" name="newCustomer" id="fb-switch-newcustomer"> I am eligible for this carrier’s new-customer offer</label>',
+'<label class="fb-switch-check"><input type="checkbox" name="newCustomer" id="fb-switch-newcustomer"> I qualify for this carrier’s new-customer or eligible new-line promotion</label>',
 '<label class="fb-switch-check"><input type="checkbox" name="discountQualified" id="fb-switch-discountqualified"> I meet all required AutoPay, Auto-Refill or eBilling conditions</label>',
 '<p class="fb-subtle">Conservative model: conditional credits, rebates, and hypothetical trade-in values are NOT counted as savings.</p>',
 '<button type="submit" class="btn" id="fb-switch-submit" disabled>Loading deals…</button></form>',

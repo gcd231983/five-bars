@@ -239,9 +239,9 @@ try {
     await page.getByRole('button',{name:'Unlimited data',exact:true}).click();
     await page.locator('#carrier').selectOption('Boost Mobile');
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/);
-    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
+    await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$10/);
-    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
+    await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/);
     await page.locator('#carrier').selectOption('US Mobile');
     assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$25/);
@@ -252,16 +252,31 @@ try {
     await page.getByRole('button',{name:'Can’t move my number'}).click();
     await page.locator('#carrier').selectOption('Ultra Mobile');
     assert.match(await page.locator('#r-ultra .price .now').innerText(),/\$49/);
-    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
+    await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
     assert.match(await page.locator('#r-ultra .price .now').innerText(),/\$49/,
       'multi-month prepaid discounts cannot be quoted as monthly intro rates');
-    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
+    await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
     await page.locator('#carrier').selectOption('any');
     assert.doesNotMatch(await disputed.locator('.foot').innerText(),/12 months \(est\.\)/);
     await page.locator('#plans-list .fb-compare-btn').first().click();
     assert.equal(await page.locator('#p-compare').isVisible(),true);
     await page.locator('#t-phones').click();
     assert.ok(await page.locator('#phones-list .row').count()>0);
+    const boostPhone=page.locator('#r-boost-motog');
+    assert.match(await boostPhone.innerText(),/Needs a \$65\/mo plan/);
+    assert.match(await boostPhone.innerText(),/AutoPay discount NOT assumed/);
+    await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
+    assert.match(await boostPhone.innerText(),/Needs a \$60\/mo plan/);
+    assert.doesNotMatch(await boostPhone.innerText(),/AutoPay discount NOT assumed/);
+    await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
+    assert.match(await boostPhone.innerText(),/Needs a \$65\/mo plan/);
+    assert.match(await page.locator('#r-total-a36').innerText(),/Must move your number/);
+    assert.match(await page.locator('#r-tracfone-a17').innerText(),/\$135 fixed service prepayment included upfront/);
+    for(const id of ['cricket-power','cricket-motog']){
+      const held=page.locator('#r-'+id);
+      assert.match(await held.innerText(),/OUT OF STOCK/);
+      assert.equal(await held.getByRole('button',{name:'Compare',exact:true}).count(),0);
+    }
     assert.match(await page.locator('#r-boost-motog [data-verification]').innerText(),
       /Official headline matches/i);
     assert.match(await page.locator('#r-boost-a17 [data-verification]').innerText(),
@@ -468,10 +483,10 @@ try {
     research.on('pageerror',e=>errors.push(view+' source research: '+e.message));
     await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
     assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
-    assert.equal(await research.locator('.research-article').count(),53);
+    assert.equal(await research.locator('.research-article').count(),65);
     assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human checkout-scenario reviews/i);
-    assert.match(await research.locator('main').innerText(),/25.*without documented official-source research/s);
-    assert.match(await research.locator('main').innerText(),/Stock and checkout holds \(4\)/);
+    assert.match(await research.locator('main').innerText(),/13.*without documented official-source research/s);
+    assert.match(await research.locator('main').innerText(),/Stock and checkout holds \(6\)/);
     const mint=research.locator('[data-offer-id="mint"]');
     assert.match(await mint.innerText(),/\$360\.00 due upfront for 12 months/);
     assert.match(await mint.innerText(),/\$180/);
@@ -483,6 +498,9 @@ try {
     assert.match(await stylus.innerText(),/2 service months prepaid/);
     const boostRazr=research.locator('[data-offer-id="boost-razr"]');
     assert.match(await boostRazr.innerText(),/2 service months prepaid/);
+    assert.match(await boostRazr.innerText(),/\$65\.00\/mo WITHOUT AutoPay; discount NOT assumed/);
+    assert.match(await research.locator('[data-offer-id="tracfone-a17"]').innerText(),/\$135\.00 fixed upfront service total/);
+    assert.match(await research.locator('[data-offer-id="total-a36"]').innerText(),/qualifying number transfer/);
     const visible=research.locator('[data-offer-id="visible-18pro"]');
     assert.match(await visible.innerText(),/FULL RETAIL handset payment required; financing ineligible/);
     assert.match(await visible.innerText(),/conditional service credits for 24 months NOT deducted/);

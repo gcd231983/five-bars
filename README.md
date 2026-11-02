@@ -2,9 +2,9 @@
 
 Five Bars compares US phone plans and advertised phone offers. The website is a static GitHub Pages site. A scheduled GitHub Actions workflow checks public sources and publishes **conservative** updates without Claude, AI subscriptions, paid APIs, or external servers.
 
-## Latest review controls (Five Bars 3.9)
+## Latest review controls (Five Bars 4.1)
 
-As of November 2, 2026, the catalog contains **78 offers**; **53 have dated partial official source research** and **25 lack that first-level coverage**. No offer has a current human-recorded checkout scenario (**0 of 78**). Those figures are not real-time checkout verifications.
+As of November 2, 2026, the catalog contains **78 offers**; **65 have dated partial official source research** and **13 lack that first-level coverage**. No offer has a current human-recorded checkout scenario (**0 of 78**). Those figures are not real-time checkout verifications.
 
 **New manual sign-off gate:** a carrier URL and typed attestation alone are insufficient. Authorized reviewers must record a specific anonymized quote, the observed initial payment and renewal billing amount including mandatory fees, customer eligibility, service commitments, inventory, and ten checked material terms. The stored record is tied to a GitHub reviewer and exact catalog signature. See [Checkout verification protocol](CHECKOUT_VERIFICATION.md). A reviewed scenario never guarantees another customer's checkout price.
 
@@ -352,3 +352,15 @@ Every published plan and phone card now links to a [mobile-friendly correction a
 The assistant validates the selected catalog offer, issue type, observation date, public HTTPS source and a brief explanation. It warns about possible private information, generates a **local-only draft**, and provides a separate link to GitHub's public structured issue form. No draft text or private report data is placed into a GitHub URL, browser storage, Five Bars database or automatic network submission. Users must explicitly choose to copy, log into GitHub and submit. Basic pattern checks are not a guarantee of complete redaction.
 
 **Reader reports are unverified** and do not automatically adjust carrier pricing, evidence ratings, inventory or saved human checkout signatures. The owner's [corrections workflow](CORRECTIONS_POLICY.md) covers independent official-source verification and regression tests before approving a change. A GitHub account is currently required; a private no-login support channel remains a future, owner-managed business gate. Five Bars still has **53/78 dated partial source records**, **25** needing research and **0/78** independently signed human checkout scenarios at this milestone. No affiliate contracts or monetization are claimed.
+
+
+## Five Bars 4.1 — required service payments and twelve more source records
+
+Twelve additional handset promotions now have dated official-source references: two Metro, two Cricket, four Total Wireless, two Straight Talk, one Tracfone and one Boost. Current coverage is **65/78 partial source records**, **13 not yet researched**, **six inventory holds**, and **0 human checkout reviews**. Earlier milestone counts below are historical.
+
+- Boost device calculations preserve the advertised service rate for headline matching but use the published rate without AutoPay by default. Confirming AutoPay eligibility changes the phone list, finder, comparison and Switch & Save estimates consistently. All seven Boost phone listings record the condition.
+- Fixed prepaid service totals are separate from later recurring rates. The Tracfone example records the published $135 initial 90-day block and a $50 later monthly modeling assumption; the selected bundle and actual renewal schedule still require checkout confirmation.
+- The free Total A36 listing requires a number transfer. Two Cricket Motorola listings are held after their official pages presented restock notices; this does not certify future stock.
+- Source mismatches stop savings estimates. Material edits to payment conditions invalidate any prior human review signature.
+
+Validation: 176 automated regression tests, catalog validation and mobile/desktop Chromium acceptance checks are required before merge. No automatic source scan can create a human checkout sign-off.

@@ -24,7 +24,7 @@ export function offerSignature(offer) {
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
     'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
     'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','fullRetailRequired',
-    'availability','availabilityObservedOn',
+    'availability','availabilityObservedOn','undiscountedPlanPrice','planDiscountCondition','prepaidServiceTotal',
     'undiscountedPrice','discountCondition','knownMonthlyFee','knownActivationFee','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
@@ -76,6 +76,9 @@ export function checkoutEvidenceIssues(offer,evidence,verifiedAt) {
   if(offer.phone&&offer.postpaid!==true&&Number.isFinite(offer.price)&&
      cents(evidence.upfrontCents)&&evidence.upfrontCents<Math.round(offer.price*100))
     issues.push('An upfront handset or bundle quote cannot be below the catalog required cash price');
+  if(offer.phone&&Number.isFinite(offer.prepaidServiceTotal)&&cents(evidence.upfrontCents)&&
+     evidence.upfrontCents<Math.round((offer.price+offer.prepaidServiceTotal)*100))
+    issues.push('The quote must include the handset and documented fixed prepaid service total');
   if(![1,12].includes(evidence.billingMonths)||
      (offer.billingMonths===12&&evidence.billingMonths!==12))
     issues.push('Renewal billing period must match the selected monthly or annual service');
@@ -86,6 +89,8 @@ export function checkoutEvidenceIssues(offer,evidence,verifiedAt) {
     issues.push('Document the full required prepaid or minimum service term');
   if(evidence.taxesAndFeesIncluded!==true)
     issues.push('All taxes and compulsory carrier charges must be included in the observed quote');
+  if(offer.promo&&pastEnd(offer.promo.ends,verifiedAt))
+    issues.push('An expired introductory promotion cannot receive a current checkout attestation; remove the expired promo before reviewing the regular plan');
   if(evidence.stockConfirmed!==true||offer.availability==='out_of_stock'||pastEnd(offer.ends,verifiedAt))
     issues.push('Offer must have confirmed available inventory and not be expired or held out of stock');
   if(!evidence.checks||typeof evidence.checks!=='object'||Array.isArray(evidence.checks)||
@@ -182,13 +187,15 @@ export function planCost(plan, count = 1, options = {}) {
       (options.canPort!==true || options.cannotPort===true),
     promoSuppressedForNotNew:!!promo && promo.req==='new' && options.newCustomer!==true};
 }
-export function phoneCost(phone) {
+export function phoneCost(phone, options = {}) {
   if(phone.availability==='out_of_stock')return {due:null,commitment:null,year:null,
     netDevice:null,unavailable:true,financingUncertain:false,planPrice:null,
     firstMonthPlanPrice:null,conditionalRewardsExcluded:true};
   const price=Number(phone.price);
   if(!Number.isFinite(price)||price<0)return null;
-  const plan=phone.planPrice==null?null:Number(phone.planPrice);
+  const conditional=Number.isFinite(phone.undiscountedPlanPrice)&&phone.planDiscountCondition==='autopay';
+  const discountQualified=!conditional||options.discountQualified===true;
+  const plan=phone.planPrice==null?null:Number(discountQualified?phone.planPrice:phone.undiscountedPlanPrice);
   const validPlan=Number.isFinite(plan)&&plan>=0?plan:null;
   // A postpaid promotional headline can be net of years of bill credits.
   // Without retail/installment/credit-loss terms a cash quote is misleading.
@@ -206,12 +213,15 @@ export function phoneCost(phone) {
   // and are excluded from due, commitment, year and recommendation rankings.
   const prepaidMonths=Math.max(1,prepay);
   const minimumMonths=Math.max(1,prepay,stay);
-  const due=bundle?price:validPlan===null?null:price+first+validPlan*(prepaidMonths-1);
-  const commitment=bundle?price:validPlan===null?null:price+first+validPlan*(minimumMonths-1);
+  const prepaidService=Number.isFinite(phone.prepaidServiceTotal)?phone.prepaidServiceTotal:
+    validPlan===null?null:first+validPlan*(prepaidMonths-1);
+  const due=bundle?price:prepaidService===null?null:price+prepaidService;
+  const commitment=bundle?price:validPlan===null?null:price+prepaidService+validPlan*(minimumMonths-prepaidMonths);
   const year=bundle?(bundle>=12?price:validPlan===null?null:price+validPlan*(12-bundle)):
-    (validPlan===null?null:price+first+11*validPlan);
+    (validPlan===null?null:price+prepaidService+validPlan*(12-prepaidMonths));
   return {due,commitment,year,netDevice:price,financingUncertain:!!phone.postpaid,
     planPrice:validPlan,firstMonthPlanPrice:first,prepay,stay,
+    conditionalDiscountUnconfirmed:conditional&&!discountQualified,discountQualified,
     conditionalRewardsExcluded:!!(Number(phone.rebate)>0||Number(phone.credit)>0)};
 }
 function networkOK(net, preference) {
@@ -248,7 +258,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
       (!preferences.provider || preferences.provider==='any' || d.carrier===preferences.provider) &&
       !pastEnd(d.ends,today) && d.availability!=='out_of_stock' && !(d.port && !canPort))
     .map(d => {
-      const cost = phoneCost(d);
+      const cost = phoneCost(d,{discountQualified:preferences.discountQualified===true});
       return cost && {type:'phone',id:d.id,offer:d,cost,year:cost.year,
         uncertain:lines>1 || cost.year===null || cost.financingUncertain};
     }).filter(Boolean)
