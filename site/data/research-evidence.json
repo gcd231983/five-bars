@@ -20,6 +20,10 @@
         {
           "url": "https://www.usmobile.com/help/docs/our-plans/core-plans/unlimited-data-plans",
           "supports": "Network-dependent high-speed and hotspot allotments"
+        },
+        {
+          "url": "https://www.usmobile.com/blog/cell-phone-plans/",
+          "supports": "Separate October 20 carrier pricing article describes alternate FBF10/FBF20 coupon rates; channels and code availability must not be conflated with selected public plans page."
         }
       ],
       "supportedFacts": [
@@ -31,9 +35,13 @@
       "unresolved": [
         "Confirm current port-in promotion code and whether your number/line qualifies at checkout",
         "Confirm selected underlying network, device acceptance and priority/high-speed allowances",
-        "Confirm any extra multi-line, smartwatch and activation charges for the intended order"
+        "Confirm any extra multi-line, smartwatch and activation charges for the intended order",
+        "US Mobile's plan selector and October 20 promotional articles advertise different port-in campaigns. Confirm exact channel, current code, and eligible price at checkout; never assume they stack."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedPromoPrice": 15,
+      "publishedPromoMonths": 6,
+      "publishedPromoRequirement": "port"
     },
     "usm-premium": {
       "carrier": "US Mobile",
@@ -51,6 +59,10 @@
         {
           "url": "https://www.usmobile.com/help/docs/our-plans/core-plans/unlimited-data-plans",
           "supports": "Premium hotspot/data allowances differ among underlying networks"
+        },
+        {
+          "url": "https://www.usmobile.com/blog/cell-phone-plans/",
+          "supports": "Separate October 20 carrier pricing article describes alternate FBF10/FBF20 coupon rates; channels and code availability must not be conflated with selected public plans page."
         }
       ],
       "supportedFacts": [
@@ -62,9 +74,13 @@
       "unresolved": [
         "Verify activation's specific network and current premium data/hotspot policy, including throttling",
         "Verify promo code, eligibility, subscription date, roaming terms and any add-on charges",
-        "Confirm video quality options, taxes/fees and all checkout totals"
+        "Confirm video quality options, taxes/fees and all checkout totals",
+        "US Mobile's plan selector and October 20 promotional articles advertise different port-in campaigns. Confirm exact channel, current code, and eligible price at checkout; never assume they stack."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "publishedPromoPrice": 25,
+      "publishedPromoMonths": 6,
+      "publishedPromoRequirement": "port"
     },
     "usm-light": {
       "carrier": "US Mobile",
@@ -955,6 +971,180 @@
       "publishedPromoPrice": 10,
       "publishedPromoMonths": 6,
       "publishedPromoRequirement": "new"
+    },
+    "ultra": {
+      "carrier": "Ultra Mobile",
+      "publishedMonthly": 49,
+      "term": "one_month_standard_other_prepay_terms_separate",
+      "sources": [
+        {
+          "url": "https://www.ultramobile.com/product/unlimited-prepaid-plan/",
+          "supports": "Selected 1-month Unlimited service costs $49; separate 3/6/12-month discounted terms require advance payments."
+        }
+      ],
+      "supportedFacts": [
+        "Official Unlimited one-month service costs $49, with taxes and fees added at checkout.",
+        "Carrier separately offers 3-month, 6-month and 12-month terms with different per-month equivalents; these are NOT month-to-month introductory discounts.",
+        "Selected one-month plan lists up to 10GB hotspot and international calls to selected destinations."
+      ],
+      "unresolved": [
+        "Confirm the intended 1-month term is selected instead of a multi-month prepaid option.",
+        "Confirm service activation, taxes, regulatory charges and full amount before purchase.",
+        "Confirm mobile data policies, SIM/eSIM support and any international features."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "ultra-4": {
+      "carrier": "Ultra Mobile",
+      "publishedMonthly": 19,
+      "term": "one_month_standard_other_prepay_terms_separate",
+      "sources": [
+        {
+          "url": "https://www.ultramobile.com/product/4gb-prepaid-plan/",
+          "supports": "Official Ultra 4GB selection costs $19 for one month, whereas 3/6/12 month discounts have advance billing."
+        }
+      ],
+      "supportedFacts": [
+        "The selected 4GB one-month Ultra plan costs $19 before checkout taxes and fees.",
+        "Three, six and twelve-month selections show separate per-month equivalents and require prepayment; the discounted 12-month headline is not standard monthly billing.",
+        "The plan advertises unlimited domestic talk/text, some international services, hotspot and Wi-Fi calling."
+      ],
+      "unresolved": [
+        "Confirm actual prepaid billing period chosen, and whether limited promotions are available.",
+        "Confirm SIM/eSIM device eligibility, activation and network acceptance.",
+        "Confirm taxes, fees, current total and service renewal terms."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "mobilex-unlimited10": {
+      "carrier": "MobileX",
+      "publishedMonthly": 14.88,
+      "term": "monthly_basic_unlimited_10gb",
+      "sources": [
+        {
+          "url": "https://mymobilex.com/all-faqs/",
+          "supports": "Carrier Basic Unlimited FAQ explicitly lists 10GB high-speed for $14.88 and taxes/fees additional."
+        }
+      ],
+      "supportedFacts": [
+        "MobileX official Basic Unlimited plan lists $14.88 for 10GB high-speed data, before taxes and fees.",
+        "After the high-speed allowance is reached, speed is reduced to about 512kbps; hotspot, talk/text and Wi-Fi calling are described."
+      ],
+      "unresolved": [
+        "Check applicable taxes, app-based signup and activation charges.",
+        "Confirm unlocked-phone compatibility and any eSIM/SIM eligibility restrictions.",
+        "Confirm usage/speed policy, video optimization and network coverage."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "mobilex-unlimited30": {
+      "carrier": "MobileX",
+      "publishedMonthly": 24.88,
+      "term": "monthly_basic_unlimited_30gb",
+      "sources": [
+        {
+          "url": "https://mymobilex.com/all-faqs/",
+          "supports": "Carrier Basic Unlimited FAQ lists $24.88 for 30GB high-speed before taxes/fees, slowed afterward."
+        }
+      ],
+      "supportedFacts": [
+        "Official MobileX Basic Unlimited 30GB costs $24.88 before taxes and fees.",
+        "After 30GB high-speed usage, speeds may slow to 512kbps; the carrier advertises hotspot and unlimited domestic voice/text."
+      ],
+      "unresolved": [
+        "Verify SIM/eSIM acceptance and service area.",
+        "Confirm taxes, activation and all checkout charges.",
+        "Confirm current speed-management, video limitations and plan renewal conditions."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "fi": {
+      "carrier": "Google Fi",
+      "publishedMonthly": 35,
+      "term": "monthly_unlimited_essentials",
+      "sources": [
+        {
+          "url": "https://fi.google.com/about/plans",
+          "supports": "Official Fi Unlimited Essentials one-line rate $35 plus taxes, includes 30GB high-speed; not Premium travel."
+        }
+      ],
+      "supportedFacts": [
+        "The actual $35/month single-line plan is Google Fi Unlimited Essentials, not Unlimited Premium.",
+        "Essentials includes 30GB high-speed data per person with a slowdown to 256kbps after the allowance; government taxes and fees are extra.",
+        "Separate new-line Pixel BYOD promotional savings on official pages are conditional and do not apply automatically."
+      ],
+      "unresolved": [
+        "Confirm eligible device/eSIM and actual monthly plan selection.",
+        "Verify exact taxes, activation charges and any separately advertised Pixel offer deadline.",
+        "Confirm international roaming, multi-line price and use-case limits compared with Fi Premium."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "cc": {
+      "carrier": "Consumer Cellular",
+      "publishedMonthly": 20,
+      "term": "autopay_ebilling_conditional_monthly",
+      "sources": [
+        {
+          "url": "https://www.consumercellular.com/shopping/choose/plan",
+          "supports": "Carrier one-line 1GB monthly disclosure shows $20 including $5 AutoPay/eBilling discount and additional fees."
+        }
+      ],
+      "supportedFacts": [
+        "Consumer Cellular's published 1GB monthly service is $20 only with the stated $5 AutoPay/eBilling discount.",
+        "Official Broadband Facts disclose additional operational compliance, federal fund, tax and eligible activation charges not included in the service base model.",
+        "Without AutoPay/eBilling qualification, the effective plan base is $25/month before extra fees."
+      ],
+      "unresolved": [
+        "Confirm both AutoPay and eBilling enrollment and whether the $5 discount begins on bill one.",
+        "Verify specific mandatory recurring regulatory/operational fees, government taxes and any activation charge.",
+        "Check device eligibility, underlying coverage and AARP or other discount stacking rules."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "tracfone": {
+      "carrier": "Tracfone",
+      "publishedMonthly": 45,
+      "term": "monthly_with_autorefill",
+      "sources": [
+        {
+          "url": "https://www.tracfone.com/plans/tracfone-freedom-30-days",
+          "supports": "Official Freedom $45/month with Auto-Refill, $50 without; older anniversary offer expired October 26."
+        }
+      ],
+      "supportedFacts": [
+        "Tracfone Freedom 30-day Unlimited costs $45 with Auto-Refill or $50 without, plus taxes/fees, with 15GB hotspot.",
+        "The publicly displayed Tracfone anniversary promotion ended October 26, 2026 and should not affect current service estimates.",
+        "Carrier states this Freedom offer uses its Verizon network."
+      ],
+      "unresolved": [
+        "Confirm activation channel, Auto-Refill enrollment and first due amount.",
+        "Confirm eligible veteran/military discount and any other stackable discounts, taxes and charges.",
+        "Verify hotspot cap, phone compatibility and full usage limitations."
+      ],
+      "observedOn": "2026-11-02"
+    },
+    "straighttalk": {
+      "carrier": "Straight Talk",
+      "publishedMonthly": 25,
+      "term": "standard_monthly_with_optional_new_byop_autopay",
+      "sources": [
+        {
+          "url": "https://www.straighttalk.com/whyst/bring-your-own-phone",
+          "supports": "Official standard StraightSAVINGS $25 monthly; separate conditional new-line BYOP AutoPay $20, SIM fee applies."
+        }
+      ],
+      "supportedFacts": [
+        "StraightSAVINGS normal listed monthly service is $25; qualifying new BYOP lines can receive $20 after the stated discount conditions.",
+        "Eligible service requires compatible unlocked device not used on Straight Talk in the preceding twelve months and a new line; an ineligible device forfeits the offer.",
+        "A $4.88 physical SIM purchase and taxes/fees may be due; discount continuation requires AutoPay enrollment in month one and ongoing eligible service."
+      ],
+      "unresolved": [
+        "Check exact checkout enrollment, device IMEI, line status and whether the $20 promotion is offered.",
+        "Confirm optional eSIM versus physical SIM charge, taxes, service due, and any activation fees.",
+        "Confirm AutoPay renewal, potential discount loss, early plan change and network restrictions."
+      ],
+      "observedOn": "2026-11-02"
     }
   }
 }

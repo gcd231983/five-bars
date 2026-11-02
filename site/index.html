@@ -388,7 +388,7 @@ let CHECKED = null, SOURCES = [], PLANS = [], PHONES = [], NEWIDS = new Set(), C
 
 /* ---------- state ---------- */
 const PLAN_TOGS = [
-  ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"],["newcustomer","I qualify as a new customer"]
+  ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"],["canport","I confirm eligible number transfer"],["newcustomer","I qualify as a new customer"]
 ];
 const PHONE_TOGS = [
   ["free","$0 upfront device price"],["iphone","iPhone"],["android","Android"],["prepaid","Prepaid offers only"],["noport","Can’t move my number"]
@@ -441,7 +441,7 @@ function planCalc(p){
   if(promo){
     const ei = endInfo(promo.ends);
     if(ei && ei.expired) promoState = {off:true, why:ei.text + ". Recheck for a new offer."};
-    else if(state.t.noport && promo.req==="port") promoState = {off:true, why:"Intro price needs you to move your number."};
+    else if(promo.req==="port" && (state.t.noport || state.t.canport!==true)) promoState = {off:true, why:state.t.noport?"Port-in promotion excluded: number transfer unavailable.":"Port-in promotion excluded until you confirm eligible number transfer."};
     else if(promo.req==="new" && state.t.newcustomer!==true) promoState = {off:true, why:"New-customer pricing excluded until you confirm eligibility using the filter."};
     else promoState = {off:false, ends:ei};
   }
@@ -546,7 +546,7 @@ function renderControls(){
   for(const id of ["#lines","#net","#mode","#sort","#carrier"]) fit($(id));
   const togs = state.mode==="byop" ? (state.lines>1 ? [...PLAN_TOGS.slice(0,4), ["fam","Multi-line price listed"], ...PLAN_TOGS.slice(4)] : PLAN_TOGS) : PHONE_TOGS;
   $("#toggles").replaceChildren(...togs.map(([k,label])=>
-    el("button",{class:"tog", type:"button", "aria-pressed": String(!!state.t[k]), onclick:()=>{state.t[k]=!state.t[k]; update();}}, label)));
+    el("button",{class:"tog", type:"button", "aria-pressed": String(!!state.t[k]), onclick:()=>{state.t[k]=!state.t[k]; if(k==="canport"&&state.t[k])state.t.noport=false; if(k==="noport"&&state.t[k])state.t.canport=false; update();}}, label)));
   const d = new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"});
   let summary = "";
   if(CHANGES && CHANGES.date===CHECKED){
@@ -594,7 +594,7 @@ function renderPlans(){
   const L = state.lines;
   $("#plans-note").textContent = L>1
     ? "12-month cost covers all " + L + " lines. Annual prepaid plans without an explicit multi-line upfront quote are excluded. Other unknown multi-line prices are estimated from one-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
-    : "New-customer promotions are excluded unless you confirm eligibility using the filter. 12-month cost includes documented first-month charges and eligible intro rates, then the regular price. Annual prepaid offers show a monthly EQUIVALENT but require full payment in advance.";
+    : "New-customer and port-in promotions are excluded until you confirm eligibility using the filters. 12-month cost includes documented first-month charges and eligible intro rates, then the regular price. Annual prepaid offers show a monthly EQUIVALENT but require full payment in advance.";
   const list = $("#plans-list");
   if(!rows.length){ list.replaceChildren(emptyState()); return; }
   list.replaceChildren(...rows.map(({p,c},i)=>{

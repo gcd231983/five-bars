@@ -141,6 +141,22 @@ try {
     assert.equal(await page.locator('#p-plans').isVisible(),true,'Arrow key activates next tab');
     await page.keyboard.press('Home');
     assert.equal(await page.locator('#p-finder').isVisible(),true,'Home returns to first tab');
+    // Port-in promotions are omitted from quotes until a person confirms eligibility.
+    assert.equal(await page.locator('#fb-port-status').inputValue(),'unknown');
+    await page.locator('#fb-net').selectOption('any');
+    await page.locator('#fb-provider').selectOption('US Mobile');
+    await page.locator('#fb-device').selectOption('byop');
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    assert.match(await page.locator('#fb-finder-results').innerText(),/Port-in introductory discounts are excluded/i);
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated over 12 months/);
+    await page.locator('#fb-port-status').selectOption('yes');
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$240\.00 estimated over 12 months/);
+    await page.locator('#fb-port-status').selectOption('no');
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated over 12 months/);
+    await page.locator('#fb-port-status').selectOption('unknown');
+    await page.locator('#fb-device').selectOption('either');
     // MVNO expansion: find an exact provider, and verify annual billing on mobile and desktop.
     await page.locator('#fb-net').selectOption('tmo');
     await page.locator('#fb-provider').selectOption('Tello');
@@ -205,6 +221,19 @@ try {
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$10/);
     await page.getByRole('button',{name:'I qualify as a new customer'}).click();
     assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/);
+    await page.locator('#carrier').selectOption('US Mobile');
+    assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$25/);
+    await page.getByRole('button',{name:'I confirm eligible number transfer'}).click();
+    assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$15/);
+    await page.getByRole('button',{name:'Can’t move my number'}).click();
+    assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$25/);
+    await page.getByRole('button',{name:'Can’t move my number'}).click();
+    await page.locator('#carrier').selectOption('Ultra Mobile');
+    assert.match(await page.locator('#r-ultra .price .now').innerText(),/\$49/);
+    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
+    assert.match(await page.locator('#r-ultra .price .now').innerText(),/\$49/,
+      'multi-month prepaid discounts cannot be quoted as monthly intro rates');
+    await page.getByRole('button',{name:'I qualify as a new customer'}).click();
     await page.locator('#carrier').selectOption('any');
     assert.doesNotMatch(await disputed.locator('.foot').innerText(),/12 months \(est\.\)/);
     await page.locator('#plans-list .fb-compare-btn').first().click();
@@ -404,9 +433,9 @@ try {
     research.on('pageerror',e=>errors.push(view+' source research: '+e.message));
     await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
     assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
-    assert.equal(await research.locator('.research-article').count(),37);
+    assert.equal(await research.locator('.research-article').count(),45);
     assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human full-terms sign-offs/i);
-    assert.match(await research.locator('main').innerText(),/41.*without documented official-source research/s);
+    assert.match(await research.locator('main').innerText(),/33.*without documented official-source research/s);
     const mint=research.locator('[data-offer-id="mint"]');
     assert.match(await mint.innerText(),/\$360\.00 due upfront for 12 months/);
     assert.match(await mint.innerText(),/\$180/);
@@ -426,6 +455,11 @@ try {
     const redPocket=research.locator('[data-offer-id="redpocket-plus"]');
     assert.match(await redPocket.innerText(),/ONLY for eligible new customers/);
     assert.match(await research.locator('[data-offer-id="good2go-annual1"]').innerText(),/\$60\.00 due upfront/);
+    const ultra=research.locator('[data-offer-id="ultra"]');
+    assert.match(await ultra.innerText(),/\$49\.00 regular per month/);
+    assert.match(await ultra.innerText(),/NOT month-to-month introductory discounts/);
+    assert.match(await research.locator('[data-offer-id="fi"]').innerText(),/Unlimited Essentials/);
+    assert.match(await research.locator('[data-offer-id="tracfone"]').innerText(),/October 26, 2026/);
     const researchOverflow=await research.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(researchOverflow<=viewport.width+2,'Research audit should not overflow '+view+' width');
     await research.screenshot({path:join(output,view+'-source-audit.png'),fullPage:true});
