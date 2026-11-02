@@ -55,6 +55,36 @@
       "name": "Boost Mobile deals",
       "url": "https://www.boostmobile.com/deals",
       "what": "Boost’s own current offers"
+    },
+    {
+      "name": "Tello plans",
+      "url": "https://tello.com/buy/custom_plans",
+      "what": "Official monthly Tello tier prices and introductory plan conditions"
+    },
+    {
+      "name": "H2O Wireless monthly plans",
+      "url": "https://www.h2owireless.com/plan/monthly",
+      "what": "Official H2O standard plan prices, AutoPay alternatives and high-speed limits"
+    },
+    {
+      "name": "Helium Mobile plan help",
+      "url": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+      "what": "Official Helium Air and Infinity plan costs and data limits"
+    },
+    {
+      "name": "MobileX plan FAQs",
+      "url": "https://mymobilex.com/all-faqs/",
+      "what": "Official MobileX standard Unlimited 10/30 prices and conditions"
+    },
+    {
+      "name": "Red Pocket monthly plans",
+      "url": "https://my.redpocket.com/plans",
+      "what": "Official Red Pocket monthly plan tiers and eligible first-month pricing"
+    },
+    {
+      "name": "Good2Go annual plans",
+      "url": "https://annualplans.good2gomobile.com/home-page",
+      "what": "Official prepaid annual cost and terms"
     }
   ],
   "plans": [
@@ -443,13 +473,15 @@
       "pri": false,
       "hot": "Hotspot from plan data",
       "video": null,
-      "url": "https://tello.com",
+      "url": "https://tello.com/buy/custom_plans",
       "family": {
         "2": 15,
         "3": 15,
         "4": 15,
         "5": 15
-      }
+      },
+      "priceSourceDate": "2026-11-02",
+      "extra": "Unlimited talk and text. $10/month for eligible new lines in the introductory period, then $15. Taxes and cost recovery may apply."
     },
     {
       "id": "cc",
@@ -465,6 +497,224 @@
       "video": null,
       "extra": "US-based phone support and an AARP discount.",
       "url": "https://www.consumercellular.com"
+    },
+    {
+      "id": "tello-starter",
+      "carrier": "Tello",
+      "plan": "Starter 2GB",
+      "net": "tmo",
+      "unl": false,
+      "data": "2GB",
+      "price": 10,
+      "tax": false,
+      "pri": null,
+      "hot": "Hotspot uses plan data",
+      "video": null,
+      "extra": "Unlimited talk and text. No yearly contract. Taxes and cost-recovery charges may apply.",
+      "url": "https://tello.com/buy/custom_plans",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "tello-power",
+      "carrier": "Tello",
+      "plan": "Power 20GB",
+      "net": "tmo",
+      "unl": false,
+      "data": "20GB",
+      "price": 20,
+      "tax": false,
+      "pri": null,
+      "hot": "Hotspot uses plan data",
+      "video": null,
+      "extra": "Unlimited talk and text. Data allowance and hotspot share the plan's high-speed allotment.",
+      "url": "https://tello.com/buy/custom_plans",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "tello-max",
+      "carrier": "Tello",
+      "plan": "Max Unlimited (50GB high-speed)",
+      "net": "tmo",
+      "unl": true,
+      "price": 25,
+      "tax": false,
+      "pri": null,
+      "hot": "10GB hotspot",
+      "video": null,
+      "extra": "50GB high-speed data, then throttled. Promotional new-line prices may differ; $25 is the standard monthly rate.",
+      "url": "https://tello.com/buy/custom_plans",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "h2o-10gb",
+      "carrier": "H2O Wireless",
+      "plan": "10GB Monthly",
+      "net": "att",
+      "unl": false,
+      "data": "10GB",
+      "price": 20,
+      "tax": false,
+      "pri": null,
+      "hot": "2GB hotspot",
+      "video": null,
+      "extra": "$18/month with eligible AutoPay. Speeds slow after 10GB; international talk and roaming credits advertised. Cost model uses $20 standard rate.",
+      "url": "https://www.h2owireless.com/plan/monthly",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "h2o-unlimited",
+      "carrier": "H2O Wireless",
+      "plan": "Unlimited (30GB high-speed)",
+      "net": "att",
+      "unl": true,
+      "price": 30,
+      "tax": false,
+      "pri": null,
+      "hot": "5GB hotspot",
+      "video": null,
+      "extra": "Speeds reduce after 30GB. $27/month with eligible AutoPay; cost model uses $30 standard rate. Confirm coverage and terms.",
+      "url": "https://www.h2owireless.com/plan/monthly",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "helium-air",
+      "carrier": "Helium Mobile",
+      "plan": "Air 10GB",
+      "net": "tmo",
+      "unl": false,
+      "data": "10GB",
+      "price": 15,
+      "tax": false,
+      "pri": null,
+      "hot": "5GB hotspot (uses 10GB allowance)",
+      "video": null,
+      "extra": "Uses carrier-partner cellular and Helium coverage where available. After 10GB, data boosts cost $5/GB. Taxes and fees extra.",
+      "url": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "helium-infinity",
+      "carrier": "Helium Mobile",
+      "plan": "Infinity Unlimited (36GB high-speed)",
+      "net": "tmo",
+      "unl": true,
+      "price": 30,
+      "tax": false,
+      "pri": null,
+      "hot": "36GB hotspot/high-speed allotment",
+      "video": null,
+      "extra": "Speeds may reduce after 36GB in a cycle. Additional data boosts available. Taxes and fees extra.",
+      "url": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "mobilex-unlimited10",
+      "carrier": "MobileX",
+      "plan": "Unlimited 10 (10GB high-speed)",
+      "net": "vzw",
+      "unl": true,
+      "price": 14.88,
+      "tax": false,
+      "pri": null,
+      "hot": "Hotspot available",
+      "video": "480p video",
+      "extra": "Unlimited talk and text. Speeds slow after 10GB high-speed usage. Taxes/fees extra. Confirm compatible device.",
+      "url": "https://mymobilex.com/all-faqs/",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "mobilex-unlimited30",
+      "carrier": "MobileX",
+      "plan": "Unlimited 30 (30GB high-speed)",
+      "net": "vzw",
+      "unl": true,
+      "price": 24.88,
+      "tax": false,
+      "pri": null,
+      "hot": "Hotspot available",
+      "video": "480p video",
+      "extra": "Unlimited talk and text. Speeds slow after 30GB high-speed usage. Taxes/fees extra.",
+      "url": "https://mymobilex.com/all-faqs/",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "redpocket-essentials",
+      "carrier": "Red Pocket Mobile",
+      "plan": "Essentials 3GB",
+      "net": "multi",
+      "unl": false,
+      "data": "3GB",
+      "price": 10,
+      "tax": false,
+      "pri": null,
+      "hot": null,
+      "video": null,
+      "extra": "Unlimited talk/text. Network choice/availability depends on activation. Taxes and regulatory fees may apply.",
+      "url": "https://my.redpocket.com/plans",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "redpocket-plus",
+      "carrier": "Red Pocket Mobile",
+      "plan": "Plus 20GB",
+      "net": "multi",
+      "unl": false,
+      "data": "20GB",
+      "price": 20,
+      "promo": {
+        "price": 10,
+        "months": 1,
+        "text": "$10 first month for eligible new lines; then $20/month",
+        "req": "new"
+      },
+      "tax": false,
+      "pri": null,
+      "hot": null,
+      "video": null,
+      "extra": "20GB high-speed data, then reduced speeds. Monthly promotion is subject to new-line terms; network availability depends on SIM.",
+      "url": "https://my.redpocket.com/plans",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "redpocket-premium",
+      "carrier": "Red Pocket Mobile",
+      "plan": "Premium Unlimited (50GB high-speed)",
+      "net": "multi",
+      "unl": true,
+      "price": 30,
+      "promo": {
+        "price": 15,
+        "months": 1,
+        "text": "$15 first month for eligible new lines; then $30/month",
+        "req": "new"
+      },
+      "tax": false,
+      "pri": null,
+      "hot": "10GB premium hotspot",
+      "video": null,
+      "extra": "50GB high-speed data; speeds may reduce after that. Network and activation eligibility vary.",
+      "url": "https://my.redpocket.com/plans",
+      "priceSourceDate": "2026-11-02"
+    },
+    {
+      "id": "good2go-annual1",
+      "carrier": "Good2Go Mobile",
+      "plan": "Annual 1GB (pay $60 upfront)",
+      "net": "multi",
+      "unl": false,
+      "data": "1GB",
+      "price": 5,
+      "tax": false,
+      "pri": null,
+      "hot": null,
+      "video": null,
+      "billingMonths": 12,
+      "billingUpfront": 60,
+      "maxLines": 1,
+      "priceNote": "$5/mo equivalent · $60 annual payment",
+      "extra": "$60 paid upfront for 12 months, not $5 billed monthly. Network selection, taxes, renewal pricing and compatibility require confirmation.",
+      "url": "https://annualplans.good2gomobile.com/home-page",
+      "priceSourceDate": "2026-11-02"
     }
   ],
   "phones": [
