@@ -35,7 +35,7 @@ export function buildReviewQueue({catalog,status={},mvnoEvidence={},phoneEvidenc
       reasons.push(reason('full_terms_not_verified','Full offer terms do not have a current independent manual review.',20));
     }
     const p=proof(offer), checkedAt=proofDate(offer);
-    const proofAge=checkedAt?Date.now()-Date.parse(checkedAt):null;
+    const proofAge=checkedAt?Date.parse(generatedAt)-Date.parse(checkedAt):null;
     const evidenceFresh=Number.isFinite(proofAge)&&proofAge>=-3600000&&proofAge<=48*3600*1000;
     if(p && unsafe.includes(p.state)){
       reasons.push(reason('official_price_conflict','Official price or plan terms conflict with the catalog, or a previous conflict remains unresolved.',100));
