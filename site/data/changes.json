@@ -1,9 +1,10 @@
 {
- "date": "2026-10-29",
- "added": [],
- "removed": [],
- "changed": [
-  "visible-plus",
-  "visible-pro"
- ]
+  "date": "2026-11-01",
+  "added": [],
+  "removed": [],
+  "changed": [
+    "visible",
+    "visible-plus",
+    "visible-pro"
+  ]
 }
