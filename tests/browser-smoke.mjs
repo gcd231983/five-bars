@@ -1,6 +1,6 @@
 // Browser acceptance checks for the Five Bars static site.
 // Run using: npm install --no-save playwright@1.56.1
-//            npx playwright install --with-deps chromium
+//            (Requires Google Chrome installed locally or on the CI runner.)
 //            node tests/browser-smoke.mjs
 import {strict as assert} from 'node:assert';
 import {createServer} from 'node:http';
@@ -54,6 +54,12 @@ try {
     await options.first().getByRole('button',{name:'Compare'}).click();
     assert.equal(await page.locator('#p-compare').isVisible(),true,'Clicking Compare opens comparison');
     assert.ok(await page.locator('#fb-compare-root table').count()>0,'comparison table exists');
+    const familySelector=page.locator('#fb-compare-root .fb-compare-household select');
+    assert.equal(await familySelector.inputValue(),'2','finder household size is preserved in comparisons');
+    assert.match(await page.locator('#fb-compare-root').innerText(),/12-month total \(2 lines\)/);
+    await familySelector.selectOption('3');
+    assert.match(await page.locator('#fb-compare-root').innerText(),/12-month total \(3 lines\)/);
+    await page.locator('#fb-compare-root .fb-compare-household select').selectOption('2');
     await page.screenshot({path:join(output,view+'-comparison.png'),fullPage:true});
     await page.locator('#t-plans').click();
     assert.equal(await page.locator('#p-plans').isVisible(),true);
