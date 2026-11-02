@@ -208,14 +208,14 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
   for(const source of record.sources)sections.push('<li>'+href(source.url,source.supports)+'</li>');
   sections.push('</ul><h4>Not yet confirmed at checkout</h4><ul>');
   for(const question of record.unresolved)sections.push('<li>'+safe(question)+'</li>');
-  sections.push('</ul></article>');
+  sections.push('</ul><p><a href="report.html?offer='+encodeURIComponent(id)+'">Report a correction to this listing</a></p></article>');
  }
  sections.push('</section><section><h2>Stock and checkout holds ('+sum.availabilityHolds+')</h2>'+
   '<p>These promotions were listed as out of stock on the dated observation. Historic advertised prices remain for context, but the finder, comparison and Switch &amp; Save must not model them as purchasable offers.</p><ul>');
  for(const item of audit.offers.filter(x=>x.availability==='out_of_stock')){
   sections.push('<li><strong>'+safe(item.carrier)+' — '+safe(item.offer)+'</strong>; observed '+
     safe(item.availabilityObservedOn||'date unknown')+'. '+href(item.listedUrl,'Recheck stock at listed carrier page')+
-    '. No current checkout certification.</li>');
+    '. <a href="report.html?offer='+encodeURIComponent(item.id)+'">Report a stock correction</a>. No current checkout certification.</li>');
  }
  sections.push('</ul></section><section><h2>Research next — prioritized source checklist</h2>'+
   '<p>Priorities are deterministic screening suggestions, not carrier ratings. Research listed links before making customer-specific claims. A link may point to a retailer rather than the carrier. Each listing requires a dated carrier publication plus eligibility, payment and stock confirmation.</p><ol>');
@@ -232,10 +232,10 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
   sections.push('<li><strong>'+safe(risk===0?'Financing priority':risk===1?'Device priority':'Plan priority')+
     ' — '+safe(item.carrier)+' — '+safe(item.offer)+'</strong> ('+safe(item.kind)+'). '+
     safe(why)+'. '+href(item.listedUrl,'Inspect listed offer URL')+
-    '. <em>No dated first-level carrier research recorded.</em></li>');
+    '. <a href="report.html?offer='+encodeURIComponent(item.id)+'">Report a correction</a>. <em>No dated first-level carrier research recorded.</em></li>');
  }
  sections.push('</ol></section><section><h2>How to improve this record</h2>'+
   '<p>Researchers should document the exact carrier source URL, standard price, upfront payment, promotion restrictions, included data, taxes and limitations. Never convert a successful HTTP request or copied price headline into a full-terms sign-off.</p>'+
-  '<p>See the <a href="review-workbench.html">offer review workbench</a> for a human inspection checklist and the protected GitHub sign-off workflow.</p></section></main>');
+  '<p>See the <a href="review-workbench.html">offer review workbench</a> for human sign-off, or <a href="report.html">report a suspected listing error</a>. Reader reports are not automatically accepted as official evidence.</p></section></main>');
  return htmlDoc(sections.join(''));
 }

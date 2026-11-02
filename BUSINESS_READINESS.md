@@ -175,3 +175,14 @@ Official-publication source coverage now includes 15 wireless plan rates and fiv
 - Financed postpaid devices additionally require documented retail amount, installment total and duration, bill-credit duration and early-exit exposure. **The existing device calculator still withholds all incomplete financing totals even if some promotional fields were reviewed.**
 - Editors can prepare the checkout record from the read-only workbench, but **only** GitHub Actions with write access can save the ledger. No automated scan, local checklist, page visit, or generated sample can certify a deal.
 - Current verified scenario records remain **0/78**; 53/78 have dated *partial* public-source observations and 25 are still missing those. This release adds safeguards and operational readiness, not customer testimonials, sales or affiliate authorization.
+
+
+## Five Bars 4.0 — public reporting and editorial accountability (November 2, 2026)
+
+- [x] Build a mobile-friendly correction assistant linked from plan/phone cards, audited source entries and comparison guides, with offer-ID preselection, required issue category, date, safe public URL and report draft.
+- [x] Add a public GitHub issue form that emphasizes reader feedback is **unverified**, requires privacy acknowledgement and does not silently update pricing or make checkout-verified claims.
+- [x] Define a repeatable editorial triage protocol for independently checking official selected terms, resolving source conflicts, correcting the catalog, running mobile/desktop tests and communicating outcomes without inventing a service-level promise.
+- [x] Remove previous GitHub issue links that included free-text report bodies in URL parameters; the draft is copied locally and pasted only by an intentional visitor action.
+- [ ] Provide a **private, no-GitHub-account** contact channel for ordinary consumers once the owner selects a provider and funds/approves moderation, privacy, retention and abuse controls. No mailbox, live support or response-time guarantee is invented.
+- [ ] Complete at least ten independently reviewed real checkout scenarios across carriers, tax regions and service terms. A GitHub reader issue is not a customer-specific quote.
+- [ ] Obtain actual partner contracts, owner-approved commercial identity and near-link material-connection disclosure before enabling commissions. The current site remains free of paid affiliate placements.

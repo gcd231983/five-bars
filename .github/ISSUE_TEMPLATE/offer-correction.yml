@@ -1,0 +1,57 @@
+name: Report an inaccurate Five Bars listing
+description: Flag a wrong advertised price, required fee, device availability, or carrier condition for independent review.
+title: "[Consumer correction] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **This issue will be public.** Never share a name, phone number, personal address, account/order number, transfer PIN, IMEI, credentials, billing card details or unredacted screenshots.
+        A reader report is **not** carrier certification or full checkout verification. Five Bars editors review official sources before changing a catalog rate.
+        The [Five Bars correction assistant](https://gcd231983.github.io/five-bars/report.html) prepares a copyable draft but **does not submit** it.
+  - type: input
+    id: offer-id
+    attributes:
+      label: Offer ID
+      description: Use the stable catalog offer ID, or "site" for site-wide issues.
+      placeholder: usm-starter
+    validations:
+      required: true
+  - type: dropdown
+    id: issue-category
+    attributes:
+      label: Issue category
+      options:
+        - Incorrect advertised price or renewal
+        - Unexpected mandatory fees or initial payment
+        - Port-in, AutoPay or other eligibility requirement
+        - Phone or promotion unavailable
+        - Network, compatibility or coverage statement
+        - Data, hotspot, locking, credits or contract terms
+        - Site bug, accessibility or other issue
+    validations:
+      required: true
+  - type: textarea
+    id: report-details
+    attributes:
+      label: Details to investigate
+      description: Paste your prepared draft, or explain the discrepancy without private details.
+      placeholder: Include the observation date, a public official carrier source and the claimed difference.
+    validations:
+      required: true
+  - type: input
+    id: public-source
+    attributes:
+      label: Official public carrier URL (optional)
+      description: Do not paste a private checkout session, credentials, account portal URL, query token or order link.
+      placeholder: https://carrier.example/plans
+    validations:
+      required: false
+  - type: checkboxes
+    id: public-safety
+    attributes:
+      label: Public-report privacy and accuracy confirmation
+      options:
+        - label: I removed subscriber information, account numbers, PINs, payment details and other private data.
+          required: true
+        - label: I understand this is unverified feedback and does not change prices automatically.
+          required: true

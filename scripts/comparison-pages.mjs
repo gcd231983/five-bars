@@ -152,7 +152,8 @@ function pageEnd({nested=false}={}){
    '<nav><a href="'+prefix+'privacy.html">Privacy</a><a href="'+prefix+'editorial.html">Methodology</a>'+
    '<a href="'+prefix+'disclosures.html">Commercial disclosures</a><a href="'+prefix+'switching-guide.html">Switching safely</a>'+
    '<a href="'+prefix+'carrier-comparisons.html">All comparisons</a>'+
-   '<a href="'+prefix+'source-research.html">Official-source audit</a></nav></footer></body></html>\n';
+   '<a href="'+prefix+'source-research.html">Official-source audit</a>'+
+   '<a href="'+prefix+'report.html">Report a correction</a></nav></footer></body></html>\n';
 }
 function dates(data){
  const checked=validDay(data.catalog?.checked)?data.catalog.checked:'Unknown';
@@ -194,6 +195,7 @@ export function renderGuide(guide,data,{today=localDay()}={}){
     '</td><td><strong>'+escapeHtml(x.info.detail)+'</strong><div>'+escapeHtml(x.caution)+'</div><div>'+
     escapeHtml(x.dataAllowance)+'</div><div>'+escapeHtml(x.more)+'</div></td><td>'+
     a(plan.url,'Official carrier terms')+'<span class="sep"> · </span>'+a(x.link,'Try Switch & Save')+
+    '<span class="sep"> · </span><a href="../report.html?offer='+encodeURIComponent(plan.id)+'">Report an issue</a>'+
     '</td></tr>');
   }
   html.push('</tbody></table></div>');
@@ -235,7 +237,7 @@ export function renderHub(data){
 export function renderSitemap(data){
  const day=validDay(data?.catalog?.checked)?data.catalog.checked:'2026-10-29';
  const urls=['','editorial.html','privacy.html','disclosures.html','switching-guide.html',
-  'carrier-comparisons.html','source-research.html',...GUIDES.map(g=>'compare/'+g.slug+'.html')];
+  'carrier-comparisons.html','source-research.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html')];
  const xmlEscape=escapeHtml;
  return '<?xml version="1.0" encoding="UTF-8"?>\n'+
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Report inaccurate wireless prices, fees, phone availability and carrier terms to Five Bars without submitting private subscriber details.">
+<link rel="canonical" href="https://gcd231983.github.io/five-bars/report.html">
+<title>Report an inaccurate offer | Five Bars</title>
+<link rel="stylesheet" href="comparison-styles.css">
+<style>
+.fb-report-form{display:grid;gap:16px;margin-top:15px}
+.fb-report-form[hidden],#fb-report-result[hidden]{display:none!important}
+.fb-report-field{display:flex;flex-direction:column;gap:5px;font-weight:650}
+.fb-report-field small{color:var(--muted);font-weight:400;line-height:1.5}
+.fb-report-field input,.fb-report-field select,.fb-report-field textarea{width:100%;min-width:0}
+.fb-report-field textarea{min-height:115px;resize:vertical}
+.fb-report-ack{display:flex;gap:12px;align-items:start}
+.fb-report-ack input{flex-shrink:0;margin-top:6px}
+.fb-report-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:9px}
+.fb-report-actions button{font-weight:700}
+.fb-report-actions a{font-weight:700}
+#fb-report-draft{font-size:.83rem;min-height:250px;font-family:ui-monospace,monospace}
+#fb-report-status[data-error=true]{color:var(--warning)}
+.fb-report-disclaimer{color:var(--muted);font-size:.9rem}
+@media(max-width:540px){section{padding:16px 15px}.fb-report-actions>*{max-width:100%}}
+</style>
+</head>
+<body>
+<header class="wrap"><nav aria-label="Site sections">
+<a href="./">Five Bars home</a>
+<a href="source-research.html">Research audit</a>
+<a href="editorial.html">Editorial standards</a>
+<a href="privacy.html">Privacy</a>
+</nav></header>
+<main class="wrap">
+<p class="crumb">Five Bars / Consumer feedback</p>
+<h1>Report an inaccurate offer</h1>
+<p class="lede">Did a carrier charge more than the listed plan rate? Find a sold-out phone or a missing eligibility rule? Help us investigate before other shoppers rely on that estimate.</p>
+<div class="caution" role="note">
+<strong>Keep private information private.</strong> Never include a phone number, email address, billing address, account or order number, transfer PIN, IMEI, password, payment details or an unredacted checkout screenshot.
+GitHub issues are <strong>public and require a GitHub account</strong>. This page prepares a draft locally; it does not send data, approve a correction or verify a price.
+</div>
+<section>
+<h2>Prepare a report</h2>
+<p>Select the exact listing and give a short explanation. If possible, link a public official carrier page, not a private checkout session.</p>
+<noscript><p>JavaScript is needed for the local draft assistant. You can use the <a href="https://github.com/gcd231983/five-bars/issues/new?template=offer-correction.yml">GitHub issue form</a> directly.</p></noscript>
+<form id="fb-report-form" class="fb-report-form" hidden novalidate>
+<label class="fb-report-field" for="fb-report-offer">Carrier offer
+<select id="fb-report-offer" required></select>
+<small>Opening this page from an offer card selects that listing for you.</small>
+</label>
+<label class="fb-report-field" for="fb-report-category">What is wrong?
+<select id="fb-report-category" required><option value="">Select a category</option></select></label>
+<label class="fb-report-field" for="fb-report-observed">When did you observe the issue?
+<input type="date" id="fb-report-observed" required></label>
+<label class="fb-report-field" for="fb-report-source">Public official carrier URL (optional)
+<input type="url" id="fb-report-source" placeholder="https://carrier.example/plans" maxlength="500" autocomplete="off">
+<small>Use HTTPS without query strings, session tokens or private account details. A link alone does not prove the rate.</small></label>
+<label class="fb-report-field" for="fb-report-details">What needs correcting?
+<textarea id="fb-report-details" minlength="20" maxlength="900" required placeholder="Example: The carrier lists a $35 first month for this plan, but Five Bars models $25. Please check the selected plan and AutoPay enrollment rules."></textarea>
+<small>20–900 characters. Describe the discrepancy, not your subscriber account.</small></label>
+<label class="fb-report-ack" for="fb-report-public">
+<input type="checkbox" id="fb-report-public" required>
+<span>I understand that if I post this report on GitHub, the report is public, and I have removed private information.</span></label>
+<div class="fb-report-actions"><button type="submit" class="cta">Prepare report draft</button></div>
+</form>
+<p id="fb-report-status" role="status" aria-live="polite">Loading the carrier catalog…</p>
+</section>
+<section id="fb-report-result" hidden>
+<h2>Review before posting</h2>
+<p class="fb-report-disclaimer">Nothing has been submitted. Your draft remains in this browser page until you choose to copy and share it. Read it for private information first.</p>
+<label class="fb-report-field" for="fb-report-draft">Public report draft
+<textarea id="fb-report-draft" readonly aria-label="Copyable public report draft"></textarea>
+</label>
+<div class="fb-report-actions">
+<button id="fb-report-copy" type="button">Copy report text</button>
+<a class="cta" id="fb-issue-open" href="https://github.com/gcd231983/five-bars/issues/new?template=offer-correction.yml" target="_blank" rel="noopener noreferrer">Open GitHub correction form</a>
+</div>
+<p>Paste the copied text into the GitHub form's description. Sending that form creates an <strong>unverified reader report</strong>; editors must verify it before updating Five Bars.</p>
+</section>
+<section>
+<h2>How corrections are handled</h2>
+<p>We identify the selected offer, inspect current public carrier terms, investigate any conflicts, change supported catalog fields and run regression checks before publishing. No user report updates pricing automatically, and no response deadline is promised.</p>
+<p><a href="editorial.html">How our editorial review works</a>. There is not yet a private support inbox; if you cannot safely post on GitHub, do not share subscriber information here.</p>
+</section>
+</main>
+<footer class="wrap"><p>Five Bars is an independent informational comparison service. Reader feedback is not carrier approval or checkout verification.</p>
+<nav><a href="./">Home</a><a href="disclosures.html">Disclosures</a><a href="privacy.html">Privacy</a></nav></footer>
+<script type="module" src="report-ui.mjs"></script>
+</body></html>

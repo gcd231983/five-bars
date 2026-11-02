@@ -41,3 +41,10 @@ Last public-source research: November 2, 2026. **Statuses are prospects only.** 
 5. **Audit continually:** if an offer loses verified terms or its pricing conflicts with an official source, withhold or de-emphasize the unsupported cost claim even when affiliate payout might be available.
 
 **Not a promise of revenue.** Even a public application page is only an invitation to apply. Business registration, tax setup, program approval and signed terms require the actual owner's involvement.
+
+
+## 4.0 correction process and link-disclosure requirements
+
+A visitor can report a suspected listing error through a local-only form and GitHub public issue template. **Never** let an affiliate payout override a documented conflict or treat user-submitted text as independently verified pricing. [Corrections policy](CORRECTIONS_POLICY.md) specifies human triage and regression requirements.
+
+If an affiliate contract is actually signed later, place a clear, plain-language **commission disclosure immediately adjacent to each compensated link or recommendation**, not only in the website footer or disclosures policy. Follow the [FTC Endorsement Guides FAQ](https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking) and seek appropriate legal/compliance review. Do not mark presently uncompensated links as affiliate links. No links, pixels or commissions are enabled by 4.0.

@@ -129,6 +129,8 @@ test('static public source audit prints 53 dated source cards and 25 unresearche
  assert.match(html,/25/);
  assert.match(html,/Research next — prioritized source checklist/);
  assert.match(html,/Stock and checkout holds \(4\)/);
+ assert.match(html,/report\.html\?offer=usm-starter/);
+ assert.match(html,/Report a correction to this listing/);
  assert.match(html,/OUT OF STOCK on recorded date; no live checkout quote/);
  assert.match(html,/\$10\.00\/mo for first 6 month\(s\) ONLY for eligible new customers/);
  assert.match(html,/id="research-redpocket-plus"/);

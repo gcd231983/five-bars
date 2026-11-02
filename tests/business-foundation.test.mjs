@@ -9,7 +9,9 @@ test('main page exposes functional savings tab and the four honest public polici
  assert.match(html,/id="p-switch"/);
  assert.match(html,/id="fb-switch-root"/);
  assert.match(html,/src="switch-ui.mjs"/);
- for(const file of ['editorial.html','privacy.html','disclosures.html','switching-guide.html']){
+ assert.match(html,/report\.html\?offer=/);
+ assert.match(html,/href="report.html"/);
+ for(const file of ['editorial.html','privacy.html','disclosures.html','switching-guide.html','report.html']){
    assert.match(html,new RegExp(file.replace('.','\\.')));
    const body=read(file);
    assert.match(body,/<!doctype html>/i);
@@ -30,6 +32,8 @@ test('public editorial materials do not pretend full terms or actual affiliate d
  assert.match(privacy,/localStorage/);
  assert.match(privacy,/Google Fonts/);
  assert.match(privacy,/not sent to a Five Bars database/i);
+ assert.match(privacy,/Reader correction reports/);
+ assert.match(read('report.html'),/no private account details|keep private information private/i);
  const guide=read('switching-guide.html');
  assert.match(guide,/transfer PIN/i);
  assert.match(guide,/Keep the current service active/i);
@@ -37,7 +41,7 @@ test('public editorial materials do not pretend full terms or actual affiliate d
 test('search discovery includes every real public page without fabricating offers',()=>{
  const sitemap=read('sitemap.xml'),robots=read('robots.txt');
  assert.match(robots,/Sitemap:/);
- for(const file of ['/five-bars/','editorial.html','privacy.html','disclosures.html','switching-guide.html'])
+ for(const file of ['/five-bars/','editorial.html','privacy.html','disclosures.html','switching-guide.html','report.html'])
    assert.ok(sitemap.includes(file),'Missing sitemap page '+file);
  assert.doesNotMatch(sitemap,/product-price|aggregateRating/);
 });
