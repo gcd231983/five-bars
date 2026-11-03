@@ -199,3 +199,18 @@ Official-publication source coverage now includes 15 wireless plan rates and fiv
 - [ ] Establish the owner-selected private consumer support channel and actual partner agreements before commercial launch.
 
 These changes improve source coverage and calculation behavior. They do not establish carrier-approved prices, a completed business launch or human review of customer-specific quotes.
+
+
+## Five Bars 4.2 — new-line offer qualification and source rigor (November 2–3, 2026)
+
+- [x] Record five additional **dated public carrier** handset observations: AT&T Prepaid moto g 2026, Verizon Prepaid Galaxy A17/Moto G Play, Verizon iPhone 16e, Mint Pixel 11, and Mint Galaxy S26 FE. Source coverage: **70 of 78** total offers; **eight** still lack a complete source record.
+- [x] Correct the $45 Verizon Prepaid phone-service assumption. The selected free-phone promotion requires a NEW Unlimited line: $60 first service month, $50 subsequent monthly service only with confirmed Auto Pay; otherwise $60/month. The $45 tier is not the qualifying Unlimited plan.
+- [x] Require positive new-line eligibility confirmation for affected device recommendation and savings calculations. Unsupported confirmation never produces a cheaper automatic purchase estimate.
+- [x] Keep Mint's $579 and $480 device-plus-one-year bundles from double-charging included prepaid service; preserve the S26 FE inventory hold.
+- [x] Exclude the expired $199 annual US Mobile plan baseline from Pixel 11 estimated cash. Current bundle service payment is **unknown**, not $0 or a guessed annual rate.
+- [x] Bind new-line eligibility evidence to source-conflict detection and human checkout-signature validation; test unknown eligibility, selected billing, stock and residual unknown costs.
+- [ ] Gather **real, independently observed full checkout evidence** under the owner-controlled sign-off flow. Count remains **0 of 78**; published carrier rates are not a confirmed customer quote.
+- [ ] Complete first-level publication research for the **eight** remaining catalog offers; investigate retailer-specific and financed postpaid offers separately.
+- [ ] Obtain private customer-support provider, terms/privacy approval and signed commercial partner contracts before commission-enabled launch.
+
+No change in these public records establishes an actual checkout total, current customer eligibility, signed advertising contract, partner acceptance or affiliate revenue.
