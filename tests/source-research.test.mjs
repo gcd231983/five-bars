@@ -14,15 +14,17 @@ const ledger=JSON.parse(read('site/data/verifications.json'));
 const date='2026-11-02';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
-test('37 plan baselines and 33 device headlines remain separate from checkout verification',()=>{
- assert.equal(Object.keys(research.records).length,70);
+test('38 plan baselines and 37 device headlines remain separate from checkout verification',()=>{
+ assert.equal(Object.keys(research.records).length,75);
  const audit=build();
  assert.equal(audit.summary.offers,78);
- assert.equal(audit.summary.researched,70);
- assert.equal(audit.summary.notResearched,8);
+ assert.equal(audit.summary.researched,75);
+ assert.equal(audit.summary.notResearched,3);
  assert.equal(audit.summary.availabilityHolds,6);
+ assert.equal(audit.summary.publishedPartial,4);
+ assert.equal(audit.summary.listingHolds,3);
  assert.equal(audit.summary.conflictingOrInvalid,0);
- assert.equal(audit.summary.publishedPriceMatches,70);
+ assert.equal(audit.summary.publishedPriceMatches,71);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  assert.equal(audit.summary.needingFullTerms,78);
  assert.ok(audit.offers.every(x=>x.manualReview!=='verified'));
@@ -136,9 +138,9 @@ test('published source matches do not create human verification records',()=>{
  assert.equal(signed.status,'unverified');
  assert.equal(researchStatus(offer,research.records[offer.id],{today:date}).state,'published_match');
 });
-test('static public source audit prints 70 dated source cards and 8 unresearched offers',()=>{
+test('static public source audit prints 75 dated source cards and 3 unresearched retailer offers',()=>{
  const html=renderResearchPage({catalog,ledger,research,today:date});
- assert.equal((html.match(/class="guide research-article"/g)||[]).length,70);
+ assert.equal((html.match(/class="guide research-article"/g)||[]).length,75);
  assert.match(html,/What our official sources actually confirm/);
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
@@ -147,6 +149,8 @@ test('static public source audit prints 70 dated source cards and 8 unresearched
  assert.match(html,/25/);
  assert.match(html,/Research next — prioritized source checklist/);
  assert.match(html,/Stock and checkout holds \(6\)/);
+ assert.match(html,/Retail-specific price holds \(3\)/);
+ assert.match(html,/SERVICE PRICE UNKNOWN/);
  assert.match(html,/report\.html\?offer=usm-starter/);
  assert.match(html,/Report a correction to this listing/);
  assert.match(html,/OUT OF STOCK on recorded date; no live checkout quote/);
