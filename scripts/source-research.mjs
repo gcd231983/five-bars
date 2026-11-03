@@ -31,7 +31,7 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
  const validFields=kind==='phone'?
   num(record.publishedDevicePrice)&&
   (num(record.publishedPlanMonthly)||
-   (record.publishedServiceUnpriced===true&&record.publishedPlanMonthly===null&&offer?.planPrice==null))&&
+   (record.publishedServiceUnpriced===true&&record.publishedPlanMonthly===null))&&
   (record.publishedServiceUnpriced===undefined||record.publishedServiceUnpriced===true)&&
   (record.publishedGrossRetailPrice===undefined||num(record.publishedGrossRetailPrice))&&
   (record.publishedFinancingMonths===undefined||(Number.isInteger(record.publishedFinancingMonths)&&record.publishedFinancingMonths>=1&&record.publishedFinancingMonths<=48))&&
