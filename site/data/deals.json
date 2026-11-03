@@ -1302,9 +1302,10 @@
       "lock": 12,
       "store": true,
       "url": "https://www.walmart.com/ip/ST-SAMSUNG-S176V-A17-5G-PIB-HANDSET-WALMART-POSA/17591873202",
-      "note": "Straight Talk advertises a conditional $0 Galaxy A17 with qualifying Silver Unlimited service at $45/month on its own website. The separate Walmart in-store listing has NOT been independently verified as eligible for that online promotion. Its $0 handset headline and first-payment total are on hold until exact store-channel terms are confirmed.",
-      "listingHold": "The official Straight Talk website advertises a $0 Galaxy A17 with Silver Unlimited ($45/month) on a qualifying online new-line activation, NOT proof of the selected Walmart in-store device offer. Walmart-specific $0 phone price, taxes and activation channel are unresolved; no cash quote is supported.",
-      "priceSourceDate": "2026-11-02"
+      "note": "Straight Talk's official Galaxy A17 terms publish a $0 phone with in-store activation of Silver Unlimited ($45/30 days) or a higher plan at participating Walmart stores through January 10, 2027, while supplies last. Walmart's separate online device listing shows $99.88 without selected in-store activation. Local stock, customer eligibility, taxes and total due at the counter are NOT independently verified.",
+      "listingHold": "The carrier's published Walmart in-store $0 Galaxy A17 promotion requires activation of Silver Unlimited or higher, but the selected retailer page shows a $99.88 standalone online device price. Store participation, inventory, full checkout cost, taxes and fees remain unverified. This is an advertised promotional headline, NOT an itemized in-store quote; withhold cash and savings estimates.",
+      "priceSourceDate": "2026-11-02",
+      "ends": "2027-01-10"
     },
     {
       "id": "st-a17",
