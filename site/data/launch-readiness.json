@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "asOf": "2026-11-02",
+  "scope": "Repository-derived evidence only; no independently certified shopping cart, tax quotation, traffic, legal approval or paid partnerships.",
+  "technicalStage": "public_beta_engineering",
+  "commercialStage": "blocked_pending_external_evidence",
+  "source": {
+    "total": 78,
+    "researched": 75,
+    "matched": 71,
+    "partial": 4,
+    "unresearched": 3,
+    "conflicts": 0,
+    "retailerHolds": 3,
+    "stockHolds": 6
+  },
+  "checkout": {
+    "reviewed": 0,
+    "unverified": 78,
+    "coveragePercent": 0,
+    "note": "Human checkout evidence is valid only for a documented customer scenario and expires or invalidates after material changes."
+  },
+  "automation": {
+    "lastScan": "2026-11-03T01:56:43.198Z",
+    "scanAgeDays": -1,
+    "scanStatus": "recent",
+    "note": "Automated source reachability and partial headline matching never establish full checkout terms."
+  },
+  "ownerGates": [
+    {
+      "id": "real_checkout",
+      "label": "Independent itemized checkout scenarios",
+      "state": "pending",
+      "note": "0 current signed scenario(s); minimum ten diverse real observations recommended for launch assessment."
+    },
+    {
+      "id": "retailer_holds",
+      "label": "Retailer activation promotions",
+      "state": "pending",
+      "note": "3 retailer-specific price holds remain; never infer a free device from a product page."
+    },
+    {
+      "id": "private_support",
+      "label": "Private consumer support, moderation and retention approval",
+      "state": "pending",
+      "note": "No approved private support channel or operating evidence is recorded here. Public GitHub reports are not private support."
+    },
+    {
+      "id": "legal_privacy",
+      "label": "Business identity, privacy and advertising compliance sign-off",
+      "state": "pending",
+      "note": "Legal identity and independent privacy/advertising review require owner confirmation."
+    },
+    {
+      "id": "partner_contracts",
+      "label": "Executed affiliate approvals and permitted disclosures",
+      "state": "pending",
+      "note": "Prospective network listings are not signed contracts. No paid referral launch is authorized."
+    },
+    {
+      "id": "user_validation",
+      "label": "Real user accessibility and checkout-comprehension testing",
+      "state": "pending",
+      "note": "Automated browser checks do not replace screen-reader, multi-device and nontechnical-user validation."
+    }
+  ]
+}
