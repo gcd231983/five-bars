@@ -148,6 +148,14 @@ function validate(d, prev) {
           p.planDiscountCondition!=='autopay' || p.bundle || p.postpaid)
         errs.push(at + ': phone AutoPay discount requires a valid undiscounted monthly plan rate');
     }
+    if (p.listingHold!=null && (typeof p.listingHold!=='string'||p.listingHold.length<30))
+      errs.push(at + ': listingHold requires a documented editorial hold reason');
+    if (p.grossRetailPrice!=null && (!p.postpaid||!isNum(p.grossRetailPrice,0,5000)))
+      errs.push(at + ': grossRetailPrice must be nonnegative financed handset retail amount');
+    if (p.financingMonths!=null && (!p.postpaid||!Number.isInteger(p.financingMonths)||p.financingMonths<1||p.financingMonths>48))
+      errs.push(at + ': financingMonths must be valid for postpaid financing');
+    if (p.maxBillCredits!=null && (!p.postpaid||!isNum(p.maxBillCredits,0,5000)))
+      errs.push(at + ': maxBillCredits must be nonnegative conditional bill credits');
     if (p.bundleRenewalUnverified != null &&
         (p.bundleRenewalUnverified!==true || !Number.isInteger(p.bundle) || p.bundle<12))
       errs.push(at + ': bundleRenewalUnverified is valid only for a 12+-month included-service bundle');
