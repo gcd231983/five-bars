@@ -24,7 +24,7 @@ export function offerSignature(offer) {
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
     'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
     'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','fullRetailRequired',
-    'availability','availabilityObservedOn','newLineRequired','bundleRenewalUnverified','undiscountedPlanPrice','planDiscountCondition','prepaidServiceTotal',
+    'availability','availabilityObservedOn','listingHold','grossRetailPrice','financingMonths','maxBillCredits','newLineRequired','bundleRenewalUnverified','undiscountedPlanPrice','planDiscountCondition','prepaidServiceTotal',
     'undiscountedPrice','discountCondition','knownMonthlyFee','knownActivationFee','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
@@ -91,6 +91,8 @@ export function checkoutEvidenceIssues(offer,evidence,verifiedAt) {
     issues.push('All taxes and compulsory carrier charges must be included in the observed quote');
   if(offer.promo&&pastEnd(offer.promo.ends,verifiedAt))
     issues.push('An expired introductory promotion cannot receive a current checkout attestation; remove the expired promo before reviewing the regular plan');
+  if(offer.listingHold)
+    issues.push('This retailer-specific headline remains held for evidence review and cannot be checkout-attested');
   if(evidence.stockConfirmed!==true||offer.availability==='out_of_stock'||pastEnd(offer.ends,verifiedAt))
     issues.push('Offer must have confirmed available inventory and not be expired or held out of stock');
   if(!evidence.checks||typeof evidence.checks!=='object'||Array.isArray(evidence.checks)||
@@ -188,6 +190,8 @@ export function planCost(plan, count = 1, options = {}) {
     promoSuppressedForNotNew:!!promo && promo.req==='new' && options.newCustomer!==true};
 }
 export function phoneCost(phone, options = {}) {
+  if(phone.listingHold)return {due:null,commitment:null,year:null,netDevice:null,
+    listingHold:true,planPrice:null,conditionalRewardsExcluded:true};
   if(phone.availability==='out_of_stock')return {due:null,commitment:null,year:null,
     netDevice:null,unavailable:true,financingUncertain:false,planPrice:null,
     firstMonthPlanPrice:null,conditionalRewardsExcluded:true};
@@ -260,7 +264,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
   const phones = (catalog.phones || [])
     .filter(d => networkOK(d.net,network) &&
       (!preferences.provider || preferences.provider==='any' || d.carrier===preferences.provider) &&
-      !pastEnd(d.ends,today) && d.availability!=='out_of_stock' && !(d.port && !canPort) &&
+      !pastEnd(d.ends,today) && d.availability!=='out_of_stock' && !d.listingHold && !(d.port && !canPort) &&
       !(d.newLineRequired===true && preferences.newCustomer!==true) &&
       !(d.prepay>0 && !Number.isFinite(d.planPrice) && !d.bundle))
     .map(d => {
