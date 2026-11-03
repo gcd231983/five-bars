@@ -31,6 +31,8 @@ export function expireKnownOffers(data, today) {
 }
 
 export function phoneCosts(d, options = {}) {
+  if(d.listingHold)return {dueToday:null,minCommitment:null,firstYear:null,netDevice:null,
+    listingHold:true,conditionalRewardsExcluded:true};
   if(d.availability==='out_of_stock')return {dueToday:null,minCommitment:null,firstYear:null,netDevice:null,
     unavailable:true,rebate:0,firstMonthAssumed:false,conditionalRewardsExcluded:true};
   const device=Number(d.price);

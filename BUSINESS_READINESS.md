@@ -214,3 +214,16 @@ These changes improve source coverage and calculation behavior. They do not esta
 - [ ] Obtain private customer-support provider, terms/privacy approval and signed commercial partner contracts before commission-enabled launch.
 
 No change in these public records establishes an actual checkout total, current customer eligibility, signed advertising contract, partner acceptance or affiliate revenue.
+
+## Five Bars 4.3 — distinguish carrier evidence from retail-store promotions and installment credits
+
+- [x] Replace the unsupported Cricket Walmart-SIM $25 monthly interpretation with the documented **$300 prepaid for 12 months** BYOD plan ($25/month equivalent), limited to one line; the former Walmart checkout claim was not corroborated.
+- [x] Place the selected Walmart Verizon Galaxy A17, Walmart Straight Talk Galaxy A17 and Simple Mobile Galaxy A16 device headlines on explicit **retailer evidence holds**. They remain visible only as historical research leads, never as purchasable $0 cost/savings recommendations; they are not claimed out of stock.
+- [x] Document conditional gross retail, installment duration and potential bill-credit ceilings for three iPhone 18 Pro financed offers. Unknown qualifying service remains **null**, rather than a fabricated $80 plan or $0 upfront total.
+- [x] Add a partial official-source state for the three financed offers and the US Mobile Pixel 11 with missing annual-plan cash. Public-source research now covers **75 of 78** listings: **71 matched published baselines**, **4 partial device/headline records** with unpriced service, **3 retailer-specific listings still without sufficient first-party source research**.
+- [x] Enforce holds in list estimates, finder, comparison, Switch & Save, signed checkout attestations, and source audits; preserve source/date/signature sensitivity and focused regression tests.
+- [ ] Confirm exact store-specific device and required-service checkout for three held listings; obtain ZIP-specific activation, tax and payment-method totals for the other listings.
+- [ ] Record actual checkout and full-terms evidence through the protected human review flow (**still 0 of 78**).
+- [ ] Establish private support and execute actual partnership agreements before commercial revenue.
+
+Neither a URL, publication, retailer result nor the visitor's eligibility checkbox is independent verification of the itemized checkout total.

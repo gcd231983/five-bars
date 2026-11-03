@@ -348,7 +348,7 @@
     {
       "id": "cricket-25",
       "carrier": "Cricket",
-      "plan": "$25 Unlimited, Walmart SIM",
+      "plan": "12-Month Unlimited BYOD — $300 prepaid",
       "net": "att",
       "unl": true,
       "price": 25,
@@ -356,8 +356,12 @@
       "pri": false,
       "hot": null,
       "video": null,
-      "extra": "Walmart-only bring-your-phone plan. The SIM costs $8.49.",
-      "url": "https://www.walmart.com/ip/NR-BYOD-5G-UICC-I-pSIM-Kit/15165606153"
+      "extra": "Cricket's official $25/month EQUIVALENT is $300 due upfront for 12 months, for one newly opened single-line account bringing its own compatible phone. This is not ordinary monthly billing and is not the previously assumed Walmart SIM promotion. Taxes included in the published plan price; in-store activation fees may apply. Actual checkout, future renewal and activation channel remain unverified.",
+      "url": "https://www.cricketwireless.com/shop/cell-phone-plans/select",
+      "billingMonths": 12,
+      "billingUpfront": 300,
+      "maxLines": 1,
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "cricket-supreme",
@@ -1281,7 +1285,9 @@
       "lock": 12,
       "store": true,
       "url": "https://www.walmart.com/ip/Verizon-Prepaid-Galaxy-A17-5G-128GB-Prepaid-Smartphone-Black/17874774562",
-      "note": "Activate in a Walmart store."
+      "note": "Walmart currently publishes this Verizon Prepaid Galaxy A17 at about $99.88 before promotions. The previously cataloged $0 handset with a $35 plan is not supported by a carrier-verified Walmart store promotion. Verizon's separate $0 Galaxy A17 carrier offer requires a new Unlimited line, not a $35 limited-data tier. Do not infer an in-store $0 checkout or quote.",
+      "listingHold": "The selected Walmart Galaxy A17 listing currently advertises a retail handset price, not a substantiated $0 store activation. Verizon's $0 promotion requires a NEW Unlimited line; a separate $35 limited-data plan does NOT establish eligibility. No independent Walmart in-store cash or activation quote exists. Suppress amounts until the exact channel, plan and handset price are confirmed.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "wm-st-a17",
@@ -1296,7 +1302,9 @@
       "lock": 12,
       "store": true,
       "url": "https://www.walmart.com/ip/ST-SAMSUNG-S176V-A17-5G-PIB-HANDSET-WALMART-POSA/17591873202",
-      "note": "Activate in a Walmart store."
+      "note": "Straight Talk advertises a conditional $0 Galaxy A17 with qualifying Silver Unlimited service at $45/month on its own website. The separate Walmart in-store listing has NOT been independently verified as eligible for that online promotion. Its $0 handset headline and first-payment total are on hold until exact store-channel terms are confirmed.",
+      "listingHold": "The official Straight Talk website advertises a $0 Galaxy A17 with Silver Unlimited ($45/month) on a qualifying online new-line activation, NOT proof of the selected Walmart in-store device offer. Walmart-specific $0 phone price, taxes and activation channel are unresolved; no cash quote is supported.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "st-a17",
@@ -1356,7 +1364,10 @@
       "planPrice": 50,
       "port": false,
       "lock": 12,
-      "url": "https://shop.simplemobile.com/shop/en/simplemobile/phones/sm-samsung-galaxy-a16-5g"
+      "url": "https://shop.simplemobile.com/shop/en/simplemobile/phones/sm-samsung-galaxy-a16-5g",
+      "listingHold": "Simple Mobile's dynamic handset store has not yielded an attributable carrier-published $0 Galaxy A16 plus $50 plan offer for this specific selected purchase path. Do not treat third-party comparison snippets as an official checkout, customer eligibility or current stock confirmation.",
+      "note": "Galaxy A16's previously listed $0 device price with a $50 plan has not been corroborated on an accessible official carrier product offer page. The store displays dynamic content and cannot establish this selected promotion or required service. Price and savings estimates are withheld pending carrier confirmation.",
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "mint-p11",
@@ -1439,9 +1450,13 @@
       "postpaid": true,
       "port": false,
       "lock": 36,
-      "url": "https://www.t-mobile.com",
-      "note": "Credit was cut to up to $1,000 off, so about $200 remains. Needs a new line or trade-in on a $100+ plan. Paid back as bill credits over 36 months.",
-      "warn": "Financed/trade-in promotion: retail device price, installments, plan and bill-credit loss terms are incomplete. Five Bars withholds upfront, commitment and first-year costs pending a complete carrier quote."
+      "url": "https://www.t-mobile.com/offers/apple-iphone-deals",
+      "note": "Published selected iPhone 18 Pro 256GB retail price $1,199.99; up to $1,000 promotional discount may require qualifying activation/number transfer and eligible Experience Beyond service ($100+/month with AutoPay; other taxes/fees). Discount comes as up to 36 monthly bill credits, not cash upfront; device gross balance, credits earned, $35 connection charge, full-price tax and early termination exposure require an actual agreement. The $199.99 headline is a potential NET device cost after MAXIMUM credits, NOT checkout cash.",
+      "warn": "Financed iPhone: retail $1,199.99 before credits; potential $1,000 credit is conditional over up to 36 months, not a guaranteed upfront price. Calculator intentionally withholds cash totals and rankings pending carrier quote.",
+      "grossRetailPrice": 1199.99,
+      "financingMonths": 36,
+      "maxBillCredits": 1000,
+      "newLineRequired": true
     },
     {
       "id": "vz-18pro",
@@ -1450,13 +1465,17 @@
       "os": "iphone",
       "net": "vzw",
       "price": 0,
-      "planPrice": 80,
+      "planPrice": null,
       "postpaid": true,
       "port": true,
       "lock": 12,
-      "url": "https://www.verizon.com",
-      "note": "Switch and pay $80/mo for phone and plan, no trade-in. Upgrade every year by returning the old phone in good condition.",
-      "warn": "Financed/trade-in promotion: retail device price, installments, plan and bill-credit loss terms are incomplete. Five Bars withholds upfront, commitment and first-year costs pending a complete carrier quote."
+      "url": "https://www.verizon.com/about/news/iphone-duo-verizon-offers",
+      "note": "Official Verizon Simplicity Pro iPhone 18 Pro (256GB) publication describes $1,199.99 retail financed over 36 months with up to $1,200 in conditional monthly bill credits, on a qualifying new or upgraded line. The previously assumed $80/month combined service scenario is NOT supported as a universal plan charge and is removed from cost calculations; selected service price remains unknown. Actual Simplicity/Simplicity Pro, Auto Pay and number-transfer eligibility require checkout evidence. Yearly upgrade requires returning a working phone after 33% of installments have been paid. No $0 cash checkout, guaranteed $80 package or universal upgrade eligibility is certified.",
+      "warn": "Financed iPhone: gross retail $1,199.99 and 36-month obligation; promotional bill credits and early-upgrade returns are conditional. Withhold cash totals pending the full selected carrier agreement.",
+      "grossRetailPrice": 1199.99,
+      "financingMonths": 36,
+      "maxBillCredits": 1200,
+      "newLineRequired": true
     },
     {
       "id": "att-18pro",
@@ -1469,9 +1488,12 @@
       "postpaid": true,
       "port": false,
       "lock": 36,
-      "url": "https://www.att.com",
-      "note": "$0/mo with an eligible iPhone trade-in on a qualifying unlimited plan. Bill credits over 36 months.",
-      "warn": "Financed/trade-in promotion: retail device price, installments, plan and bill-credit loss terms are incomplete. Five Bars withholds upfront, commitment and first-year costs pending a complete carrier quote."
+      "url": "https://www.att.com/buy/phones/apple-iphone-18-pro.html",
+      "note": "AT&T lists the iPhone 18 Pro at $1,199.99 retail ($33.34/month over 36 months). As-low-as $0 net device payment requires an eligible trade-in (published $230+ trade-in threshold) and eligible service; up to $1,200 in conditional credits over 36 months. Full-price device tax is due at sale, and $0 down requires qualifying financing. Personal trade-in value, plan price, taxes, fees and loss of credits on early exit are unverified; $0 is NOT a guaranteed checkout price.",
+      "warn": "Financed iPhone: $1,199.99 gross retail on a 36-month agreement. $0 net is conditional on trade-in and eligible plan, applied in credits; upfront and payoff totals are withheld.",
+      "grossRetailPrice": 1199.99,
+      "financingMonths": 36,
+      "maxBillCredits": 1200
     }
   ]
 }
