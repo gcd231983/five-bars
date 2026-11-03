@@ -5,7 +5,7 @@ import {validDay,verificationState,usd,localDay} from '../site/value-core.mjs';
 export const BASE='https://gcd231983.github.io/five-bars/';
 export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired','publishedPromoPrice','publishedPromoMonths','publishedPromoRequirement',
   'publishedUndiscountedPrice','publishedDiscountCondition','publishedKnownMonthlyFee','publishedKnownActivationFee','publishedAvailability',
-  'publishedUndiscountedPlanPrice','publishedPlanDiscountCondition','publishedPrepaidServiceTotal'];
+  'publishedUndiscountedPlanPrice','publishedPlanDiscountCondition','publishedPrepaidServiceTotal','publishedNewLineRequired'];
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'
 })[c]);
@@ -31,6 +31,7 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
  const validFields=kind==='phone'?
   num(record.publishedDevicePrice)&&num(record.publishedPlanMonthly)&&
   typeof record.publishedPortRequired==='boolean'&&
+  (record.publishedNewLineRequired===undefined||typeof record.publishedNewLineRequired==='boolean')&&
   ((record.publishedUndiscountedPlanPrice===undefined&&record.publishedPlanDiscountCondition===undefined)||
    (num(record.publishedUndiscountedPlanPrice)&&record.publishedUndiscountedPlanPrice>=record.publishedPlanMonthly&&record.publishedPlanDiscountCondition==='autopay'))&&
   (record.publishedFirstMonthPlanPrice===undefined||num(record.publishedFirstMonthPlanPrice))&&
@@ -64,6 +65,8 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
   if(record.publishedUndiscountedPlanPrice!==undefined&&
     (offer.undiscountedPlanPrice!==record.publishedUndiscountedPlanPrice||offer.planDiscountCondition!==record.publishedPlanDiscountCondition))
    issues.push('phone service AutoPay condition or undiscounted monthly rate differs from official source');
+  if(record.publishedNewLineRequired!==undefined&&offer.newLineRequired!==record.publishedNewLineRequired)
+   issues.push('new-line activation requirement differs from official selected offer');
   if(offer.port!==record.publishedPortRequired)
    issues.push('number-transfer requirement differs from official conditional headline');
   if(record.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==record.publishedFirstMonthPlanPrice)
