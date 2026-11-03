@@ -24,7 +24,7 @@ export function offerSignature(offer) {
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
     'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
     'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','fullRetailRequired',
-    'availability','availabilityObservedOn','undiscountedPlanPrice','planDiscountCondition','prepaidServiceTotal',
+    'availability','availabilityObservedOn','newLineRequired','undiscountedPlanPrice','planDiscountCondition','prepaidServiceTotal',
     'undiscountedPrice','discountCondition','knownMonthlyFee','knownActivationFee','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
@@ -66,7 +66,7 @@ export function checkoutEvidenceIssues(offer,evidence,verifiedAt) {
     issues.push('Specify the exact new-line/number-transfer customer scenario');
   if((offer.port===true||offer.promo?.req==='port')&&evidence.customerScenario!=='new_line_port')
     issues.push('The selected port promotion requires a matching port-in scenario');
-  if(offer.promo?.req==='new'&&!['new_line_port','new_line_no_port'].includes(evidence.customerScenario))
+  if((offer.promo?.req==='new'||offer.newLineRequired===true)&&!['new_line_port','new_line_no_port'].includes(evidence.customerScenario))
     issues.push('New-customer promotion requires a new-line scenario');
   if(!cents(evidence.upfrontCents)||!cents(evidence.renewalCents))
     issues.push('Enter actual initial and recurring quote amounts as integer cents');
@@ -242,6 +242,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
   const canPort = preferences.canPort===true && !cannotPort;
   const unconfirmedPhonePorts=(catalog.phones||[]).filter(d=>d.port===true && d.availability!=='out_of_stock' && !canPort).length;
   const unavailablePhones=(catalog.phones||[]).filter(d=>d.availability==='out_of_stock').length;
+  const unconfirmedNewLines=(catalog.phones||[]).filter(d=>d.newLineRequired===true&&d.availability!=='out_of_stock'&&preferences.newCustomer!==true).length;
   const plans = (catalog.plans || [])
     .filter(p => networkOK(p.net,network) && (!preferences.provider || preferences.provider==='any' || p.carrier===preferences.provider) && (!p.maxLines || lines<=p.maxLines) &&
       (!preferences.priority || p.pri===true) && (!preferences.hotspot || !!p.hot))
@@ -256,7 +257,9 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
   const phones = (catalog.phones || [])
     .filter(d => networkOK(d.net,network) &&
       (!preferences.provider || preferences.provider==='any' || d.carrier===preferences.provider) &&
-      !pastEnd(d.ends,today) && d.availability!=='out_of_stock' && !(d.port && !canPort))
+      !pastEnd(d.ends,today) && d.availability!=='out_of_stock' && !(d.port && !canPort) &&
+      !(d.newLineRequired===true && preferences.newCustomer!==true) &&
+      !(d.prepay>0 && !Number.isFinite(d.planPrice) && !d.bundle))
     .map(d => {
       const cost = phoneCost(d,{discountQualified:preferences.discountQualified===true});
       return cost && {type:'phone',id:d.id,offer:d,cost,year:cost.year,
@@ -277,6 +280,8 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
         ['Introductory discounts are excluded for multiple lines unless family eligibility is explicitly recorded.'] : []),
       ...(plans.some(x=>x.cost.promoSuppressedForUnconfirmedPort) ?
         ['Port-in introductory discounts are excluded until you confirm you can transfer an eligible number.'] : []),
+      ...(unconfirmedNewLines>0 ?
+        [unconfirmedNewLines+' new-line-only device promotion(s) are excluded until you explicitly confirm eligible new activation. They remain browsable in Phone Deals.'] : []),
       ...(unavailablePhones>0 ?
         [unavailablePhones+' phone promotion(s) observed out of stock are excluded from recommendations and savings estimates.'] : []),
       ...(unconfirmedPhonePorts>0 ?
