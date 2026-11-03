@@ -75,10 +75,12 @@ test('Mint bundles count annual prepaid service exactly once and respect observe
  assert.equal(p.planPrice,15);
  assert.equal(phoneCost(p,{newCustomer:true}).due,579);
  assert.equal(phoneCost(p,{newCustomer:true}).year,579);
- const report=run('mint-p11');
- assert.equal(report.chosen.upfrontDue,579);
- assert.equal(report.results[12].newTotal,579);
+ assert.equal(p.bundleRenewalUnverified,true);
+ assert.equal(research.records['mint-p11'].publishedBundleRenewalUnverified,true);
+ assert.equal(researchStatus({...p,bundleRenewalUnverified:undefined},research.records['mint-p11'],{today:day}).state,'conflict');
+ assert.throws(()=>run('mint-p11'),/renewal rate after month 12 is unknown/i);
  assert.equal(blocked.availability,'out_of_stock');
+ assert.equal(blocked.bundleRenewalUnverified,true);
  assert.equal(phoneCost(blocked,{newCustomer:true}).due,null);
  assert.throws(()=>run('mint-s26fe'),/out of stock/i);
 });
