@@ -48,6 +48,7 @@ test('official dated evidence is auditable, sourced with HTTPS, exact offer IDs,
    const url=new URL(source.url);
    assert.equal(url.protocol,'https:');
    assert.ok(url.hostname.endsWith('att.com')||url.hostname.endsWith('verizon.com')||
+    url.hostname.endsWith('t-mobile.com')||
     url.hostname.endsWith('usmobile.com')||
     url.hostname.endsWith('visible.com')||url.hostname.endsWith('tello.com')||
     url.hostname.endsWith('mintmobile.com')||url.hostname.endsWith('cricketwireless.com')||
