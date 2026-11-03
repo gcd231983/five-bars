@@ -151,6 +151,8 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
   const config=normalizeScenario(scenario);
   const offer=sampleOffer(catalog,type,id);
   if(!offer)throw Error('The selected listing is not in the current catalog.');
+  if(type==='phone'&&offer.listingHold)
+    throw Error('This retailer-specific phone promotion is under evidence review. No purchasing or savings estimate can be shown until selected channel and plan are confirmed.');
   if(type==='phone'&&offer.availability==='out_of_stock')
     throw Error('This handset promotion was observed out of stock. Current checkout and switch-savings estimates are withheld pending a new carrier stock check.');
   if(type==='phone'&&offer.postpaid===true)
