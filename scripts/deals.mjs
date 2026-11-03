@@ -148,6 +148,9 @@ function validate(d, prev) {
           p.planDiscountCondition!=='autopay' || p.bundle || p.postpaid)
         errs.push(at + ': phone AutoPay discount requires a valid undiscounted monthly plan rate');
     }
+    if (p.bundleRenewalUnverified != null &&
+        (p.bundleRenewalUnverified!==true || !Number.isInteger(p.bundle) || p.bundle<12))
+      errs.push(at + ': bundleRenewalUnverified is valid only for a 12+-month included-service bundle');
     if (p.newLineRequired != null && typeof p.newLineRequired !== 'boolean')
       errs.push(at + ': newLineRequired must be true/false when supplied');
     if (p.postpaid != null && typeof p.postpaid !== 'boolean') errs.push(at + ': postpaid must be boolean');
