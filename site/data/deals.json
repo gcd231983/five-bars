@@ -1372,7 +1372,8 @@
       "note": "Mint's published Google Pixel 11 new-customer bundle is $399 phone + $180 for 12 prepaid Unlimited months = $579 upfront before taxes and fees (an effective $15/month service rate, already INCLUDED in the bundle, not charged twice). Selected promotional checkout/eligibility and inventory are not certified; device page lists an eSIM-only, carrier-locked phone.",
       "planPrice": 15,
       "newLineRequired": true,
-      "priceSourceDate": "2026-11-02"
+      "priceSourceDate": "2026-11-02",
+      "bundleRenewalUnverified": true
     },
     {
       "id": "mint-s26fe",
@@ -1391,7 +1392,8 @@
       "warn": "Official device page showed out of stock on November 2, 2026. Do not treat the published device headline as a purchasable checkout offer. Inventory may change; recheck with the carrier.",
       "planPrice": 15,
       "newLineRequired": true,
-      "priceSourceDate": "2026-11-02"
+      "priceSourceDate": "2026-11-02",
+      "bundleRenewalUnverified": true
     },
     {
       "id": "usm-p11",
