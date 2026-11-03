@@ -1902,6 +1902,145 @@
       ],
       "publishedNewLineRequired": true,
       "publishedBundleRenewalUnverified": true
+    },
+    "cricket-25": {
+      "observedOn": "2026-11-02",
+      "carrier": "Cricket",
+      "kind": "plan",
+      "term": "annual_prepaid_bring_your_own_phone",
+      "publishedMonthly": 25,
+      "billingMonths": 12,
+      "billingUpfront": 300,
+      "sources": [
+        {
+          "url": "https://www.cricketwireless.com/shop/cell-phone-plans/select",
+          "supports": "Carrier's prepaid Unlimited BYOD rate displayed as $25 monthly equivalent when $300 is paid for 12 months, subject to new-account terms"
+        }
+      ],
+      "supportedFacts": [
+        "Cricket markets a one-line Unlimited BYOD 12-month upfront service offer: $300 cash prepaid (equivalent to $25 per month), not $25 paid monthly.",
+        "The prior Walmart SIM-only listing did not establish an ordinary monthly rate or its channel-specific activation eligibility."
+      ],
+      "unresolved": [
+        "Confirm actual annual Unlimited BYOD plan selection, new-line eligibility and payment in checkout.",
+        "Confirm taxes, SIM/eSIM, activation-channel charges and current availability before ordering.",
+        "Confirm plan's high-speed/hotspot features and the subsequent annual renewal rate/terms."
+      ]
+    },
+    "usm-p11": {
+      "observedOn": "2026-11-02",
+      "carrier": "US Mobile",
+      "kind": "phone",
+      "term": "device_headline_with_unpriced_required_annual_service",
+      "publishedDevicePrice": 539,
+      "publishedPlanMonthly": null,
+      "publishedServiceUnpriced": true,
+      "publishedPortRequired": false,
+      "publishedNewLineRequired": true,
+      "sources": [
+        {
+          "url": "https://www.usmobile.com/pixel-promo",
+          "supports": "US Mobile conditional Pixel 11 $539 purchase with a new Unlimited annual plan; current required annual-plan cash total not established"
+        }
+      ],
+      "supportedFacts": [
+        "Selected Pixel 11 $539 handset headline is conditional on purchase with a newly activated annual plan, rather than a verified standalone cash device price.",
+        "An earlier $199 annual Starter deal ended September 29, 2026; its former annual service cost cannot be carried forward as current checkout cash."
+      ],
+      "unresolved": [
+        "Verify current eligible new annual-plan selection and exact annual service prepayment, not an expired code.",
+        "Observe itemized handset cost, taxes, shipping, SIM/eSIM and activation terms in the selected live checkout.",
+        "Confirm handset lock/IMEI, return/cancellation and renewal pricing before quoting an annual total."
+      ]
+    },
+    "tmo-18pro": {
+      "observedOn": "2026-11-02",
+      "carrier": "T-Mobile",
+      "kind": "phone",
+      "term": "conditional_financed_net_headline_not_checkout",
+      "publishedDevicePrice": 199.99,
+      "publishedPlanMonthly": null,
+      "publishedServiceUnpriced": true,
+      "publishedPortRequired": false,
+      "publishedGrossRetailPrice": 1199.99,
+      "publishedFinancingMonths": 36,
+      "publishedMaxBillCredits": 1000,
+      "sources": [
+        {
+          "url": "https://www.t-mobile.com/offers/apple-iphone-deals",
+          "supports": "Official carrier promotion and financing conditions for an iPhone 18 Pro with carrier-specific qualifying service and future monthly credits"
+        }
+      ],
+      "supportedFacts": [
+        "Carrier advertises conditional up-to-$1,000 device bill credits over a qualifying installment/activation arrangement; selected net headline is not cash payable at sale.",
+        "Gross handset retail is $1,199.99 before conditional monthly credits; required plan payment and any credit eligibility are not documented as customer-specific cash."
+      ],
+      "unresolved": [
+        "Verify exact eligibility, device/storage choice, activation channel and real-time availability at carrier checkout.",
+        "Obtain itemized initial charge, all compulsory taxes/fees, service prepayment and recurring service bill for the chosen ZIP and number of lines.",
+        "Confirm credit timing, plan renewal, unlock conditions, cancellations and early-exit balances using the actual offer agreement.",
+        "Obtain actual agreement showing financed amount, trade-in valuation, credit schedule and remaining balance if the line or plan changes."
+      ],
+      "publishedNewLineRequired": true
+    },
+    "vz-18pro": {
+      "observedOn": "2026-11-02",
+      "carrier": "Verizon",
+      "kind": "phone",
+      "term": "conditional_financed_net_headline_not_checkout",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": null,
+      "publishedServiceUnpriced": true,
+      "publishedPortRequired": true,
+      "publishedGrossRetailPrice": 1199.99,
+      "publishedFinancingMonths": 36,
+      "publishedMaxBillCredits": 1200,
+      "sources": [
+        {
+          "url": "https://www.verizon.com/about/news/iphone-duo-verizon-offers",
+          "supports": "Official carrier promotion and financing conditions for an iPhone 18 Pro with carrier-specific qualifying service and future monthly credits"
+        }
+      ],
+      "supportedFacts": [
+        "Carrier advertises device retail financing and conditional up-to-$1,200 credits; the earlier $80 all-inclusive service quote was not established for the selected buyer.",
+        "Gross handset retail is $1,199.99 before conditional monthly credits; required plan payment and any credit eligibility are not documented as customer-specific cash."
+      ],
+      "unresolved": [
+        "Verify exact eligibility, device/storage choice, activation channel and real-time availability at carrier checkout.",
+        "Obtain itemized initial charge, all compulsory taxes/fees, service prepayment and recurring service bill for the chosen ZIP and number of lines.",
+        "Confirm credit timing, plan renewal, unlock conditions, cancellations and early-exit balances using the actual offer agreement.",
+        "Obtain actual agreement showing financed amount, trade-in valuation, credit schedule and remaining balance if the line or plan changes."
+      ],
+      "publishedNewLineRequired": true
+    },
+    "att-18pro": {
+      "observedOn": "2026-11-02",
+      "carrier": "AT&T",
+      "kind": "phone",
+      "term": "conditional_financed_net_headline_not_checkout",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": null,
+      "publishedServiceUnpriced": true,
+      "publishedPortRequired": false,
+      "publishedGrossRetailPrice": 1199.99,
+      "publishedFinancingMonths": 36,
+      "publishedMaxBillCredits": 1200,
+      "sources": [
+        {
+          "url": "https://www.att.com/buy/phones/apple-iphone-18-pro.html",
+          "supports": "Official carrier promotion and financing conditions for an iPhone 18 Pro with carrier-specific qualifying service and future monthly credits"
+        }
+      ],
+      "supportedFacts": [
+        "Carrier advertises an up-to-$1,200 trade-in/bill-credit offer and a 36-month installment agreement; an as-low-as $0 net device payment is conditional, not a free checkout.",
+        "Gross handset retail is $1,199.99 before conditional monthly credits; required plan payment and any credit eligibility are not documented as customer-specific cash."
+      ],
+      "unresolved": [
+        "Verify exact eligibility, device/storage choice, activation channel and real-time availability at carrier checkout.",
+        "Obtain itemized initial charge, all compulsory taxes/fees, service prepayment and recurring service bill for the chosen ZIP and number of lines.",
+        "Confirm credit timing, plan renewal, unlock conditions, cancellations and early-exit balances using the actual offer agreement.",
+        "Obtain actual agreement showing financed amount, trade-in valuation, credit schedule and remaining balance if the line or plan changes."
+      ]
     }
   }
 }
