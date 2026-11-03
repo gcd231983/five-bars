@@ -203,6 +203,9 @@ export function phoneCost(phone, options = {}) {
     financingUncertain:true,planPrice:validPlan,firstMonthPlanPrice:null,
     prepay:Math.max(0,Number(phone.prepay)||0),stay:Math.max(0,Number(phone.stay)||0),
     conditionalRewardsExcluded:true};
+  if(phone.newLineRequired===true && options.newCustomer!==true)
+    return {due:null,commitment:null,year:null,netDevice:price,planPrice:validPlan,
+      requiresNewLine:true,conditionalRewardsExcluded:true};
   const prepay=Math.max(0,Number(phone.prepay)||0);
   const stay=Math.max(0,Number(phone.stay)||0);
   const bundle=Math.max(0,Number(phone.bundle)||0);
