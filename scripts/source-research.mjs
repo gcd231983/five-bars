@@ -265,11 +265,12 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
  }
  sections.push('</ul></section><section><h2>Research next — prioritized source checklist</h2>'+
   '<p>Priorities are deterministic screening suggestions, not carrier ratings. Research listed links before making customer-specific claims. A link may point to a retailer rather than the carrier. Each listing requires a dated carrier publication plus eligibility, payment and stock confirmation.</p><ol>');
- const pending=audit.offers.filter(x=>x.researchState==='not_researched').map(item=>{
+ const pending=audit.offers.filter(x=>['not_researched','published_partial'].includes(x.researchState)).map(item=>{
   const phone=item.kind==='phone';
   const postpaid=catalog.phones.some(x=>x.id===item.id&&x.postpaid);
   const risk=postpaid?0:phone?1:2;
-  const why=postpaid?'Financing retail balance, installments and credit-loss terms missing':
+  const why=item.researchState==='published_partial'?'Official device facts recorded, but qualifying service/financing cash remains unpriced':
+    postpaid?'Financing retail balance, installments and credit-loss terms missing':
     phone?'Phone price, qualifying service, device tax, stock and transfer terms to confirm':
     'Plan rate, taxes, AutoPay, activation and household terms to confirm';
   return {item,risk,why};
