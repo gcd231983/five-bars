@@ -168,6 +168,7 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
         (offer.undiscountedPlanPrice!==published.publishedUndiscountedPlanPrice||offer.planDiscountCondition!==published.publishedPlanDiscountCondition))||
        offer.port!==published.publishedPortRequired||
        (published.publishedNewLineRequired!==undefined&&offer.newLineRequired!==published.publishedNewLineRequired)||
+       (published.publishedBundleRenewalUnverified===true&&offer.bundleRenewalUnverified!==true)||
        (published.publishedPrepayMonths!==undefined&&offer.prepay!==published.publishedPrepayMonths)||
        (published.publishedPrepaidServiceTotal!==undefined&&offer.prepaidServiceTotal!==published.publishedPrepaidServiceTotal)||
        (published.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==published.publishedFirstMonthPlanPrice)||
