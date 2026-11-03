@@ -23,6 +23,27 @@ test('static site JavaScript parses and uses no misleading cash-to-walk-away lab
   assert.doesNotMatch(html, /id="(?:t|p)-ask"/, 'removed assistant UI cannot be activated');
 });
 
+test('homepage evidence snapshot discloses sourced claims without treating them as checkout quotes', {skip},()=>{
+ const html=readFileSync(sitePath,'utf8');
+ assert.match(html, /href="#main-content">Skip to main content/);
+ assert.match(html, /id="main-content" tabindex="-1"/);
+ assert.match(html, /id="fb-evidence-summary-copy" aria-live="polite"/);
+ assert.match(html, /href="launch-readiness.html">View evidence status/);
+ const code=html.match(/^function renderEvidenceSummary\(\)\{[\s\S]*?^\}/m)?.[0];
+ assert.ok(code,'Dynamic evidence summary is defined');
+ const render=research=>{
+   const node={textContent:''};
+   runInNewContext(code+';renderEvidenceSummary();',{
+     $:()=>node,RESEARCH_AUDIT:research
+   });
+   return node.textContent;
+ };
+ assert.match(render({summary:{offers:78,researched:76,publishedPriceMatches:72,publishedPartial:4,manuallyFullyReviewed:0,listingHolds:3}}),
+   /76 of 78 offers.*72 rate matches, 4 partial.*0 independently documented full-checkout reviews.*3 retailer checkout offers on hold/);
+ assert.match(render(null),/counts unavailable/);
+ assert.match(render({summary:{offers:78,researched:999}}),/counts unavailable/);
+});
+
 test('site and tested phone-cost helper agree on sample checkout math', { skip }, () => {
   const html = readFileSync(sitePath, 'utf8');
   const source = html.match(/^function phoneCalc\(d\)\{[\s\S]*?^\}/m)?.[0];

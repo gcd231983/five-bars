@@ -53,6 +53,8 @@ button,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .wrap{max-width:860px;margin:0 auto;padding:0 18px}
 
+.fb-skip-link{position:absolute;top:-80px;left:18px;z-index:30;background:var(--surface);color:var(--ink);padding:10px 14px;border:2px solid var(--accent);border-radius:7px}
+.fb-skip-link:focus{top:12px}
 /* Hero */
 .hero{padding-top:30px;padding-bottom:20px}
 .brand{display:flex;align-items:flex-end;gap:14px}
@@ -72,6 +74,11 @@ button,select,textarea{font:inherit;color:inherit}
 .tog[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .fresh{font-size:.88rem;color:var(--muted);margin-top:16px}
 .fresh button{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer;font-size:inherit}
+.fb-evidence-summary{display:flex;align-items:center;justify-content:space-between;gap:9px 18px;margin-top:18px;padding:13px 15px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:.86rem}
+.fb-evidence-summary strong{display:block;font-weight:750}
+.fb-evidence-summary p{margin:3px 0 0;color:var(--muted)}
+.fb-evidence-summary a{flex-shrink:0;font-weight:700}
+@media(max-width:620px){.fb-evidence-summary{align-items:flex-start;flex-direction:column}}
 
 /* Tabs */
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);z-index:5;border-bottom:1px solid var(--line)}
@@ -249,6 +256,7 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
 </style>
 </head>
 <body>
+<a class="fb-skip-link" href="#main-content">Skip to main content</a>
 
 <header class="hero wrap">
   <div class="brand">
@@ -291,6 +299,10 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
   </p>
   <div class="toggles" id="toggles" role="group" aria-label="Must-haves"></div>
   <p class="fresh" id="fresh"></p>
+  <div class="fb-evidence-summary" id="fb-evidence-summary" aria-label="Pricing evidence snapshot">
+    <div><strong>Public beta: pricing evidence, not a checkout guarantee</strong><p id="fb-evidence-summary-copy" aria-live="polite">Check published-source research and actual carrier checkout before purchasing.</p></div>
+    <a href="launch-readiness.html">View evidence status</a>
+  </div>
 </header>
 
 <nav class="tabs" aria-label="Sections">
@@ -307,7 +319,7 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
   <p class="fb-tab-swipe">Swipe sideways for Compare, Switch &amp; save, My watchlist, Price watch and Sources.</p>
 </nav>
 
-<main class="wrap">
+<main class="wrap" id="main-content" tabindex="-1">
   <section id="p-finder" role="tabpanel" aria-labelledby="t-finder">
     <div class="panel">
       <h2>Find a better wireless plan</h2>
@@ -804,6 +816,19 @@ $("#mode").addEventListener("change", e=>{
   showTab(state.mode==="byop" ? "plans" : "phones");
 });
 
+/* ---------- public research snapshot ---------- */
+function renderEvidenceSummary(){
+  const node=$("#fb-evidence-summary-copy");
+  const s=RESEARCH_AUDIT?.summary;
+  const keys=["offers","researched","publishedPriceMatches","publishedPartial","manuallyFullyReviewed","listingHolds"];
+  if(!s||keys.some(k=>!Number.isInteger(s[k])||s[k]<0)||s.researched>s.offers||s.manuallyFullyReviewed>s.offers){
+    node.textContent="Current evidence counts unavailable. Check the official-source audit and confirm actual checkout before buying.";
+    return;
+  }
+  node.textContent=s.researched+" of "+s.offers+" offers have dated public-source research ("+s.publishedPriceMatches+" rate matches, "+s.publishedPartial+" partial). "+
+    s.manuallyFullyReviewed+" independently documented full-checkout reviews. "+s.listingHolds+" retailer checkout offers on hold.";
+}
+
 /* ---------- sources ---------- */
 function renderSources(){
 $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"}) + ". Always confirm current prices, eligibility and taxes on the carrier’s site.";
@@ -839,6 +864,7 @@ async function boot(){
     const r=await fetch('data/research-audit.json',{cache:'no-store'});
     if(r.ok){const data=await r.json();if(data?.schema===1&&Array.isArray(data.offers))RESEARCH_AUDIT=data;}
   }catch(e){}
+  renderEvidenceSummary();
   renderSources();
   if(state.tab==="ask") state.tab = "plans";
   const requested=location.hash.slice(1);

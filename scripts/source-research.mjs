@@ -214,8 +214,8 @@ export function renderResearchPage({catalog,ledger,research,retailerEvidence,tod
  const sum=audit.summary;
  const sections=['<main class="wrap"><h1>What our official sources actually confirm</h1>',
   '<p class="lede">These are dated findings from carrier websites and broadband consumer labels. A published price match does <strong>not</strong> certify checkout eligibility, promotional availability, real taxes, network coverage or final charges.</p>',
-  '<div class="caution" role="note"><strong>No invented verification.</strong> Official research observed on '+
-   safe(research.observedOn)+'. Status calculated for '+safe(today)+'. Currently '+
+  '<div class="caution" role="note"><strong>No invented verification.</strong> Research ledger started on '+
+   safe(research.observedOn)+'; each offer shows its own observation date. Status calculated for '+safe(today)+'. Currently '+
    sum.manuallyFullyReviewed+' of '+sum.offers+
    ' listings have valid, documented human checkout-scenario reviews. Those reviews do not guarantee another shopper’s price or eligibility.</div>',
   '<section><h2>Evidence coverage</h2><div class="guides">'+

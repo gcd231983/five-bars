@@ -9,7 +9,7 @@ import {checkoutFixture} from './helpers/checkout-fixtures.mjs';
 
 const read=path=>JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'utf8'));
 const catalog=read('site/data/deals.json'),research=read('site/data/research-evidence.json');
-const ledger=read('site/data/verifications.json'),today='2026-11-02';
+const ledger=read('site/data/verifications.json'),today='2026-11-03';
 const retailerEvidence=read('site/data/retailer-evidence.json');
 const device=id=>catalog.phones.find(p=>p.id===id);
 const plan=id=>catalog.plans.find(p=>p.id===id);
@@ -30,11 +30,12 @@ test('Cricket yearly BYOD rate is $300 due upfront, never $25 due monthly',()=>{
  assert.equal(verificationState(p,ledger.offers?.['cricket-25'],today).status,'unverified');
 });
 
-test('Three unsupported retailer phone claims remain browse-only and never get invented quotes',()=>{
+test('Three retailer price holds persist despite one published in-store headline',()=>{
  for(const id of ['wm-vzpre-a17','wm-st-a17','simple-a16']){
   const p=device(id);
   assert.ok(p.listingHold.length>30);
-  assert.equal(research.records[id],undefined,'retailer headline not certified as official carrier record');
+  if(id==='wm-st-a17')assert.equal(researchStatus(p,research.records[id],{today}).state,'published_match');
+  else assert.equal(research.records[id],undefined,'other retailer claims not supported by official carrier research');
   assert.equal(phoneCost(p).due,null);
   assert.equal(phoneCosts(p).dueToday,null);
   assert.equal(phoneCost(p,{newCustomer:true,discountQualified:true}).year,null);
@@ -78,9 +79,9 @@ test('Audit accurately separates published matching baselines, partial financing
  const audit=buildResearchAudit({catalog,research,ledger,today});
  assert.deepEqual([audit.summary.offers,audit.summary.researched,audit.summary.publishedPriceMatches,
   audit.summary.publishedPartial,audit.summary.notResearched,audit.summary.listingHolds,audit.summary.manuallyFullyReviewed],
-  [78,75,71,4,3,3,0]);
+  [78,76,72,4,2,3,0]);
  assert.ok(['wm-vzpre-a17','wm-st-a17','simple-a16'].every(id=>
-  audit.offers.some(x=>x.id===id&&x.researchState==='not_researched'&&x.listingHold)));
+  audit.offers.some(x=>x.id===id&&x.researchState===(id==='wm-st-a17'?'published_match':'not_researched')&&x.listingHold)));
 });
 
 test('Retailer product observations never convert unsupported zero-dollar promotions into approved checkout amounts',()=>{
@@ -89,7 +90,7 @@ test('Retailer product observations never convert unsupported zero-dollar promot
  for(const id of ['wm-vzpre-a17','wm-st-a17','simple-a16']){
   const record=observations.records[id],offer=device(id);
   assert.equal(record.selectedPromotionVerified,false);
-  assert.equal(record.observedOn,today);
+  assert.equal(record.observedOn,'2026-11-02');
   assert.equal(record.url,offer.url);
   assert.equal(phoneCost(offer).due,null);
   assert.equal(phoneCosts(offer).firstYear,null);
@@ -102,8 +103,8 @@ test('Retailer product observations never convert unsupported zero-dollar promot
  assert.equal(observations.records['simple-a16'].observedOnlineDevicePrice,null);
  const audit=buildResearchAudit({catalog,ledger,research,retailerEvidence,today});
  assert.equal(audit.summary.retailerObservations,3);
- assert.equal(audit.summary.researched,75,'retailer observations must NOT increase carrier source coverage');
- assert.equal(audit.summary.notResearched,3);
+ assert.equal(audit.summary.researched,76,'retailer observations must NOT increase carrier source coverage');
+ assert.equal(audit.summary.notResearched,2);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  const page=renderResearchPage({catalog,ledger,research,retailerEvidence,today});
  assert.match(page,/Separate dated page observation/);

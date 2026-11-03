@@ -4,7 +4,7 @@ Five Bars compares US phone plans and advertised phone offers. The website is a 
 
 ## Current evidence dashboard
 
-The live [launch-readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html) is generated from the repository's current evidence; do not use earlier README counts as a live inventory. At the November 2, 2026 baseline, 78 listings were tracked, 75 had partial or matching published-source records, three retailer offers were held, and zero had a documented current full checkout scenario. No source record is a binding price quote.
+The live [launch-readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html) is generated from the repository's current evidence; do not use earlier README counts as a live inventory. At the November 3, 2026 research baseline, 78 listings were tracked, 76 had partial or matching first-party published-source records (72 matches, four partial), three retailer-channel checkout-price holds remained, and zero had a documented current full checkout scenario. No source record is a binding price quote.
 
 **New manual sign-off gate:** a carrier URL and typed attestation alone are insufficient. Authorized reviewers must record a specific anonymized quote, the observed initial payment and renewal billing amount including mandatory fees, customer eligibility, service commitments, inventory, and ten checked material terms. The stored record is tied to a GitHub reviewer and exact catalog signature. See [Checkout verification protocol](CHECKOUT_VERIFICATION.md). A reviewed scenario never guarantees another customer's checkout price.
 

@@ -2041,6 +2041,35 @@
         "Confirm credit timing, plan renewal, unlock conditions, cancellations and early-exit balances using the actual offer agreement.",
         "Obtain actual agreement showing financed amount, trade-in valuation, credit schedule and remaining balance if the line or plan changes."
       ]
+    },
+    "wm-st-a17": {
+      "carrier": "Straight Talk at Walmart",
+      "kind": "phone",
+      "observedOn": "2026-11-03",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 45,
+      "publishedPortRequired": false,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid",
+          "supports": "Official Straight Talk Galaxy A17 terms include participating-store Walmart activation with Silver Unlimited or a higher plan, valid through January 10, 2027 while supplies last."
+        },
+        {
+          "url": "https://www.straighttalk.com/all-plans",
+          "supports": "Official Silver Unlimited standard 30-day plan is $45 before conditional AutoPay discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Official Galaxy A17 terms advertise a free handset through January 10, 2027 while supplies last with in-store activation of Silver Unlimited or higher at participating Walmart stores; a separate online bundle is also advertised.",
+        "Silver Unlimited is advertised at a standard $45 per 30-day cycle before optional AutoPay discounts; required plan must be activated with the phone.",
+        "Official promotion terms impose applicable taxes and fees, a two-phone-per-customer limit and restrictions on combining other offers or family plans."
+      ],
+      "unresolved": [
+        "Confirm the chosen Walmart store actually participates, has the Galaxy A17 in stock and accepts the shopper's specific activation scenario.",
+        "Obtain an itemized in-store quote for the phone, required first service payment and all mandatory taxes and activation fees before calculating checkout totals.",
+        "Confirm the particular customer's eligibility, plan renewal amount, unlocking terms and any cancellation consequences."
+      ]
     }
   }
 }
