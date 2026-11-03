@@ -217,3 +217,17 @@ The generated public audit shows 65 partial source matches, 13 remaining researc
 **Unresolved warning:** The US Mobile Pixel 11 page lists $539 with a new annual plan (or $624 for the device-only selection), but the earlier $199 annual-plan price used in Five Bars expired September 29, 2026. The device remains browsable, while required annual plan cash and first-year totals are withheld until independently supported by the currently selected purchase path. Official reference: https://www.usmobile.com/pixel-promo
 
 Customers must explicitly confirm applicable new-line eligibility before the selected conditional device prices can enter calculator totals, finder rankings or Switch & Save. Neither a confirmation checkbox nor a dated publication certifies checkout eligibility, tax amount, stock or customer-specific final price.
+
+## Five Bars 4.3 — prepaid Cricket correction, unsupported retail channels and financed-device exposure
+
+Dated sources observed November 2, 2026. Official published-source research is now **75/78**: 71 supported published-price baselines and 4 partial phone/device records whose selected service payment remains unknown. Three retailer-specific entries still require full published-offer research. Human signed checkout records remain **0/78**.
+
+**Cricket 12-month Unlimited BYOD:** The documented selected $25/month-equivalent price is an annual $300 payment, *not* ordinary $25 monthly recurring cash. This replaces the unsupported Walmart SIM interpretation. Source: https://www.cricketwireless.com/shop/cell-phone-plans/select
+
+**Retailer-specific holds:** The Walmart Verizon Prepaid Galaxy A17, Walmart Straight Talk Galaxy A17 and Simple Mobile Galaxy A16 remain in the catalog with an explicit review hold, while $0 device and $35/$45/$50 bundled shopping estimates are withheld. A related carrier promotion does not prove the same in-store / online retailer channel or total, and a product link does not establish active stock. No matching dated independent first-payment evidence exists.
+
+**Financed iPhones:** T-Mobile, Verizon and AT&T iPhone 18 Pro offers now list a conditional device-net headline separately from the gross retail reference and potential monthly credits. The selected 36-month agreement, qualifying trade-in / new line, service price, up-front tax, activation, remaining device balance and early-exit consequences remain unverified customer-specific obligations. The catalog intentionally withholds complete cash and savings projections. Official references: https://www.t-mobile.com/offers/apple-iphone-deals ; https://www.verizon.com/about/news/iphone-duo-verizon-offers ; https://www.att.com/buy/phones/apple-iphone-18-pro.html
+
+**US Mobile Pixel 11:** The published conditional device price may be referenced, but a currently selected qualifying annual-plan cash amount has not been independently established. The previously expired $199 annual-service assumption is not reused. Source: https://www.usmobile.com/pixel-promo
+
+**Gate for future edits:** Use exact offer/channel and observed date, support the selected device, service and inventory, and do not mark partial source evidence as checkout-verified. An official device advertisement without an itemized bill is not proof of a particular first payment.
