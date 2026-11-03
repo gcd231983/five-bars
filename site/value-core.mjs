@@ -268,7 +268,8 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
       !(d.newLineRequired===true && preferences.newCustomer!==true) &&
       !(d.prepay>0 && !Number.isFinite(d.planPrice) && !d.bundle))
     .map(d => {
-      const cost = phoneCost(d,{discountQualified:preferences.discountQualified===true});
+      const cost = phoneCost(d,{discountQualified:preferences.discountQualified===true,
+        newCustomer:preferences.newCustomer===true});
       return cost && {type:'phone',id:d.id,offer:d,cost,year:cost.year,
         uncertain:lines>1 || cost.year===null || cost.financingUncertain};
     }).filter(Boolean)
