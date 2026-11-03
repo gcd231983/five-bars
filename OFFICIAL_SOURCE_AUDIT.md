@@ -4,15 +4,17 @@
 
 ## Current coverage and meanings
 
+This opening summary reflects the **November 2, 2026 official-publication research baseline**. The sections below retain historical milestone counts and must not be interpreted as current catalog totals. For the newest generated counts, use `site/data/research-audit.json` and the [live launch-readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html).
+
 - **Total catalog**: 78 items — 38 plans, 40 device promotions.
-- **37 dated plan-rate baselines researched**: including the corrected Total ALL ACCESS single-line offer; earlier historical expansion notes below are retained for reference.
-- **28 dated conditional handset headlines researched**, including newer Metro, Cricket and Boost device observations; availability is only known at the recorded observation time.
-- **13 entries remain without recorded official-publication research**: 1 other service plan and 12 phone offers. A matching conditional handset headline does not establish checkout eligibility.
-- **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Official source research and a rate match do not change this.
-- **Research date**: 2026-11-02. The generator marks price-source observations aged after 21 days; the separately signed full-terms review expires after 14 days or a material data change.
+- **75 dated official carrier-publication records**: 38 service plans and 37 device offers. These are **71 published-price matches** and **4 partial device/financing publications** with selected qualifying service cash still unknown. They are **not** completed checkout quotes.
+- **Three remaining first-party publication gaps, all retail-channel/device-specific**: `wm-vzpre-a17`, `wm-st-a17`, and `simple-a16`. All three remain on browse-only price holds. Separate retailer product-page observations do **not** establish the selected promotional activation or in-store stock.
+- **Straight Talk channel distinction**: Its Galaxy A17 product page describes the current $0 Silver Unlimited bundle as **online-only** through January 10, 2027. It does **not** certify the separate Walmart Galaxy A17 in-store listing, which remains on hold. https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid
+- **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Published evidence is never a complete tax/eligibility/payment quote.
+- **Research observation date**: 2026-11-02. The generator ages first-party source observations after 21 days; separately signed human checkout scenarios expire after 14 days or a material offer change.
 
 Public record: https://gcd231983.github.io/five-bars/source-research.html
-Underlying 65-item source file: `site/data/research-evidence.json`.
+Underlying 75-record source ledger: `site/data/research-evidence.json`.
 Machine-readable coverage report: `site/data/research-audit.json`.
 
 ## Confirmed public-rate baselines (not checkout)
@@ -49,7 +51,7 @@ Use the read-only https://gcd231983.github.io/five-bars/review-workbench.html to
 
 ## Responsible next batch
 
-Prioritize device offers with unusual terms (free phone with minimum service, rebates or financing) as the next set of source-only research, then complete the remaining 26 service plans. Add screenshots/dated checkout terms when permitted, and record price conflicts rather than substituting guesses.
+Prioritize the three retailer-channel holds and the four already-attributed but service-unpriced device records. Preserve unknown checkout totals until official selected-channel terms and genuinely observed itemized quotes are available. All 38 service plans have first-party publication research, but none is individually checkout-certified. Add screenshots/dated checkout terms when permitted, and record price conflicts rather than substituting guesses.
 
 ## Implementation
 
