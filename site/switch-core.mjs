@@ -88,7 +88,7 @@ function buildCashflow(offer,type,scenario,months){
     deviceUpfront=money(offer.price);
     const prepay=Math.max(1,Math.trunc(Number(offer.prepay)||0));
     const bundle=Math.max(0,Math.trunc(Number(offer.bundle)||0));
-    const phoneEstimate=phoneCost(offer,{discountQualified:scenario.discountQualified});
+    const phoneEstimate=phoneCost(offer,{discountQualified:scenario.discountQualified,newCustomer:scenario.newCustomer});
     const base=phoneEstimate?.planPrice??null;
     if(phoneEstimate?.conditionalDiscountUnconfirmed)
       note.push('Required phone service uses the published rate without AutoPay. The discounted rate applies only after you confirm AutoPay eligibility.');
