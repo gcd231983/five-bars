@@ -311,7 +311,8 @@ function fieldValue(type,offer,key) {
     return 'Financing / trade-in terms not documented';
   switch(key) {
     case 'network':return offer.net==='multi'?'Network varies':offer.net==='att'?'AT&T':offer.net==='vzw'?'Verizon':'T-Mobile';
-    case 'monthly':return c?.planPrice===null?'Variable':usd(c?.planPrice)+'/mo'+(c?.conditionalDiscountUnconfirmed?' (AutoPay discount not assumed)':'');
+    case 'monthly':return offer.bundleRenewalUnverified===true?usd(offer.planPrice)+'/mo equivalent INCLUDED in initial 12-month bundle; renewal UNKNOWN':
+      c?.planPrice===null?'Variable':usd(c?.planPrice)+'/mo'+(c?.conditionalDiscountUnconfirmed?' (AutoPay discount not assumed)':'');
     case 'year':return usd(c?.year);
     case 'data':return usd(c?.due);
     case 'hotspot':return usd(c?.commitment);
