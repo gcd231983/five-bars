@@ -5,7 +5,7 @@ import {validDay,verificationState,usd,localDay} from '../site/value-core.mjs';
 export const BASE='https://gcd231983.github.io/five-bars/';
 export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired','publishedPromoPrice','publishedPromoMonths','publishedPromoRequirement',
   'publishedUndiscountedPrice','publishedDiscountCondition','publishedKnownMonthlyFee','publishedKnownActivationFee','publishedAvailability',
-  'publishedUndiscountedPlanPrice','publishedPlanDiscountCondition','publishedPrepaidServiceTotal','publishedNewLineRequired','publishedBundleRenewalUnverified'];
+  'publishedUndiscountedPlanPrice','publishedPlanDiscountCondition','publishedPrepaidServiceTotal','publishedNewLineRequired','publishedBundleRenewalUnverified','publishedServiceUnpriced','publishedGrossRetailPrice','publishedFinancingMonths','publishedMaxBillCredits'];
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'
 })[c]);
@@ -29,7 +29,13 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
  if(!['plan','phone'].includes(kind)||Boolean(offer?.phone)!==(kind==='phone'))
   return {state:'invalid',label:'Research offer kind mismatch',issues:['research kind does not match catalog']};
  const validFields=kind==='phone'?
-  num(record.publishedDevicePrice)&&num(record.publishedPlanMonthly)&&
+  num(record.publishedDevicePrice)&&
+  (num(record.publishedPlanMonthly)||
+   (record.publishedServiceUnpriced===true&&record.publishedPlanMonthly===null&&offer?.planPrice==null))&&
+  (record.publishedServiceUnpriced===undefined||record.publishedServiceUnpriced===true)&&
+  (record.publishedGrossRetailPrice===undefined||num(record.publishedGrossRetailPrice))&&
+  (record.publishedFinancingMonths===undefined||(Number.isInteger(record.publishedFinancingMonths)&&record.publishedFinancingMonths>=1&&record.publishedFinancingMonths<=48))&&
+  (record.publishedMaxBillCredits===undefined||num(record.publishedMaxBillCredits))&&
   typeof record.publishedPortRequired==='boolean'&&
   (record.publishedNewLineRequired===undefined||typeof record.publishedNewLineRequired==='boolean')&&
   (record.publishedBundleRenewalUnverified===undefined||record.publishedBundleRenewalUnverified===true)&&
@@ -63,6 +69,12 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
    issues.push('advertised handset price differs from official conditional headline');
   if(offer.planPrice!==record.publishedPlanMonthly)
    issues.push('required monthly plan differs from official conditional headline');
+  if(record.publishedGrossRetailPrice!==undefined&&offer.grossRetailPrice!==record.publishedGrossRetailPrice)
+   issues.push('published gross retail device price conflicts with financing record');
+  if(record.publishedFinancingMonths!==undefined&&offer.financingMonths!==record.publishedFinancingMonths)
+   issues.push('published financing installment period conflicts with catalog');
+  if(record.publishedMaxBillCredits!==undefined&&offer.maxBillCredits!==record.publishedMaxBillCredits)
+   issues.push('published conditional bill-credit ceiling conflicts with catalog');
   if(record.publishedUndiscountedPlanPrice!==undefined&&
     (offer.undiscountedPlanPrice!==record.publishedUndiscountedPlanPrice||offer.planDiscountCondition!==record.publishedPlanDiscountCondition))
    issues.push('phone service AutoPay condition or undiscounted monthly rate differs from official source');
@@ -114,6 +126,8 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
  if(issues.length)return {state:'conflict',label:'Published-source terms conflict with catalog',issues};
  const age=dayGap(today,record.observedOn);
  if(age>maxAgeDays)return {state:'aged',label:'Published evidence is '+age+' days old; reconfirm',issues:[]};
+ if(kind==='phone'&&record.publishedServiceUnpriced===true)
+  return {state:'published_partial',label:'Official conditional device facts published; qualifying service cash remains unpriced on '+record.observedOn,issues:[]};
  return {state:'published_match',label:(kind==='phone'?'Official conditional device headline matched on ':'Official published baseline matched on ')+record.observedOn,issues:[]};
 }
 export function buildResearchAudit({catalog,ledger={},research,today=localDay()}){
@@ -132,7 +146,8 @@ export function buildResearchAudit({catalog,ledger={},research,today=localDay()}
   const review=verificationState(o,ledger.offers?.[o.id],today);
   return {
    id:o.id,carrier:o.carrier,offer:o.plan||o.phone,kind:o.kind,
-   availability:o.availability||null,availabilityObservedOn:o.availabilityObservedOn||null,listedUrl:o.url||null,
+   availability:o.availability||null,availabilityObservedOn:o.availabilityObservedOn||null,
+   listingHold:o.listingHold||null,listedUrl:o.url||null,
    catalogPrice:o.price,billingMonths:o.billingMonths||1,billingUpfront:o.billingUpfront||null,
    researchState:state.state,researchLabel:state.label,
    issues:state.issues,manualReview:review.status,
@@ -144,6 +159,8 @@ export function buildResearchAudit({catalog,ledger={},research,today=localDay()}
   offers:entries.length,
   researched:entries.filter(x=>x.researchState!=='not_researched').length,
   publishedPriceMatches:entries.filter(x=>x.researchState==='published_match').length,
+  publishedPartial:entries.filter(x=>x.researchState==='published_partial').length,
+  listingHolds:entries.filter(x=>!!x.listingHold).length,
   conflictingOrInvalid:entries.filter(x=>['conflict','invalid'].includes(x.researchState)).length,
   aged:entries.filter(x=>x.researchState==='aged').length,
   notResearched:entries.filter(x=>x.researchState==='not_researched').length,
@@ -183,7 +200,8 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
    ' listings have valid, documented human checkout-scenario reviews. Those reviews do not guarantee another shopper’s price or eligibility.</div>',
   '<section><h2>Evidence coverage</h2><div class="guides">'+
    '<div class="guide"><h3>'+sum.publishedPriceMatches+'</h3>Partial official plan and device headlines within 21 days (not full checkout)</div>'+
-   '<div class="guide"><h3>'+sum.aged+'</h3>Published baselines over 21 days old</div>'+
+   '<div class="guide"><h3>'+sum.publishedPartial+'</h3>Partial official phone facts; required service checkout still unpriced</div>'+ 
+   '<div class="guide"><h3>'+sum.aged+'</h3>Published baselines over 21 days old</div>'+ 
    '<div class="guide"><h3>'+sum.notResearched+'</h3>Other listings without documented official-source research</div>'+
    '<div class="guide"><h3>'+sum.conflictingOrInvalid+'</h3>Conflicts or invalid evidence records</div>'+
    '</div></section>',
@@ -199,7 +217,10 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
   const rate=status==='conflict'||status==='invalid'?'Rate WITHHELD (mismatch)':
     isPhone?(catalog.phones.find(x=>x.id===id)?.bundleRenewalUnverified===true?
       usd(record.publishedDevicePrice)+' conditional prepaid DEVICE + SERVICE BUNDLE total; the first 12 months of service are INCLUDED (not an additional bill); '+usd(record.publishedPlanMonthly)+'/mo effective prepaid equivalent, NOT verified renewal pricing':
-      usd(record.publishedDevicePrice)+' advertised conditional handset price; needs '+usd(record.publishedPlanMonthly)+'/mo qualifying service')+
+      usd(record.publishedDevicePrice)+' advertised CONDITIONAL device-net headline; '+(record.publishedServiceUnpriced===true?'qualifying SERVICE PRICE UNKNOWN; no checkout cash estimate': 'needs '+usd(record.publishedPlanMonthly)+'/mo qualifying service'))+
+      (record.publishedGrossRetailPrice!==undefined?'; '+usd(record.publishedGrossRetailPrice)+' GROSS device retail before bill credits':'')+
+      (record.publishedFinancingMonths!==undefined?'; '+record.publishedFinancingMonths+' financed months':'')+
+      (record.publishedMaxBillCredits!==undefined?'; up to '+usd(record.publishedMaxBillCredits)+' CONDITIONAL bill credits NOT upfront cash':'')+
       (record.publishedNewLineRequired?'; eligible newly activated line required':'')+
       (record.publishedUndiscountedPlanPrice!==undefined?'; '+usd(record.publishedUndiscountedPlanPrice)+'/mo WITHOUT AutoPay; discount NOT assumed':'')+
       (record.publishedFirstMonthPlanPrice!==undefined?'; '+usd(record.publishedFirstMonthPlanPrice)+' first service bill':'')+
@@ -236,6 +257,11 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
   sections.push('<li><strong>'+safe(item.carrier)+' — '+safe(item.offer)+'</strong>; observed '+
     safe(item.availabilityObservedOn||'date unknown')+'. '+href(item.listedUrl,'Recheck stock at listed carrier page')+
     '. <a href="report.html?offer='+encodeURIComponent(item.id)+'">Report a stock correction</a>. No current checkout certification.</li>');
+ }
+ sections.push('</ul></section><section><h2>Retail-specific price holds ('+sum.listingHolds+')</h2>'+ 
+  '<p>Selected store promotions are not supported by matching carrier/retailer checkout evidence. They remain browse-only; all cash and savings estimates are suppressed.</p><ul>');
+ for(const item of audit.offers.filter(x=>!!x.listingHold)){
+  sections.push('<li><strong>'+safe(item.carrier)+' — '+safe(item.offer)+'</strong>: '+safe(item.listingHold)+'. <a href="report.html?offer='+encodeURIComponent(item.id)+'">Report corrected retailer terms</a>.</li>');
  }
  sections.push('</ul></section><section><h2>Research next — prioritized source checklist</h2>'+
   '<p>Priorities are deterministic screening suggestions, not carrier ratings. Research listed links before making customer-specific claims. A link may point to a retailer rather than the carrier. Each listing requires a dated carrier publication plus eligibility, payment and stock confirmation.</p><ol>');
