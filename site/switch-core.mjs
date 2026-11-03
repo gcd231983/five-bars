@@ -79,6 +79,8 @@ function buildCashflow(offer,type,scenario,months){
     if(L!==1)throw Error('Phone promotions are per device. Use one line; household phone bundles cannot be assumed.');
     if(pastEnd(offer.ends,scenario.today))
       throw Error('This device promotion has passed its recorded expiration date.');
+    if(offer.newLineRequired===true && scenario.newCustomer!==true)
+      throw Error('This phone promotion requires confirmed eligible new-line activation before savings can be estimated.');
     if(offer.port && (scenario.cannotPort||!scenario.canPort))
       throw Error('This phone promotion requires a confirmed eligible number transfer before a savings estimate can be shown.');
     if(!Number.isFinite(offer.price)||offer.price<0)
@@ -163,6 +165,7 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
        (published.publishedUndiscountedPlanPrice!==undefined&&
         (offer.undiscountedPlanPrice!==published.publishedUndiscountedPlanPrice||offer.planDiscountCondition!==published.publishedPlanDiscountCondition))||
        offer.port!==published.publishedPortRequired||
+       (published.publishedNewLineRequired!==undefined&&offer.newLineRequired!==published.publishedNewLineRequired)||
        (published.publishedPrepayMonths!==undefined&&offer.prepay!==published.publishedPrepayMonths)||
        (published.publishedPrepaidServiceTotal!==undefined&&offer.prepaidServiceTotal!==published.publishedPrepaidServiceTotal)||
        (published.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==published.publishedFirstMonthPlanPrice)||
