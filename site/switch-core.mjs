@@ -79,10 +79,10 @@ function buildCashflow(offer,type,scenario,months){
     if(L!==1)throw Error('Phone promotions are per device. Use one line; household phone bundles cannot be assumed.');
     if(pastEnd(offer.ends,scenario.today))
       throw Error('This device promotion has passed its recorded expiration date.');
-    if(offer.bundleRenewalUnverified===true)
-      throw Error('Only the initial prepaid device/service bundle is documented. Its renewal rate after month 12 is unknown, so 24- and 36-month switch-savings estimates are withheld.');
     if(offer.newLineRequired===true && scenario.newCustomer!==true)
       throw Error('This phone promotion requires confirmed eligible new-line activation before savings can be estimated.');
+    if(offer.bundleRenewalUnverified===true)
+      throw Error('Only the initial prepaid device/service bundle is documented. Its renewal rate after month 12 is unknown, so 24- and 36-month switch-savings estimates are withheld.');
     if(offer.port && (scenario.cannotPort||!scenario.canPort))
       throw Error('This phone promotion requires a confirmed eligible number transfer before a savings estimate can be shown.');
     if(!Number.isFinite(offer.price)||offer.price<0)
