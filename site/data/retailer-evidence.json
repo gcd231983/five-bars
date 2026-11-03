@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "scope": "Retailer online product-page observations only. NOT carrier promotion confirmation, retailer in-store checkout, device availability, taxes, activation, or consumer eligibility.",
+  "scope": "Dated retailer online product-page observations only. Separate first-party carrier promotional publications are recorded in site/data/research-evidence.json. Neither record is proof of in-store checkout, availability, taxes or consumer eligibility.",
   "records": {
     "wm-vzpre-a17": {
       "observedOn": "2026-11-02",
@@ -21,11 +21,11 @@
       "url": "https://www.walmart.com/ip/ST-SAMSUNG-S176V-A17-5G-PIB-HANDSET-WALMART-POSA/17591873202",
       "observedOnlineDevicePrice": 99.88,
       "selectedPromotionVerified": false,
-      "summary": "Walmart online listing showed $99.88 for the Straight Talk Galaxy A17. A separate Straight Talk direct-channel free-phone offer does not verify a Walmart in-store $0 activation.",
+      "summary": "Walmart's selected online listing showed the $99.88 standalone Galaxy A17 price on November 2. Straight Talk's official carrier terms subsequently confirmed a separate conditional $0 A17 promotion with in-store Silver Unlimited ($45/30 days) or higher activation at participating Walmart stores through January 10, 2027. This is a carrier-published promotion, not an independently observed store checkout; the held offer remains browse-only.",
       "unresolved": [
-        "Verify Walmart store-channel offer separately from Straight Talk direct shopping.",
-        "Obtain itemized device, Silver Unlimited first-service payment and applicable taxes.",
-        "Confirm eligible activation, availability and device unlock terms."
+        "Confirm that the exact Walmart store participates in the separately advertised conditional A17 in-store offer and has current stock.",
+        "Obtain the actual counter quote for handset, required Silver Unlimited or higher service, taxes and mandatory activation charges.",
+        "Verify customer eligibility, renewal, device unlocking and cancellation conditions; do not substitute the standalone $99.88 online item price for the in-store offer."
       ]
     },
     "simple-a16": {
