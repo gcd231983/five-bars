@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-03T01:58:58.763Z",
-  "today": "2026-11-02",
+  "generatedAt": "2026-11-03T12:57:59.727Z",
+  "today": "2026-11-03",
   "scope": "Alert triggers represent catalog deadlines and narrowly scoped observed official headline evidence. No full checkout guarantees.",
   "summary": {
     "active": 1,
@@ -20,16 +20,16 @@
       "type": "deadline",
       "severity": "high",
       "dueDate": "2026-11-09",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "notify": false,
       "title": "Tello Everyday 10GB — carrier-published promotion end date 2026-11-09",
-      "description": "The official carrier announcement (checked 2026-11-02) corroborates the published promotion end date 2026-11-09 (7 day(s) away). This confirms published terms only, NOT a live or customer-specific checkout total or eligibility.",
+      "description": "The official carrier announcement (checked 2026-11-02) corroborates the published promotion end date 2026-11-09 (6 day(s) away). This confirms published terms only, NOT a live or customer-specific checkout total or eligibility.",
       "action": "Keep the dated deadline visible; the scheduled Eastern-date scan removes only the introductory plan discount after the deadline. Check individual checkout taxes, charges and eligibility before purchase.",
       "evidenceScope": "carrier_published_deadline_not_checkout",
       "officialEvidenceObservedOn": "2026-11-02",
       "active": true,
       "firstSeen": "2026-11-02",
-      "lastSeen": "2026-11-02"
+      "lastSeen": "2026-11-03"
     }
   ]
 }
