@@ -133,6 +133,12 @@ try {
       document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false,
       {timeout:15000});
     await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
+    const evidenceSnapshot=await page.locator('#fb-evidence-summary-copy').innerText();
+    assert.match(evidenceSnapshot,/76 of 78 offers have dated public-source research/);
+    assert.match(evidenceSnapshot,/0 independently documented full-checkout reviews/);
+    assert.match(evidenceSnapshot,/3 retailer checkout offers on hold/);
+    assert.equal(await page.locator('a.fb-skip-link[href="#main-content"]').count(),1);
+    assert.equal(await page.locator('main#main-content').count(),1);
     await page.locator('#t-finder').click();
     assert.equal(await page.locator('.fb-tab-swipe').isVisible(),view==='mobile',
       'mobile navigation should offer a swipe hint');
