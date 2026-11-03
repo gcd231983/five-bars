@@ -103,9 +103,9 @@ function statusNode(offer) {
     const days=Math.round((Date.parse(localDay()+'T12:00:00Z')-Date.parse(record.researchedOn+'T12:00:00Z'))/86400000);
     const status=record.researchState==='published_match'&&days>21?'aged':record.researchState;
     const checked=status==='published_match';
-    const label=checked?'Dated carrier source · partial':status==='aged'?'Carrier source outdated':
+    const label=checked?'Dated carrier source · partial':status==='published_partial'?'Carrier facts · service price unknown':status==='aged'?'Carrier source outdated':
       status==='conflict'||status==='invalid'?'Official source conflict':'Research needs review';
-    const link=element('a',label,'fb-status '+(checked?'fb-evidence-match':'fb-evidence-warning'));
+    const link=element('a',label,'fb-status '+(checked?'fb-evidence-match':status==='published_partial'?'fb-evidence-neutral':'fb-evidence-warning'));
     link.href='source-research.html#research-'+encodeURIComponent(offer.id);
     link.title='Dated official published-price evidence; NOT independent checkout validation. Open the carrier-source audit.';
     wrapper.append(link);
