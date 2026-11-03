@@ -227,3 +227,15 @@ No change in these public records establishes an actual checkout total, current 
 - [ ] Establish private support and execute actual partnership agreements before commercial revenue.
 
 Neither a URL, publication, retailer result nor the visitor's eligibility checkbox is independent verification of the itemized checkout total.
+
+## Five Bars 4.4 — separate retailer listing observations (November 2, 2026)
+
+- [x] Add `site/data/retailer-evidence.json` for three held device offers with exact product links, observation dates, documented uncertainty and pending checkout requirements. **Retailer observations never count as carrier-published price matches or full checkout verification.**
+- [x] Walmart's selected online Galaxy A17 pages were observed at $99.88 each; these **retailer-online product prices are not qualified $0 in-store activation prices**. Simple Mobile's dynamic page remains inconclusive; no numeric price is invented.
+- [x] Require each retailer evidence record to map to the exact held catalog offer, its exact HTTPS URL, a valid observation date and a false `selectedPromotionVerified` status.
+- [x] Keep all three offers excluded from estimated upfront costs, rankings, Switch & Save and human checkout certification; held entries are also excluded from the public **Free phone** filter and cannot be compared using the old $0 headline.
+- [x] Render the observed retailer price and explicit channel mismatch within the public evidence audit, separated from carrier publications and checkout evidence.
+- [ ] Obtain current, itemized proof for exact retailer-channel activation, qualifying plan, location-specific taxes, phone stock, unlock rules and actual first bill before lifting any of the three holds.
+- [ ] Continue gathering human observed checkout records (still **0/78**) and verifying business agreements before commercial launch.
+
+Published first-party retailer page observations are **not** a certification that the device is currently purchasable at that price, nor that activation, carrier plan, tax or customer eligibility matches a separate offer.

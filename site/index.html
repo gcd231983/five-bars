@@ -527,7 +527,7 @@ function phoneVisible(d){
   const t = state.t;
   if(endInfo(d.ends)?.expired) return false;
   if(state.net!=="any" && d.net!==state.net && d.net!=="multi") return false;
-  if(t.free && !(d.price===0 && !d.postpaid)) return false;
+  if(t.free && !(d.price===0 && !d.postpaid && !d.listingHold && d.availability!=='out_of_stock')) return false;
   if(t.iphone && !t.android && d.os!=="iphone") return false;
   if(t.android && !t.iphone && d.os!=="android") return false;
   if(t.prepaid && d.postpaid) return false;
@@ -724,8 +724,8 @@ function renderPhones(){
           d.postpaid ? "Financing — quote required" :
           d.bundle ? money(d.price)+" phone + "+d.bundle+" months service" :
           d.price===0 ? "Free" : money(d.price)),
-        !priceDisputed && d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
-        !priceDisputed && d.rebate ? el("div",{class:"was"}, money(d.rebate) + " conditional later reward; NOT deducted") : null),
+        !priceDisputed && !d.listingHold && d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
+        !priceDisputed && !d.listingHold && d.rebate ? el("div",{class:"was"}, money(d.rebate) + " conditional later reward; NOT deducted") : null),
       el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null, scan?.state==="source_unavailable" ? el("li",{class:"warn"}, "Offer link could not be checked") : null, scan?.reviewRequired ? el("li",{class:"warn"}, "Price candidate needs manual review; listed terms are unverified") : null,
       priceDisputed ? el("li",{class:"warn"},"Official price evidence conflicts with this listing; stale totals suppressed") : null,
       d.listingHold ? el("li",{class:"warn"},d.listingHold) : null,
@@ -748,7 +748,7 @@ function renderPhones(){
             c.year!=null ? el("span",{style:"display:inline-block"}, "First year (est.): ", el("b",null, money(c.year))) : "Plan price varies by trade-in"),
         el("a",{href:d.url, target:"_blank", rel:"noopener noreferrer"}, "See it at " + d.carrier.replace(" at Walmart","")),
         el("a",{href:"report.html?offer="+encodeURIComponent(d.id),class:"fb-report-link"}, "Report an issue"),
-        priceDisputed ? el("span",{class:"fb-watch-warning"},"Compare after price review") :
+        priceDisputed || c.listingHold ? el("span",{class:"fb-watch-warning"},"Compare after price review") :
           c.unavailable ? el("span",{class:"fb-watch-warning"},"Compare after stock confirmation") :
           el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("phone",d.id)},"Compare"))
     );

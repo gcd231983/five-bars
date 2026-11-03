@@ -6,15 +6,15 @@ import {readFile,writeFile} from 'node:fs/promises';
 import {buildResearchAudit,renderResearchPage} from './source-research.mjs';
 const root=new URL('../',import.meta.url);
 const read=async file=>JSON.parse(await readFile(new URL(file,root),'utf8'));
-const [catalog,ledger,research]=await Promise.all([
+const [catalog,ledger,research,retailerEvidence]=await Promise.all([
  read('site/data/deals.json'),read('site/data/verifications.json'),
- read('site/data/research-evidence.json')
+ read('site/data/research-evidence.json'),read('site/data/retailer-evidence.json')
 ]);
 const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',
   year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-const audit=buildResearchAudit({catalog,ledger,research,today});
+const audit=buildResearchAudit({catalog,ledger,research,retailerEvidence,today});
 await writeFile(new URL('site/data/research-audit.json',root),JSON.stringify(audit,null,2)+'\n','utf8');
-await writeFile(new URL('site/source-research.html',root),renderResearchPage({catalog,ledger,research,today}),'utf8');
+await writeFile(new URL('site/source-research.html',root),renderResearchPage({catalog,ledger,research,retailerEvidence,today}),'utf8');
 console.log(JSON.stringify({researchObservedOn:research.observedOn,checkedOn:today,
   ...audit.summary},null,2));
 if(audit.summary.conflictingOrInvalid){

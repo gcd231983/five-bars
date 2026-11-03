@@ -130,11 +130,29 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
   return {state:'published_partial',label:'Official conditional device facts published; qualifying service cash remains unpriced on '+record.observedOn,issues:[]};
  return {state:'published_match',label:(kind==='phone'?'Official conditional device headline matched on ':'Official published baseline matched on ')+record.observedOn,issues:[]};
 }
-export function buildResearchAudit({catalog,ledger={},research,today=localDay()}){
+export function validateRetailerEvidence({catalog,retailerEvidence}){
+ if(!retailerEvidence)return {records:{},count:0};
+ if(retailerEvidence.schema!==1||!retailerEvidence.records||typeof retailerEvidence.records!=='object'||Array.isArray(retailerEvidence.records))
+  throw Error('Invalid separate retailer observation ledger');
+ const byId=new Map((catalog?.phones||[]).map(p=>[p.id,p]));
+ for(const [id,r] of Object.entries(retailerEvidence.records)){
+  const p=byId.get(id);
+  if(!p||!p.listingHold||!validDay(r?.observedOn)||r.observedOn>localDay(new Date())||
+     r.selectedPromotionVerified!==false||!['retailer_online_listing','carrier_dynamic_page_inconclusive'].includes(r.sourceType)||
+     typeof r.summary!=='string'||r.summary.length<35||!Array.isArray(r.unresolved)||r.unresolved.length<3||
+     r.url!==p.url||!officialUrl(r.url)||
+     (r.observedOnlineDevicePrice!==null&&(!num(r.observedOnlineDevicePrice)||r.sourceType!=='retailer_online_listing'))||
+     (r.sourceType==='carrier_dynamic_page_inconclusive'&&r.observedOnlineDevicePrice!==null))
+   throw Error('Retailer record '+id+' cannot be treated as independently verified promotion evidence');
+ }
+ return {records:retailerEvidence.records,count:Object.keys(retailerEvidence.records).length};
+}
+export function buildResearchAudit({catalog,ledger={},research,retailerEvidence,today=localDay()}){
  if(!validDay(today)||!catalog||!Array.isArray(catalog.plans)||!Array.isArray(catalog.phones)||
   !research||research.schema!==1||!validDay(research.observedOn)||
   !research.records||typeof research.records!=='object'||Array.isArray(research.records))
   throw Error('Invalid catalog or official research ledger');
+ const retailer=validateRetailerEvidence({catalog,retailerEvidence});
  const offers=[...catalog.plans.map(p=>({...p,kind:'plan'})),...catalog.phones.map(p=>({...p,kind:'phone'}))];
  const ids=new Set(offers.map(p=>p.id));
  for(const key of Object.keys(research.records)){
@@ -148,6 +166,7 @@ export function buildResearchAudit({catalog,ledger={},research,today=localDay()}
    id:o.id,carrier:o.carrier,offer:o.plan||o.phone,kind:o.kind,
    availability:o.availability||null,availabilityObservedOn:o.availabilityObservedOn||null,
    listingHold:o.listingHold||null,listedUrl:o.url||null,
+   retailerObservation:retailer.records[o.id]||null,
    catalogPrice:o.price,billingMonths:o.billingMonths||1,billingUpfront:o.billingUpfront||null,
    researchState:state.state,researchLabel:state.label,
    issues:state.issues,manualReview:review.status,
@@ -161,6 +180,7 @@ export function buildResearchAudit({catalog,ledger={},research,today=localDay()}
   publishedPriceMatches:entries.filter(x=>x.researchState==='published_match').length,
   publishedPartial:entries.filter(x=>x.researchState==='published_partial').length,
   listingHolds:entries.filter(x=>!!x.listingHold).length,
+  retailerObservations:retailer.count,
   conflictingOrInvalid:entries.filter(x=>['conflict','invalid'].includes(x.researchState)).length,
   aged:entries.filter(x=>x.researchState==='aged').length,
   notResearched:entries.filter(x=>x.researchState==='not_researched').length,
@@ -189,8 +209,8 @@ function htmlDoc(body){
   '<nav><a href="disclosures.html">Commercial disclosures</a>'+
   '<a href="privacy.html">Privacy</a><a href="switching-guide.html">Switching checklist</a></nav></footer></body></html>\n';
 }
-export function renderResearchPage({catalog,ledger,research,today=localDay()}){
- const audit=buildResearchAudit({catalog,ledger,research,today});
+export function renderResearchPage({catalog,ledger,research,retailerEvidence,today=localDay()}){
+ const audit=buildResearchAudit({catalog,ledger,research,retailerEvidence,today});
  const sum=audit.summary;
  const sections=['<main class="wrap"><h1>What our official sources actually confirm</h1>',
   '<p class="lede">These are dated findings from carrier websites and broadband consumer labels. A published price match does <strong>not</strong> certify checkout eligibility, promotional availability, real taxes, network coverage or final charges.</p>',
@@ -261,7 +281,12 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
  sections.push('</ul></section><section><h2>Retail-specific price holds ('+sum.listingHolds+')</h2>'+ 
   '<p>Selected store promotions are not supported by matching carrier/retailer checkout evidence. They remain browse-only; all cash and savings estimates are suppressed.</p><ul>');
  for(const item of audit.offers.filter(x=>!!x.listingHold)){
-  sections.push('<li><strong>'+safe(item.carrier)+' — '+safe(item.offer)+'</strong>: '+safe(item.listingHold)+'. <a href="report.html?offer='+encodeURIComponent(item.id)+'">Report corrected retailer terms</a>.</li>');
+  const obs=item.retailerObservation;
+  sections.push('<li><strong>'+safe(item.carrier)+' — '+safe(item.offer)+'</strong>: '+safe(item.listingHold)+
+   (obs?'<p><strong>Separate dated page observation ('+safe(obs.observedOn)+') — NOT a verified activation offer:</strong> '+safe(obs.summary)+
+     (Number.isFinite(obs.observedOnlineDevicePrice)?' Observed retailer ONLINE device price: '+usd(obs.observedOnlineDevicePrice)+'. This is NOT a confirmed in-store price.':' Online device price not independently established.')+
+     ' '+href(obs.url,'Review observed product page')+'</p><p>Unresolved: '+safe(obs.unresolved.join('; '))+'</p>':'')+
+   '. <a href="report.html?offer='+encodeURIComponent(item.id)+'">Report corrected retailer terms</a>.</li>');
  }
  sections.push('</ul></section><section><h2>Research next — prioritized source checklist</h2>'+
   '<p>Priorities are deterministic screening suggestions, not carrier ratings. Research listed links before making customer-specific claims. A link may point to a retailer rather than the carrier. Each listing requires a dated carrier publication plus eligibility, payment and stock confirmation.</p><ol>');

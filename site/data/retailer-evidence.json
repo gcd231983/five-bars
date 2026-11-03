@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "scope": "Retailer online product-page observations only. NOT carrier promotion confirmation, retailer in-store checkout, device availability, taxes, activation, or consumer eligibility.",
+  "records": {
+    "wm-vzpre-a17": {
+      "observedOn": "2026-11-02",
+      "sourceType": "retailer_online_listing",
+      "url": "https://www.walmart.com/ip/Verizon-Prepaid-Galaxy-A17-5G-128GB-Prepaid-Smartphone-Black/17874774562",
+      "observedOnlineDevicePrice": 99.88,
+      "selectedPromotionVerified": false,
+      "summary": "Walmart online listing showed $99.88 for the selected Verizon Prepaid Galaxy A17. No matching evidence substantiates $0 device with $35 service in Walmart store.",
+      "unresolved": [
+        "Verify Walmart-specific eligible activation channel and required prepaid plan.",
+        "Obtain actual in-store or online checkout device and first-month service payment.",
+        "Confirm taxes, mandatory fees, selected stock, device lock and eligibility."
+      ]
+    },
+    "wm-st-a17": {
+      "observedOn": "2026-11-02",
+      "sourceType": "retailer_online_listing",
+      "url": "https://www.walmart.com/ip/ST-SAMSUNG-S176V-A17-5G-PIB-HANDSET-WALMART-POSA/17591873202",
+      "observedOnlineDevicePrice": 99.88,
+      "selectedPromotionVerified": false,
+      "summary": "Walmart online listing showed $99.88 for the Straight Talk Galaxy A17. A separate Straight Talk direct-channel free-phone offer does not verify a Walmart in-store $0 activation.",
+      "unresolved": [
+        "Verify Walmart store-channel offer separately from Straight Talk direct shopping.",
+        "Obtain itemized device, Silver Unlimited first-service payment and applicable taxes.",
+        "Confirm eligible activation, availability and device unlock terms."
+      ]
+    },
+    "simple-a16": {
+      "observedOn": "2026-11-02",
+      "sourceType": "carrier_dynamic_page_inconclusive",
+      "url": "https://shop.simplemobile.com/shop/en/simplemobile/phones/sm-samsung-galaxy-a16-5g",
+      "observedOnlineDevicePrice": null,
+      "selectedPromotionVerified": false,
+      "summary": "The selected Simple Mobile dynamic product page did not yield a reliably attributable published $0 Galaxy A16 handset with a $50 plan; no online price observation is certified.",
+      "unresolved": [
+        "Obtain accessible first-party offer price and required service plan for the exact Galaxy A16 model.",
+        "Observe checkout taxes, activation charges, selected eligibility and current stock.",
+        "Confirm the current offer URL, device lock policy, renewal and early-cancellation rules."
+      ]
+    }
+  }
+}

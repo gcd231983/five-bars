@@ -231,3 +231,15 @@ Dated sources observed November 2, 2026. Official published-source research is n
 **US Mobile Pixel 11:** The published conditional device price may be referenced, but a currently selected qualifying annual-plan cash amount has not been independently established. The previously expired $199 annual-service assumption is not reused. Source: https://www.usmobile.com/pixel-promo
 
 **Gate for future edits:** Use exact offer/channel and observed date, support the selected device, service and inventory, and do not mark partial source evidence as checkout-verified. An official device advertisement without an itemized bill is not proof of a particular first payment.
+
+## Five Bars 4.4 — separate retailer observations (November 2, 2026)
+
+The retailer research file at `site/data/retailer-evidence.json` contains **three** records which must not be merged with `site/data/research-evidence.json` or counted as independently confirmed carrier promotion evidence.
+
+- `wm-vzpre-a17`: selected Walmart online listing displayed $99.88 for a Verizon Prepaid Galaxy A17 5G. The historical $0 in-store device plus $35 plan claim is unsupported by a matching checkout. The Verizon direct-channel free-phone Unlimited promotion is a *separate* offer.
+- `wm-st-a17`: selected Walmart online listing displayed $99.88 for the Straight Talk Galaxy A17 5G. A separate Straight Talk direct-channel $0 phone promotion does not prove identical Walmart activation requirements or a retailer-specific $0 device.
+- `simple-a16`: exact Simple Mobile online device page did not reveal reliable attributable product and plan checkout terms. Price evidence is recorded as **null** (unknown), not zero.
+
+Every record links to the originally selected product page, states the date, and marks selected-promotion confirmation **false**. All three remain on editorial holds: no live comparison or savings claim is generated. Carrier published-source research remains **75/78 (71 price matches, 4 partial records)** and checkout attestations remain **0/78**.
+
+No fee, retailer discount, activation approval or live stock value was inferred from a product page.
