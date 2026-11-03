@@ -1754,6 +1754,145 @@
       ],
       "publishedUndiscountedPlanPrice": 55,
       "publishedPlanDiscountCondition": "autopay"
+    },
+    "att-pre-motog": {
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "term": "conditional_device_headline",
+      "publishedPortRequired": false,
+      "carrier": "AT&T Prepaid",
+      "publishedDevicePrice": 39.99,
+      "publishedPlanMonthly": 45,
+      "sources": [
+        {
+          "url": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html",
+          "supports": "AT&T Prepaid moto g 2026 $39.99 selected new-line promotion and first $45 service payment"
+        }
+      ],
+      "supportedFacts": [
+        "Official selected prepaid handset headline $39.99 requires activating a new AT&T Prepaid line on a $45/month or higher plan.",
+        "The $45 first service charge is additional to the handset purchase, before possible device/service taxes and fees."
+      ],
+      "unresolved": [
+        "Confirm specific new-line/customer eligibility, selected checkout channel and stock before purchase.",
+        "Observe actual first bill, compulsory taxes/fees, service renewal and any plan discounts at checkout.",
+        "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions."
+      ]
+    },
+    "vzpre-a17": {
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "term": "conditional_device_headline",
+      "publishedPortRequired": false,
+      "carrier": "Verizon Prepaid",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 50,
+      "publishedUndiscountedPlanPrice": 60,
+      "publishedPlanDiscountCondition": "autopay",
+      "publishedFirstMonthPlanPrice": 60,
+      "sources": [
+        {
+          "url": "https://www.verizon.com/prepaid/deals/",
+          "supports": "Verizon Prepaid $0 Galaxy A17 5G or moto g play 2026, new Unlimited line, promotional cutoff January 31, 2027"
+        },
+        {
+          "url": "https://www.verizon.com/prepaid/",
+          "supports": "Single-line Unlimited $60 first month, $50 after first month with qualifying Auto Pay; not $45 15GB tier"
+        }
+      ],
+      "supportedFacts": [
+        "Advertised free Galaxy A17 5G or moto g play 2026 requires an eligible NEW Verizon Prepaid Unlimited line; catalog phone listing is a choice of two devices, not a guaranteed in-stock selection.",
+        "The selected minimum Unlimited rate is $60 first month and $50 subsequent months only with qualified Auto Pay; $60 without Auto Pay."
+      ],
+      "unresolved": [
+        "Confirm specific new-line/customer eligibility, selected checkout channel and stock before purchase.",
+        "Observe actual first bill, compulsory taxes/fees, service renewal and any plan discounts at checkout.",
+        "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions."
+      ]
+    },
+    "vzpre-16e": {
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "term": "conditional_device_headline",
+      "publishedPortRequired": false,
+      "carrier": "Verizon Prepaid",
+      "publishedDevicePrice": 349.99,
+      "publishedPlanMonthly": 50,
+      "publishedUndiscountedPlanPrice": 60,
+      "publishedPlanDiscountCondition": "autopay",
+      "publishedFirstMonthPlanPrice": 60,
+      "publishedCreditMonthly": 10,
+      "publishedCreditMonths": 10,
+      "sources": [
+        {
+          "url": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/",
+          "supports": "Verizon iPhone 16e 128GB $349.99 selected new-line price with separate $10 monthly credits starting month two"
+        },
+        {
+          "url": "https://www.verizon.com/prepaid/",
+          "supports": "Published qualifying Unlimited service base $60 for first month and subsequent $50 Auto Pay rate when eligible"
+        }
+      ],
+      "supportedFacts": [
+        "Official selected iPhone 16e upfront handset price $349.99 is separate from its required newly activated Unlimited service.",
+        "A $100 conditional service reward consists of $10 monthly credits for ten months beginning month two; these future credits are NOT deducted from estimated checkout payments."
+      ],
+      "unresolved": [
+        "Confirm specific new-line/customer eligibility, selected checkout channel and stock before purchase.",
+        "Observe actual first bill, compulsory taxes/fees, service renewal and any plan discounts at checkout.",
+        "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions.",
+        "Confirm exactly when credits begin and whether selected new-line channel remains eligible."
+      ]
+    },
+    "mint-p11": {
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "term": "conditional_device_headline",
+      "publishedPortRequired": false,
+      "carrier": "Mint Mobile",
+      "publishedDevicePrice": 579,
+      "publishedPlanMonthly": 15,
+      "sources": [
+        {
+          "url": "https://www.mintmobile.com/devices/google-pixel-11/13630805/",
+          "supports": "Mint Google Pixel 11 selected new-customer bundle itemizes $399 handset and $180 prepaid 12-month Unlimited plan"
+        }
+      ],
+      "supportedFacts": [
+        "The selected $579 upfront bundle comprises $399 device plus $180 for twelve months of service; the 12-month service is INCLUDED.",
+        "The promotion is limited to qualifying new lines; $15/month is an effective prepaid service equivalent, not another monthly checkout charge."
+      ],
+      "unresolved": [
+        "Confirm specific new-line/customer eligibility, selected checkout channel and stock before purchase.",
+        "Observe actual first bill, compulsory taxes/fees, service renewal and any plan discounts at checkout.",
+        "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions.",
+        "Determine future service renewal price after the prepaid 12-month term; no renewal is presumed."
+      ]
+    },
+    "mint-s26fe": {
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "term": "conditional_device_headline",
+      "publishedPortRequired": false,
+      "carrier": "Mint Mobile",
+      "publishedDevicePrice": 480,
+      "publishedPlanMonthly": 15,
+      "publishedAvailability": "out_of_stock",
+      "sources": [
+        {
+          "url": "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/",
+          "supports": "Mint Samsung Galaxy S26 FE new-customer $300 device + $180 annual service bundle, showing an out-of-stock selected device"
+        }
+      ],
+      "supportedFacts": [
+        "The selected $480 bundle is $300 for handset plus $180 for twelve prepaid Unlimited service months; $15/month is not charged again.",
+        "Device page presented out-of-stock messaging on November 2, 2026; buying estimates remain on hold pending a dated inventory recheck."
+      ],
+      "unresolved": [
+        "Confirm specific new-line/customer eligibility, selected checkout channel and stock before purchase.",
+        "Observe actual first bill, compulsory taxes/fees, service renewal and any plan discounts at checkout.",
+        "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions."
+      ]
     }
   }
 }
