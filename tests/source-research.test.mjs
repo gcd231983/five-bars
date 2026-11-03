@@ -15,11 +15,11 @@ const date='2026-11-02';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
 test('37 plan baselines and 28 device headlines remain separate from checkout verification',()=>{
- assert.equal(Object.keys(research.records).length,65);
+ assert.equal(Object.keys(research.records).length,70);
  const audit=build();
  assert.equal(audit.summary.offers,78);
- assert.equal(audit.summary.researched,65);
- assert.equal(audit.summary.notResearched,13);
+ assert.equal(audit.summary.researched,70);
+ assert.equal(audit.summary.notResearched,8);
  assert.equal(audit.summary.availabilityHolds,6);
  assert.equal(audit.summary.conflictingOrInvalid,0);
  assert.equal(audit.summary.publishedPriceMatches,65);
@@ -398,7 +398,7 @@ test('six unavailable handset promotions are not saleable, rankable or able to g
  }
  const mint=catalog.phones.find(x=>x.id==='mint-p11');
  assert.equal(mint.bundle,12);
- assert.equal(phoneCost(mint).due,579);
+ assert.equal(phoneCost(mint,{newCustomer:true}).due,579);
  assert.match(mint.note,/\$399.*\$180/);
  const html=renderResearchPage({catalog,ledger,research,today:date});
  assert.match(html,/Financing priority/);
