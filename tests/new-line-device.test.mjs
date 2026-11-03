@@ -16,7 +16,7 @@ const eligible={lines:1,currentMonthly:95,horizon:12,today:day,canPort:false,new
 const run=(id,scenario=eligible)=>simulateSwitch({catalog,type:'phone',id,scenario,researchEvidence:research});
 
 test('five new first-party handset records are published-only and material new-line requirements are source-bound',()=>{
- assert.equal(Object.keys(research.records).length,70);
+ assert.equal(Object.keys(research.records).length,75);
  for(const id of ['att-pre-motog','vzpre-a17','vzpre-16e','mint-p11','mint-s26fe']){
   const p=get(id),r=research.records[id];
   assert.equal(p.newLineRequired,true,id);
