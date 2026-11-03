@@ -292,6 +292,16 @@ try {
     assert.match(await page.locator('#r-boost-a17').innerText(),
       /stale totals suppressed/i);
     const financed=page.locator('#r-vz-18pro');
+    for(const id of ['wm-vzpre-a17','wm-st-a17','simple-a16']){
+      const held=page.locator('#r-'+id);
+      assert.match(await held.locator('.price .now').innerText(),/Price under review/);
+      assert.match(await held.innerText(),/Retail promotion under review/i);
+      assert.doesNotMatch(await held.locator('.price').innerText(),/was\s+\$99\.88|Free/i,
+        'held retailer headlines must not expose bogus strike-through savings or a free device');
+      assert.equal(await held.getByRole('button',{name:'Compare',exact:true}).count(),0,
+        'retailer hold may not open cost comparisons');
+      assert.doesNotMatch(await held.locator('.foot').innerText(),/Due today \(est\.\)|First year \(est\.\)/i);
+    }
     assert.match(await financed.innerText(),/Financing.*quote required/i);
     assert.match(await financed.innerText(),/first-year estimates withheld/i);
     assert.doesNotMatch(await financed.innerText(),/Due today \(est\.\)|First year \(est\.\)/i);
@@ -494,6 +504,11 @@ try {
     assert.match(await research.locator('main').innerText(),/3.*without documented official-source research/s);
     assert.match(await research.locator('main').innerText(),/Stock and checkout holds \(6\)/);
     assert.match(await research.locator('main').innerText(),/Retail-specific price holds \(3\)/);
+    const retailSection=research.locator('main').getByText('Separate dated page observation',{exact:false});
+    assert.equal(await retailSection.count(),3);
+    assert.match(await research.locator('main').innerText(),/Observed retailer ONLINE device price: \$99\.88/);
+    assert.match(await research.locator('main').innerText(),/NOT a verified activation offer/);
+    assert.match(await research.locator('main').innerText(),/Online device price not independently established/);
     assert.match(await research.locator('[data-offer-id="tmo-18pro"]').innerText(),/SERVICE PRICE UNKNOWN/);
     const mint=research.locator('[data-offer-id="mint"]');
     assert.match(await mint.innerText(),/\$360\.00 due upfront for 12 months/);
