@@ -143,6 +143,7 @@ function pageStart({title,description,canonical}){
   '<link rel="stylesheet" href="'+(canonical.includes('/compare/')?'../':'')+'comparison-styles.css">'+
   '</head><body><header class="wrap"><nav aria-label="Navigation"><a href="'+(canonical.includes('/compare/')?'../':'./')+'">Five Bars home</a>'+
   '<a href="'+(canonical.includes('/compare/')?'../':'./')+'#switch-save">Switch &amp; Save</a>'+
+  '<a href="'+(canonical.includes('/compare/')?'../':'./')+'satellite.html">Can your phone text by satellite?</a>'+
   '<a href="'+(canonical.includes('/compare/')?'../':'./')+'editorial.html">Editorial standards</a>'+
   '<a href="'+(canonical.includes('/compare/')?'../':'./')+'disclosures.html">Disclosures</a></nav></header>';
 }
@@ -237,7 +238,7 @@ export function renderHub(data){
 export function renderSitemap(data){
  const day=validDay(data?.catalog?.checked)?data.catalog.checked:'2026-10-29';
  const urls=['','editorial.html','privacy.html','disclosures.html','switching-guide.html',
-  'carrier-comparisons.html','source-research.html','launch-readiness.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html')];
+  'carrier-comparisons.html','satellite.html','source-research.html','launch-readiness.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html')];
  const xmlEscape=escapeHtml;
  return '<?xml version="1.0" encoding="UTF-8"?>\n'+
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+
