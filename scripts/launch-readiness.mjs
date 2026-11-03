@@ -13,8 +13,13 @@ export function assessReadiness({catalog,research,retailerEvidence,ledger,status
  const offers=[...catalog.plans,...catalog.phones];
  const reviewed=offers.filter(p=>verificationState(p,ledger?.offers?.[p.id],today).status==='verified').length;
  const incomplete=offers.length-reviewed;
- const scanAge=status?.generatedAt&&Number.isFinite(Date.parse(status.generatedAt))?
-  Math.round((Date.parse(today+'T12:00:00Z')-Date.parse(status.generatedAt))/86400000):null;
+ // Compare Eastern calendar dates rather than a UTC instant against noon UTC:
+ // an 8:55 p.m. Eastern scan is already tomorrow in UTC, but is NOT future.
+ const scanInstant=typeof status?.generatedAt==='string'?Date.parse(status.generatedAt):NaN;
+ const scanDay=Number.isFinite(scanInstant)?
+  new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(scanInstant)):null;
+ const scanAge=scanDay?
+  Math.round((Date.parse(today+'T12:00:00Z')-Date.parse(scanDay+'T12:00:00Z'))/86400000):null;
  // Owner-required items stay pending until an actual approved evidence record exists.
  // The software cannot validate a legal contract, private support operation or user testing.
  const owner=[
@@ -38,7 +43,7 @@ export function assessReadiness({catalog,research,retailerEvidence,ledger,status
   checkout:{reviewed,unverified:incomplete,coveragePercent:offers.length?Math.round(reviewed*1000/offers.length)/10:0,
    note:'Human checkout evidence is valid only for a documented customer scenario and expires or invalidates after material changes.'},
   automation:{lastScan:typeof status?.generatedAt==='string'?status.generatedAt:null,
-   scanAgeDays:scanAge,scanStatus:scanAge===null?'not_reported':scanAge>2?'stale':'recent',
+   scanAgeDays:scanAge,scanStatus:scanAge===null?'not_reported':scanAge<0?'clock_mismatch':scanAge>2?'stale':'recent',
    note:'Automated source reachability and partial headline matching never establish full checkout terms.'},
   ownerGates:owner
  };
