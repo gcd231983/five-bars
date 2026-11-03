@@ -24,7 +24,7 @@ export function offerSignature(offer) {
     'family','maxLines','tax','pri','unl','data','hot','video','port','prepay','stay','bundle',
     'rebate','credit','creditMonths','postpaid','store','lock','ends','warn','note','url',
     'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','fullRetailRequired',
-    'availability','availabilityObservedOn','newLineRequired','undiscountedPlanPrice','planDiscountCondition','prepaidServiceTotal',
+    'availability','availabilityObservedOn','newLineRequired','bundleRenewalUnverified','undiscountedPlanPrice','planDiscountCondition','prepaidServiceTotal',
     'undiscountedPrice','discountCondition','knownMonthlyFee','knownActivationFee','priceSourceDate'];
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
