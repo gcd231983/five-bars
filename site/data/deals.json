@@ -1406,7 +1406,8 @@
       "port": false,
       "lock": 0,
       "url": "https://www.usmobile.com/pixel-promo",
-      "note": "US Mobile's official Pixel 11 page lists $539 before trade-in when purchasing a NEW annual Unlimited plan, or $624 device only without a plan. The previous $199 annual Starter offer used in this catalog ended September 29, 2026 and is NOT assumed current. Required 12-month service prepayment is not independently confirmed for this selection; upfront and 12-month total estimates are withheld until the live annual plan price and checkout terms are established. Trade-in values are conditional and excluded."
+      "note": "US Mobile's official Pixel 11 page lists $539 before trade-in when purchasing a NEW annual Unlimited plan, or $624 device only without a plan. The previous $199 annual Starter offer used in this catalog ended September 29, 2026 and is NOT assumed current. Required 12-month service prepayment is not independently confirmed for this selection; upfront and 12-month total estimates are withheld until the live annual plan price and checkout terms are established. Trade-in values are conditional and excluded.",
+      "newLineRequired": true
     },
     {
       "id": "visible-18pro",
