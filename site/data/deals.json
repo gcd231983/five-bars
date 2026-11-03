@@ -1012,7 +1012,9 @@
       "port": false,
       "lock": 12,
       "url": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html",
-      "note": "New activation on the $45 plan required."
+      "note": "AT&T publishes $39.99 for moto g 2026 with a newly activated line on a $45/month-or-higher prepaid plan. The first $45 service payment is due at sale, plus applicable device/service taxes and other fees. New-line qualification, IMEI, stock and actual checkout total remain unverified.",
+      "newLineRequired": true,
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "boost-16e",
@@ -1232,11 +1234,17 @@
       "os": "android",
       "net": "vzw",
       "price": 0,
-      "planPrice": 45,
+      "planPrice": 50,
       "port": false,
       "lock": 12,
       "ends": "2027-01-31",
-      "url": "https://www.verizon.com/prepaid/deals/"
+      "url": "https://www.verizon.com/prepaid/deals/",
+      "undiscountedPlanPrice": 60,
+      "planDiscountCondition": "autopay",
+      "firstMonthPlanPrice": 60,
+      "newLineRequired": true,
+      "priceSourceDate": "2026-11-02",
+      "note": "Official Verizon Prepaid promotion: Galaxy A17 5G or moto g play 2026 at $0 handset price with a newly activated line on an eligible Unlimited plan, while supplies last or through January 31, 2027. Standard single-line Unlimited service is $60 for the first month and $60/month without discounts; $50/month after month one requires qualifying Auto Pay. Device/service taxes, potential fees, stock and checkout eligibility are not verified."
     },
     {
       "id": "vzpre-16e",
@@ -1248,12 +1256,17 @@
       "was": 599.99,
       "credit": 10,
       "creditMonths": 10,
-      "planPrice": null,
+      "planPrice": 50,
       "port": false,
       "lock": 12,
       "ends": "2027-01-31",
       "url": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/",
-      "note": "Needs a new line on any Verizon Prepaid Unlimited phone plan. $100 comes back as $10/mo service credits over 10 months, starting in month 2."
+      "note": "Official Verizon Prepaid iPhone 16e (128GB) publication: $349.99 device paid upfront with a newly activated Unlimited line, while supplies last or through January 31, 2027. The selected minimum Unlimited plan is $60 for month one, and $50/month thereafter only with eligible Auto Pay ($60 without). A separate $100 offer comes as $10/month service credits for 10 months starting month two while active, NOT cash due today and NOT deducted from modeled savings. Taxes, fees, plan selection and checkout remain unverified.",
+      "undiscountedPlanPrice": 60,
+      "planDiscountCondition": "autopay",
+      "firstMonthPlanPrice": 60,
+      "newLineRequired": true,
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "wm-vzpre-a17",
@@ -1356,7 +1369,10 @@
       "port": false,
       "lock": 2,
       "url": "https://www.mintmobile.com/devices/google-pixel-11/13630805/",
-      "note": "Published bundle subtotal $579 is $399 for the handset PLUS $180 for 12 prepaid Unlimited months (not a $579 device-only price); selected new-customer eligibility required. Taxes/fees and device unlock rules must be checked at checkout."
+      "note": "Mint's published Google Pixel 11 new-customer bundle is $399 phone + $180 for 12 prepaid Unlimited months = $579 upfront before taxes and fees (an effective $15/month service rate, already INCLUDED in the bundle, not charged twice). Selected promotional checkout/eligibility and inventory are not certified; device page lists an eSIM-only, carrier-locked phone.",
+      "planPrice": 15,
+      "newLineRequired": true,
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "mint-s26fe",
@@ -1369,10 +1385,13 @@
       "port": false,
       "lock": 2,
       "url": "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/",
-      "note": "Phone and a full year of service for one price. New customers. Unlocks after 60 days.",
+      "note": "Mint's advertised new-customer Galaxy S26 FE bundle is $300 phone + $180 for 12 prepaid Unlimited months = $480 before taxes and fees. The effective $15/month service rate is ALREADY included in the total, not paid again. The selected device page says OUT OF STOCK as of November 2, 2026; cost and purchasing recommendations remain blocked until inventory is checked.",
       "availability": "out_of_stock",
       "availabilityObservedOn": "2026-11-02",
-      "warn": "Official device page showed out of stock on November 2, 2026. Do not treat the published device headline as a purchasable checkout offer. Inventory may change; recheck with the carrier."
+      "warn": "Official device page showed out of stock on November 2, 2026. Do not treat the published device headline as a purchasable checkout offer. Inventory may change; recheck with the carrier.",
+      "planPrice": 15,
+      "newLineRequired": true,
+      "priceSourceDate": "2026-11-02"
     },
     {
       "id": "usm-p11",
@@ -1382,12 +1401,12 @@
       "net": "multi",
       "price": 539,
       "was": 899,
-      "planPrice": 16.58,
+      "planPrice": null,
       "prepay": 12,
       "port": false,
       "lock": 0,
       "url": "https://www.usmobile.com/pixel-promo",
-      "note": "With a new Unlimited Starter annual plan ($199). Usually sold unlocked."
+      "note": "US Mobile's official Pixel 11 page lists $539 before trade-in when purchasing a NEW annual Unlimited plan, or $624 device only without a plan. The previous $199 annual Starter offer used in this catalog ended September 29, 2026 and is NOT assumed current. Required 12-month service prepayment is not independently confirmed for this selection; upfront and 12-month total estimates are withheld until the live annual plan price and checkout terms are established. Trade-in values are conditional and excluded."
     },
     {
       "id": "visible-18pro",
