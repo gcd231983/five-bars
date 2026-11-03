@@ -701,6 +701,7 @@ function renderPhones(){
       Number.isFinite(d.firstMonthPlanPrice) && d.firstMonthPlanPrice!==d.planPrice ? "First service bill " + money(d.firstMonthPlanPrice) + "; then " + money(d.planPrice) + "/mo subject to eligibility" : null,
       d.port ? "Must move your number" : "No number move required",
       d.newLineRequired ? "Eligible NEW LINE activation required; existing-line upgrades do not automatically qualify" : null,
+      d.bundleRenewalUnverified ? "Service rate AFTER bundled 12 months UNKNOWN; extended savings withheld" : null,
       d.store ? "In store only" : null,
       d.postpaid ? "Postpaid financing; total device cost unknown" : "Prepaid",
       d.availability==="out_of_stock" ? "Observed OUT OF STOCK on "+(d.availabilityObservedOn||"an undated source") : null,
