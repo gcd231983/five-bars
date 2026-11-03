@@ -3,13 +3,14 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {planCost,phoneCost,rankMatches,offerSignature,checkoutEvidenceIssues,verificationState} from '../site/value-core.mjs';
 import {phoneCosts} from '../scripts/auto-core.mjs';
-import {researchStatus,buildResearchAudit} from '../scripts/source-research.mjs';
+import {researchStatus,buildResearchAudit,renderResearchPage,validateRetailerEvidence} from '../scripts/source-research.mjs';
 import {simulateSwitch} from '../site/switch-core.mjs';
 import {checkoutFixture} from './helpers/checkout-fixtures.mjs';
 
 const read=path=>JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'utf8'));
 const catalog=read('site/data/deals.json'),research=read('site/data/research-evidence.json');
 const ledger=read('site/data/verifications.json'),today='2026-11-02';
+const retailerEvidence=read('site/data/retailer-evidence.json');
 const device=id=>catalog.phones.find(p=>p.id===id);
 const plan=id=>catalog.plans.find(p=>p.id===id);
 const switchPhone=id=>simulateSwitch({catalog,type:'phone',id,researchEvidence:research,
@@ -80,4 +81,48 @@ test('Audit accurately separates published matching baselines, partial financing
   [78,75,71,4,3,3,0]);
  assert.ok(['wm-vzpre-a17','wm-st-a17','simple-a16'].every(id=>
   audit.offers.some(x=>x.id===id&&x.researchState==='not_researched'&&x.listingHold)));
+});
+
+test('Retailer product observations never convert unsupported zero-dollar promotions into approved checkout amounts',()=>{
+ const observations=validateRetailerEvidence({catalog,retailerEvidence});
+ assert.equal(observations.count,3);
+ for(const id of ['wm-vzpre-a17','wm-st-a17','simple-a16']){
+  const record=observations.records[id],offer=device(id);
+  assert.equal(record.selectedPromotionVerified,false);
+  assert.equal(record.observedOn,today);
+  assert.equal(record.url,offer.url);
+  assert.equal(phoneCost(offer).due,null);
+  assert.equal(phoneCosts(offer).firstYear,null);
+  assert.equal(rankMatches({plans:[],phones:[offer]},{lines:1,canPort:true,newCustomer:true},today).phoneMatches,0);
+ }
+ for(const id of ['wm-vzpre-a17','wm-st-a17']){
+  assert.equal(observations.records[id].observedOnlineDevicePrice,99.88);
+  assert.equal(observations.records[id].sourceType,'retailer_online_listing');
+ }
+ assert.equal(observations.records['simple-a16'].observedOnlineDevicePrice,null);
+ const audit=buildResearchAudit({catalog,ledger,research,retailerEvidence,today});
+ assert.equal(audit.summary.retailerObservations,3);
+ assert.equal(audit.summary.researched,75,'retailer observations must NOT increase carrier source coverage');
+ assert.equal(audit.summary.notResearched,3);
+ assert.equal(audit.summary.manuallyFullyReviewed,0);
+ const page=renderResearchPage({catalog,ledger,research,retailerEvidence,today});
+ assert.match(page,/Separate dated page observation/);
+ assert.match(page,/Observed retailer ONLINE device price: \$99\.88/);
+ assert.match(page,/NOT a verified activation offer/);
+ assert.match(page,/Online device price not independently established/);
+});
+
+test('Reject retailer evidence that overclaims an activation, changes source or uses invented cash',()=>{
+ const update=(id,changes)=>{
+  const next=structuredClone(retailerEvidence);
+  Object.assign(next.records[id],changes);
+  return ()=>validateRetailerEvidence({catalog,retailerEvidence:next});
+ };
+ assert.throws(update('wm-vzpre-a17',{selectedPromotionVerified:true}),/cannot be treated/);
+ assert.throws(update('wm-st-a17',{url:'https://example.com/fake-offer'}),/cannot be treated/);
+ assert.throws(update('simple-a16',{observedOnlineDevicePrice:0}),/cannot be treated/);
+ assert.throws(update('wm-vzpre-a17',{sourceType:'carrier_dynamic_page_inconclusive'}),/cannot be treated/);
+ const extra=structuredClone(retailerEvidence);
+ extra.records['made-up']={...extra.records['wm-vzpre-a17']};
+ assert.throws(()=>validateRetailerEvidence({catalog,retailerEvidence:extra}),/cannot be treated/);
 });
