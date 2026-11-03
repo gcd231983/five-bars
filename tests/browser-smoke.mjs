@@ -139,6 +139,10 @@ try {
     assert.match(evidenceSnapshot,/3 retailer checkout offers on hold/);
     assert.equal(await page.locator('a.fb-skip-link[href="#main-content"]').count(),1);
     assert.equal(await page.locator('main#main-content').count(),1);
+    await page.locator('a.fb-skip-link').focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await page.evaluate(()=>document.activeElement?.id),'main-content',
+      'keyboard skip navigation must move focus into the main content');
     await page.locator('#t-finder').click();
     assert.equal(await page.locator('.fb-tab-swipe').isVisible(),view==='mobile',
       'mobile navigation should offer a swipe hint');

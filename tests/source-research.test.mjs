@@ -14,7 +14,7 @@ const ledger=JSON.parse(read('site/data/verifications.json'));
 const date='2026-11-03';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
-test('38 plan baselines and 37 device headlines remain separate from checkout verification',()=>{
+test('38 plan baselines and 38 device headlines remain separate from checkout verification',()=>{
  assert.equal(Object.keys(research.records).length,76);
  const audit=build();
  assert.equal(audit.summary.offers,78);
@@ -89,6 +89,8 @@ test('published Walmart Straight Talk A17 price is sourced, while checkout remai
  assert.equal(r.publishedPlanMonthly,45);
  assert.equal(p.ends,'2027-01-10');
  assert.equal(researchStatus(p,r,{today:date}).state,'published_match');
+ assert.equal(researchStatus(p,r,{today:'2026-11-02'}).state,'invalid',
+   'the November 3 observation must not be backdated');
  assert.ok(r.sources.some(x=>x.url.includes('straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid')));
  assert.ok(r.supportedFacts.some(x=>x.includes('Walmart')));
  assert.ok(r.unresolved.some(x=>x.includes('itemized')));
@@ -159,6 +161,7 @@ test('static public source audit prints 76 dated source cards and 2 unresearched
  const html=renderResearchPage({catalog,ledger,research,today:date});
  assert.equal((html.match(/class="guide research-article"/g)||[]).length,76);
  assert.match(html,/What our official sources actually confirm/);
+ assert.match(html,/Research ledger started on 2026-11-02; each offer shows its own observation date/);
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
  assert.match(html,/Not yet confirmed at checkout/);
@@ -404,7 +407,8 @@ test('six unavailable handset promotions are not saleable, rankable or able to g
  for(const id of unavailable){
   const phone=catalog.phones.find(x=>x.id===id);
   assert.equal(phone.availability,'out_of_stock');
-  assert.equal(phone.availabilityObservedOn,date);
+  assert.equal(phone.availabilityObservedOn,'2026-11-02',
+    'rebuilding an audit must not refresh the original stock observation');
   assert.equal(phoneCost(phone).due,null);
   assert.equal(phoneCost(phone).year,null);
   assert.equal(phoneCost(phone).unavailable,true);

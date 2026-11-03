@@ -9,7 +9,7 @@ const research=read('site/data/research-evidence.json');
 const retailerEvidence=read('site/data/retailer-evidence.json');
 const ledger=read('site/data/verifications.json');
 const status=read('site/data/status.json');
-const today='2026-11-02';
+const today='2026-11-03';
 const model=()=>assessReadiness({catalog,research,retailerEvidence,ledger,status,today});
 
 test('new-line finder forwards confirmed eligibility into phone cost and does not invent unconfirmed savings',()=>{
