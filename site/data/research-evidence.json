@@ -2041,6 +2041,35 @@
         "Confirm credit timing, plan renewal, unlock conditions, cancellations and early-exit balances using the actual offer agreement.",
         "Obtain actual agreement showing financed amount, trade-in valuation, credit schedule and remaining balance if the line or plan changes."
       ]
+    },
+    "wm-st-a17": {
+      "carrier": "Straight Talk at Walmart",
+      "kind": "phone",
+      "observedOn": "2026-11-02",
+      "publishedDevicePrice": 0,
+      "publishedPlanMonthly": 45,
+      "publishedPortRequired": false,
+      "term": "conditional_device_headline",
+      "sources": [
+        {
+          "url": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid",
+          "supports": "Official product offer terms explicitly cover participating Walmart in-store Galaxy A17 activation on Silver Unlimited or higher, through January 10, 2027."
+        },
+        {
+          "url": "https://www.straighttalk.com/",
+          "supports": "Official carrier plan selector lists the standard Silver Unlimited service rate at $45 per 30-day cycle, before optional AutoPay discounts."
+        }
+      ],
+      "supportedFacts": [
+        "Straight Talk's official Galaxy A17 offer terms explicitly name participating Walmart stores for in-store activation with Silver Unlimited or higher through January 10, 2027, while supplies last.",
+        "The conditional handset headline is free, but the required Silver Unlimited service baseline is $45 per 30 days before optional AutoPay discounts.",
+        "The official terms say taxes and fees apply, limit the offer to two phones per customer, and prohibit combining it with other offers or family plans."
+      ],
+      "unresolved": [
+        "Confirm the exact participating Walmart store can activate the selected Galaxy A17 for the documented shopper scenario; a carrier marketing page does not establish store stock.",
+        "Obtain an itemized in-store payment quote with required first service payment, sales taxes, activation and other mandatory charges.",
+        "Confirm the customer's eligibility and current inventory, renewal rate, device lock/unlocking rules and cancellation terms."
+      ]
     }
   }
 }
