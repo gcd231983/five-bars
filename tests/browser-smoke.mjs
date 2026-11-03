@@ -547,6 +547,21 @@ try {
     await research.screenshot({path:join(output,view+'-source-audit.png'),fullPage:true});
     await research.close();
 
+    // Current engineering progress must not be presented as commercial or checkout approval.
+    const launch=await context.newPage();
+    launch.on('pageerror',e=>errors.push(view+' launch readiness: '+e.message));
+    await launch.goto(new URL('launch-readiness.html',base).href,{waitUntil:'domcontentloaded'});
+    assert.match(await launch.locator('h1').innerText(),/Five Bars launch readiness/);
+    assert.match(await launch.locator('main').innerText(),/Public beta, not a certified checkout service/i);
+    assert.match(await launch.locator('main').innerText(),/Current human checkout scenarios/);
+    assert.match(await launch.locator('main').innerText(),/Private consumer support/);
+    assert.match(await launch.locator('main').innerText(),/Executed affiliate approvals/);
+    assert.equal(await launch.locator('ol li').count(),6);
+    const launchOverflow=await launch.evaluate(()=>document.documentElement.scrollWidth);
+    assert.ok(launchOverflow<=viewport.width+2,'Readiness page should fit '+view);
+    await launch.screenshot({path:join(output,view+'-launch-readiness.png'),fullPage:true});
+    await launch.close();
+
     // Reader correction assistant: no PII, no background POST and no public
     // GitHub issue until the visitor explicitly chooses to submit it.
     const report=await context.newPage();
