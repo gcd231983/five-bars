@@ -14,7 +14,7 @@ const ledger=JSON.parse(read('site/data/verifications.json'));
 const date='2026-11-02';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
-test('37 plan baselines and 28 device headlines remain separate from checkout verification',()=>{
+test('37 plan baselines and 33 device headlines remain separate from checkout verification',()=>{
  assert.equal(Object.keys(research.records).length,70);
  const audit=build();
  assert.equal(audit.summary.offers,78);
@@ -22,7 +22,7 @@ test('37 plan baselines and 28 device headlines remain separate from checkout ve
  assert.equal(audit.summary.notResearched,8);
  assert.equal(audit.summary.availabilityHolds,6);
  assert.equal(audit.summary.conflictingOrInvalid,0);
- assert.equal(audit.summary.publishedPriceMatches,65);
+ assert.equal(audit.summary.publishedPriceMatches,70);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  assert.equal(audit.summary.needingFullTerms,78);
  assert.ok(audit.offers.every(x=>x.manualReview!=='verified'));
@@ -45,7 +45,8 @@ test('official dated evidence is auditable, sourced with HTTPS, exact offer IDs,
   for(const source of record.sources){
    const url=new URL(source.url);
    assert.equal(url.protocol,'https:');
-   assert.ok(url.hostname.endsWith('usmobile.com')||
+   assert.ok(url.hostname.endsWith('att.com')||url.hostname.endsWith('verizon.com')||
+    url.hostname.endsWith('usmobile.com')||
     url.hostname.endsWith('visible.com')||url.hostname.endsWith('tello.com')||
     url.hostname.endsWith('mintmobile.com')||url.hostname.endsWith('cricketwireless.com')||
     url.hostname.endsWith('totalwireless.com')||url.hostname.endsWith('h2owireless.com')||
@@ -135,9 +136,9 @@ test('published source matches do not create human verification records',()=>{
  assert.equal(signed.status,'unverified');
  assert.equal(researchStatus(offer,research.records[offer.id],{today:date}).state,'published_match');
 });
-test('static public source audit prints 65 dated source cards and 13 unresearched offers',()=>{
+test('static public source audit prints 70 dated source cards and 8 unresearched offers',()=>{
  const html=renderResearchPage({catalog,ledger,research,today:date});
- assert.equal((html.match(/class="guide research-article"/g)||[]).length,65);
+ assert.equal((html.match(/class="guide research-article"/g)||[]).length,70);
  assert.match(html,/What our official sources actually confirm/);
  assert.match(html,/Official published baseline/);
  assert.ok(html.includes('$360.00 due upfront for 12 months'),'Mint annual prepayment must be visible');
