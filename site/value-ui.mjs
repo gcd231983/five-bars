@@ -72,6 +72,11 @@ function statusNode(offer) {
     'An attributed human checked one specific carrier checkout scenario, NOT a guaranteed price or eligibility for other visitors. Confirm your own checkout.':
     'The catalog price and all promotion terms have not been fully verified';
   wrapper.append(manual);
+  if(offer.listingHold){
+    const held=element('span','Retail price under review','fb-status fb-evidence-warning');
+    held.title='Selected retailer channel and qualifying plan are not independently supported; no purchasable cash quote.';
+    wrapper.append(held);
+  }
   if(offer.availability==='out_of_stock'){
     const missing=element('span','Out of stock on '+(offer.availabilityObservedOn||'recorded date'),'fb-status fb-evidence-warning');
     missing.title='Carrier stock was unavailable on this observed date. Prices remain historic advertised headlines, NOT purchasable checkout quotes.';
@@ -126,6 +131,10 @@ function saveCompare() {
 }
 function addToCompare(type,id) {
   const offer=(type==='phone'?catalog.phones:catalog.plans).find(p=>p.id===id);
+  if(type==='phone'&&offer?.listingHold){
+    window.alert('This retailer-specific phone headline is under evidence review. Price comparisons remain paused.');
+    return;
+  }
   if(type==='phone'&&offer?.availability==='out_of_stock'){
     window.alert('This phone was observed out of stock. Cost comparisons are paused until the carrier confirms inventory.');
     return;
@@ -279,6 +288,8 @@ function fieldValue(type,offer,key) {
     return 'Not offered for '+comparePrefs.lines+' lines';
   if(type==='plan' && officialHeadlineUnderReview(offer) &&
       ['monthly','year','billing'].includes(key))return 'Price under review';
+  if(type==='phone' && offer.listingHold &&
+      ['monthly','year','data','hotspot','eligibility'].includes(key))return 'Retail promotion under review; cash estimates withheld';
   if(type==='phone' && offer.availability==='out_of_stock' &&
       ['monthly','year','data','hotspot','eligibility'].includes(key))return 'Out of stock — no current cost quote';
   if(type==='phone' && officialHeadlineUnderReview(offer) &&
