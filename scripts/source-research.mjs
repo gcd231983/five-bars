@@ -5,7 +5,7 @@ import {validDay,verificationState,usd,localDay} from '../site/value-core.mjs';
 export const BASE='https://gcd231983.github.io/five-bars/';
 export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired','publishedPromoPrice','publishedPromoMonths','publishedPromoRequirement',
   'publishedUndiscountedPrice','publishedDiscountCondition','publishedKnownMonthlyFee','publishedKnownActivationFee','publishedAvailability',
-  'publishedUndiscountedPlanPrice','publishedPlanDiscountCondition','publishedPrepaidServiceTotal'];
+  'publishedUndiscountedPlanPrice','publishedPlanDiscountCondition','publishedPrepaidServiceTotal','publishedNewLineRequired','publishedBundleRenewalUnverified'];
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'
 })[c]);
@@ -31,6 +31,8 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
  const validFields=kind==='phone'?
   num(record.publishedDevicePrice)&&num(record.publishedPlanMonthly)&&
   typeof record.publishedPortRequired==='boolean'&&
+  (record.publishedNewLineRequired===undefined||typeof record.publishedNewLineRequired==='boolean')&&
+  (record.publishedBundleRenewalUnverified===undefined||record.publishedBundleRenewalUnverified===true)&&
   ((record.publishedUndiscountedPlanPrice===undefined&&record.publishedPlanDiscountCondition===undefined)||
    (num(record.publishedUndiscountedPlanPrice)&&record.publishedUndiscountedPlanPrice>=record.publishedPlanMonthly&&record.publishedPlanDiscountCondition==='autopay'))&&
   (record.publishedFirstMonthPlanPrice===undefined||num(record.publishedFirstMonthPlanPrice))&&
@@ -64,6 +66,10 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
   if(record.publishedUndiscountedPlanPrice!==undefined&&
     (offer.undiscountedPlanPrice!==record.publishedUndiscountedPlanPrice||offer.planDiscountCondition!==record.publishedPlanDiscountCondition))
    issues.push('phone service AutoPay condition or undiscounted monthly rate differs from official source');
+  if(record.publishedBundleRenewalUnverified===true&&offer.bundleRenewalUnverified!==true)
+   issues.push('included prepaid bundle renewal remains unverified by official research');
+  if(record.publishedNewLineRequired!==undefined&&offer.newLineRequired!==record.publishedNewLineRequired)
+   issues.push('new-line activation requirement differs from official selected offer');
   if(offer.port!==record.publishedPortRequired)
    issues.push('number-transfer requirement differs from official conditional headline');
   if(record.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==record.publishedFirstMonthPlanPrice)
@@ -191,8 +197,10 @@ export function renderResearchPage({catalog,ledger,research,today=localDay()}){
   const issues=item.issues||[];
   const isPhone=record.kind==='phone';
   const rate=status==='conflict'||status==='invalid'?'Rate WITHHELD (mismatch)':
-    isPhone?usd(record.publishedDevicePrice)+' advertised conditional handset price; needs '+
-      usd(record.publishedPlanMonthly)+'/mo qualifying service'+
+    isPhone?(catalog.phones.find(x=>x.id===id)?.bundleRenewalUnverified===true?
+      usd(record.publishedDevicePrice)+' conditional prepaid DEVICE + SERVICE BUNDLE total; the first 12 months of service are INCLUDED (not an additional bill); '+usd(record.publishedPlanMonthly)+'/mo effective prepaid equivalent, NOT verified renewal pricing':
+      usd(record.publishedDevicePrice)+' advertised conditional handset price; needs '+usd(record.publishedPlanMonthly)+'/mo qualifying service')+
+      (record.publishedNewLineRequired?'; eligible newly activated line required':'')+
       (record.publishedUndiscountedPlanPrice!==undefined?'; '+usd(record.publishedUndiscountedPlanPrice)+'/mo WITHOUT AutoPay; discount NOT assumed':'')+
       (record.publishedFirstMonthPlanPrice!==undefined?'; '+usd(record.publishedFirstMonthPlanPrice)+' first service bill':'')+
       (record.publishedPrepayMonths!==undefined?'; '+record.publishedPrepayMonths+' service months prepaid':'')+

@@ -272,6 +272,12 @@ try {
     assert.match(await boostPhone.innerText(),/Needs a \$65\/mo plan/);
     assert.match(await page.locator('#r-total-a36').innerText(),/Must move your number/);
     assert.match(await page.locator('#r-tracfone-a17').innerText(),/\$135 fixed service prepayment included upfront/);
+    const vzFree=page.locator('#r-vzpre-a17');
+    assert.match(await vzFree.innerText(),/New-line activation not confirmed/);
+    await page.getByRole('button',{name:'I confirm qualifying new-line activation'}).click();
+    assert.match(await vzFree.innerText(),/Due today \(est\.\): \$60/);
+    await page.getByRole('button',{name:'I confirm qualifying new-line activation'}).click();
+    assert.match(await vzFree.innerText(),/New-line activation not confirmed/);
     for(const id of ['cricket-power','cricket-motog']){
       const held=page.locator('#r-'+id);
       assert.match(await held.innerText(),/OUT OF STOCK/);
@@ -483,9 +489,9 @@ try {
     research.on('pageerror',e=>errors.push(view+' source research: '+e.message));
     await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
     assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
-    assert.equal(await research.locator('.research-article').count(),65);
+    assert.equal(await research.locator('.research-article').count(),70);
     assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human checkout-scenario reviews/i);
-    assert.match(await research.locator('main').innerText(),/13.*without documented official-source research/s);
+    assert.match(await research.locator('main').innerText(),/8.*without documented official-source research/s);
     assert.match(await research.locator('main').innerText(),/Stock and checkout holds \(6\)/);
     const mint=research.locator('[data-offer-id="mint"]');
     assert.match(await mint.innerText(),/\$360\.00 due upfront for 12 months/);

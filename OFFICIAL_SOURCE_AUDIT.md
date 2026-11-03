@@ -200,3 +200,20 @@ Added records: `metro-a17`, `metro-a37`, `cricket-power`, `cricket-motog`, `tota
 The Total A36 transfer requirement is now enforced by the finder and savings planner. Cricket's Motorola product pages presented restock forms; both listings are held until inventory is reconfirmed. All seven Boost device offers now distinguish their advertised AutoPay service rate from the rate without AutoPay. The separately published Tracfone 90-day service amount is no longer treated as evidence of an ongoing $45 monthly bill.
 
 The generated public audit shows 65 partial source matches, 13 remaining research gaps, six inventory holds and zero human checkout scenarios. A stock-held record can match a historical conditional price while remaining excluded from purchase estimates. The 13 missing records and all 78 real checkout reviews remain open work.
+
+
+## Five Bars 4.2 — carrier-published handset terms and modeled eligibility
+
+**Observation window:** November 2, 2026. **Scope:** carrier-publication facts, not a shopping-cart checkout. **Source coverage:** 70/78 offers, of which 37 are plans and 33 conditional phone headlines. **Full checkout verification:** 0/78.
+
+| Offer | Documented carrier-publication conditions | Official source |
+| --- | --- | --- |
+| AT&T Prepaid moto g 2026 | $39.99 handset with newly activated $45-or-higher qualifying plan; first $45 service month extra | https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html |
+| Verizon Prepaid Galaxy A17 5G or moto g play 2026 | Selected free handset with NEW qualifying Unlimited line; first Unlimited month $60, then qualifying Auto Pay $50 ($60 without); catalog's former $45 plan was not the qualifying tier | https://www.verizon.com/prepaid/deals/ |
+| Verizon Prepaid iPhone 16e | $349.99 selected 128GB handset + newly activated Unlimited service; future $100 service credits over ten months beginning month two are excluded from cash savings | https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/ |
+| Mint Pixel 11 | $399 handset + $180 for 12 **prepaid** Unlimited months = $579 bundled before variable charges; no second service charge within those twelve months | https://www.mintmobile.com/devices/google-pixel-11/13630805/ |
+| Mint Galaxy S26 FE | $300 handset + $180 annual prepaid Unlimited = $480 advertised bundle; selected page **out of stock** on dated observation; continue inventory hold | https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/ |
+
+**Unresolved warning:** The US Mobile Pixel 11 page lists $539 with a new annual plan (or $624 for the device-only selection), but the earlier $199 annual-plan price used in Five Bars expired September 29, 2026. The device remains browsable, while required annual plan cash and first-year totals are withheld until independently supported by the currently selected purchase path. Official reference: https://www.usmobile.com/pixel-promo
+
+Customers must explicitly confirm applicable new-line eligibility before the selected conditional device prices can enter calculator totals, finder rankings or Switch & Save. Neither a confirmation checkbox nor a dated publication certifies checkout eligibility, tax amount, stock or customer-specific final price.

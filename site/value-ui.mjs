@@ -306,18 +306,20 @@ function fieldValue(type,offer,key) {
       default:return '—';
     }
   }
-  const c=phoneCost(offer,{discountQualified:comparePrefs.discountQualified});
+  const c=phoneCost(offer,{discountQualified:comparePrefs.discountQualified,newCustomer:comparePrefs.newCustomer});
   if(offer.postpaid&&['monthly','year','data','hotspot'].includes(key))
     return 'Financing / trade-in terms not documented';
   switch(key) {
     case 'network':return offer.net==='multi'?'Network varies':offer.net==='att'?'AT&T':offer.net==='vzw'?'Verizon':'T-Mobile';
-    case 'monthly':return c?.planPrice===null?'Variable':usd(c?.planPrice)+'/mo'+(c?.conditionalDiscountUnconfirmed?' (AutoPay discount not assumed)':'');
+    case 'monthly':return offer.bundleRenewalUnverified===true?usd(offer.planPrice)+'/mo equivalent INCLUDED in initial 12-month bundle; renewal UNKNOWN':
+      c?.planPrice===null?'Variable':usd(c?.planPrice)+'/mo'+(c?.conditionalDiscountUnconfirmed?' (AutoPay discount not assumed)':'');
     case 'year':return usd(c?.year);
     case 'data':return usd(c?.due);
     case 'hotspot':return usd(c?.commitment);
     case 'priority':return offer.lock ? offer.lock+' months listed' : 'Unspecified; check carrier';
     case 'taxes':return offer.postpaid?'Postpaid/financing may apply':'Prepaid or bundled';
-    case 'eligibility':return offer.fullRetailRequired?'Full retail payment required; financing ineligible':
+    case 'eligibility':return offer.newLineRequired===true?'Confirm qualifying NEW line; existing-line upgrade may not count':
+      offer.fullRetailRequired?'Full retail payment required; financing ineligible':
       offer.port?'Number transfer required':'No transfer listed';
     default:return '—';
   }

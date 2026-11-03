@@ -391,7 +391,7 @@ const PLAN_TOGS = [
   ["unl","Unlimited data"],["pri","Priority data"],["hot","Hotspot"],["tax","Taxes included"],["noport","Can’t move my number"],["canport","I confirm eligible number transfer"],["newcustomer","I qualify for a new-customer or eligible new-line offer"],["discountqualified","I meet AutoPay / eBilling / Auto-Refill conditions"]
 ];
 const PHONE_TOGS = [
-  ["free","$0 upfront device price"],["iphone","iPhone"],["android","Android"],["prepaid","Prepaid offers only"],["noport","Can’t move my number"],["discountqualified","I meet AutoPay / eBilling / Auto-Refill conditions"]
+  ["free","$0 upfront device price"],["iphone","iPhone"],["android","Android"],["prepaid","Prepaid offers only"],["noport","Can’t move my number"],["newcustomer","I confirm qualifying new-line activation"],["discountqualified","I meet AutoPay / eBilling / Auto-Refill conditions"]
 ];
 const SORTS = {
   byop:[["year","lowest 12-month cost"],["reg","lowest regular price"],["save","biggest intro savings"],["pri","priority data first"]],
@@ -506,6 +506,9 @@ function phoneCalc(d){
   const conditional=Number.isFinite(d.undiscountedPlanPrice)&&d.planDiscountCondition==='autopay';
   const qualified=typeof state!=='undefined'&&state.t?.discountqualified===true;
   const plan=d.planPrice==null?null:(conditional&&!qualified?d.undiscountedPlanPrice:d.planPrice);
+  if(d.newLineRequired===true && !(state.t?.newcustomer===true))
+    return {due:null,commitment:null,year:null,eff:price,ei,
+      planPrice:plan,requiresNewLine:true};
   const prepay=Math.max(0,d.prepay||0);
   const stay=Math.max(0,d.stay||0);
   const bundle=Math.max(0,d.bundle||0);
@@ -696,7 +699,9 @@ function renderPhones(){
       d.prepay>1 && !d.bundle && d.id!=="usm-p11" ? "Prepay " + d.prepay + " months" : null,
       Number.isFinite(d.prepaidServiceTotal) ? money(d.prepaidServiceTotal) + " fixed service prepayment included upfront" : null,
       Number.isFinite(d.firstMonthPlanPrice) && d.firstMonthPlanPrice!==d.planPrice ? "First service bill " + money(d.firstMonthPlanPrice) + "; then " + money(d.planPrice) + "/mo subject to eligibility" : null,
-      d.port ? "Must move your number" : "No number move needed",
+      d.port ? "Must move your number" : "No number move required",
+      d.newLineRequired ? "Eligible NEW LINE activation required; existing-line upgrades do not automatically qualify" : null,
+      d.bundleRenewalUnverified ? "Service rate AFTER bundled 12 months UNKNOWN; extended savings withheld" : null,
       d.store ? "In store only" : null,
       d.postpaid ? "Postpaid financing; total device cost unknown" : "Prepaid",
       d.availability==="out_of_stock" ? "Observed OUT OF STOCK on "+(d.availabilityObservedOn||"an undated source") : null,
@@ -721,6 +726,7 @@ function renderPhones(){
       el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null, scan?.state==="source_unavailable" ? el("li",{class:"warn"}, "Offer link could not be checked") : null, scan?.reviewRequired ? el("li",{class:"warn"}, "Price candidate needs manual review; listed terms are unverified") : null,
       priceDisputed ? el("li",{class:"warn"},"Official price evidence conflicts with this listing; stale totals suppressed") : null,
       d.availability==="out_of_stock" ? el("li",{class:"warn"},"This phone was out of stock on the observation date. No current checkout or savings quote is available.") : null,
+      c.requiresNewLine ? el("li",{class:"warn"},"New-line eligibility is unconfirmed: estimated cash totals are withheld until you affirm qualification.") : null,
       d.postpaid ? el("li",{class:"warn"},"A financed promotional phone is NOT guaranteed free at checkout. Retail balance, installments, credits and payoff need verification.") : null),
       ends ? el("div",{class: ends.expired ? "deal off" : "deal"}, ends.expired ? ends.text + ". Recheck before you go." : ends.text + ".") : null,
       d.note ? el("div",{class:"extra"}, d.note) : null,
@@ -729,6 +735,7 @@ function renderPhones(){
         priceDisputed ? el("span",{class:"yr fb-watch-warning"},"Device cost and first-year totals are suppressed pending review of the official headline.") :
           c.unavailable ? el("span",{class:"yr fb-watch-warning"},"Out of stock — upfront, commitment and first-year totals withheld until inventory is independently rechecked.") :
           c.financingUncertain ? el("span",{class:"yr fb-watch-warning"},"Financed offer: upfront, commitment and first-year estimates withheld pending full carrier terms.") :
+          c.requiresNewLine ? el("span",{class:"yr fb-watch-warning"},"New-line activation not confirmed — checkout estimates withheld.") :
           el("span",{class:"yr"},
             c.due!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Due today (est.): ", el("b",null, money(c.due))) : "Upfront total: ask carrier. ",
             c.commitment!=null ? el("span",{style:"margin-right:14px;display:inline-block"}, "Min. commitment: ", el("b",null, money(c.commitment))) : null,

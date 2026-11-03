@@ -39,6 +39,9 @@ export function phoneCosts(d, options = {}) {
   if(d.postpaid===true)return {dueToday:null,minCommitment:null,firstYear:null,netDevice:null,
     rebate:Math.max(0,Number(d.rebate)||0),firstMonthAssumed:false,
     conditionalRewardsExcluded:true,financingUncertain:true};
+  if(d.newLineRequired===true && options.newCustomer!==true)
+    return {dueToday:null,minCommitment:null,firstYear:null,netDevice:device,
+      requiresNewLine:true,conditionalRewardsExcluded:true};
   const prepay=Math.max(0,Number(d.prepay)||0);
   const stay=Math.max(0,Number(d.stay)||0);
   const bundle=Math.max(0,Number(d.bundle)||0);

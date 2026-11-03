@@ -79,6 +79,10 @@ function buildCashflow(offer,type,scenario,months){
     if(L!==1)throw Error('Phone promotions are per device. Use one line; household phone bundles cannot be assumed.');
     if(pastEnd(offer.ends,scenario.today))
       throw Error('This device promotion has passed its recorded expiration date.');
+    if(offer.newLineRequired===true && scenario.newCustomer!==true)
+      throw Error('This phone promotion requires confirmed eligible new-line activation before savings can be estimated.');
+    if(offer.bundleRenewalUnverified===true)
+      throw Error('Only the initial prepaid device/service bundle is documented. Its renewal rate after month 12 is unknown, so 24- and 36-month switch-savings estimates are withheld.');
     if(offer.port && (scenario.cannotPort||!scenario.canPort))
       throw Error('This phone promotion requires a confirmed eligible number transfer before a savings estimate can be shown.');
     if(!Number.isFinite(offer.price)||offer.price<0)
@@ -86,7 +90,7 @@ function buildCashflow(offer,type,scenario,months){
     deviceUpfront=money(offer.price);
     const prepay=Math.max(1,Math.trunc(Number(offer.prepay)||0));
     const bundle=Math.max(0,Math.trunc(Number(offer.bundle)||0));
-    const phoneEstimate=phoneCost(offer,{discountQualified:scenario.discountQualified});
+    const phoneEstimate=phoneCost(offer,{discountQualified:scenario.discountQualified,newCustomer:scenario.newCustomer});
     const base=phoneEstimate?.planPrice??null;
     if(phoneEstimate?.conditionalDiscountUnconfirmed)
       note.push('Required phone service uses the published rate without AutoPay. The discounted rate applies only after you confirm AutoPay eligibility.');
@@ -163,6 +167,8 @@ export function simulateSwitch({catalog,type,id,scenario,phoneEvidence={},
        (published.publishedUndiscountedPlanPrice!==undefined&&
         (offer.undiscountedPlanPrice!==published.publishedUndiscountedPlanPrice||offer.planDiscountCondition!==published.publishedPlanDiscountCondition))||
        offer.port!==published.publishedPortRequired||
+       (published.publishedNewLineRequired!==undefined&&offer.newLineRequired!==published.publishedNewLineRequired)||
+       (published.publishedBundleRenewalUnverified===true&&offer.bundleRenewalUnverified!==true)||
        (published.publishedPrepayMonths!==undefined&&offer.prepay!==published.publishedPrepayMonths)||
        (published.publishedPrepaidServiceTotal!==undefined&&offer.prepaidServiceTotal!==published.publishedPrepaidServiceTotal)||
        (published.publishedFirstMonthPlanPrice!==undefined&&offer.firstMonthPlanPrice!==published.publishedFirstMonthPlanPrice)||
