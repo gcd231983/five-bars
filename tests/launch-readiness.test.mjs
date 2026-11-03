@@ -55,3 +55,20 @@ test('even abundant signed scenarios cannot silently certify affiliate contracts
  assert.ok(r.ownerGates.every(g=>g.state!=='complete'));
  assert.equal(r.checkout.reviewed,0);
 });
+
+test('Eastern day boundary does not falsely mark evening scan as negative or future',()=>{
+ const same=assessReadiness({catalog,research,retailerEvidence,ledger,
+   status:{generatedAt:'2026-11-03T01:56:43.198Z'},today:'2026-11-02'});
+ assert.equal(same.automation.scanAgeDays,0);
+ assert.equal(same.automation.scanStatus,'recent');
+ const prior=assessReadiness({catalog,research,retailerEvidence,ledger,
+   status:{generatedAt:'2026-11-02T01:56:43.198Z'},today:'2026-11-02'});
+ assert.equal(prior.automation.scanAgeDays,1);
+ const future=assessReadiness({catalog,research,retailerEvidence,ledger,
+   status:{generatedAt:'2026-11-05T10:00:00Z'},today:'2026-11-02'});
+ assert.equal(future.automation.scanStatus,'clock_mismatch');
+ const missing=assessReadiness({catalog,research,retailerEvidence,ledger,
+   status:{generatedAt:'invalid'},today:'2026-11-02'});
+ assert.equal(missing.automation.scanAgeDays,null);
+ assert.equal(missing.automation.scanStatus,'not_reported');
+});
