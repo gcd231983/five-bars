@@ -2,6 +2,20 @@
 
 Status on November 2, 2026: PRE-COMMERCIAL-LAUNCH. This is a checklist, not a statement that the business is registered, an affiliate agreement exists, or checkout prices are independently verified.
 
+## Five Bars 4.5 — public-beta engineering handoff and launch gates
+
+- [x] Fix the guided phone finder so a shopper's explicitly confirmed qualifying new-line status reaches the same tested price calculation used elsewhere. Without confirmation, conditional device checkout totals remain withheld.
+- [x] Add a mobile-friendly generated [launch-readiness page](https://gcd231983.github.io/five-bars/launch-readiness.html) and structured report derived from the current catalog, research, stock/retailer holds, signed evidence and source-scan timestamp.
+- [x] Distinguish published source records, partial service-unpriced offers, independently signed checkout scenarios, and stock / retailer holds without automatically certifying commercial launch.
+- [x] Include the readiness report in GitHub Pages updates and the sitemap; add deterministic Node and mobile/desktop browser regression coverage.
+- [ ] **Owner:** Obtain at least ten real diverse, anonymized, itemized carrier checkout/written-quote scenarios and submit through the human-review workflow. No synthetic test fixture qualifies.
+- [ ] **Owner:** Recheck the three held retailer/channel promotions individually; do not lift holds from a product page alone.
+- [ ] **Owner:** Choose and approve a private consumer support channel and its security, moderation and retention policy. Do not request PINs or subscriber records in public GitHub.
+- [ ] **Owner:** Complete business identity, legal/privacy/advertising review and obtain actual signed affiliate agreements before enabling commission links.
+- [ ] **Owner:** Conduct real iOS/Android, keyboard, screen-reader and nontechnical-user beta tests. CI browser simulation is necessary but insufficient.
+
+**Release boundary:** public beta engineering can be deployed and tested; independently checkout-verified offers, private support operations, legal endorsements, partner acceptance and commercial launch cannot be manufactured by code. The public dashboard deliberately keeps those owner gates pending.
+
 ## Already built
 
 - 38 wireless plans and 40 advertised phone offers with finder, comparisons, network/provider choices and customer watchlists.
