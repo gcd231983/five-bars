@@ -5,11 +5,11 @@
   "scope": "Public official pages and consumer labels only; NOT checkout validation, actual product eligibility, complete terms or guaranteed pricing.",
   "summary": {
     "offers": 78,
-    "researched": 65,
-    "publishedPriceMatches": 65,
+    "researched": 70,
+    "publishedPriceMatches": 70,
     "conflictingOrInvalid": 0,
     "aged": 0,
-    "notResearched": 13,
+    "notResearched": 8,
     "manuallyFullyReviewed": 0,
     "needingFullTerms": 78,
     "availabilityHolds": 6
@@ -1053,12 +1053,14 @@
       "catalogPrice": 39.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html"
+      ]
     },
     {
       "id": "boost-16e",
@@ -1316,12 +1318,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.verizon.com/prepaid/deals/",
+        "https://www.verizon.com/prepaid/"
+      ]
     },
     {
       "id": "vzpre-16e",
@@ -1334,12 +1339,15 @@
       "catalogPrice": 349.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/",
+        "https://www.verizon.com/prepaid/"
+      ]
     },
     {
       "id": "wm-vzpre-a17",
@@ -1470,12 +1478,14 @@
       "catalogPrice": 579,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.mintmobile.com/devices/google-pixel-11/13630805/"
+      ]
     },
     {
       "id": "mint-s26fe",
@@ -1488,12 +1498,14 @@
       "catalogPrice": 480,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "not_researched",
-      "researchLabel": "No official-source research recorded",
+      "researchState": "published_match",
+      "researchLabel": "Official conditional device headline matched on 2026-11-02",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": null,
-      "sourceUrls": []
+      "researchedOn": "2026-11-02",
+      "sourceUrls": [
+        "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/"
+      ]
     },
     {
       "id": "usm-p11",

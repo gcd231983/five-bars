@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-02T23:43:13.473Z",
+  "generatedAt": "2026-11-03T00:10:55.037Z",
   "today": "2026-11-02",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
@@ -307,7 +307,7 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
+      "lastCatalogReference": "2026-11-02",
       "link": "https://www.mintmobile.com/devices/google-pixel-11/13630805/"
     },
     {
@@ -328,7 +328,7 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
+      "lastCatalogReference": "2026-11-02",
       "link": "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/"
     },
     {
@@ -618,7 +618,7 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
+      "lastCatalogReference": "2026-11-02",
       "link": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html"
     },
     {
@@ -1511,7 +1511,7 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
+      "lastCatalogReference": "2026-11-02",
       "link": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/"
     },
     {
@@ -1530,7 +1530,7 @@
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
+      "lastCatalogReference": "2026-11-02",
       "link": "https://www.verizon.com/prepaid/deals/"
     },
     {
