@@ -48,13 +48,15 @@ jobs:
         run: node scripts/deals.mjs check
       - name: Regenerate source research and audit coverage
         run: node scripts/build-source-research.mjs
+      - name: Regenerate evidence-based launch-readiness report
+        run: node scripts/launch-readiness.mjs
       - name: Regenerate source-linked carrier comparison pages and SEO sitemap
         run: node scripts/build-comparisons.mjs
       - name: Commit safe changes and source status
         run: |
           git config user.name 'five-bars-bot'
           git config user.email 'five-bars-bot@users.noreply.github.com'
-          git add site/data/deals.json site/data/changes.json site/data/status.json site/data/price-evidence.json site/data/price-history.json site/data/mvno-evidence.json site/data/mvno-history.json site/data/review-queue.json site/data/alerts.json site/compare/ site/carrier-comparisons.html site/sitemap.xml site/source-research.html site/data/research-audit.json
+          git add site/data/deals.json site/data/changes.json site/data/status.json site/data/price-evidence.json site/data/price-history.json site/data/mvno-evidence.json site/data/mvno-history.json site/data/review-queue.json site/data/alerts.json site/compare/ site/carrier-comparisons.html site/sitemap.xml site/source-research.html site/data/research-audit.json site/launch-readiness.html site/data/launch-readiness.json
           if ! git diff --cached --quiet; then
             git commit -m "Source check $(date -u +%F) (no AI)"
             git push

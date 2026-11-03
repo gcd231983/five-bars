@@ -2,11 +2,17 @@
 
 Five Bars compares US phone plans and advertised phone offers. The website is a static GitHub Pages site. A scheduled GitHub Actions workflow checks public sources and publishes **conservative** updates without Claude, AI subscriptions, paid APIs, or external servers.
 
-## Latest review controls (Five Bars 4.1)
+## Current evidence dashboard
 
-As of November 2, 2026, the catalog contains **78 offers**; **65 have dated partial official source research** and **13 lack that first-level coverage**. No offer has a current human-recorded checkout scenario (**0 of 78**). Those figures are not real-time checkout verifications.
+The live [launch-readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html) is generated from the repository's current evidence; do not use earlier README counts as a live inventory. At the November 2, 2026 baseline, 78 listings were tracked, 75 had partial or matching published-source records, three retailer offers were held, and zero had a documented current full checkout scenario. No source record is a binding price quote.
 
 **New manual sign-off gate:** a carrier URL and typed attestation alone are insufficient. Authorized reviewers must record a specific anonymized quote, the observed initial payment and renewal billing amount including mandatory fees, customer eligibility, service commitments, inventory, and ten checked material terms. The stored record is tied to a GitHub reviewer and exact catalog signature. See [Checkout verification protocol](CHECKOUT_VERIFICATION.md). A reviewed scenario never guarantees another customer's checkout price.
+
+## Latest public-beta launch status
+
+The generated [Launch readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html) reads real repository evidence after each source scan and shows what remains blocked. It never upgrades published prices to checkout-verified status, assumes signed affiliate contracts, or certifies private support. The current site is an educational **public beta**, not a commercially approved referral service.
+
+The workflow generator is `node scripts/launch-readiness.mjs`. Its outputs are `site/launch-readiness.html` and `site/data/launch-readiness.json`. Missing legal, support, independent checkout, user-testing, and affiliate approvals stay pending until actual evidence is collected and separately reviewed.
 
 ## What the automator can and cannot do
 
