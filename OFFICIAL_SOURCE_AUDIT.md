@@ -1,20 +1,20 @@
-# Five Bars — official-source audit: November 2, 2026
+# Five Bars — official-source audit: November 3, 2026
 
 **Scope: official publicly available plan pages, broadband consumer disclosures and carrier promotion notices. NOT a completed carrier checkout, personal eligibility test, carrier-approved partnership or signed full-terms review.**
 
 ## Current coverage and meanings
 
-This opening summary reflects the **November 2, 2026 official-publication research baseline**. The sections below retain historical milestone counts and must not be interpreted as current catalog totals. For the newest generated counts, use `site/data/research-audit.json` and the [live launch-readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html).
+This opening summary reflects the **November 2–3, 2026 official-publication research baseline**. The sections below retain historical milestone counts and must not be interpreted as current catalog totals. For the newest generated counts, use `site/data/research-audit.json` and the [live launch-readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html).
 
 - **Total catalog**: 78 items — 38 plans, 40 device promotions.
-- **75 dated official carrier-publication records**: 38 service plans and 37 device offers. These are **71 published-price matches** and **4 partial device/financing publications** with selected qualifying service cash still unknown. They are **not** completed checkout quotes.
-- **Three remaining first-party publication gaps, all retail-channel/device-specific**: `wm-vzpre-a17`, `wm-st-a17`, and `simple-a16`. All three remain on browse-only price holds. Separate retailer product-page observations do **not** establish the selected promotional activation or in-store stock.
-- **Straight Talk channel distinction**: Its Galaxy A17 product page describes the current $0 Silver Unlimited bundle as **online-only** through January 10, 2027. It does **not** certify the separate Walmart Galaxy A17 in-store listing, which remains on hold. https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid
+- **76 dated official carrier-publication records**: 38 service plans and 38 device offers. These are **72 published-price matches** and **4 partial device/financing publications** with selected qualifying service cash still unknown. They are **not** completed checkout quotes.
+- **Two remaining first-party publication gaps**: `wm-vzpre-a17` and `simple-a16`. Three retail-channel offers, including the now-published Walmart Straight Talk Galaxy A17, remain on browse-only checkout-price holds. Separate retailer product-page observations do **not** establish the selected promotional activation or in-store stock.
+- **Straight Talk channel distinction**: Its Galaxy A17 product page includes separate online and **participating-Walmart in-store** $0 handset terms, requiring in-store activation of Silver Unlimited or higher through January 10, 2027 while supplies last. This supports the published in-store headline, NOT a specific Walmart checkout payment, inventory or eligibility; the retailer checkout hold remains. https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid
 - **Human checkout/full-terms sign-offs in `site/data/verifications.json`**: zero. Published evidence is never a complete tax/eligibility/payment quote.
-- **Research observation date**: 2026-11-02. The generator ages first-party source observations after 21 days; separately signed human checkout scenarios expire after 14 days or a material offer change.
+- **Research observation dates**: 2026-11-02 and 2026-11-03. The generator ages first-party source observations after 21 days; separately signed human checkout scenarios expire after 14 days or a material offer change.
 
 Public record: https://gcd231983.github.io/five-bars/source-research.html
-Underlying 75-record source ledger: `site/data/research-evidence.json`.
+Underlying 76-record source ledger: `site/data/research-evidence.json`.
 Machine-readable coverage report: `site/data/research-audit.json`.
 
 ## Confirmed public-rate baselines (not checkout)
@@ -245,3 +245,11 @@ The retailer research file at `site/data/retailer-evidence.json` contains **thre
 Every record links to the originally selected product page, states the date, and marks selected-promotion confirmation **false**. All three remain on editorial holds: no live comparison or savings claim is generated. Carrier published-source research remains **75/78 (71 price matches, 4 partial records)** and checkout attestations remain **0/78**.
 
 No fee, retailer discount, activation approval or live stock value was inferred from a product page.
+
+## Five Bars 4.6 — official Walmart Galaxy A17 publication, still no retail checkout (November 3, 2026)
+
+A new first-party Straight Talk product-page finding distinguishes **two promotional channels** rather than assuming the online-only block is the only available offer. The same official product page also publishes terms valid **through January 10, 2027 while supplies last, online or at participating stores** and explicitly states that **Walmart in-store activation of Silver Unlimited or higher is required** for the conditional free Galaxy A17. The page also says taxes and fees apply, at most two phones per customer and no combining with other offers or family plans. Source: https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid
+
+The matching source record `wm-st-a17` was added with a dated carrier publication, bringing coverage to **76/78 (72 published matches, 4 partial unpriced)**. This **does not** endorse a particular Walmart store, prove current inventory, establish a customer is eligible, or determine tax/activation or total cash due. The separate Walmart online listing still displays **$99.88 standalone** at the November 2 retailer observation; in-store conditional promotion pricing is not the same purchase path. `listingHold` remains active, preventing estimated savings or checkout cash from being ranked until an actual itemized quote is independently observed.
+
+Two publication gaps remain: `wm-vzpre-a17` and `simple-a16`. All three retailer-specific records remain price-held; human full-terms reviews remain **zero**. Earlier dated milestone totals in this document are historical, not current.
