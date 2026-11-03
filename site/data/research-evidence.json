@@ -1869,9 +1869,11 @@
         "Confirm specific new-line/customer eligibility, selected checkout channel and stock before purchase.",
         "Observe actual first bill, compulsory taxes/fees, service renewal and any plan discounts at checkout.",
         "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions.",
-        "Determine future service renewal price after the prepaid 12-month term; no renewal is presumed."
+        "Determine future service renewal price after the prepaid 12-month term; no renewal is presumed.",
+        "Confirm the actual rate and required prepaid amount after the 12 included months; never reuse the first-year $15/month effective equivalent as the renewal price."
       ],
-      "publishedNewLineRequired": true
+      "publishedNewLineRequired": true,
+      "publishedBundleRenewalUnverified": true
     },
     "mint-s26fe": {
       "kind": "phone",
@@ -1895,9 +1897,11 @@
       "unresolved": [
         "Confirm specific new-line/customer eligibility, selected checkout channel and stock before purchase.",
         "Observe actual first bill, compulsory taxes/fees, service renewal and any plan discounts at checkout.",
-        "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions."
+        "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions.",
+        "Confirm the actual rate and required prepaid amount after the 12 included months; never reuse the first-year $15/month effective equivalent as the renewal price."
       ],
-      "publishedNewLineRequired": true
+      "publishedNewLineRequired": true,
+      "publishedBundleRenewalUnverified": true
     }
   }
 }
