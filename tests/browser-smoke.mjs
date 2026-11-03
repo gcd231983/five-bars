@@ -489,10 +489,12 @@ try {
     research.on('pageerror',e=>errors.push(view+' source research: '+e.message));
     await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
     assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
-    assert.equal(await research.locator('.research-article').count(),70);
+    assert.equal(await research.locator('.research-article').count(),75);
     assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human checkout-scenario reviews/i);
-    assert.match(await research.locator('main').innerText(),/8.*without documented official-source research/s);
+    assert.match(await research.locator('main').innerText(),/3.*without documented official-source research/s);
     assert.match(await research.locator('main').innerText(),/Stock and checkout holds \(6\)/);
+    assert.match(await research.locator('main').innerText(),/Retail-specific price holds \(3\)/);
+    assert.match(await research.locator('[data-offer-id="tmo-18pro"]').innerText(),/SERVICE PRICE UNKNOWN/);
     const mint=research.locator('[data-offer-id="mint"]');
     assert.match(await mint.innerText(),/\$360\.00 due upfront for 12 months/);
     assert.match(await mint.innerText(),/\$180/);
