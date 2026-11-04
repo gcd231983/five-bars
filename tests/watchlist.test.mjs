@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  normalizeWatchlist,watchKey,addWatch,removeWatch,checkWatchlist,markAlertsSeen,
+  normalizeWatchlist,watchKey,addWatch,removeWatch,checkWatchlist,markAlertsSeen,watchPrice,
   MAX_WATCHES,WATCHLIST_STORAGE_KEY
 } from '../site/watchlist-core.mjs';
 
@@ -99,6 +99,40 @@ test('price disputes are never presented as target matches even when advertised 
   {phoneEvidence:{offers:{'metro-a17':{state:'headline_mismatch'}}},
    mvnoEvidence:{offers:{'tello-starter':{state:'unresolved_mismatch'}}}});
  assert.equal(r.targetMatches.length,0);
+ for(const researchState of ['conflict','invalid']){
+  const held=check({watches:[{kind:'phone',id:'metro-a17',target:5}]},{
+   researchAudit:{offers:[{id:'metro-a17',researchState}]}
+  });
+  assert.equal(held.targetMatches.length,0,researchState);
+ }
+});
+test('held, unavailable, financed and unknown-price handsets stay saved without target-price claims',()=>{
+ for(const changes of [
+  {listingHold:'Retailer activation terms need review'},
+  {availability:'out_of_stock'},{postpaid:true},{price:null},{price:undefined}
+ ]){
+  const sandbox=structuredClone(catalog);
+  Object.assign(sandbox.phones[0],changes);
+  const result=check({watches:[{kind:'phone',id:'metro-a17',target:2000}]},{catalog:sandbox});
+  assert.equal(result.watches.length,1);
+  assert.deepEqual(result.targetMatches,[]);
+  assert.equal(watchPrice(sandbox.phones[0],'phone',{},feeds.today),null);
+ }
+});
+test('plan and provider targets use undiscounted service prices without assuming payment eligibility',()=>{
+ const sandbox=structuredClone(catalog);
+ const offer=sandbox.plans[0];
+ Object.assign(offer,{price:10,undiscountedPrice:20,discountCondition:'autopay'});
+ for(const watch of [{kind:'plan',id:offer.id},{kind:'carrier',id:offer.carrier}]){
+  const under=check({watches:[{...watch,target:15}]},{catalog:sandbox});
+  assert.ok(!under.targetMatches.some(x=>x.id===offer.id));
+  const enough=check({watches:[{...watch,target:20}]},{catalog:sandbox});
+  assert.equal(enough.targetMatches.find(x=>x.id===offer.id)?.rate,20);
+ }
+ assert.equal(watchPrice(offer,'plan',{},feeds.today),20);
+ delete offer.undiscountedPrice;
+ assert.equal(watchPrice(offer,'plan',{},feeds.today),null);
+ assert.deepEqual(check({watches:[{kind:'plan',id:offer.id,target:2000}]},{catalog:sandbox}).targetMatches,[]);
 });
 test('manual review holds and malformed annual billing never trigger personal target matches',()=>{
  const flagged=check({watches:[{kind:'phone',id:'metro-a17',target:5}]},{

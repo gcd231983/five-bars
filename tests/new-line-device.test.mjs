@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {phoneCost,rankMatches,offerSignature,checkoutEvidenceIssues} from '../site/value-core.mjs';
+import {phoneCost,rankMatches,offerSignature,checkoutEvidenceIssues,verificationState} from '../site/value-core.mjs';
 import {phoneCosts} from '../scripts/auto-core.mjs';
 import {researchStatus} from '../scripts/source-research.mjs';
 import {simulateSwitch} from '../site/switch-core.mjs';
@@ -26,8 +26,8 @@ test('five new first-party handset records are published-only and material new-l
   assert.equal(researchStatus({...p,newLineRequired:false},r,{today:day}).state,'conflict');
   assert.notEqual(offerSignature(p),offerSignature({...p,newLineRequired:false}));
   assert.ok(r.unresolved.some(s=>/checkout/i.test(s)));
+  assert.equal(verificationState(p,undefined,day).status,'unverified');
  }
- assert.deepEqual(read('site/data/verifications.json').offers,{});
 });
 
 test('unknown new-line eligibility never produces quantified device checkout or savings',()=>{

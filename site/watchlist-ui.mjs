@@ -2,9 +2,9 @@
 // No service worker, push messages, email collection, or remote preference sync.
 import {
   WATCHLIST_STORAGE_KEY,MAX_WATCHES,normalizeWatchlist,watchKey,addWatch,
-  removeWatch,checkWatchlist,markAlertsSeen
+  removeWatch,checkWatchlist,markAlertsSeen,watchPrice
 } from './watchlist-core.mjs';
-import {usd} from './value-core.mjs';
+import {usd,localDay} from './value-core.mjs';
 
 const root=document.querySelector('#fb-watchlist-root');
 if(!root)throw Error('Missing personal watchlist panel');
@@ -93,9 +93,11 @@ function detailsOf(w){
   }
   const offer=(w.kind==='plan'?feeds.catalog.plans:feeds.catalog.phones).find(p=>p.id===w.id);
   if(!offer)return 'This listing is unavailable; you can remove this watch.';
-  if(w.kind==='phone')return 'Advertised device price: '+usd(offer.price)+'. Required plan, taxes, financing and rebates are NOT included in this target.';
-  if(offer.billingMonths===12)return 'Monthly equivalent: '+usd(offer.price)+'; full annual prepayment: '+usd(offer.billingUpfront)+'. Your target applies to the monthly equivalent, not the upfront cash requirement.';
-  return 'Standard catalog monthly price: '+usd(offer.price)+'. Intro discounts, family lines, tax and eligibility may differ.';
+  const price=watchPrice(offer,w.kind,feeds,localDay());
+  if(price===null)return 'Price unavailable for target matching. This offer is held, unavailable, expired, financed, or awaiting price review. Your saved watch can still show relevant review alerts.';
+  if(w.kind==='phone')return 'Advertised device price: '+usd(price)+'. Required plan, taxes and rebates are NOT included in this target; activation eligibility still requires confirmation.';
+  if(offer.billingMonths===12)return 'Monthly equivalent: '+usd(price)+'; full annual prepayment: '+usd(offer.billingUpfront)+'. Your target applies to the monthly equivalent, not the upfront cash requirement.';
+  return 'Standard catalog monthly price: '+usd(price)+'. Conditional payment discounts are excluded. Intro discounts, family lines, tax and eligibility may differ.';
 }
 function attachFeedback(text){
   const slot=document.getElementById('fb-watch-feedback');

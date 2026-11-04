@@ -8,7 +8,7 @@ const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const data={
  catalog:JSON.parse(read('site/data/deals.json')),
  status:JSON.parse(read('site/data/status.json')),
- ledger:JSON.parse(read('site/data/verifications.json')),
+ ledger:{schema:1,offers:{}},
  mvnoEvidence:JSON.parse(read('site/data/mvno-evidence.json'))
 };
 const fixed={today:'2026-11-02'};

@@ -170,7 +170,7 @@ function display(){
     workSteps.length+' items checked in this browser. This does not create a verification record.';};
   controls.forEach(box=>box.addEventListener('change',update));
   details.append(statusText);
-  const quoteFields=create('div',null,'fb-review-steps');
+  const quoteFields=create('div',null,'fb-review-steps fb-review-fields');
   const textInput=(label,type='text',attributes={})=>{
    const wrapper=create('label');
    wrapper.append(create('span',label));

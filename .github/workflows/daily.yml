@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '17 10 * * *' # 10:17 UTC; Eastern time varies with daylight saving
   workflow_dispatch:
+  # Ledger commits made with GITHUB_TOKEN do not trigger push workflows.
+  # Publish completed human sign-offs and invalidations from trusted main.
+  workflow_run:
+    workflows: ['Five Bars - human offer terms sign-off']
+    types: [completed]
+    branches: [main]
   push:
     branches: [main]
 
@@ -19,10 +25,15 @@ concurrency:
 
 jobs:
   update:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      validated_sha: ${{ steps.snapshot.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -52,6 +63,11 @@ jobs:
         run: node scripts/launch-readiness.mjs
       - name: Regenerate source-linked carrier comparison pages and SEO sitemap
         run: node scripts/build-comparisons.mjs
+      - name: Validate the generated release before committing
+        run: |
+          node --test tests/*.test.mjs
+          node scripts/deals.mjs check
+          node scripts/review-offer.mjs audit
       - name: Commit safe changes and source status
         run: |
           git config user.name 'five-bars-bot'
@@ -61,6 +77,9 @@ jobs:
             git commit -m "Source check $(date -u +%F) (no AI)"
             git push
           fi
+      - name: Record the exact validated release
+        id: snapshot
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Open deduplicated GitHub Issues for actionable price alerts
         continue-on-error: true
         env:
@@ -69,9 +88,31 @@ jobs:
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
         run: node scripts/notify-issues.mjs
 
-  deploy:
+  browser:
     needs: update
-    if: ${{ needs.update.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update.outputs.validated_sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.56.1
+      - run: node tests/browser-smoke.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: five-bars-release-browser-screenshots
+          path: browser-artifacts/
+          if-no-files-found: ignore
+
+  deploy:
+    needs: [update, browser]
+    if: ${{ needs.update.result == 'success' && needs.browser.result == 'success' }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -79,7 +120,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ needs.update.outputs.validated_sha }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
