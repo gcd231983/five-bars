@@ -2,6 +2,8 @@
 
 Five Bars compares US phone plans and advertised phone offers. The website is a static GitHub Pages site. A scheduled GitHub Actions workflow checks public sources and publishes **conservative** updates without Claude, AI subscriptions, paid APIs, or external servers.
 
+**Feature freeze (November 4, 2026):** delivery is limited to defect fixes, verification and operational maintenance. New product features require the owner to reopen scope. Checkout evidence, retailer activation holds and commercial approvals remain separate gates in [#28](https://github.com/gcd231983/five-bars/issues/28) and [#32](https://github.com/gcd231983/five-bars/issues/32).
+
 ## Current evidence dashboard
 
 The live [launch-readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html) is generated from the repository's current evidence; do not use earlier README counts as a live inventory. At the November 3, 2026 research baseline, 78 listings were tracked, 76 had partial or matching first-party published-source records (72 matches, four partial), three retailer-channel checkout-price holds remained, and zero had a documented current full checkout scenario. No source record is a binding price quote.
@@ -36,7 +38,7 @@ For a public repo, this design typically runs with GitHub-hosted Actions and Git
 1. Keep this repo **public** if using free GitHub Pages and Actions.
 2. Go to **Settings → Pages → Build and deployment** and select **GitHub Actions** (same as before).
 3. In **Actions → Five Bars - no-AI deal checks and website → Run workflow**, launch one run after the changes are merged.
-4. Look for the successful **update** and **deploy** jobs. The site is typically at `https://gcd231983.github.io/five-bars/`.
+4. Look for successful **update**, **browser** and **deploy** jobs. The site is typically at `https://gcd231983.github.io/five-bars/`.
 5. Open the **Sources & refresh** tab to see link-check results, the last full review date, and alert counts.
 
 No Claude subscription token or Anthropic secret is used. You may delete `CLAUDE_CODE_OAUTH_TOKEN` from Actions secrets after verifying the new workflow if nothing else needs it.
@@ -109,6 +111,10 @@ node --check site/value-ui.mjs
 ```
 
 A separate pull-request workflow runs `tests/browser-smoke.mjs` on Chromium at phone and desktop viewports and uploads screenshots as a CI artifact. It installs Playwright only in CI, not for ordinary website visitors. The published site remains static, client-side and AI-independent.
+
+The release workflow validates generated data, checks out that exact revision, builds `_site` with `node scripts/build-release.mjs`, and tests it with `FIVE_BARS_SITE_DIR=_site node tests/browser-smoke.mjs`. The browser job uploads the tested directory as the Pages artifact; deployment never rebuilds or checks out a different revision. Local runs need Playwright 1.56.1 and Google Chrome. Build output is disposable and never changes the source catalog or human verification ledger.
+
+Each build gives local CSS, module entry points and their imports one content-derived version query. This prevents an updated page from reusing a previous release's pricing module from the browser cache. Successful human sign-off and invalidation workflows also trigger the same tested release path.
 
 **Remaining work:** independently verify and refresh the current offer catalog. The automatic scanner currently checks public page availability and expiration dates; it does not discover or certify every new price. Avoid marketing the listings as fully verified or exhaustive.
 

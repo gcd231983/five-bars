@@ -25,7 +25,11 @@ jobs:
         run: node scripts/launch-readiness.mjs
       - name: Generate source-linked comparison pages
         run: node scripts/build-comparisons.mjs
+      - name: Build versioned static release
+        run: node scripts/build-release.mjs
       - name: Run mobile and desktop browser acceptance tests
+        env:
+          FIVE_BARS_SITE_DIR: _site
         run: node tests/browser-smoke.mjs
       - uses: actions/upload-artifact@v4
         if: always()
