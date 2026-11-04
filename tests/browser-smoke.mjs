@@ -9,7 +9,8 @@ import {extname,resolve,dirname,join,sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
 
-const site=resolve(dirname(fileURLToPath(import.meta.url)),'../site');
+const site=process.env.FIVE_BARS_SITE_DIR?resolve(process.env.FIVE_BARS_SITE_DIR):
+  resolve(dirname(fileURLToPath(import.meta.url)),'../site');
 const auditSummary=JSON.parse(await readFile(join(site,'data/research-audit.json'),'utf8')).summary;
 const mime={'.html':'text/html; charset=utf-8','.json':'application/json; charset=utf-8','.mjs':'text/javascript; charset=utf-8',
   '.css':'text/css; charset=utf-8','.xml':'application/xml; charset=utf-8','.txt':'text/plain; charset=utf-8'};
@@ -37,8 +38,17 @@ try {
     mobile:{width:390,height:844},desktop:{width:1280,height:840}
   })) {
     const context=await browser.newContext({viewport,locale:'en-US'});
+    const assetVersions=new Set();
     context.on('response',response=>{
       if(response.url().startsWith(base)&&response.status()>=400)errors.push(view+': HTTP '+response.status()+' '+response.url());
+      if(process.env.FIVE_BARS_SITE_DIR&&response.url().startsWith(base)){
+        const url=new URL(response.url());
+        if(/\.(?:m?js|css)$/.test(url.pathname)){
+          const version=url.searchParams.get('v');
+          if(!/^[a-f0-9]{16}$/.test(version||''))errors.push(view+': unversioned release asset '+url.pathname);
+          assetVersions.add(version);
+        }
+      }
     });
     const page=await context.newPage();
     page.on('pageerror',e=>errors.push(view+': '+e.message));
@@ -670,6 +680,7 @@ try {
     await satellite.getByRole('link',{name:'Switch & Save',exact:true}).click();
     await satellite.locator('#p-switch').waitFor({state:'visible'});
     await satellite.close();
+    if(process.env.FIVE_BARS_SITE_DIR)assert.equal(assetVersions.size,1,'all styles and modules use the same release version');
     await context.close();
   }
   assert.deepEqual(errors,[],'no JavaScript page errors');

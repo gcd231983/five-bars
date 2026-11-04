@@ -13,9 +13,12 @@ test('Pages publishes the exact generated revision that passed regression and br
  assert.match(update,/id: snapshot[\s\S]*git rev-parse HEAD/);
  assert.match(browser,/needs: update/);
  assert.match(browser,/node tests\/browser-smoke\.mjs/);
- for(const downstream of [browser,deploy]){
-  assert.match(downstream,/ref: \$\{\{ needs\.update\.outputs\.validated_sha \}\}/);
- }
+ assert.match(browser,/ref: \$\{\{ needs\.update\.outputs\.validated_sha \}\}/);
+ assert.ok(browser.indexOf('node scripts/build-release.mjs')<browser.indexOf('node tests/browser-smoke.mjs'));
+ assert.match(browser,/FIVE_BARS_SITE_DIR: _site/);
+ assert.ok(browser.indexOf('node tests/browser-smoke.mjs')<browser.indexOf('actions/upload-pages-artifact@v3'));
+ assert.match(browser,/actions\/upload-pages-artifact@v3\n\s+with:\n\s+path: _site/);
+ assert.doesNotMatch(deploy,/actions\/checkout|actions\/upload-pages-artifact|build-release/);
  assert.match(deploy,/needs: \[update, browser\]/);
  assert.match(deploy,/needs\.update\.result == 'success' && needs\.browser\.result == 'success'/);
 });

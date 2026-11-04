@@ -102,7 +102,14 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save playwright@1.56.1
+      - name: Build versioned static release
+        run: node scripts/build-release.mjs
       - run: node tests/browser-smoke.mjs
+        env:
+          FIVE_BARS_SITE_DIR: _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -118,12 +125,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.update.outputs.validated_sha }}
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
       - id: deployment
         uses: actions/deploy-pages@v4
