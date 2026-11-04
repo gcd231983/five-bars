@@ -9,7 +9,7 @@ import {checkoutFixture} from './helpers/checkout-fixtures.mjs';
 
 const read=path=>JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'utf8'));
 const catalog=read('site/data/deals.json'),research=read('site/data/research-evidence.json');
-const ledger=read('site/data/verifications.json'),today='2026-11-03';
+const ledger={schema:1,offers:{}},today='2026-11-03';
 const retailerEvidence=read('site/data/retailer-evidence.json');
 const device=id=>catalog.phones.find(p=>p.id===id);
 const plan=id=>catalog.plans.find(p=>p.id===id);

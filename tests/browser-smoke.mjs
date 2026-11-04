@@ -10,7 +10,9 @@ import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
 
 const site=resolve(dirname(fileURLToPath(import.meta.url)),'../site');
-const mime={'.html':'text/html; charset=utf-8','.json':'application/json; charset=utf-8','.mjs':'text/javascript; charset=utf-8'};
+const auditSummary=JSON.parse(await readFile(join(site,'data/research-audit.json'),'utf8')).summary;
+const mime={'.html':'text/html; charset=utf-8','.json':'application/json; charset=utf-8','.mjs':'text/javascript; charset=utf-8',
+  '.css':'text/css; charset=utf-8','.xml':'application/xml; charset=utf-8','.txt':'text/plain; charset=utf-8'};
 const server=createServer(async (req,res)=>{
   try {
     const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
@@ -35,11 +37,16 @@ try {
     mobile:{width:390,height:844},desktop:{width:1280,height:840}
   })) {
     const context=await browser.newContext({viewport,locale:'en-US'});
+    context.on('response',response=>{
+      if(response.url().startsWith(base)&&response.status()>=400)errors.push(view+': HTTP '+response.status()+' '+response.url());
+    });
     const page=await context.newPage();
     page.on('pageerror',e=>errors.push(view+': '+e.message));
     // Deterministic browser fixtures: demonstrate partial proof without implying
     // that any live offer has independently verified checkout terms.
     const checkedAt=new Date().toISOString();
+    await page.route('**/data/verifications.json',route=>route.fulfill({
+      status:200,contentType:'application/json',body:JSON.stringify({schema:1,offers:{}})}));
     const evidence={
       schema:1,generatedAt:checkedAt,source:'https://www.boostmobile.com/deals',
       summary:{headlineMatches:1,priceMismatches:1,needReview:1},
@@ -135,7 +142,7 @@ try {
     await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
     const evidenceSnapshot=await page.locator('#fb-evidence-summary-copy').innerText();
     assert.match(evidenceSnapshot,/76 of 78 offers have dated public-source research/);
-    assert.match(evidenceSnapshot,/0 independently documented full-checkout reviews/);
+    assert.ok(evidenceSnapshot.includes(auditSummary.manuallyFullyReviewed+' independently documented full-checkout reviews'));
     assert.match(evidenceSnapshot,/3 retailer checkout offers on hold/);
     assert.equal(await page.locator('a.fb-skip-link[href="#main-content"]').count(),1);
     assert.equal(await page.locator('main#main-content').count(),1);
@@ -510,7 +517,7 @@ try {
     await research.goto(new URL('source-research.html',base).href,{waitUntil:'domcontentloaded'});
     assert.match(await research.locator('h1').innerText(),/official sources actually confirm/i);
     assert.equal(await research.locator('.research-article').count(),76);
-    assert.match(await research.locator('main').innerText(),/0 of 78 listings have valid, documented human checkout-scenario reviews/i);
+    assert.ok((await research.locator('main').innerText()).includes(auditSummary.manuallyFullyReviewed+' of '+auditSummary.offers+' listings have valid, documented human checkout-scenario reviews'));
     assert.match(await research.locator('main').innerText(),/2.*without documented official-source research/s);
     assert.match(await research.locator('main').innerText(),/Stock and checkout holds \(6\)/);
     assert.match(await research.locator('main').innerText(),/Retail-specific price holds \(3\)/);
@@ -630,6 +637,39 @@ try {
     await page.locator('#fb-switch-form button[type="submit"]').click();
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$250\.00/);
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$490\.00/);
+    await page.locator('#t-plans').click();
+    await page.locator('#carrier').selectOption('any');
+    await page.locator('#net').selectOption('any');
+    for(const id of ['wm-st-a17','cricket-razr','vz-18pro','boost-a17']){
+      await page.locator('#t-phones').click();
+      await page.locator('#r-'+id+' .fb-watch-toggle').click();
+      const card=page.locator('[data-watch-key="phone:'+id+'"]');
+      await card.locator('input').fill('2000');
+      await card.getByRole('button',{name:'Save target'}).click();
+      assert.match(await card.innerText(),/Price unavailable for target matching/);
+      assert.doesNotMatch(await card.innerText(),/Advertised device price: \$/);
+    }
+    assert.doesNotMatch(await page.locator('#fb-watchlist-root').innerText(),/(Galaxy|razr|iPhone)[^\n]*meets target/i);
+    await page.locator('#t-plans').click();
+    await page.locator('#r-total-max .fb-watch-toggle').click();
+    const totalWatch=page.locator('[data-watch-key="plan:total-max"]');
+    await totalWatch.locator('input').fill('20');
+    await totalWatch.getByRole('button',{name:'Save target'}).click();
+    assert.match(await totalWatch.innerText(),/Standard catalog monthly price: \$30\.00/);
+    assert.doesNotMatch(await page.locator('#fb-watchlist-root').innerText(),/Total MAX[^\n]*meets target/i);
+    await page.screenshot({path:join(output,view+'-watchlist-safeguards.png'),fullPage:true});
+    const satellite=await context.newPage();
+    satellite.on('pageerror',e=>errors.push(view+': satellite '+e.message));
+    await satellite.goto(base+'satellite.html');
+    await satellite.locator('label[for="phone-iphone14"]').click();
+    await satellite.locator('label[for="carrier-att"]').click();
+    assert.ok(await satellite.getByLabel('iPhone 14 or newer').isChecked());
+    assert.ok(await satellite.getByLabel('AT&T', {exact:true}).isChecked());
+    assert.match(await satellite.locator('#result').innerText(),/Apple|iMessage/);
+    assert.ok(await satellite.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'satellite page fits viewport');
+    await satellite.getByRole('link',{name:'Switch & Save',exact:true}).click();
+    await satellite.locator('#p-switch').waitFor({state:'visible'});
+    await satellite.close();
     await context.close();
   }
   assert.deepEqual(errors,[],'no JavaScript page errors');

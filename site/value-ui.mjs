@@ -720,7 +720,7 @@ async function start() {
       catalog,phoneEvidence:priceEvidence||{offers:{}},
       mvnoEvidence:mvnoEvidence||{offers:{}},siteAlerts:alertFeed||{events:[]},
       status:status?.schema===1?status:{},verifications:reviews,
-      researchEvidence:research?.schema===1?research:null
+      researchEvidence:research?.schema===1?research:null,researchAudit
     };
     window.dispatchEvent(new Event('fivebars:watch-data'));
     const submit=finderRoot.querySelector('#fb-finder-form button[type="submit"]');

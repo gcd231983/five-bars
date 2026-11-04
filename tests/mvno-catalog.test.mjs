@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext,Script} from 'node:vm';
-import {planCost,rankMatches,offerSignature} from '../site/value-core.mjs';
+import {planCost,rankMatches,offerSignature,verificationState} from '../site/value-core.mjs';
 
 const data=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
 const byId=id=>data.plans.find(p=>p.id===id);
@@ -97,7 +97,6 @@ test('prepaid annual plans do not claim unsupported multi-line eligibility',()=>
 });
 test('carrier-source evidence does not accidentally become a manual full-deal verification',()=>{
   assert.equal(typeof byId('h2o-10gb').priceSourceDate,'string');
-  const verified=JSON.parse(readFileSync(new URL('../site/data/verifications.json',import.meta.url),'utf8'));
-  assert.equal(verified.offers['h2o-10gb'],undefined);
+  assert.equal(verificationState(byId('h2o-10gb'),undefined,'2026-11-02').status,'unverified');
   assert.notEqual(offerSignature(byId('h2o-10gb')),offerSignature(byId('h2o-annual10')));
 });

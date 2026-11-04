@@ -10,7 +10,7 @@ import {simulateSwitch} from '../site/switch-core.mjs';
 const read=file=>readFileSync(new URL('../'+file,import.meta.url),'utf8');
 const catalog=JSON.parse(read('site/data/deals.json'));
 const research=JSON.parse(read('site/data/research-evidence.json'));
-const ledger=JSON.parse(read('site/data/verifications.json'));
+const ledger={schema:1,offers:{}};
 const date='2026-11-03';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);

@@ -61,20 +61,32 @@ function disputed(offer,kind,evidence){
   const report=kind==='plan'?evidence.mvnoEvidence:evidence.phoneEvidence;
   return disputeState.has(report?.offers?.[offer.id]?.state);
 }
+// Saved watches remain useful while an offer is held, but must not resurrect
+// suppressed prices or present conditional bill credits as a device cash price.
+export function watchPrice(offer,kind,evidence={},today){
+  if(!offer||offer.listingHold||offer.availability==='out_of_stock'||
+    disputed(offer,kind,evidence)||evidence.status?.offers?.[offer.id]?.reviewRequired===true)return null;
+  if(['conflict','invalid'].includes(evidence.researchAudit?.offers?.find(x=>x.id===offer.id)?.researchState))return null;
+  if(kind==='phone'&&(offer.postpaid===true||pastEnd(offer.ends,today)))return null;
+  if(kind==='plan'&&offer.billingMonths===12&&
+    !(Number.isFinite(offer.billingUpfront)&&offer.billingUpfront>0))return null;
+  const price=kind==='plan'&&offer.discountCondition?offer.undiscountedPrice:offer.price;
+  return Number.isFinite(price)&&price>=0?price:null;
+}
 function scanIsFresh(status,nowMs){
   const stamp=Date.parse(status?.generatedAt);
   const age=nowMs-stamp;
   return Number.isFinite(stamp)&&age>=-60*60*1000&&age<=48*60*60*1000;
 }
 export function checkWatchlist(data,{catalog,phoneEvidence={},mvnoEvidence={},
-  siteAlerts={},status={},today,now=new Date()}={}){
+  siteAlerts={},status={},researchAudit={},today,now=new Date()}={}){
   const state=normalizeWatchlist(data,catalog);
   const day=today||new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',
     year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
   if(!validDay(day))throw Error('Invalid watchlist check date');
   const nowMs=now instanceof Date?now.getTime():Date.parse(now);
   const fresh=scanIsFresh(status,nowMs);
-  const evidence={phoneEvidence,mvnoEvidence};
+  const evidence={phoneEvidence,mvnoEvidence,status,researchAudit};
   const plans=catalog?.plans||[], phones=catalog?.phones||[];
   const seen=new Set(state.seen);
   const alerts=new Map();
@@ -85,12 +97,9 @@ export function checkWatchlist(data,{catalog,phoneEvidence={},mvnoEvidence={},
     // introductory, auto-pay, family pricing or final checkout price.
     // Phone target = sticker device price, excluding required plan, rebates and fees.
     if(watch.target===null)return;
-    if(!fresh || disputed(offer,kind,evidence) || status?.offers?.[offer.id]?.reviewRequired===true)return;
-    if(kind==='plan'&&offer.billingMonths===12 &&
-      !(Number.isFinite(offer.billingUpfront)&&offer.billingUpfront>0))return;
-    if(kind==='phone'&&pastEnd(offer.ends,day))return;
-    const price=Number(offer.price);
-    if(!Number.isFinite(price)||price<0||price>watch.target)return;
+    if(!fresh)return;
+    const price=watchPrice(offer,kind,evidence,day);
+    if(price===null||price>watch.target)return;
     const key=kind+':'+offer.id;
     if(!targets.has(key)){
       targets.set(key,{

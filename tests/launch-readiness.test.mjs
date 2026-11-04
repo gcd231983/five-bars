@@ -3,11 +3,12 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {assessReadiness,renderReadiness} from '../scripts/launch-readiness.mjs';
 import {rankMatches,phoneCost} from '../site/value-core.mjs';
+import {checkoutRecord} from './helpers/checkout-fixtures.mjs';
 const read=p=>JSON.parse(readFileSync(new URL('../'+p,import.meta.url),'utf8'));
 const catalog=read('site/data/deals.json');
 const research=read('site/data/research-evidence.json');
 const retailerEvidence=read('site/data/retailer-evidence.json');
-const ledger=read('site/data/verifications.json');
+const ledger={schema:1,offers:{}};
 const status=read('site/data/status.json');
 const today='2026-11-03';
 const model=()=>assessReadiness({catalog,research,retailerEvidence,ledger,status,today});
@@ -49,11 +50,13 @@ test('public beta report uses repository evidence, not product page impressions 
 
 test('even abundant signed scenarios cannot silently certify affiliate contracts or owner approvals',()=>{
  const synthetic=structuredClone(ledger);
+ for(const offer of catalog.plans.slice(0,10))synthetic.offers[offer.id]=checkoutRecord(offer,today);
  const r=assessReadiness({catalog,research,retailerEvidence,ledger:synthetic,status,today,
   ownerEvidence:{privateSupport:true,legalApproval:true,affiliateContracts:true,userTesting:true,launchApproved:true}});
  assert.equal(r.commercialStage,'blocked_pending_external_evidence');
  assert.ok(r.ownerGates.every(g=>g.state!=='complete'));
- assert.equal(r.checkout.reviewed,0);
+ assert.equal(r.checkout.reviewed,10);
+ assert.equal(r.ownerGates.find(g=>g.id==='real_checkout').state,'review_needed');
 });
 
 test('Eastern day boundary does not falsely mark evening scan as negative or future',()=>{
