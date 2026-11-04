@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-04T18:02:02.718Z",
+  "generatedAt": "2026-11-04T23:45:03.437Z",
   "scope": "Official plan headline price and billing term ONLY; no taxes, renewal, eligibility or checkout confirmation.",
   "method": "Strict exact featured plan-card or plan-FAQ extraction from allowlisted official carrier pages; no AI and no automatic catalog rate edits.",
   "summary": {
@@ -17,7 +17,7 @@
     "helium-air": {
       "state": "headline_matched",
       "scope": "official_plan_rate_and_billing_term_headline",
-      "checkedAt": "2026-11-04T18:02:02.718Z",
+      "checkedAt": "2026-11-04T23:45:03.437Z",
       "sourceUrl": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
       "carrier": "Helium Mobile",
       "plan": "Air 10GB",
@@ -33,7 +33,7 @@
     "helium-infinity": {
       "state": "headline_matched",
       "scope": "official_plan_rate_and_billing_term_headline",
-      "checkedAt": "2026-11-04T18:02:02.718Z",
+      "checkedAt": "2026-11-04T23:45:03.437Z",
       "sourceUrl": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
       "carrier": "Helium Mobile",
       "plan": "Infinity Unlimited (36GB high-speed)",
@@ -49,7 +49,7 @@
     "mobilex-unlimited10": {
       "state": "headline_matched",
       "scope": "official_plan_rate_and_billing_term_headline",
-      "checkedAt": "2026-11-04T18:02:02.718Z",
+      "checkedAt": "2026-11-04T23:45:03.437Z",
       "sourceUrl": "https://mymobilex.com/all-faqs/",
       "carrier": "MobileX",
       "plan": "Unlimited 10 (10GB high-speed)",
@@ -65,7 +65,7 @@
     "mobilex-unlimited30": {
       "state": "headline_matched",
       "scope": "official_plan_rate_and_billing_term_headline",
-      "checkedAt": "2026-11-04T18:02:02.718Z",
+      "checkedAt": "2026-11-04T23:45:03.437Z",
       "sourceUrl": "https://mymobilex.com/all-faqs/",
       "carrier": "MobileX",
       "plan": "Unlimited 30 (30GB high-speed)",
@@ -81,7 +81,7 @@
     "good2go-annual1": {
       "state": "headline_matched",
       "scope": "official_plan_rate_and_billing_term_headline",
-      "checkedAt": "2026-11-04T18:02:02.718Z",
+      "checkedAt": "2026-11-04T23:45:03.437Z",
       "sourceUrl": "https://annualplans.good2gomobile.com/home-page",
       "carrier": "Good2Go Mobile",
       "plan": "Annual 1GB (pay $60 upfront)",
@@ -97,7 +97,7 @@
     "good2go-annual3": {
       "state": "headline_matched",
       "scope": "official_plan_rate_and_billing_term_headline",
-      "checkedAt": "2026-11-04T18:02:02.718Z",
+      "checkedAt": "2026-11-04T23:45:03.437Z",
       "sourceUrl": "https://annualplans.good2gomobile.com/home-page",
       "carrier": "Good2Go Mobile",
       "plan": "Annual 3GB (pay $120 upfront)",
@@ -113,7 +113,7 @@
     "good2go-annual5": {
       "state": "headline_matched",
       "scope": "official_plan_rate_and_billing_term_headline",
-      "checkedAt": "2026-11-04T18:02:02.718Z",
+      "checkedAt": "2026-11-04T23:45:03.437Z",
       "sourceUrl": "https://annualplans.good2gomobile.com/home-page",
       "carrier": "Good2Go Mobile",
       "plan": "Annual 5GB (pay $240 upfront)",
@@ -129,7 +129,7 @@
     "h2o-10gb": {
       "state": "source_unavailable",
       "scope": "official_plan_rate_and_billing_term_headline",
-      "checkedAt": "2026-11-04T18:02:02.718Z",
+      "checkedAt": "2026-11-04T23:45:03.437Z",
       "sourceUrl": "https://www.h2owireless.com/",
       "carrier": "H2O Wireless",
       "plan": "10GB Monthly",
@@ -145,7 +145,7 @@
     "h2o-unlimited": {
       "state": "source_unavailable",
       "scope": "official_plan_rate_and_billing_term_headline",
-      "checkedAt": "2026-11-04T18:02:02.718Z",
+      "checkedAt": "2026-11-04T23:45:03.437Z",
       "sourceUrl": "https://www.h2owireless.com/",
       "carrier": "H2O Wireless",
       "plan": "Unlimited (30GB high-speed)",
