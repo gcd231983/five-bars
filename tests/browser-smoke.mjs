@@ -637,7 +637,7 @@ try {
     await page.locator('#fb-switch-form button[type="submit"]').click();
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$250\.00/);
     assert.match(await page.locator('#fb-switch-results').innerText(),/\$490\.00/);
-    await page.locator('#t-phones').click();
+    await page.locator('#t-plans').click();
     await page.locator('#carrier').selectOption('any');
     await page.locator('#net').selectOption('any');
     for(const id of ['wm-st-a17','cricket-razr','vz-18pro','boost-a17']){
