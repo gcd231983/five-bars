@@ -53,3 +53,5 @@ test('switching flow keeps data local and never includes account or analytics ba
  assert.match(core,/includeFinancials=false/);
  assert.match(core,/financing|rebates/i);
 });
+
+test('About and Contact are linked, indexed and disclose private support',()=>{const home=read('index.html'),about=read('about.html'),contact=read('contact.html'),privacy=read('privacy.html'),sitemap=read('sitemap.xml');for(const page of ['about.html','contact.html']){assert.ok(home.includes('href="'+page+'"'));assert.ok(sitemap.includes('https://fivebars.info/'+page));}assert.match(about,/independent informational comparison website|independent informational/i);assert.match(contact,/mailto:support@fivebars\.info/);assert.match(privacy,/support@fivebars\.info/);assert.doesNotMatch(privacy,/no private support inbox/i);});
