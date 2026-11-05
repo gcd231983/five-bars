@@ -664,12 +664,15 @@ function renderControls(){
   const stale = age!==null && age>2;
   const urgent = n.highPriorityReviews;
   const alertCount = n.reviewAlerts;
+  const fullReviewMs = Date.parse(String(CHECKED||"")+"T12:00:00Z");
+  const fullReviewDays = Number.isFinite(fullReviewMs) ? Math.floor((Date.now()-fullReviewMs)/86400000) : null;
   const statusParts = [reviewedLabel];
   if(summary) statusParts.push(summary.trim());
   if(scanValid) statusParts.push("Latest source scan: " + sourceScan.toLocaleDateString("en-US",{month:"short",day:"numeric"}) + ".");
   else statusParts.push("No automated source scan is available.");
-  if(incomplete) statusParts.push("Some sources could not be loaded; prices are not automatically updated.");
+  if(incomplete) statusParts.push("Only " + n.sourcesReachable + " of " + n.sourcesChecked + " monitored sources were reachable in this scan; prices and terms at unavailable sources were not reverified.");
   if(stale) statusParts.push("Source checks are overdue.");
+  if(fullReviewDays!==null && fullReviewDays>=7) statusParts.push("The full catalog review is a week or more old; individual offer terms may have changed.");
   if(Number.isFinite(urgent)&&urgent>0) statusParts.push(urgent+" high-priority price review(s) pending.");
   const freshNode=$("#fresh");
   freshNode.replaceChildren(
