@@ -53,3 +53,16 @@ test('switching flow keeps data local and never includes account or analytics ba
  assert.match(core,/includeFinancials=false/);
  assert.match(core,/financing|rebates/i);
 });
+
+test('trust pages expose a working private contact path and independent editorial claims',()=>{
+ const home=read('index.html'),about=read('about.html'),contact=read('contact.html'),privacy=read('privacy.html');
+ for(const file of ['about.html','contact.html']){
+   assert.match(home,new RegExp('href="'+file.replace('.','\\.')+'"'));
+   assert.match(read('sitemap.xml'),new RegExp('https://fivebars\\.info/'+file.replace('.','\\.')));
+ }
+ assert.match(about,/independent informational comparison website|independent informational/i);
+ assert.match(about,/not binding quotes|not binding quotes|not binding/i);
+ assert.match(contact,/mailto:support@fivebars\\.info/);
+ assert.match(privacy,/support@fivebars\\.info/);
+ assert.doesNotMatch(privacy,/no private support inbox/i);
+});
