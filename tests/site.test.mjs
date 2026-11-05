@@ -153,3 +153,25 @@ test('published promo expiration is enforced after its last eligible day, not on
   assert.equal(nextDay.promo,undefined,'expired promo disappears automatically');
   assert.equal(nextDay.price,15,'standard recurring rate stays intact after promo expiration');
 });
+
+
+test('promo expiration uses the Eastern date rather than the visitor local date', {skip},()=>{
+  const html=readFileSync(sitePath,'utf8');
+  const dayStart=html.indexOf('function easternDay(');
+  const todayStart=html.indexOf('const today = easternDay();',dayStart);
+  const endStart=html.indexOf('function endInfo(',todayStart);
+  const elementStart=html.indexOf('function el(',endStart);
+  assert.ok(dayStart>=0&&todayStart>dayStart&&endStart>todayStart&&elementStart>endStart,
+    'Eastern day and deadline helpers exist in the homepage');
+  const dayFn=html.slice(dayStart,todayStart);
+  const endFn=html.slice(endStart,elementStart);
+  const evaluate=instant=>runInNewContext(
+    dayFn+'\nconst today=easternDay(new Date('+JSON.stringify(instant)+'));\n'+endFn+'\nendInfo("2026-11-09")',
+    {Date,Intl,Math});
+  const before=evaluate('2026-11-10T04:59:00Z'); // 11:59 p.m. Eastern Nov 9
+  const after=evaluate('2026-11-10T05:00:00Z'); // midnight Eastern Nov 10
+  assert.equal(before.expired,false);
+  assert.equal(before.text,'Ends today');
+  assert.equal(after.expired,true);
+  assert.match(after.text,/Ended Nov 9/);
+});
