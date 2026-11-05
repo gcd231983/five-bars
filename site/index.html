@@ -311,6 +311,7 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 .tab{white-space:nowrap}
 #main-content .panel,#main-content .list>li{border-radius:16px}
 @media(max-width:600px){.fb-topnav{align-items:center}.fb-topnav-links{gap:7px 12px}.fb-topnav-links a{font-size:.79rem}.hero{padding-top:12px}.fb-welcome{padding:26px 20px;border-radius:19px}.fb-welcome h2{font-size:clamp(2rem,9vw,3rem)}.fb-quick-actions{flex-direction:column}.fb-quick-actions button{width:100%}.fb-advanced-filters>summary{align-items:flex-start;flex-direction:column;gap:3px}.fb-advanced-filters>summary:after{position:absolute;right:25px}.fb-advanced-filters>summary{position:relative;padding-right:52px}}
+.fresh{padding:13px 16px;border:1px solid var(--line);border-radius:13px;background:var(--surface);font-size:.88rem;line-height:1.6;color:var(--muted)}.fresh strong{color:var(--ink)}.fresh button{margin:3px 3px 3px 0}
 </style>
 </head>
 <body>
@@ -652,25 +653,36 @@ function renderControls(){
     if(CHANGES.removed.length) parts.push(CHANGES.removed.length + " gone");
     if(parts.length) summary = " Since the last update: " + parts.join(", ") + ".";
   }
-  let freshness = "Catalog reference date: " + d + "." + summary;
-  if(AUTO_STATUS?.generatedAt){
-    const scanDate = new Date(AUTO_STATUS.generatedAt);
-    const age = (Date.now()-scanDate.getTime())/86400000;
-    const n = AUTO_STATUS.summary || {};
-    freshness += " Automated source scan: " + scanDate.toLocaleDateString("en-US",{month:"short",day:"numeric"}) +
-      " (" + (n.sourcesReachable??0) + "/" + (n.sourcesChecked??0) + " sources loaded; " +
-      (n.reviewAlerts??0) + " alerts).";
-    if(age>2) freshness += " CAUTION: automated checks are overdue.";
-  } else freshness += " Automated source scan not yet available.";
-  const urgent=AUTO_STATUS?.summary?.highPriorityReviews;
-  if(Number.isFinite(urgent)&&urgent>0)freshness+=" "+urgent+" high-priority price review(s).";
-  $("#fresh").replaceChildren(freshness + " ",
-    el("button",{type:"button", onclick:()=>showTab("sources")}, "Sources"),
+  const reviewedLabel = "Catalog last reviewed: " + d + ". A newer automated scan does not verify every price.";
+  const n = AUTO_STATUS?.summary || {};
+  const sourceScan = AUTO_STATUS?.generatedAt ? new Date(AUTO_STATUS.generatedAt) : null;
+  const scanValid = sourceScan && !Number.isNaN(sourceScan.getTime());
+  const age = scanValid ? (Date.now()-sourceScan.getTime())/86400000 : null;
+  const coverageKnown = Number.isFinite(n.sourcesChecked) && Number.isFinite(n.sourcesReachable);
+  const incomplete = coverageKnown && n.sourcesReachable < n.sourcesChecked;
+  const stale = age!==null && age>2;
+  const urgent = n.highPriorityReviews;
+  const alertCount = n.reviewAlerts;
+  const statusParts = [reviewedLabel];
+  if(summary) statusParts.push(summary.trim());
+  if(scanValid) statusParts.push("Latest source scan: " + sourceScan.toLocaleDateString("en-US",{month:"short",day:"numeric"}) + ".");
+  else statusParts.push("No automated source scan is available.");
+  if(incomplete) statusParts.push("Some sources could not be loaded; prices are not automatically updated.");
+  if(stale) statusParts.push("Source checks are overdue.");
+  if(Number.isFinite(urgent)&&urgent>0) statusParts.push(urgent+" high-priority price review(s) pending.");
+  const freshNode=$("#fresh");
+  freshNode.replaceChildren(
+    el("strong",{}, "Price transparency"),
+    el("span",{}, " " + statusParts.join(" ")),
+    " ",
+    el("button",{type:"button", onclick:()=>showTab("sources")}, "Scan details"),
     " ",
     el("button",{type:"button", onclick:()=>{
       showTab("pricewatch");
       document.getElementById("fb-review-queue")?.scrollIntoView({block:"start",behavior:"smooth"});
-    }}, "Review prices"));
+    }}, "Price review queue"));
+  freshNode.setAttribute("aria-label","Catalog and source freshness");
+
 }
 
 /* ---------- render: plans ---------- */
