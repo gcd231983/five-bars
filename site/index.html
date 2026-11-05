@@ -754,7 +754,7 @@ function renderPlans(){
         c.promoFamilyUnconfirmed ? el("li",{class:"warn"},"Multi-line intro discount not verified") : null),
       priceDisputed ? el("div",{class:"deal off"},"Advertised rate is under review. Check the provider before purchasing.") : deal,
       !priceDisputed && p.extra ? el("div",{class:"extra"}, p.extra) : null,
-      p.priceSourceDate ? el("div",{class:"fb-plan-source"},"Catalog rate originally noted on "+p.priceSourceDate+"; no complete independent offer verification.") : null,
+      p.priceSourceDate ? el("div",{class:"fb-plan-source"},"Published rate source noted on "+p.priceSourceDate+"; no complete independent offer verification.") : null,
       el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
         priceDisputed ? el("span",{class:"yr fb-watch-warning"},"First-year totals suppressed until the official rate conflict is resolved.") :
