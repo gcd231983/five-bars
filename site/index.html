@@ -267,6 +267,12 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
 .fb-quick-actions button+button{background:var(--surface);color:var(--accent)}
 .fb-welcome small{display:block;margin-top:13px;color:var(--muted);line-height:1.5}
 @media(max-width:520px){.fb-topnav{align-items:flex-start}.fb-topnav-links{gap:8px 13px}.fb-welcome{padding:17px}.fb-quick-actions button{flex:1 1 150px}}
+
+/* Accessibility polish: maintain visible keyboard focus and prevent accidental overflow. */
+.fb-topnav-links a,.fb-footer a{display:inline-flex;align-items:center;min-height:40px}
+.fb-quick-actions button:focus-visible,.fb-topnav a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.fb-welcome{overflow-wrap:anywhere}
+@media(prefers-reduced-motion:reduce){html:focus-within{scroll-behavior:auto!important}*,*::before,*::after{scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
