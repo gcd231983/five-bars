@@ -31,7 +31,7 @@ test('sitemap pages have a matching canonical and valid internal navigation dest
    const path=href.split(/[?#]/)[0];
    if(!path)continue;
    const target=resolve(dirname(join(site,file)),decodeURIComponent(path));
-   assert.ok(target.startsWith(site+sep),file+' contains out-of-root link: '+href);
+   assert.ok(target===site||target.startsWith(site+sep),file+' contains out-of-root link: '+href);
    assert.ok(existsSync(target),file+' contains broken internal link: '+href);
   }
  }
