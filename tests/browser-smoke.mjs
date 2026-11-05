@@ -255,7 +255,7 @@ try {
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Dated carrier source.*partial/i);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification] a').getAttribute('href'),/research-h2o-unlimited/);
     // Advanced filters are intentionally collapsed in the new guided homepage.
-    await page.locator('.fb-advanced-filters').evaluate(el=>el.open=true);
+    await page.locator('.fb-advanced-filters summary').click();
     // Consumer Cellular 1GB is excluded by the default Unlimited-only filter.
     await page.getByRole('button',{name:'Unlimited data',exact:true}).click();
     await page.locator('#carrier').selectOption('Consumer Cellular');
