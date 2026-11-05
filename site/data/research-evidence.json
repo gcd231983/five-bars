@@ -219,7 +219,7 @@
         "Observe exact first bill and renewal checkout totals, including location-specific taxes and any applicable cost-recovery charge (up to $0.30, not a confirmed fixed fee)",
         "Confirm SIM/eSIM and IMEI compatibility, coverage and other account-specific conditions"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-05"
     },
     "tello-starter": {
       "carrier": "Tello",
