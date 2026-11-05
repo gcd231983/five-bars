@@ -55,3 +55,20 @@ test('switching flow keeps data local and never includes account or analytics ba
 });
 
 test('About and Contact are linked, indexed and disclose private support',()=>{const home=read('index.html'),about=read('about.html'),contact=read('contact.html'),privacy=read('privacy.html'),sitemap=read('sitemap.xml');for(const page of ['about.html','contact.html']){assert.ok(home.includes('href="'+page+'"'));assert.ok(sitemap.includes('https://fivebars.info/'+page));}assert.match(about,/independent informational comparison website|independent informational/i);assert.match(contact,/mailto:support@fivebars\.info/);assert.match(privacy,/support@fivebars\.info/);assert.doesNotMatch(privacy,/no private support inbox/i);});
+
+
+test('launch polish keeps primary navigation, pricing guidance and public trust links intact',()=>{
+ const home=read('index.html');
+ for(const path of ['carrier-comparisons.html','switching-guide.html','about.html','contact.html']){
+  assert.ok(home.includes('href="'+path+'"'),'Missing primary link '+path);
+  assert.ok(read('sitemap.xml').includes('https://fivebars.info/'+path),'Missing sitemap entry '+path);
+ }
+ assert.match(home,/class="fb-topnav"/);
+ assert.match(home,/class="fb-welcome"/);
+ assert.match(home,/class="fb-price-guide"/);
+ assert.match(home,/id="t-finder"/);
+ assert.match(home,/id="t-phones"/);
+ assert.match(home,/Monthly cost, upfront payment and minimum service commitment are different amounts/);
+ assert.match(read('privacy.html'),/Support email/);
+ assert.match(read('disclosures.html'),/How to interpret outbound links/);
+});
