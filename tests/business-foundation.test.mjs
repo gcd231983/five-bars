@@ -41,7 +41,7 @@ test('public editorial materials do not pretend full terms or actual affiliate d
 test('search discovery includes every real public page without fabricating offers',()=>{
  const sitemap=read('sitemap.xml'),robots=read('robots.txt');
  assert.match(robots,/Sitemap:/);
- for(const file of ['/five-bars/','editorial.html','privacy.html','disclosures.html','switching-guide.html','report.html'])
+ for(const file of ['https://fivebars.info/','editorial.html','privacy.html','disclosures.html','switching-guide.html','report.html'])
    assert.ok(sitemap.includes(file),'Missing sitemap page '+file);
  assert.doesNotMatch(sitemap,/product-price|aggregateRating/);
 });
