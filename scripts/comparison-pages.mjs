@@ -4,7 +4,7 @@
 import {planCost,verificationState,localDay,validDay,pastEnd,usd} from '../site/value-core.mjs';
 import {researchStatus} from './source-research.mjs';
 
-const BASE='https://gcd231983.github.io/five-bars/';
+const BASE='https://fivebars.info/';
 const COLLISION=/^(?:javascript|data|file|ftp):/i;
 export const GUIDES=[
   {
