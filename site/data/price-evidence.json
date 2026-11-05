@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-05T12:17:59.953Z",
+  "generatedAt": "2026-11-05T12:37:00.995Z",
   "source": "https://www.boostmobile.com/deals",
   "scope": "Exact advertised device price, required service plan and number-port headline only; no financing/unlocking/fees/checkout confirmation.",
   "method": "Conservative strict official-page text extraction. No AI, no automatic catalog price edits.",
@@ -17,7 +17,7 @@
     "boost-motog": {
       "scope": "advertised_device_and_plan_headline",
       "state": "headline_matched",
-      "checkedAt": "2026-11-05T12:17:59.953Z",
+      "checkedAt": "2026-11-05T12:37:00.995Z",
       "sourceUrl": "https://www.boostmobile.com/deals",
       "sourceHost": "boostmobile.com",
       "model": "Moto G 2026",
@@ -36,7 +36,7 @@
     "boost-a17": {
       "scope": "advertised_device_and_plan_headline",
       "state": "headline_matched",
-      "checkedAt": "2026-11-05T12:17:59.953Z",
+      "checkedAt": "2026-11-05T12:37:00.995Z",
       "sourceUrl": "https://www.boostmobile.com/deals",
       "sourceHost": "boostmobile.com",
       "model": "Samsung Galaxy A17 5G",
@@ -55,7 +55,7 @@
     "boost-gplay": {
       "scope": "advertised_device_and_plan_headline",
       "state": "headline_matched",
-      "checkedAt": "2026-11-05T12:17:59.953Z",
+      "checkedAt": "2026-11-05T12:37:00.995Z",
       "sourceUrl": "https://www.boostmobile.com/deals",
       "sourceHost": "boostmobile.com",
       "model": "Moto G Play 2026",
