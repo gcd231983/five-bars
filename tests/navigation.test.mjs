@@ -34,11 +34,11 @@ test('sitemap URLs resolve to deployed pages and include the satellite guide',()
  const xml=readFileSync(join(site,'sitemap.xml'),'utf8');
  const locations=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>new URL(m[1]));
  assert.ok(locations.length>0);
- assert.ok(locations.some(url=>url.pathname==='/five-bars/satellite.html'));
+ assert.ok(locations.some(url=>url.pathname==='/satellite.html'));
  for(const url of locations){
-  assert.equal(url.origin,'https://gcd231983.github.io');
-  assert.ok(url.pathname.startsWith('/five-bars/'));
-  const path=join(site,url.pathname.slice('/five-bars/'.length)||'index.html');
+  assert.equal(url.origin,'https://fivebars.info');
+  assert.ok(url.pathname.startsWith('/'));
+  const path=join(site,url.pathname.slice('/'.length)||'index.html');
   assert.ok(existsSync(path),url.href);
  }
 });
