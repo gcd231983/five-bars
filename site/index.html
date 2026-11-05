@@ -253,11 +253,26 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
   .price .now{font-size:1.45rem}
   .foot{align-items:center}
 }
+
+/* Launch polish: accessible entry points without changing comparison logic. */
+.fb-topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
+.fb-topnav strong{font-size:.94rem;letter-spacing:.02em}
+.fb-topnav-links{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.fb-topnav a{font-size:.9rem;font-weight:650;text-decoration-thickness:1px;text-underline-offset:3px}
+.fb-welcome{margin:16px 0 12px;padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.fb-welcome h2{font-size:clamp(1.45rem,5vw,2.15rem);line-height:1.15;letter-spacing:-.025em;margin:0 0 10px}
+.fb-welcome p{color:var(--muted);margin:0 0 14px;max-width:60ch}
+.fb-quick-actions{display:flex;flex-wrap:wrap;gap:10px}
+.fb-quick-actions button{border:1px solid var(--accent);border-radius:9px;background:var(--accent);color:var(--accent-ink);font-weight:750;padding:12px 17px;min-height:44px;cursor:pointer}
+.fb-quick-actions button+button{background:var(--surface);color:var(--accent)}
+.fb-welcome small{display:block;margin-top:13px;color:var(--muted);line-height:1.5}
+@media(max-width:520px){.fb-topnav{align-items:flex-start}.fb-topnav-links{gap:8px 13px}.fb-welcome{padding:17px}.fb-quick-actions button{flex:1 1 150px}}
 </style>
 </head>
 <body>
 <a class="fb-skip-link" href="#main-content">Skip to main content</a>
 
+<div class="wrap"><nav class="fb-topnav" aria-label="Site navigation"><strong>FIVE BARS</strong><div class="fb-topnav-links"><a href="carrier-comparisons.html">Carrier guides</a><a href="switching-guide.html">Switching guide</a><a href="about.html">About</a><a href="contact.html">Contact</a></div></nav></div>
 <header class="hero wrap">
   <div class="brand">
     <svg class="bars" viewBox="0 0 50 44" aria-hidden="true">
@@ -269,6 +284,7 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
     </svg>
     <h1>Five Bars</h1>
   </div>
+  <section class="fb-welcome" aria-label="Start comparing"><h2>Find a better wireless deal, without the guesswork.</h2><p>Compare wireless plans, phone offers, and the costs that matter before switching.</p><div class="fb-quick-actions"><button type="button" onclick="document.getElementById('t-finder').click();document.getElementById('main-content').scrollIntoView();">Find my plan</button><button type="button" onclick="document.getElementById('t-phones').click();document.getElementById('main-content').scrollIntoView();">Browse phone deals</button></div><small>Independent comparisons · No account required · Prices and terms must be confirmed with carriers.</small></section>
   <p class="tagline">Find affordable wireless plans, compare estimated real costs, and check the conditions before you switch. No account required.</p>
   <p class="tagline"><a href="carrier-comparisons.html">Explore in-depth carrier comparisons</a> — source-linked guides for major MVNO choices.</p>
   <p class="tagline"><a href="satellite.html">Can your phone text by satellite?</a></p>
