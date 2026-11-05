@@ -17,7 +17,7 @@ test('static site JavaScript parses and uses no misleading cash-to-walk-away lab
   assert.ok(!html.includes('Cash to walk away'), 'old cost label removed');
   assert.ok(html.includes('Due today (est.)'));
   assert.match(html,/gift cards and promotional credits are excluded from ALL estimated totals/i);
-  assert.ok(html.includes('Catalog reference date:'));
+  assert.ok(html.includes('Catalog last reviewed:'));
   assert.ok(html.includes('data/status.json'));
   assert.doesNotMatch(match[1], /\bclaude\b|anthropic|sample\.json/i, 'no model runtime remains');
   assert.doesNotMatch(html, /id="(?:t|p)-ask"/, 'removed assistant UI cannot be activated');
