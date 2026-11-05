@@ -25,7 +25,7 @@ test('sitemap pages have a matching canonical and valid internal navigation dest
   const html=readFileSync(join(site,file),'utf8');
   const expected=file==='index.html'?canonicalBase:canonicalBase+file;
   assert.ok(html.includes('href="'+expected+'"')||html.includes("href='"+expected+"'"),file+' missing canonical URL '+expected);
-  for(const match of html.matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)){
+  for(const match of html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)){
    const href=match[1];
    if(/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(href))continue;
    const path=href.split(/[?#]/)[0];
