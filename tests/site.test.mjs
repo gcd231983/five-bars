@@ -4,7 +4,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { Script, runInNewContext } from 'node:vm';
-import { phoneCosts } from '../scripts/auto-core.mjs';
+import { phoneCosts, expireKnownOffers } from '../scripts/auto-core.mjs';
 
 const sitePath = resolve(dirname(fileURLToPath(import.meta.url)), '../site/index.html');
 const skip = !existsSync(sitePath);
@@ -18,6 +18,8 @@ test('static site JavaScript parses and uses no misleading cash-to-walk-away lab
   assert.ok(html.includes('Due today (est.)'));
   assert.match(html,/gift cards and promotional credits are excluded from ALL estimated totals/i);
   assert.ok(html.includes('Catalog last reviewed:'));
+  assert.ok(html.includes('monitored sources were reachable in this scan;'));
+  assert.ok(html.includes('The full catalog review is a week or more old;'));
   assert.ok(html.includes('data/status.json'));
   assert.doesNotMatch(match[1], /\bclaude\b|anthropic|sample\.json/i, 'no model runtime remains');
   assert.doesNotMatch(html, /id="(?:t|p)-ask"/, 'removed assistant UI cannot be activated');
@@ -140,4 +142,14 @@ test('phone row keeps link failure and manual-review warnings together', { skip 
   assert.match(rendered, /Offer link could not be checked/);
   assert.match(rendered, /Price candidate needs manual review; listed terms are unverified/);
   assert.doesNotMatch(rendered, /matched carrier listing/);
+});
+
+
+test('published promo expiration is enforced after its last eligible day, not on that day',()=>{
+  const sample={checked:'2026-11-05',sources:[],plans:[{id:'tello',price:15,promo:{price:10,months:3,req:'new',ends:'2026-11-09'}}],phones:[]};
+  const finalDay=expireKnownOffers(sample,'2026-11-09').next.plans[0];
+  const nextDay=expireKnownOffers(sample,'2026-11-10').next.plans[0];
+  assert.equal(finalDay.promo.price,10,'published promotional rate stays available through its listed final date');
+  assert.equal(nextDay.promo,undefined,'expired promo disappears automatically');
+  assert.equal(nextDay.price,15,'standard recurring rate stays intact after promo expiration');
 });
