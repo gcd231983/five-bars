@@ -664,12 +664,15 @@ function renderControls(){
   const stale = age!==null && age>2;
   const urgent = n.highPriorityReviews;
   const alertCount = n.reviewAlerts;
+  const fullReviewMs = Date.parse(String(CHECKED||"")+"T12:00:00Z");
+  const fullReviewDays = Number.isFinite(fullReviewMs) ? Math.floor((Date.now()-fullReviewMs)/86400000) : null;
   const statusParts = [reviewedLabel];
   if(summary) statusParts.push(summary.trim());
   if(scanValid) statusParts.push("Latest source scan: " + sourceScan.toLocaleDateString("en-US",{month:"short",day:"numeric"}) + ".");
   else statusParts.push("No automated source scan is available.");
-  if(incomplete) statusParts.push("Some sources could not be loaded; prices are not automatically updated.");
+  if(incomplete) statusParts.push("Only " + n.sourcesReachable + " of " + n.sourcesChecked + " monitored sources were reachable in this scan; prices and terms at unavailable sources were not reverified.");
   if(stale) statusParts.push("Source checks are overdue.");
+  if(fullReviewDays!==null && fullReviewDays>=7) statusParts.push("The full catalog review is a week or more old; individual offer terms may have changed.");
   if(Number.isFinite(urgent)&&urgent>0) statusParts.push(urgent+" high-priority price review(s) pending.");
   const freshNode=$("#fresh");
   freshNode.replaceChildren(
@@ -751,7 +754,7 @@ function renderPlans(){
         c.promoFamilyUnconfirmed ? el("li",{class:"warn"},"Multi-line intro discount not verified") : null),
       priceDisputed ? el("div",{class:"deal off"},"Advertised rate is under review. Check the provider before purchasing.") : deal,
       !priceDisputed && p.extra ? el("div",{class:"extra"}, p.extra) : null,
-      p.priceSourceDate ? el("div",{class:"fb-plan-source"},"Catalog rate originally noted on "+p.priceSourceDate+"; no complete independent offer verification.") : null,
+      p.priceSourceDate ? el("div",{class:"fb-plan-source"},"Published rate source noted on "+p.priceSourceDate+"; no complete independent offer verification.") : null,
       el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
         priceDisputed ? el("span",{class:"yr fb-watch-warning"},"First-year totals suppressed until the official rate conflict is resolved.") :
