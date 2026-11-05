@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "observedOn": "2026-11-05",
+  "observedOn": "2026-11-02",
   "scope": "Published official plan pages, broadband consumer labels, official FAQ or promotion notice. NOT carrier checkout, customer eligibility, independent full-terms certification, or a price guarantee.",
   "methodologicalNote": "Values were researched from official public carrier material on November 2, 2026. The source pages can change without notice; recheck expiry, line count, taxes, fees, network coverage, eSIM/IMEI, financing and actual checkout before purchase. Review status stays unverified until an authorized human signs a separate full-terms ledger.",
   "records": {
@@ -219,7 +219,7 @@
         "Observe exact first bill and renewal checkout totals, including location-specific taxes and any applicable cost-recovery charge (up to $0.30, not a confirmed fixed fee)",
         "Confirm SIM/eSIM and IMEI compatibility, coverage and other account-specific conditions"
       ],
-      "observedOn": "2026-11-05"
+      "observedOn": "2026-11-02"
     },
     "tello-starter": {
       "carrier": "Tello",
