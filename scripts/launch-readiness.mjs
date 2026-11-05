@@ -7,7 +7,7 @@ import {buildResearchAudit} from './source-research.mjs';
 const clean=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const n=v=>Number.isInteger(v)&&v>=0?v:0;
 const date=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)?s:'Not recorded';
-const BASE='https://gcd231983.github.io/five-bars/';
+const BASE='https://fivebars.info/';
 export function assessReadiness({catalog,research,retailerEvidence,ledger,status={},today=localDay(),ownerEvidence={}}){
  const audit=buildResearchAudit({catalog,research,retailerEvidence,ledger,today});
  const offers=[...catalog.plans,...catalog.phones];

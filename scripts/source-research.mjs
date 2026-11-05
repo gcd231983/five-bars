@@ -2,7 +2,7 @@
 // A matching PUBLIC headline is not an approved checkout quote.
 import {validDay,verificationState,usd,localDay} from '../site/value-core.mjs';
 
-export const BASE='https://gcd231983.github.io/five-bars/';
+export const BASE='https://fivebars.info/';
 export const MATCH_FIELDS=['publishedMonthly','billingMonths','billingUpfront','publishedDevicePrice','publishedPlanMonthly','publishedPortRequired','publishedPrepayMonths','publishedFirstMonthPlanPrice','publishedConditionalRebate','publishedCreditMonthly','publishedCreditMonths','publishedFullRetailRequired','publishedPromoPrice','publishedPromoMonths','publishedPromoRequirement',
   'publishedUndiscountedPrice','publishedDiscountCondition','publishedKnownMonthlyFee','publishedKnownActivationFee','publishedAvailability',
   'publishedUndiscountedPlanPrice','publishedPlanDiscountCondition','publishedPrepaidServiceTotal','publishedNewLineRequired','publishedBundleRenewalUnverified','publishedServiceUnpriced','publishedGrossRetailPrice','publishedFinancingMonths','publishedMaxBillCredits'];
