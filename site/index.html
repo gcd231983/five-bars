@@ -278,6 +278,39 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
 .fb-price-guide strong{display:block;margin-bottom:4px}
 .fb-price-guide p{color:var(--muted);font-size:.93rem;margin:0 0 8px}
 .fb-price-guide a{font-size:.9rem;font-weight:650}
+
+/* Approved hybrid dark direction — phase 1: guided first, advanced controls on demand. */
+:root,:root[data-theme="light"],:root[data-theme="dark"]{color-scheme:dark;--paper:#07131c;--surface:#10222e;--ink:#edf6f9;--muted:#a6b7c3;--line:#294653;--chip:#152e3b;--accent:#21e0d8;--accent-ink:#05212a;--hi:#f3c64b;--hi-soft:#3a3014;--hi-ink:#ffdf88;--bad:#ff918b}
+body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--paper) 95%) fixed}
+.wrap{max-width:1180px}
+.fb-topnav{padding:16px 0;border-bottom:1px solid var(--line)}
+.fb-topnav strong{font-size:1.2rem;letter-spacing:-.035em;color:var(--ink)}
+.fb-topnav-links{gap:12px 22px}
+.hero{padding-top:24px;padding-bottom:18px}
+.brand{display:none}
+.fb-welcome{position:relative;overflow:hidden;isolation:isolate;padding:clamp(25px,5vw,60px);border:1px solid #256573;border-radius:24px;background:linear-gradient(120deg,#102b3c 0%,#0b2230 56%,#113d47 100%);box-shadow:0 16px 50px #0005}
+.fb-welcome:before{content:"";position:absolute;z-index:-1;right:-100px;bottom:-180px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,#19d9d333,transparent 70%)}
+.fb-eyebrow{font-size:.77rem!important;letter-spacing:.16em;font-weight:800;color:var(--accent)!important;margin-bottom:14px!important}
+.fb-welcome h2{font-size:clamp(2.1rem,5.6vw,4rem);max-width:18ch;line-height:1.06;letter-spacing:-.045em}
+.fb-welcome h2 em{font-style:normal;color:var(--accent)}
+.fb-welcome p:not(.fb-eyebrow){max-width:53ch;font-size:1.05rem}
+.fb-quick-actions button{border-radius:999px;padding:14px 24px}
+.fb-quick-actions button+button{background:transparent;border-color:#94b7c6;color:var(--ink)}
+.hero>.tagline{font-size:.89rem;margin:10px 2px}
+.fb-advanced-filters{margin:20px 0 12px;border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden}
+.fb-advanced-filters>summary{display:flex;justify-content:space-between;align-items:center;gap:14px;cursor:pointer;list-style:none;padding:15px 19px;font-weight:750;color:var(--ink)}
+.fb-advanced-filters>summary::-webkit-details-marker{display:none}
+.fb-advanced-filters>summary:after{content:"+";font-size:1.5rem;color:var(--accent)}
+.fb-advanced-filters[open]>summary:after{content:"−"}
+.fb-advanced-filters>summary span{font-size:.85rem;color:var(--muted);font-weight:400}
+.fb-filter-body{padding:4px 19px 19px;border-top:1px solid var(--line)}
+.fb-filter-body .sentence{font-size:1.08rem;line-height:2}
+.fb-filter-body .toggles{gap:9px}
+.fb-evidence-summary{border-radius:14px}
+.tabs{background:#0c1d27}
+.tab{white-space:nowrap}
+#main-content .panel,#main-content .list>li{border-radius:16px}
+@media(max-width:600px){.fb-topnav{align-items:center}.fb-topnav-links{gap:7px 12px}.fb-topnav-links a{font-size:.79rem}.hero{padding-top:12px}.fb-welcome{padding:26px 20px;border-radius:19px}.fb-welcome h2{font-size:clamp(2rem,9vw,3rem)}.fb-quick-actions{flex-direction:column}.fb-quick-actions button{width:100%}.fb-advanced-filters>summary{align-items:flex-start;flex-direction:column;gap:3px}.fb-advanced-filters>summary:after{position:absolute;right:25px}.fb-advanced-filters>summary{position:relative;padding-right:52px}}
 </style>
 </head>
 <body>
@@ -295,11 +328,12 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
     </svg>
     <h1>Five Bars</h1>
   </div>
-  <section class="fb-welcome" aria-label="Start comparing"><h2>Find a better wireless deal, without the guesswork.</h2><p>Compare wireless plans, phone offers, and the costs that matter before switching.</p><div class="fb-quick-actions"><button type="button" onclick="document.getElementById('t-finder').click();document.getElementById('main-content').scrollIntoView();">Find my plan</button><button type="button" onclick="document.getElementById('t-phones').click();document.getElementById('main-content').scrollIntoView();">Browse phone deals</button></div><small>Independent comparisons · No account required · Prices and terms must be confirmed with carriers.</small></section>
+  <section class="fb-welcome" aria-label="Start comparing"><p class="fb-eyebrow">COMPARE SMARTER · SWITCH CONFIDENTLY</p><h2>Find the right phone plan. <em>Keep more of your money.</em></h2><p>Answer a few simple questions, then compare real costs, network options and deal conditions in one place.</p><div class="fb-quick-actions"><button type="button" onclick="document.getElementById('t-finder').click();document.getElementById('main-content').scrollIntoView();">Find my plan</button><button type="button" onclick="document.getElementById('t-phones').click();document.getElementById('main-content').scrollIntoView();">Browse phone deals</button></div><small>Independent comparisons · No account required · Prices and terms must be confirmed with carriers.</small></section>
   <p class="tagline">Find affordable wireless plans, compare estimated real costs, and check the conditions before you switch. No account required.</p>
   <p class="tagline"><a href="carrier-comparisons.html">Explore in-depth carrier comparisons</a> — source-linked guides for major MVNO choices.</p>
   <p class="tagline"><a href="satellite.html">Can your phone text by satellite?</a></p>
 
+  <details class="fb-advanced-filters"><summary>Refine results <span>Lines, network, provider &amp; eligibility</span></summary><div class="fb-filter-body">
   <p class="sentence">
     I need
     <select id="lines" aria-label="Number of lines">
@@ -326,6 +360,7 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
     <span class="fb-carrier-hint">Network filter and carrier filter work together. A multi-network provider may offer different networks at activation.</span>
   </p>
   <div class="toggles" id="toggles" role="group" aria-label="Must-haves"></div>
+  </div></details>
   <p class="fresh" id="fresh"></p>
   <div class="fb-evidence-summary" id="fb-evidence-summary" aria-label="Pricing evidence snapshot">
     <div><strong>Public beta: pricing evidence, not a checkout guarantee</strong><p id="fb-evidence-summary-copy" aria-live="polite">Check published-source research and actual carrier checkout before purchasing.</p></div>
