@@ -425,10 +425,10 @@ try {
     const cricket=decisionPage.locator('.fb-compare-highlight').filter({hasText:'Cricket'});
     assert.match(await cricket.innerText(),/Unlimited/);
     assert.match(await cricket.innerText(),/\$720\.00/);
-    const tello=decisionPage.locator('.fb-compare-highlight').filter({hasText:'Tello'});
-    assert.match(await tello.innerText(),/20GB/);
-    assert.match(await tello.innerText(),/T-Mobile/);
-    assert.match(await tello.innerText(),/\$240\.00/);
+    const telloComparisonCard=decisionPage.locator('.fb-compare-highlight').filter({hasText:'Tello'});
+    assert.match(await telloComparisonCard.innerText(),/20GB/);
+    assert.match(await telloComparisonCard.innerText(),/T-Mobile/);
+    assert.match(await telloComparisonCard.innerText(),/\$240\.00/);
     await decisionPage.screenshot({path:join(output,view+'-decision-first-comparison.png'),fullPage:true});
     assert.ok(await decisionPage.evaluate(width=>document.documentElement.scrollWidth<=width+2,viewport.width),
       'Decision-first comparison must fit '+view+' width');
