@@ -865,11 +865,11 @@ try {
     const newLine=rollover.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'});
     if(await newLine.getAttribute('aria-pressed')!=='true')await newLine.click();
     await rollover.locator('#carrier').selectOption('Tello');
-    assert.match(await rollover.locator('#r-tello .price .now').innerText(),/\\$10/,
+    assert.match(await rollover.locator('#r-tello .price .now').innerText(),/\$10/,
       'eligible new-line promo is active through Nov 9 Eastern');
     await rollover.clock.setFixedTime(new Date('2026-11-10T05:02:00Z'));
     await rollover.evaluate(()=>window.dispatchEvent(new Event('focus')));
-    assert.match(await rollover.locator('#r-tello .price .now').innerText(),/\\$15/,
+    assert.match(await rollover.locator('#r-tello .price .now').innerText(),/\$15/,
       'the already-open page must remove expired intro rate after midnight Eastern');
     await rollover.close();
     if(process.env.FIVE_BARS_SITE_DIR)assert.equal(assetVersions.size,1,'all styles and modules use the same release version');
