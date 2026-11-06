@@ -424,13 +424,31 @@ function renderFinder() {
     const browse=element('div',null,'fb-finder-browse');
     const selectedData=prefs.dataPreference==='unlimited'?'unlimited':
       prefs.dataPreference==='limited'?'limited-data':'all-data';
-    const firstVisiblePlans=Math.min(ranked.planMatches,5);
     const browseCount=element('p',
-      'Showing '+firstVisiblePlans+' of '+ranked.planMatches+' matching '+selectedData+
-      ' plans from '+catalog.plans.length+' catalog listings. Your budget, network and line count may hide other plans.',
+      'Showing all '+ranked.planMatches+' matching '+selectedData+
+      ' plans from '+catalog.plans.length+
+      ' catalog listings. Other plan types, budgets, networks or line counts can be explored below.',
       'fb-finder-browse-summary');
     if(data.get('device')!=='phone')browse.append(browseCount);
     const browseLinks=element('div',null,'fb-finder-browse-actions');
+    const dataControls=element('div',null,'fb-finder-data-controls');
+    dataControls.setAttribute('role','group');
+    dataControls.setAttribute('aria-label','Choose the type of plans to show');
+    for(const [value,label] of [
+      ['unlimited','Unlimited data only'],
+      ['any','All data allowances'],
+      ['limited','Limited-data only']
+    ]){
+      const option=button(label,()=>{
+        const select=f.querySelector('#fb-data-preference');
+        if(!select)return;
+        select.value=value;
+        f.requestSubmit();
+      },'fb-finder-data-toggle');
+      option.setAttribute('aria-pressed',String(prefs.dataPreference===value));
+      dataControls.append(option);
+    }
+    browse.append(dataControls);
     const unlimitedTotal=catalog.plans.filter(plan=>plan.unl===true).length;
     browseLinks.append(button('Browse all '+unlimitedTotal+' unlimited plans',()=>{
       window.fiveBarsBrowsePlans?.('unlimited');
@@ -468,19 +486,14 @@ function renderFinder() {
     const showPhones = data.get('device')!=='byop';
     if(showPlans) {
       root.append(element('h4','Plan options ('+ranked.planMatches+' match the selected filters)'));
-      if(ranked.plans.length) {
-        root.append(note(ranked.plans.length>5?
-          'The first five recommendations are shown below. Select "Show all" after the cards to see every matching plan, or browse the entire catalog above.':
-          'All matching plans are shown below. Browse the full catalog above to see plans outside these filters.'));
+      if(ranked.plans.length){
+        root.append(note('All '+ranked.plans.length+
+          ' matching plans are listed below, ranked by estimated first-year cost. Use Unlimited data only or All data allowances above to change the selection. These are catalog estimates, not checkout quotes.'));
       }
-      const initiallyVisible=5;
-      const morePlans=ranked.plans.length>initiallyVisible;
-      let plansExpanded=false;
       if(!ranked.plans.length) root.append(note(
         prefs.dataPreference==='unlimited'?
           'No unlimited plans match those budget, provider, network and line requirements. Increase the budget, change a filter, or browse every unlimited plan above.':
           'No matching plans. Try a larger budget, choose another data allowance or browse the catalog above.'));
-      const planCards=[];
       for(const [i,item] of ranked.plans.entries()) {
         const p=item.offer;const c=item.cost;
         const card = element('article',null,'fb-result');
@@ -489,7 +502,6 @@ function renderFinder() {
         heading.append(mark);
         heading.append(element('strong',(i+1)+'. '+p.carrier+' — '+p.plan));
         card.append(heading);
-        if(i>=initiallyVisible)card.hidden=true;
         const price=element('p',null,'fb-result-price');
         price.append(element('strong',usd(c.monthTotal)+(c.annualPrepaid?'/mo equivalent':'/mo estimated')));
         price.append(element('span',c.annualPrepaid?
@@ -519,21 +531,6 @@ function renderFinder() {
         info.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('plan',p.id)));
         card.append(actions);
         root.append(card);
-        planCards.push(card);
-      }
-      if(morePlans){
-        const more=button('Show all '+ranked.plans.length+' matching plans',()=>{
-          plansExpanded=!plansExpanded;
-          for(const [index,card] of planCards.entries())card.hidden=!plansExpanded&&index>=initiallyVisible;
-          more.textContent=plansExpanded?'Show fewer plans':'Show all '+ranked.plans.length+' matching plans';
-          more.setAttribute('aria-expanded',String(plansExpanded));
-          browseCount.textContent='Showing '+(plansExpanded?ranked.planMatches:Math.min(5,ranked.planMatches))+
-            ' of '+ranked.planMatches+' matching '+selectedData+' plans from '+catalog.plans.length+
-            ' catalog listings. Your budget, network and line count may hide other plans.';
-          if(!plansExpanded)root.querySelector('.fb-result-heading')?.scrollIntoView({block:'nearest'});
-        },'btn ghost fb-more-plans');
-        more.setAttribute('aria-expanded','false');
-        root.append(more);
       }
     }
     if(showPhones) {
