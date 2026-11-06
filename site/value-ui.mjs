@@ -715,6 +715,9 @@ function appendReviewQueue(root){
     ' medium and '+(stats.routine||0)+' routine reviews. '+
     (stats.withoutCurrentManualReview||0)+' listings have no recent documented full-terms review.',
     'fb-watch-meta'));
+  if(stats.prolongedConditionalPromos>0)
+    section.append(note(stats.prolongedConditionalPromos+
+      ' conditional promotion(s) could not be checked across source scans spanning 7+ days. Manual carrier research is needed; an inaccessible page is not proof that a promotion has ended.'));
   if(stats.publicationEvidence){
     const pub=stats.publicationEvidence;
     section.append(element('p',
