@@ -407,6 +407,14 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 #main-content .panel,#main-content .list>li{border-radius:16px}
 @media(max-width:600px){.fb-topnav{align-items:center}.fb-topnav-links{gap:7px 12px}.fb-topnav-links a{font-size:.79rem}.hero{padding-top:12px}.fb-welcome{padding:26px 20px;border-radius:19px}.fb-welcome h2{font-size:clamp(2rem,9vw,3rem)}.fb-quick-actions{flex-direction:column}.fb-quick-actions button{width:100%}.fb-advanced-filters>summary{align-items:flex-start;flex-direction:column;gap:3px}.fb-advanced-filters>summary:after{position:absolute;right:25px}.fb-advanced-filters>summary{position:relative;padding-right:52px}}
 .fresh{padding:13px 16px;border:1px solid var(--line);border-radius:13px;background:var(--surface);font-size:.88rem;line-height:1.6;color:var(--muted)}.fresh strong{color:var(--ink)}.fresh button{margin:3px 3px 3px 0}
+/* Finder mobile controls and concise, expandable eligibility explanations. */
+#fb-finder-root .fb-checks label:has(select){display:flex;flex-direction:column;align-items:stretch;gap:8px;width:100%}
+#fb-finder-root .fb-checks select{display:block;width:100%;min-width:0;max-width:100%;min-height:44px}
+#fb-finder-root .fb-fields select,#fb-finder-root .fb-fields input{max-width:100%;min-width:0}
+#fb-finder-root .fb-finder-caveats{margin:12px 0 18px;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+#fb-finder-root .fb-finder-caveats summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+#fb-finder-root .fb-finder-caveats .fb-subtle{margin:10px 0}
+@media(max-width:620px){#fb-finder-root .fb-fields{grid-template-columns:minmax(0,1fr)}#fb-finder-root .fb-fields>label{min-width:0}}
 </style>
 </head>
 <body>

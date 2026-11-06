@@ -220,13 +220,20 @@ function renderFinder() {
     const root = document.querySelector('#fb-finder-results');
     root.replaceChildren();
     root.append(element('h3','Matching options'));
-    root.append(note('Estimated costs include recorded fixed carrier fees and one-time activation charges when available. Unknown taxes and fees are NOT estimated. Out-of-stock offers are excluded from recommendations. Discounts require your eligibility confirmation. These are not checkout quotes.'));
-    if(suppressedPhones || suppressedPlans)root.append(note(
-      suppressedPlans+' plan(s) and '+suppressedPhones+' handset offer(s) with conflicting official price evidence have been excluded from recommendations. See Price watch.'));
-    for(const msg of ranked.messages) root.append(note(msg));
-    root.append(note(ranked.lines>1 ?
-      'Plan results show known family prices first, then estimates; within each group the lowest 12-month cost ranks first.' :
-      'Plan results are ordered by the estimated first-year service cost.'));
+    root.append(note('Matches are ranked by estimated cost. These are not checkout quotes; confirm eligibility and final carrier pricing.'));
+    const caveats=[
+      'Estimated costs include recorded fixed carrier fees and one-time activation charges where known. Unknown taxes and fees are not estimated.',
+      ...(suppressedPhones || suppressedPlans ? [suppressedPlans+' plan(s) and '+suppressedPhones+' phone offer(s) excluded due to conflicting official price evidence. See Price watch.'] : []),
+      ...ranked.messages,
+      ranked.lines>1 ?
+        'Known family rates rank before extrapolated multi-line estimates; first-year cost determines order within each group.' :
+        'Plans are ranked by estimated first-year service cost.'
+    ];
+    const details=element('details',null,'fb-finder-caveats');
+    const summary=element('summary','Why some deals are excluded · Pricing details');
+    details.append(summary);
+    for(const msg of caveats)details.append(note(msg));
+    root.append(details);
     const showPlans = data.get('device')!=='phone';
     const showPhones = data.get('device')!=='byop';
     if(showPlans) {
@@ -253,19 +260,8 @@ function renderFinder() {
         actions.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('plan',p.id)));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
-        if(i>=3)card.hidden=true;
         root.append(card);
         planCards.push(card);
-      }
-      if(planCards.length>3){
-        const more=button('Show all '+planCards.length+' matching plans',()=>{
-          const expand=planCards[3].hidden;
-          planCards.slice(3).forEach(card=>{card.hidden=!expand;});
-          more.textContent=expand?'Show top 3 plans':'Show all '+planCards.length+' matching plans';
-          more.setAttribute('aria-expanded',String(expand));
-        });
-        more.setAttribute('aria-expanded','false');
-        root.append(more);
       }
     }
     if(showPhones) {
@@ -292,19 +288,8 @@ function renderFinder() {
         else card.append(note('Savings comparison unavailable until full financing and bill-credit terms are documented.'));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
-        if(i>=3)card.hidden=true;
         root.append(card);
         phoneCards.push(card);
-      }
-      if(phoneCards.length>3){
-        const more=button('Show all '+phoneCards.length+' matching phones',()=>{
-          const expand=phoneCards[3].hidden;
-          phoneCards.slice(3).forEach(card=>{card.hidden=!expand;});
-          more.textContent=expand?'Show top 3 phones':'Show all '+phoneCards.length+' matching phones';
-          more.setAttribute('aria-expanded',String(expand));
-        });
-        more.setAttribute('aria-expanded','false');
-        root.append(more);
       }
     }
   });
