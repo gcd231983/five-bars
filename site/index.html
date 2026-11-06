@@ -255,6 +255,22 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
   .foot{align-items:center}
 }
 
+/* Mobile comparison readability: preserve all pricing and source information. */
+@media (max-width:620px){
+  #p-plans .row,#p-phones .row{grid-template-columns:minmax(0,1fr);gap:10px;padding:16px;overflow-wrap:anywhere}
+  #p-plans .who,#p-phones .who{grid-column:1}
+  #p-plans .price,#p-phones .price{grid-column:1;text-align:left;max-width:none}
+  #p-plans .price .now,#p-phones .price .now{font-size:1.6rem;line-height:1.2}
+  #p-plans .price .now.fb-under-review,#p-phones .price .now.fb-under-review{margin-left:0;max-width:none}
+  #p-plans .facts,#p-phones .facts{margin-top:0;gap:6px}
+  #p-plans .facts li,#p-phones .facts li{font-size:.78rem;line-height:1.4}
+  #p-plans .foot,#p-phones .foot{align-items:stretch;flex-direction:column;gap:10px}
+  #p-plans .foot a,#p-phones .foot a,#p-plans .foot button,#p-phones .foot button{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+  #p-plans .foot .yr,#p-phones .foot .yr{line-height:1.5}
+  .tabs .wrap{scroll-snap-type:x proximity;scroll-padding-inline:12px}
+  .tabs .tab{scroll-snap-align:start}
+}
+
 /* Launch polish: accessible entry points without changing comparison logic. */
 .fb-topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
 .fb-topnav strong{font-size:.94rem;letter-spacing:.02em}
