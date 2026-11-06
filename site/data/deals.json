@@ -59,7 +59,12 @@
     {
       "name": "Tello plans",
       "url": "https://tello.com/buy/custom_plans",
-      "what": "Official monthly Tello tier prices and introductory plan conditions"
+      "what": "Official monthly Tello tier prices and introductory plan conditions",
+      "officialPublication": {
+        "url": "https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/",
+        "publishedOn": "2026-10-22",
+        "scope": "Carrier-published October 22 terms: $10/month for three months, then $15/month; newly activated lines only; Nov 9, 2026 deadline at 11:59 p.m. EST. Not live checkout, taxes or current eligibility verification."
+      }
     },
     {
       "name": "Helium Mobile plan help",
