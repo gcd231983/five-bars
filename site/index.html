@@ -1210,7 +1210,9 @@ function renderPlans(){
     reg:(a,b)=>a.c.reg-b.c.reg || a.c.year-b.c.year,
     save:(a,b)=>b.c.save-a.c.save || a.c.year-b.c.year,
     pri:(a,b)=>((b.p.pri===true)-(a.p.pri===true)) || a.c.year-b.c.year
-  }[state.sort];
+  }[state.sort] || ((a,b)=>a.c.year-b.c.year);
+// The hidden Phone Deals renderer can be called while a plan sort is active;
+// never pass an undefined comparator across the two shopping modes.
   const priceUnderReview=p=>['headline_mismatch','ambiguous','unresolved_mismatch'].includes(AUTO_STATUS?.offers?.[p.id]?.mvnoPriceEvidenceState)||
     ['conflict','invalid'].includes(RESEARCH_AUDIT?.offers?.find(x=>x.id===p.id)?.researchState);
   rows.sort((a,b)=> Number(priceUnderReview(a.p))-Number(priceUnderReview(b.p)) ||
@@ -1349,7 +1351,9 @@ function renderPhones(){
     year:(a,b)=>(a.c.year??big)-(b.c.year??big) || (a.c.eff??big)-(b.c.eff??big),
     due:(a,b)=>(a.c.due??big)-(b.c.due??big) || (a.c.eff??big)-(b.c.eff??big),
     price:(a,b)=>(a.c.eff??big)-(b.c.eff??big) || (a.c.year??big)-(b.c.year??big)
-  }[state.sort];
+  }[state.sort] || ((a,b)=>(a.c.year??big)-(b.c.year??big) || (a.c.eff??big)-(b.c.eff??big));
+// The hidden Plans renderer may carry a different sort choice; use the
+// existing safe first-year order until the visible mode chooses its own sort.
   const underReview=d=>['headline_mismatch','ambiguous','unresolved_mismatch'].includes(AUTO_STATUS?.offers?.[d.id]?.priceEvidenceState)||
     ['conflict','invalid'].includes(RESEARCH_AUDIT?.offers?.find(x=>x.id===d.id)?.researchState);
   rows.sort((a,b)=>Number(underReview(a.d))-Number(underReview(b.d)) ||
