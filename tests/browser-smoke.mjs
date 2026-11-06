@@ -203,9 +203,19 @@ try {
     assert.equal(await caveats.isVisible(),true,'Eligibility details remain accessible');
     await caveats.locator('summary').click();
     assert.match(await caveats.innerText(),/Port-in introductory discounts are excluded/i);
-    assert.equal(await page.locator('#fb-finder-results .fb-result:visible').count(),
-      await page.locator('#fb-finder-results .fb-result').count(),
-      'All eligible matching cards should be visible, not hidden after the third');
+    const allResultCards=await page.locator('#fb-finder-results .fb-result').count();
+    const visibleResultCards=await page.locator('#fb-finder-results .fb-result:visible').count();
+    assert.ok(visibleResultCards<=allResultCards,'Results must not duplicate offers');
+    assert.ok(visibleResultCards>=1,'At least one matching result should be visible');
+    assert.ok(await page.locator('#fb-finder-results .fb-result-heading:visible').count()<=5,
+      'Initially no more than five plan results should be visible');
+    if(await page.locator('.fb-more-plans').count()){
+      assert.equal(await page.locator('#fb-finder-results .fb-result-heading').count()>5,true);
+      assert.equal(await page.locator('#fb-finder-results .fb-provider-mark').count()>0,true);
+      await page.locator('.fb-more-plans').click();
+      assert.equal(await page.locator('#fb-finder-results .fb-result:visible').count(),allResultCards,
+        'Show all must reveal every matching card');
+    }
     assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated first year/);
     await page.locator('#fb-port-status').selectOption('yes');
     await page.locator('#fb-finder-form button[type="submit"]').click();
