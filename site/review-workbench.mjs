@@ -84,11 +84,11 @@ function display(){
   article.setAttribute('data-offer-id',item.id);
   article.append(create('p',item.priority+' priority · '+item.kind+' · '+signed.label,'fb-review-priority'));
   article.append(create('h3',item.carrier+' — '+(item.offer||record.plan||record.phone)));
-  const scenario=LAUNCH_REVIEW_BY_ID.get(item.id);
-  if(scenario){
-    article.append(create('p','Launch scenario: '+scenario.goal,'fb-review-priority'));
-    article.append(create('p','Quote to obtain: '+scenario.check,'fb-review-hint'));
-    article.append(create('p','Do not assume: '+scenario.caution,'fb-review-hint'));
+  const reviewTarget=LAUNCH_REVIEW_BY_ID.get(item.id);
+  if(reviewTarget){
+    article.append(create('p','Launch scenario: '+reviewTarget.goal,'fb-review-priority'));
+    article.append(create('p','Quote to obtain: '+reviewTarget.check,'fb-review-hint'));
+    article.append(create('p','Do not assume: '+reviewTarget.caution,'fb-review-hint'));
   }
   article.append(create('p','Offer ID: '+item.id+' · catalog price: '+usd(record.price)+
     (item.kind==='plan'?'/mo equivalent if annual prepaid':' advertised device price')));
