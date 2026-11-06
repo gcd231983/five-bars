@@ -541,6 +541,106 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 .fb-release-notice p{margin:0;flex:1 1 290px}
 .fb-release-notice button{cursor:pointer;padding:9px 13px;border:1px solid #9bd9de;border-radius:9px;background:#18434d;color:#ecffff;font-weight:700}
 .fb-release-notice button:focus-visible{outline:3px solid #f3d47a;outline-offset:3px}
+
+/* Browse and tools pages should start with the task, not repeat the
+   Finder's marketing hero and redundant shortcuts above every work area. */
+body:not([data-active-tab="finder"]) .fb-welcome,
+body:not([data-active-tab="finder"]) .fb-home-shortcuts,
+body:not([data-active-tab="finder"]) .fb-home-trust,
+body:not([data-active-tab="finder"]) .fb-home-resources{display:none}
+body:is([data-active-tab="compare"],[data-active-tab="switch"],
+        [data-active-tab="watchlist"],[data-active-tab="pricewatch"],
+        [data-active-tab="sources"]) header.hero{display:none}
+body:is([data-active-tab="plans"],[data-active-tab="phones"]) header.hero{padding-top:8px;padding-bottom:10px}
+body:is([data-active-tab="plans"],[data-active-tab="phones"]) header.hero .brand h1{font-size:clamp(1.55rem,4vw,2rem)}
+body:is([data-active-tab="plans"],[data-active-tab="phones"]) header.hero .bars{width:32px}
+/* Simple, browse-first offer comparison. The basket stays visible without
+   interrupting browsing; detailed terms remain accessible on demand. */
+#p-compare{padding-top:18px}
+#p-compare>h2{font-size:clamp(1.45rem,3vw,1.9rem);margin:0 0 3px;letter-spacing:-.02em}
+body[data-active-tab="compare"] .fb-price-guide{display:none}
+body[data-active-tab="compare"] .fb-catalog-freshness{padding:10px 13px;margin:7px 0 12px;font-size:.85rem}
+#fb-compare-root{margin:12px 0 38px}
+.fb-compare-workspace{padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.fb-compare-intro{color:var(--muted);font-size:.95rem;margin:0 0 17px;max-width:70ch!important}
+.fb-compare-modes{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 19px}
+.fb-compare-mode{cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:11px 16px;font-weight:750;min-height:46px}
+.fb-compare-mode[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fb-compare-progress{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px}
+.fb-compare-progress strong{font-size:1rem}
+.fb-compare-clear{padding:5px 8px;cursor:pointer;background:none;border:none;color:var(--accent);font-weight:700;text-decoration:underline}
+.fb-compare-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.fb-compare-chip{min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:5px;min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:12px;background:var(--paper);font-size:.84rem;font-weight:650;overflow-wrap:anywhere}
+.fb-compare-chip-empty{color:var(--muted);font-weight:500}
+.fb-compare-chip-remove{flex:none;border:0;background:transparent;color:var(--accent);font-size:1.35rem;cursor:pointer;min-width:32px;min-height:34px}
+.fb-compare-picker{margin:14px 0;padding:18px 20px;border:1px solid var(--line);border-radius:17px;background:var(--surface)}
+.fb-compare-picker h3{margin:0 0 12px!important;font-size:1.1rem!important}
+.fb-compare-search-label{display:flex;flex-direction:column;gap:7px;font-weight:650;font-size:.88rem;margin-bottom:10px}
+#fb-compare-search{display:block;width:100%;min-height:48px;padding:11px 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:11px;font-size:1rem}
+.fb-compare-picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.fb-compare-pick{min-width:0;display:flex;gap:12px;align-items:center;justify-content:space-between;padding:13px;border-radius:12px;border:1px solid var(--line);background:var(--paper)}
+.fb-compare-pick-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fb-compare-pick-copy strong{line-height:1.3;font-size:.92rem}
+.fb-compare-pick-copy span{color:var(--muted);font-size:.78rem;line-height:1.35}
+.fb-compare-pick-add{padding:8px 13px;min-height:44px;flex:none}
+.fb-compare-more{margin-top:14px;min-height:44px}
+.fb-compare-empty{padding:18px;border-radius:12px;background:var(--chip);color:var(--ink);font-weight:650;max-width:none!important}
+.fb-compare-notice{color:var(--bad);font-weight:650;font-size:.85rem;margin:8px 0}
+.fb-compare-toolbar{margin:22px 0 12px}
+.fb-compare-highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.fb-compare-highlight{min-width:0;padding:18px;border-radius:16px;border:1px solid var(--line);background:var(--surface)}
+.fb-compare-highlight h4{font-size:1.05rem;margin:0 0 7px;line-height:1.35}
+.fb-compare-card-status{font-size:.77rem!important;color:var(--muted);margin:0 0 16px!important}
+.fb-compare-metrics{margin:0 0 14px}
+.fb-compare-metrics>div{padding:9px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.fb-compare-metrics dt{color:var(--muted);font-size:.8rem;flex:1}
+.fb-compare-metrics dd{margin:0;font-size:.93rem;font-weight:750;text-align:right;flex:1.25;overflow-wrap:anywhere}
+.fb-compare-details{margin:18px 0 12px;border:1px solid var(--line);background:var(--surface);border-radius:14px;overflow:hidden}
+.fb-compare-details>summary{cursor:pointer;font-weight:750;padding:17px 18px;min-height:52px}
+.fb-compare-details[open]>summary{border-bottom:1px solid var(--line)}
+.fb-compare-details>.fb-table-wrap{border:0;border-radius:0}
+.fb-compare-details>.fb-swipe-hint{margin:10px 14px}
+.fb-compare-tray{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);transform:translateX(-50%);width:min(calc(100% - 24px),770px);z-index:19;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 16px;border:1px solid var(--accent);border-radius:17px;background:var(--surface);color:var(--ink);box-shadow:0 9px 36px rgba(0,0,0,.27)}
+.fb-compare-tray[hidden]{display:none!important}
+.fb-tray-info{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.fb-tray-title{font-size:.97rem}
+.fb-tray-names{font-size:.79rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fb-tray-actions{display:flex;flex:none;align-items:center;gap:8px}
+.fb-tray-actions button{min-height:44px}
+.fb-tray-open{white-space:nowrap}
+body.fb-has-compare-tray #main-content{padding-bottom:140px}
+button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!important;color:var(--accent)!important;background:var(--chip)!important}
+@media(max-width:680px){
+ .fb-compare-chips{grid-template-columns:1fr}
+ .fb-compare-chip{min-height:42px}
+ .fb-compare-picks{grid-template-columns:minmax(0,1fr)}
+ .fb-compare-workspace,.fb-compare-picker{padding:14px}
+ .fb-compare-tray{align-items:stretch;flex-direction:column;gap:8px;padding:11px 13px}
+ .fb-tray-actions{width:100%}
+ .fb-tray-actions .fb-tray-open{flex:1}
+ .fb-tray-actions button{padding:9px 12px}
+ .fb-compare-metrics>div{align-items:flex-start}
+ body.fb-has-compare-tray #main-content{padding-bottom:190px}
+}
+/* Mobile task navigation: all primary actions visible, secondary tools in
+   an accessible More menu rather than a clipped eight-tab horizontal strip. */
+.tabs .wrap.fb-tabs-shell{display:flex;align-items:stretch;gap:0;overflow:visible}
+.fb-tab-buttons{display:flex;gap:2px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none}
+.fb-tabs-more{display:none}
+@media(max-width:620px){
+ .tabs .wrap.fb-tabs-shell{display:grid;grid-template-columns:minmax(0,1fr) 75px;padding:0 8px;gap:0;scroll-snap-type:none}
+ .fb-tab-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;overflow:visible}
+ .tabs .fb-tab-buttons .tab{display:flex;align-items:center;justify-content:center;min-height:50px;padding:8px 2px;font-size:.77rem;line-height:1.18;white-space:normal;text-align:center;scroll-snap-align:none;flex-wrap:wrap;gap:2px}
+ .tabs .fb-tab-buttons #t-switch,.tabs .fb-tab-buttons #t-watchlist,
+ .tabs .fb-tab-buttons #t-pricewatch,.tabs .fb-tab-buttons #t-sources{display:none}
+ .fb-tabs-more{display:block;position:relative;min-width:0}
+ .fb-tabs-more>summary{list-style:none;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:50px;padding:8px 2px;font-size:.77rem;font-weight:700;color:var(--muted);text-align:center;border-bottom:3px solid transparent}
+ .fb-tabs-more>summary::-webkit-details-marker{display:none}
+ .fb-tabs-more[data-active="true"]>summary{border-bottom-color:var(--accent);color:var(--ink)}
+ .fb-tabs-more-menu{position:absolute;right:0;top:100%;min-width:220px;z-index:30;border:1px solid var(--line);border-radius:0 0 13px 13px;background:var(--surface);box-shadow:0 12px 28px rgba(0,0,0,.25);padding:7px}
+ .fb-tabs-more-menu button{display:block;width:100%;min-height:44px;text-align:left;padding:10px 13px;border:0;border-radius:8px;background:none;color:var(--ink);font-weight:650;cursor:pointer}
+ .fb-tabs-more-menu button:hover,.fb-tabs-more-menu button:focus-visible{background:var(--chip)}
+}
 </style>
 </head>
 <body>
@@ -610,7 +710,8 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 </header>
 
 <nav class="tabs" aria-label="Sections">
-  <div class="wrap" role="tablist" aria-label="Five Bars tools">
+  <div class="wrap fb-tabs-shell">
+    <div class="fb-tab-buttons" role="tablist" aria-label="Five Bars tools">
     <button class="tab" role="tab" data-tab="finder" id="t-finder" aria-controls="p-finder">Find my plan</button>
     <button class="tab" role="tab" data-tab="plans" id="t-plans" aria-controls="p-plans">Plans<span class="count" id="c-plans"></span></button>
     <button class="tab" role="tab" data-tab="phones" id="t-phones" aria-controls="p-phones">Phone deals<span class="count" id="c-phones"></span></button>
@@ -619,8 +720,18 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
     <button class="tab" role="tab" data-tab="watchlist" id="t-watchlist" aria-controls="p-watchlist">My watchlist<span class="count" id="c-watchlist"></span></button>
     <button class="tab" role="tab" data-tab="pricewatch" id="t-pricewatch" aria-controls="p-pricewatch">Price watch</button>
     <button class="tab" role="tab" data-tab="sources" id="t-sources" aria-controls="p-sources">Sources &amp; refresh</button>
+    </div>
+    <details class="fb-tabs-more" id="fb-tabs-more" data-active="false">
+      <summary>More tools</summary>
+      <div class="fb-tabs-more-menu" role="group" aria-label="Additional Five Bars tools">
+        <button type="button" data-more-tab="switch">Switch &amp; save</button>
+        <button type="button" data-more-tab="watchlist">My watchlist</button>
+        <button type="button" data-more-tab="pricewatch">Price watch</button>
+        <button type="button" data-more-tab="sources">Sources &amp; refresh</button>
+      </div>
+    </details>
   </div>
-  <p class="fb-tab-swipe" id="fb-tab-hint">Swipe the tabs sideways to see Compare, Switch &amp; save, Watchlist, Price watch and Sources.</p>
+  <p class="fb-tab-swipe" id="fb-tab-hint">Find a plan, browse deals, or compare. Additional tools are in the More menu.</p>
 </nav>
 
 <main class="wrap" id="main-content" tabindex="-1">
@@ -660,7 +771,7 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
   </section>
 
   <section id="p-compare" class="panel" role="tabpanel" aria-labelledby="t-compare" hidden>
-    <h2>Compare plans and phone deals</h2>
+    <h2>Build your comparison</h2>
     <div id="fb-compare-root" class="fb-tool"></div>
   </section>
 
@@ -1027,7 +1138,7 @@ function renderPlans(){
         el("a",{href:p.url, target:"_blank", rel:"noopener noreferrer"}, "See it at " + p.carrier),
         el("a",{href:"report.html?offer="+encodeURIComponent(p.id),class:"fb-report-link"}, "Report an issue"),
         priceDisputed || c.listingHold ? el("span",{class:"fb-watch-warning"},"Compare after price review") :
-          el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("plan",p.id)},"Compare"))
+          el("button",{type:"button",class:"fb-compare-btn","data-compare-type":"plan","data-compare-id":p.id,onclick:()=>window.fiveBarsCompare?.("plan",p.id)},"＋ Add to compare"))
     );
   }));
 }
@@ -1139,7 +1250,7 @@ function renderPhones(){
         el("a",{href:"report.html?offer="+encodeURIComponent(d.id),class:"fb-report-link"}, "Report an issue"),
         priceDisputed || c.listingHold ? el("span",{class:"fb-watch-warning"},"Compare after price review") :
           c.unavailable ? el("span",{class:"fb-watch-warning"},"Compare after stock confirmation") :
-          el("button",{type:"button",class:"fb-compare-btn",onclick:()=>window.fiveBarsCompare?.("phone",d.id)},"Compare"))
+          el("button",{type:"button",class:"fb-compare-btn","data-compare-type":"phone","data-compare-id":d.id,onclick:()=>window.fiveBarsCompare?.("phone",d.id)},"＋ Add to compare"))
     );
   }));
 }
@@ -1153,6 +1264,9 @@ function emptyState(){
 /* ---------- tabs ---------- */
 function showTab(t){
   state.tab = t;
+  document.body.dataset.activeTab=t;
+  const moreTab=document.getElementById('fb-tabs-more');
+  if(moreTab)moreTab.dataset.active=String(['switch','watchlist','pricewatch','sources'].includes(t));
   if(t==="plans") state.mode = "byop";
   if(t==="phones") state.mode = "phone";
   for(const b of document.querySelectorAll(".tab")){
@@ -1170,7 +1284,7 @@ function showTab(t){
 document.querySelectorAll(".tab").forEach(b=>{
   b.addEventListener("click",()=>showTab(b.dataset.tab));
   b.addEventListener("keydown",event=>{
-    const tabs=[...document.querySelectorAll(".tab")];
+    const tabs=[...document.querySelectorAll(".tab")].filter(tab=>tab.getClientRects().length>0);
     const current=tabs.indexOf(b);
     const index= event.key==="ArrowRight" ? (current+1)%tabs.length :
       event.key==="ArrowLeft" ? (current+tabs.length-1)%tabs.length :
@@ -1180,6 +1294,21 @@ document.querySelectorAll(".tab").forEach(b=>{
     showTab(tabs[index].dataset.tab);
     tabs[index].focus();
   });
+});
+
+document.querySelectorAll('[data-more-tab]').forEach(button=>{
+  button.addEventListener('click',()=>{
+    document.getElementById('fb-tabs-more').open=false;
+    showTab(button.dataset.moreTab);
+  });
+});
+// Clicking outside or Escape closes the mobile tools menu.
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape')document.getElementById('fb-tabs-more').open=false;
+});
+document.addEventListener('click',event=>{
+  const more=document.getElementById('fb-tabs-more');
+  if(more?.open&&!more.contains(event.target))more.open=false;
 });
 
 function update(skipTab){

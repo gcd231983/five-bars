@@ -33,6 +33,15 @@ const browser=await chromium.launch({headless:true,channel:'chrome',args:['--no-
 const output=resolve(dirname(fileURLToPath(import.meta.url)),'../browser-artifacts');
 await mkdir(output,{recursive:true});
 let errors=[];
+async function openSection(page,section){
+  const tab=page.locator('#t-'+section);
+  if(await tab.isVisible())return tab.click();
+  const menu=page.locator('#fb-tabs-more');
+  assert.equal(await menu.isVisible(),true,'Mobile tools menu must be available for '+section);
+  await menu.locator('summary').click();
+  await menu.locator('[data-more-tab="'+section+'"]').click();
+  assert.equal(await page.locator('#p-'+section).isVisible(),true);
+}
 try {
   for (const [view,viewport] of Object.entries({
     mobile:{width:390,height:844},desktop:{width:1280,height:840}
@@ -150,6 +159,15 @@ try {
       status:200,contentType:'application/json',body:JSON.stringify(alertFeed)}));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
+    const compact=view==='mobile';
+    assert.equal(await page.locator('#fb-tabs-more').isVisible(),compact,
+      'Mobile navigation must use a short primary strip and a More menu');
+    if(compact){
+      for(const tab of ['finder','plans','phones','compare'])
+        assert.equal(await page.locator('#t-'+tab).isVisible(),true,'Primary section should never be clipped or hidden: '+tab);
+      assert.equal(await page.locator('#t-pricewatch').isVisible(),false,
+        'Secondary tools belong in the explicit More menu on phones');
+    }
     assert.match(await page.locator('#fb-finder-affiliate-note').innerText(),/does not currently report commission-based rankings/i);
     await page.locator('#scan-status').waitFor({state:'attached'});
     await page.waitForFunction(()=>document.querySelector('#scan-status')?.textContent?.includes('public sources'));
@@ -319,7 +337,23 @@ try {
     assert.match(annualText,/Phone offers \(0 match the selected filters\)/,
       'provider preference must exclude other carriers handset promotions');
     await page.screenshot({path:join(output,view+'-mvno-annual.png'),fullPage:true});
-    await page.locator('#fb-finder-results .fb-result').first().getByRole('button',{name:'Compare'}).click();
+    await page.locator('#fb-finder-results .fb-result').first().getByRole('button',{name:/Add to compare/i}).click();
+    assert.equal(await page.locator('#p-finder').isVisible(),true,
+      'Adding a first offer must leave the shopper browsing, not jump to a one-column table');
+    assert.equal(await page.locator('#fb-compare-tray').isVisible(),true);
+    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 chosen/i);
+    await page.locator('#fb-compare-tray .fb-tray-open').click();
+    assert.equal(await page.locator('#p-compare').isVisible(),true);
+    assert.equal(await page.locator('#fb-compare-root table').count(),0,
+      'One selected offer should prompt a second selection instead of showing a giant table');
+    assert.match(await page.locator('#fb-compare-root').innerText(),/Add at least one more offer/i);
+    await page.locator('#fb-compare-search').fill('US Mobile');
+    assert.ok((await page.locator('.fb-compare-pick').count())>0,
+      'Searchable comparison picker must find US Mobile without leaving Compare');
+    await page.locator('.fb-compare-pick').first().getByRole('button',{name:/Add/}).click();
+    assert.equal(await page.locator('.fb-compare-highlight').count(),2,
+      'Adding a second plan inside Compare must show a readable two-card summary');
+    await page.locator('.fb-compare-details summary').click();
     assert.match(await page.locator('#fb-compare-root').innerText(),/Billing \/ upfront amount/i);
     assert.match(await page.locator('#fb-compare-root').innerText(),/\$60\.00 upfront for 12 months/i);
     await page.locator('#t-finder').click();
@@ -337,22 +371,32 @@ try {
     const width=await page.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(width<=viewport.width+2,'Finder causes unwanted document overflow on '+view+': '+width);
     await page.screenshot({path:join(output,view+'-finder.png'),fullPage:true});
-    await options.first().getByRole('button',{name:'Compare'}).click();
-    assert.equal(await page.locator('#p-compare').isVisible(),true,'Clicking Compare opens comparison');
-    assert.ok(await page.locator('#fb-compare-root table').count()>0,'comparison table exists');
+    await options.first().getByRole('button',{name:/Add to compare/i}).click();
+    assert.equal(await page.locator('#p-finder').isVisible(),true,
+      'Adding a third offer must not interrupt browsing');
+    assert.match(await page.locator('#fb-compare-tray').innerText(),/3 of 3 chosen/i);
+    await page.locator('#fb-compare-tray .fb-tray-open').click();
+    assert.equal(await page.locator('#p-compare').isVisible(),true);
+    assert.equal(await page.locator('.fb-compare-highlight').count(),3,
+      'Three choices must remain available in side-by-side summary');
     const familySelector=page.locator('#fb-compare-root .fb-compare-household select');
     assert.equal(await familySelector.inputValue(),'2','finder household size is preserved in comparisons');
+    await page.locator('.fb-compare-details summary').click();
     assert.match(await page.locator('#fb-compare-root').innerText(),/12-month total \(2 lines\)/);
     await familySelector.selectOption('3');
+    await page.locator('.fb-compare-details summary').click();
     assert.match(await page.locator('#fb-compare-root').innerText(),/12-month total \(3 lines\)/);
     await page.locator('#fb-compare-root .fb-compare-household select').selectOption('2');
+    assert.ok(await page.evaluate(v=>document.documentElement.scrollWidth<=v+2,viewport.width),
+      'New comparison workspace must not overflow the mobile viewport');
     await page.screenshot({path:join(output,view+'-comparison.png'),fullPage:true});
+    await page.locator('#fb-compare-root .fb-compare-clear').click();
     await page.locator('#t-plans').click();
     assert.equal(await page.locator('#p-plans').isVisible(),true);
     assert.ok(await page.locator('#plans-list .fb-review').count()>0,'verification labels on plan rows');
     const disputed=page.locator('#r-helium-infinity');
     assert.match(await disputed.locator('.price .now').innerText(),/Price under review/);
-    assert.equal(await disputed.getByRole('button',{name:'Compare',exact:true}).count(),0,'disputed plan cannot be compared at stale price');
+    assert.equal(await disputed.locator('button[data-compare-type]').count(),0,'disputed plan cannot be compared at stale price');
     assert.match(await disputed.locator('[data-verification]').innerText(),/Official plan rate differs/);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Official plan rate matches/);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Dated carrier source.*partial/i);
@@ -396,7 +440,15 @@ try {
     await page.locator('#carrier').selectOption('any');
     assert.doesNotMatch(await disputed.locator('.foot').innerText(),/12 months \(est\.\)/);
     await page.locator('#plans-list .fb-compare-btn').first().click();
-    assert.equal(await page.locator('#p-compare').isVisible(),true);
+    assert.equal(await page.locator('#p-plans').isVisible(),true);
+    assert.equal(await page.locator('#fb-compare-tray').isVisible(),true);
+    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 chosen/i);
+    await page.evaluate(()=>window.fiveBarsCompare('phone','boost-motog'));
+    assert.match(await page.locator('#fb-compare-tray').innerText(),/You are comparing plans/i,
+      'Selecting a different product type must not silently erase the plan selection');
+    await page.locator('#fb-compare-tray .fb-tray-open').click();
+    assert.equal(await page.locator('#fb-compare-root .fb-compare-chip').count(),3);
+    await page.locator('#fb-compare-root .fb-compare-clear').click();
     await page.locator('#t-phones').click();
     assert.ok(await page.locator('#phones-list .row').count()>0);
     const boostPhone=page.locator('#r-boost-motog');
@@ -418,7 +470,7 @@ try {
     for(const id of ['cricket-power','cricket-motog']){
       const held=page.locator('#r-'+id);
       assert.match(await held.innerText(),/OUT OF STOCK/);
-      assert.equal(await held.getByRole('button',{name:'Compare',exact:true}).count(),0);
+      assert.equal(await held.locator('button[data-compare-type]').count(),0);
     }
     assert.match(await page.locator('#r-boost-motog [data-verification]').innerText(),
       /Official headline matches/i);
@@ -435,19 +487,19 @@ try {
       assert.match(await held.innerText(),/Retail promotion under review/i);
       assert.doesNotMatch(await held.locator('.price').innerText(),/was\s+\$99\.88|Free/i,
         'held retailer headlines must not expose bogus strike-through savings or a free device');
-      assert.equal(await held.getByRole('button',{name:'Compare',exact:true}).count(),0,
+      assert.equal(await held.locator('button[data-compare-type]').count(),0,
         'retailer hold may not open cost comparisons');
       assert.doesNotMatch(await held.locator('.foot').innerText(),/Due today \(est\.\)|First year \(est\.\)/i);
     }
     assert.match(await financed.innerText(),/Financing.*quote required/i);
     assert.match(await financed.innerText(),/first-year estimates withheld/i);
     assert.doesNotMatch(await financed.innerText(),/Due today \(est\.\)|First year \(est\.\)/i);
-    assert.equal(await page.locator('#r-boost-a17').getByRole('button',{name:'Compare',exact:true}).count(),0,
+    assert.equal(await page.locator('#r-boost-a17').locator('button[data-compare-type]').count(),0,
       'disputed offer cannot be compared at stale catalog price');
     const phoneOverflow=await page.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(phoneOverflow<=viewport.width+2,
       'Price-under-review row must not cause page overflow on '+view+': '+phoneOverflow);
-    await page.locator('#t-pricewatch').click();
+    await openSection(page,'pricewatch');
     assert.equal(await page.locator('#p-pricewatch').isVisible(),true);
     const alerts=page.locator('#fb-action-alerts');
     assert.equal(await alerts.locator('.fb-action-card').count(),2,'only actionable alerts may appear');
@@ -485,17 +537,29 @@ try {
       const card=page.locator('#r-'+id);
       assert.match(await card.innerText(),/Out of stock/i);
       assert.doesNotMatch(await card.innerText(),/First year \(est\.\)/);
-      assert.equal(await card.getByRole('button',{name:'Compare',exact:true}).count(),0);
+      assert.equal(await card.locator('button[data-compare-type]').count(),0);
       assert.equal(await card.locator('.fb-switch-button').count(),0);
     }
     assert.match(await page.locator('#r-mint-p11').innerText(),/phone \+ 12 months service/);
     await page.locator('#phones-list .fb-compare-btn').first().click();
-    assert.equal(await page.locator('#p-compare').isVisible(),true);
+    assert.equal(await page.locator('#p-phones').isVisible(),true);
+    assert.equal(await page.locator('#fb-compare-tray').isVisible(),true);
+    await page.locator('#fb-compare-tray .fb-tray-open').click();
+    assert.equal(await page.locator('#fb-compare-root table').count(),0,
+      'The first phone must not create an unusable one-column table');
+    assert.ok((await page.locator('.fb-compare-picks .fb-compare-pick').count())>0);
+    await page.locator('.fb-compare-picks .fb-compare-pick-add').first().click();
+    assert.equal(await page.locator('.fb-compare-highlight').count(),2);
+    await page.locator('.fb-compare-details summary').click();
     assert.ok((await page.locator('#fb-compare-root').innerText()).includes('Due today (est.)'));
+    await page.locator('.fb-compare-picks .fb-compare-pick-add').first().click();
+    assert.equal(await page.locator('.fb-compare-highlight').count(),3,
+      'A third phone must be addable entirely inside Compare');
     await page.reload({waitUntil:'domcontentloaded'});
-    await page.locator('#fb-compare-root table').waitFor({timeout:15000});
+    await page.locator('#fb-compare-root table').waitFor({state:'attached',timeout:15000});
     await page.locator('#t-compare').click();
-    assert.ok(await page.locator('#fb-compare-root table').count()>0,'saved comparison survived reload');
+    assert.equal(await page.locator('.fb-compare-highlight').count(),3,
+      'Three distinct comparison selections must survive reload');
 
     // Local-only watchlist: save, filter target, mark reviewed, export/import and reload.
     await page.locator('#t-plans').click();
@@ -740,15 +804,15 @@ try {
 
     // Mint annual-plan cash must NEVER be disguised as ordinary month-to-month billing.
     // A full reload intentionally resets progressive-disclosure controls; reopen for filtering.
-    await page.locator('.fb-advanced-filters summary').click();
     await page.locator('#t-plans').click();
+    await page.locator('.fb-advanced-filters summary').click();
     await page.locator('#carrier').selectOption('Mint Mobile');
     await page.locator('#lines').selectOption('1');
     assert.match(await page.locator('#r-mint').innerText(),/Pay \$360(?:\.00)? upfront for 12 months/);
     await page.locator('#lines').selectOption('2');
     assert.equal(await page.locator('#r-mint').count(),0,'no fabricated multi-line monthly Mint quote');
     await page.locator('#lines').selectOption('1');
-    await page.locator('#t-switch').click();
+    await openSection(page,'switch');
     await page.locator('#fb-switch-type').selectOption('plan');
     await page.locator('#fb-switch-offer').selectOption('mint');
     await page.locator('[name="payoff"]').fill('0');
@@ -763,7 +827,7 @@ try {
     assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$360/);
     await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
     assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$250/);
-    await page.locator('#t-switch').click();
+    await openSection(page,'switch');
     await page.locator('#fb-switch-offer').selectOption('total-max');
     await page.locator('#fb-switch-discountqualified').check();
     await page.locator('#fb-switch-form button[type="submit"]').click();
@@ -911,10 +975,12 @@ try {
       JSON.parse(localStorage.getItem('fivebars-compare-v1')||'[]'));
     assert.deepEqual(retained,[{type:'phone',id:'metro-motog'}],
       'stored unavailable or price-conflicted offers must be removed before comparing');
-    const compareText=await cachePage.locator('#fb-compare-root').innerText();
-    assert.match(compareText,/Metro/i);
-    assert.doesNotMatch(compareText,/Straight Talk at Walmart|razr|Boost Mobile/i);
-    assert.match(compareText,/conflicting-price or removed saved comparisons were cleared/i);
+    const chosenText=await cachePage.locator('#fb-compare-root .fb-compare-chips').innerText();
+    assert.match(chosenText,/Metro/i);
+    assert.doesNotMatch(chosenText,/Straight Talk at Walmart|razr|Boost Mobile/i,
+      'Dropped unsafe saved selections must not remain in the chosen slots');
+    assert.match(await cachePage.locator('#fb-compare-root').innerText(),
+      /conflicting-price or removed saved comparisons were cleared/i);
     await cachePage.close();
     if(process.env.FIVE_BARS_SITE_DIR){
       // An old open page must notify, never automatically discard form input.
