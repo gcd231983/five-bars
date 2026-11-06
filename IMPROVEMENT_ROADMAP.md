@@ -49,3 +49,10 @@ The catalog's `checked` field is a human-curated reference date, not the timesta
 - The finder now discloses current lack of reported paid placements and links to the existing disclosures page.
 - Do not change offer URLs, inject referral parameters, claim approvals, or mark links sponsored until actual agreements and accurate per-link disclosures exist.
 - Owner-dependent: obtain program approvals, partner identifiers, tracking terms, and confirm privacy/disclosure obligations before monetized links are activated.
+
+## Phase 3 SEO and privacy progress (2026-11-06)
+- PR #81 merged: affiliate approval register and tests to prevent common unauthorized tracking parameters.
+- PR #82 merged: sitemap completeness, unique canonical URLs, distinct generated titles, and truthful catalog-date regression checks.
+- Outbound-link/privacy regression tests are being added to guard HTTPS links, opener isolation, and absence of known advertising SDKs.
+- No click analytics, tracking redirect, or compensated link has been enabled. Enabling any of these requires accurate disclosures and privacy review first.
+- The existing scheduled deployment pipeline must still be monitored for actual successful runs; a test or code merge is not evidence of a production deployment.
