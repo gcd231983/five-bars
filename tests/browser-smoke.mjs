@@ -872,6 +872,39 @@ try {
     assert.match(await rollover.locator('#r-tello .price .now').innerText(),/\$15/,
       'the already-open page must remove expired intro rate after midnight Eastern');
     await rollover.close();
+    // Restore deliberately stale local-storage comparisons: held retailer,
+    // sold-out device, newly disputed official headline, and one safe offer.
+    const cachePage=await context.newPage();
+    cachePage.on('pageerror',e=>errors.push(view+' saved comparison: '+e.message));
+    await cachePage.addInitScript(()=>{
+      localStorage.setItem('fivebars-compare-v1',JSON.stringify([
+        {type:'phone',id:'wm-st-a17'},
+        {type:'phone',id:'cricket-razr'},
+        {type:'phone',id:'boost-a17'},
+        {type:'phone',id:'metro-motog'}
+      ]));
+    });
+    await cachePage.route('**/data/price-evidence.json',async route=>{
+      const response=await route.fetch(),data=await response.json();
+      data.offers ||= {};
+      data.offers['boost-a17']={
+        ...(data.offers['boost-a17']||{}),state:'headline_mismatch'
+      };
+      await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+    });
+    await cachePage.goto(base,{waitUntil:'domcontentloaded'});
+    await cachePage.waitForFunction(()=>document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false);
+    await cachePage.waitForFunction(()=>
+      JSON.parse(localStorage.getItem('fivebars-compare-v1')||'[]').length===1);
+    const retained=await cachePage.evaluate(()=>
+      JSON.parse(localStorage.getItem('fivebars-compare-v1')||'[]'));
+    assert.deepEqual(retained,[{type:'phone',id:'metro-motog'}],
+      'stored unavailable or price-conflicted offers must be removed before comparing');
+    const compareText=await cachePage.locator('#fb-compare-root').innerText();
+    assert.match(compareText,/Metro/i);
+    assert.doesNotMatch(compareText,/Straight Talk at Walmart|razr|Boost Mobile/i);
+    assert.match(compareText,/conflicting-price or removed saved comparisons were cleared/i);
+    await cachePage.close();
     if(process.env.FIVE_BARS_SITE_DIR)assert.equal(assetVersions.size,1,'all styles and modules use the same release version');
     await context.close();
   }

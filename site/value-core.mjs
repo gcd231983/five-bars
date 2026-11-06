@@ -335,9 +335,11 @@ export function normalizeCompare(items, catalog, today=localDay()) {
     if (result.length >= MAX_COMPARE) break;
     if (result.length && entry.type!==result[0].type) continue;
     const found = (entry.type==='plan' ? catalog.plans : catalog.phones || []).find(p=>p.id===entry.id);
-    // A stored browser comparison must never revive a device promotion after its published deadline.
-    // An expired PLAN introduction is different: the regular plan remains comparable.
-    if (!found || taken.has(entry.id) || (entry.type==='phone' && pastEnd(found.ends,today))) continue;
+    // Restoring local browser storage must enforce the SAME safeguards that
+    // prevent shoppers adding held, out-of-stock or expired devices directly.
+    // An expired PLAN intro is different: the standard plan still exists.
+    if (!found || taken.has(entry.id) || (entry.type==='phone' &&
+      (pastEnd(found.ends,today)||found.listingHold||found.availability==='out_of_stock'))) continue;
     taken.add(entry.id);
     result.push({type:entry.type,id:entry.id});
   }
