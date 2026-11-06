@@ -318,6 +318,27 @@ try {
     assert.match(await page.locator('#fb-plans-catalog-count').innerText(),/Showing 24 of 38/);
     await page.locator('#fb-plans-show-all').click();
     assert.equal(await page.locator('#plans-list li.row').count(),38);
+    assert.equal(await page.locator('#plans-list li.row:visible').count(),38,
+      'Default full catalog must never hide cards behind an undisclosed search');
+    await page.locator('#fb-plan-search').fill('Tello');
+    const searched=page.locator('#plans-list li.row:visible');
+    assert.ok(await searched.count()>0&&await searched.count()<38);
+    assert.ok((await searched.locator('.carrier').allInnerTexts()).every(x=>x.includes('Tello')),
+      'Catalog search should narrow by actual carrier, not silently alter price results');
+    assert.match(await page.locator('#fb-plans-catalog-count').innerText(),/matching "Tello"/);
+    await page.locator('#fb-plan-search').fill('no-such-carrier-xyz');
+    assert.equal(await page.locator('#plans-list li.row:visible').count(),0);
+    assert.match(await page.locator('#fb-plan-search-status').innerText(),/No plans match that search/);
+    await page.locator('#fb-plan-search-clear').click();
+    assert.equal(await page.locator('#plans-list li.row:visible').count(),38);
+    assert.equal(await page.locator('#fb-plan-search').inputValue(),'');
+    await page.locator('#fb-plan-search').fill('Tello');
+    await page.locator('#fb-plans-show-unlimited').click();
+    assert.equal(await page.locator('#fb-plan-search').inputValue(),'',
+      'Explicitly choosing all unlimited plans must clear an old text search');
+    assert.equal(await page.locator('#plans-list li.row:visible').count(),24);
+    await page.locator('#fb-plans-show-all').click();
+    assert.equal(await page.locator('#plans-list li.row:visible').count(),38);
     await page.locator('#fb-plans-refine-filters').click();
     assert.equal(await page.locator('.fb-advanced-filters').getAttribute('open'),'');
     await page.locator('.fb-advanced-filters summary').click();
