@@ -85,7 +85,12 @@ button,select,textarea{font:inherit;color:inherit}
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);z-index:5;border-bottom:1px solid var(--line)}
 .tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
 .fb-tab-swipe{display:none;margin:0;padding:0 12px 5px;color:var(--muted);font-size:.7rem;text-align:center}
-@media (max-width:620px){.tabs .wrap{scrollbar-width:thin}.fb-tab-swipe{display:block}}
+@media (max-width:620px){
+  .tabs .wrap{scrollbar-width:thin;scroll-snap-type:x proximity;padding:0 12px}
+  .tabs .tab{scroll-snap-align:start;min-height:48px;padding:12px 14px;flex-shrink:0}
+  .fb-tab-swipe{display:block;font-size:.78rem;padding:5px 12px 7px}
+  .tabs{box-shadow:0 2px 8px rgba(0,0,0,.12)}
+}
 .tab{background:none;border:0;padding:13px 10px 10px;color:var(--muted);font-weight:650;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
 .tab[aria-selected="true"]{color:var(--ink);border-color:var(--accent)}
 .tab .count{font-weight:500;margin-left:3px}
@@ -397,7 +402,7 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
     <button class="tab" role="tab" data-tab="pricewatch" id="t-pricewatch" aria-controls="p-pricewatch">Price watch</button>
     <button class="tab" role="tab" data-tab="sources" id="t-sources" aria-controls="p-sources">Sources &amp; refresh</button>
   </div>
-  <p class="fb-tab-swipe">Swipe sideways for Compare, Switch &amp; save, My watchlist, Price watch and Sources.</p>
+  <p class="fb-tab-swipe" id="fb-tab-hint">Swipe the tabs sideways to see Compare, Switch &amp; save, Watchlist, Price watch and Sources.</p>
 </nav>
 
 <main class="wrap" id="main-content" tabindex="-1">
@@ -889,6 +894,10 @@ function showTab(t){
     b.tabIndex=active ? 0 : -1;
   }
   for(const id of ["finder","plans","phones","compare","switch","watchlist","pricewatch","sources"]) $("#p-"+id).hidden = id!==t;
+  if(t!=="finder"){
+    const activeTab=document.querySelector('.tab[data-tab="'+t+'"]');
+    activeTab?.scrollIntoView({block:"nearest",inline:"nearest"});
+  }
   update(true);
 }
 document.querySelectorAll(".tab").forEach(b=>{
