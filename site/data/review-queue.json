@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-06T14:57:29.721Z",
+  "generatedAt": "2026-11-06T15:17:53.093Z",
   "today": "2026-11-06",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
@@ -8,10 +8,19 @@
     "offers": 78,
     "needAttention": 78,
     "critical": 0,
-    "high": 1,
-    "medium": 24,
-    "routine": 53,
+    "high": 8,
+    "medium": 27,
+    "routine": 43,
     "withoutCurrentManualReview": 78,
+    "retailerHolds": 3,
+    "stockHolds": 6,
+    "publicationEvidence": {
+      "publishedMatches": 72,
+      "partial": 4,
+      "unresearched": 2,
+      "aged": 0,
+      "conflictsOrInvalid": 0
+    },
     "blockedProviders": 11
   },
   "blockedProviders": [
@@ -39,8 +48,8 @@
       "carrier": "US Mobile",
       "affected": 4,
       "offerIds": [
-        "usm-light",
         "usm-p11",
+        "usm-light",
         "usm-premium",
         "usm-starter"
       ]
@@ -100,10 +109,10 @@
       ]
     },
     {
-      "carrier": "Verizon Prepaid",
+      "carrier": "Metro by T-Mobile",
       "affected": 1,
       "offerIds": [
-        "vzpre-16e"
+        "metro-16e"
       ]
     }
   ],
@@ -127,6 +136,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://tello.com/buy/custom_plans"
@@ -136,21 +146,162 @@
       "carrier": "AT&T",
       "offer": "iPhone 18 Pro",
       "kind": "phone",
-      "priority": "medium",
-      "score": 60,
+      "priority": "high",
+      "score": 76,
       "reasonCodes": [
+        "published_research_partial",
         "offer_page_unavailable",
         "full_terms_not_verified"
       ],
       "reasons": [
+        "Only partial official published terms are recorded. Required service, financing or checkout conditions remain unpriced.",
         "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_partial",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": null,
       "link": "https://www.att.com/buy/phones/apple-iphone-18-pro.html"
+    },
+    {
+      "id": "tmo-18pro",
+      "carrier": "T-Mobile",
+      "offer": "iPhone 18 Pro",
+      "kind": "phone",
+      "priority": "high",
+      "score": 76,
+      "reasonCodes": [
+        "published_research_partial",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "Only partial official published terms are recorded. Required service, financing or checkout conditions remain unpriced.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_partial",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": null,
+      "link": "https://www.t-mobile.com/offers/apple-iphone-deals"
+    },
+    {
+      "id": "usm-p11",
+      "carrier": "US Mobile",
+      "offer": "Google Pixel 11",
+      "kind": "phone",
+      "priority": "high",
+      "score": 76,
+      "reasonCodes": [
+        "published_research_partial",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "Only partial official published terms are recorded. Required service, financing or checkout conditions remain unpriced.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_partial",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": null,
+      "link": "https://www.usmobile.com/pixel-promo"
+    },
+    {
+      "id": "vz-18pro",
+      "carrier": "Verizon",
+      "offer": "iPhone 18 Pro (Simplicity Pro)",
+      "kind": "phone",
+      "priority": "high",
+      "score": 76,
+      "reasonCodes": [
+        "published_research_partial",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "Only partial official published terms are recorded. Required service, financing or checkout conditions remain unpriced.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_partial",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": null,
+      "link": "https://www.verizon.com/about/news/iphone-duo-verizon-offers"
+    },
+    {
+      "id": "simple-a16",
+      "carrier": "Simple Mobile",
+      "offer": "Samsung Galaxy A16",
+      "kind": "phone",
+      "priority": "high",
+      "score": 75,
+      "reasonCodes": [
+        "retailer_listing_hold",
+        "published_research_missing",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "This retailer-specific purchase path remains on evidence hold. Do not present a checkout quote or clear the hold automatically.",
+        "No dated official publication research is recorded for this offer. Do not imply a carrier-approved rate.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "not_researched",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://shop.simplemobile.com/shop/en/simplemobile/phones/sm-samsung-galaxy-a16-5g"
+    },
+    {
+      "id": "wm-st-a17",
+      "carrier": "Straight Talk at Walmart",
+      "offer": "Samsung Galaxy A17 5G",
+      "kind": "phone",
+      "priority": "high",
+      "score": 75,
+      "reasonCodes": [
+        "retailer_listing_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "This retailer-specific purchase path remains on evidence hold. Do not present a checkout quote or clear the hold automatically.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.walmart.com/ip/ST-SAMSUNG-S176V-A17-5G-PIB-HANDSET-WALMART-POSA/17591873202"
+    },
+    {
+      "id": "wm-vzpre-a17",
+      "carrier": "Verizon Prepaid at Walmart",
+      "offer": "Samsung Galaxy A17 5G",
+      "kind": "phone",
+      "priority": "high",
+      "score": 75,
+      "reasonCodes": [
+        "retailer_listing_hold",
+        "published_research_missing",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "This retailer-specific purchase path remains on evidence hold. Do not present a checkout quote or clear the hold automatically.",
+        "No dated official publication research is recorded for this offer. Do not imply a carrier-approved rate.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "not_researched",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.walmart.com/ip/Verizon-Prepaid-Galaxy-A17-5G-128GB-Prepaid-Smartphone-Black/17874774562"
     },
     {
       "id": "att-pre-motog",
@@ -169,6 +320,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html"
@@ -190,6 +342,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.consumercellular.com/shopping/choose/plan"
@@ -211,6 +364,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://fi.google.com/about/plans"
@@ -234,6 +388,7 @@
       ],
       "officialEvidenceState": "source_unavailable",
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
@@ -255,6 +410,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
@@ -276,6 +432,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
@@ -299,9 +456,32 @@
       ],
       "officialEvidenceState": "source_unavailable",
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
+    },
+    {
+      "id": "metro-16e",
+      "carrier": "Metro by T-Mobile",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": null,
+      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
       "id": "mint",
@@ -320,6 +500,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.mintmobile.com/plans/"
@@ -341,6 +522,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.mintmobile.com/devices/google-pixel-11/13630805/"
@@ -354,14 +536,17 @@
       "score": 60,
       "reasonCodes": [
         "offer_page_unavailable",
+        "documented_stock_hold",
         "full_terms_not_verified"
       ],
       "reasons": [
         "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/"
@@ -383,6 +568,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://my.redpocket.com/plans"
@@ -404,6 +590,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://my.redpocket.com/plans"
@@ -425,6 +612,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://my.redpocket.com/plans"
@@ -446,6 +634,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://tello.com/buy/custom_plans"
@@ -467,6 +656,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://tello.com/buy/custom_plans"
@@ -488,6 +678,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://tello.com/buy/custom_plans"
@@ -509,6 +700,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.ultramobile.com/product/unlimited-prepaid-plan/"
@@ -530,6 +722,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.ultramobile.com/product/4gb-prepaid-plan/"
@@ -551,30 +744,10 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.usmobile.com/plans"
-    },
-    {
-      "id": "usm-p11",
-      "carrier": "US Mobile",
-      "offer": "Google Pixel 11",
-      "kind": "phone",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.usmobile.com/pixel-promo"
     },
     {
       "id": "usm-premium",
@@ -593,6 +766,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.usmobile.com/plans"
@@ -614,30 +788,120 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.usmobile.com/plans"
     },
     {
-      "id": "vzpre-16e",
-      "carrier": "Verizon Prepaid",
-      "offer": "iPhone 16e",
+      "id": "cricket-a37",
+      "carrier": "Cricket",
+      "offer": "Samsung Galaxy A37 5G",
       "kind": "phone",
       "priority": "medium",
-      "score": 60,
+      "score": 45,
       "reasonCodes": [
-        "offer_page_unavailable",
+        "documented_stock_hold",
         "full_terms_not_verified"
       ],
       "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": null,
+      "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal"
+    },
+    {
+      "id": "cricket-motog",
+      "carrier": "Cricket",
+      "offer": "Moto G 2026",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 45,
+      "reasonCodes": [
+        "documented_stock_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
-      "link": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/"
+      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream"
+    },
+    {
+      "id": "cricket-power",
+      "carrier": "Cricket",
+      "offer": "Moto G Power 2026",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 45,
+      "reasonCodes": [
+        "documented_stock_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue"
+    },
+    {
+      "id": "cricket-razr",
+      "carrier": "Cricket",
+      "offer": "Motorola razr 2025",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 45,
+      "reasonCodes": [
+        "documented_stock_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": null,
+      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-razr-2025-parfait-pink"
+    },
+    {
+      "id": "cricket-s25fe",
+      "carrier": "Cricket",
+      "offer": "Samsung Galaxy S25 FE",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 45,
+      "reasonCodes": [
+        "documented_stock_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "lastCatalogReference": null,
+      "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-s25-fe-jetblack"
     },
     {
       "id": "boost",
@@ -654,6 +918,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/plans"
@@ -673,6 +938,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/iphone-16e.html"
@@ -692,6 +958,7 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/galaxy-a17-5g.html"
@@ -711,6 +978,7 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/moto-g-play-002722.html"
@@ -730,6 +998,7 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/moto-g-2026.html"
@@ -749,6 +1018,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/pixel-10a-002729.html"
@@ -768,6 +1038,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/razr-2025.html"
@@ -787,6 +1058,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/moto-g-stylus-2025.html"
@@ -806,6 +1078,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": null,
       "link": "https://www.cricketwireless.com/shop/smartphones/apple-iphone-16e-128gb-black"
@@ -825,6 +1098,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.cricketwireless.com/shop/cell-phone-plans/select"
@@ -844,104 +1118,10 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": null,
       "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a17-5g-black"
-    },
-    {
-      "id": "cricket-a37",
-      "carrier": "Cricket",
-      "offer": "Samsung Galaxy A37 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal"
-    },
-    {
-      "id": "cricket-motog",
-      "carrier": "Cricket",
-      "offer": "Moto G 2026",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream"
-    },
-    {
-      "id": "cricket-power",
-      "carrier": "Cricket",
-      "offer": "Moto G Power 2026",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue"
-    },
-    {
-      "id": "cricket-razr",
-      "carrier": "Cricket",
-      "offer": "Motorola razr 2025",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-razr-2025-parfait-pink"
-    },
-    {
-      "id": "cricket-s25fe",
-      "carrier": "Cricket",
-      "offer": "Samsung Galaxy S25 FE",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-s25-fe-jetblack"
     },
     {
       "id": "cricket-stylus",
@@ -958,6 +1138,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": null,
       "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea"
@@ -977,6 +1158,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.cricketwireless.com"
@@ -996,6 +1178,7 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://annualplans.good2gomobile.com/home-page"
@@ -1015,6 +1198,7 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://annualplans.good2gomobile.com/home-page"
@@ -1034,6 +1218,7 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://annualplans.good2gomobile.com/home-page"
@@ -1053,6 +1238,7 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
@@ -1072,6 +1258,7 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
@@ -1091,28 +1278,10 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/phone-plans"
-    },
-    {
-      "id": "metro-16e",
-      "carrier": "Metro by T-Mobile",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
       "id": "metro-a17",
@@ -1129,6 +1298,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a17-5g"
@@ -1148,6 +1318,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a37-5g"
@@ -1167,6 +1338,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": null,
       "link": "https://www.metrobyt-mobile.com/cell-phone/motorola-moto-g-2026"
@@ -1186,6 +1358,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/phone-plans"
@@ -1205,6 +1378,7 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://mymobilex.com/all-faqs/"
@@ -1224,28 +1398,10 @@
       ],
       "officialEvidenceState": "headline_matched",
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://mymobilex.com/all-faqs/"
-    },
-    {
-      "id": "simple-a16",
-      "carrier": "Simple Mobile",
-      "offer": "Samsung Galaxy A16",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://shop.simplemobile.com/shop/en/simplemobile/phones/sm-samsung-galaxy-a16-5g"
     },
     {
       "id": "st-a17",
@@ -1262,6 +1418,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid"
@@ -1281,6 +1438,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid"
@@ -1300,47 +1458,10 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.straighttalk.com/whyst/bring-your-own-phone"
-    },
-    {
-      "id": "wm-st-a17",
-      "carrier": "Straight Talk at Walmart",
-      "offer": "Samsung Galaxy A17 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.walmart.com/ip/ST-SAMSUNG-S176V-A17-5G-PIB-HANDSET-WALMART-POSA/17591873202"
-    },
-    {
-      "id": "tmo-18pro",
-      "carrier": "T-Mobile",
-      "offer": "iPhone 18 Pro",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.t-mobile.com/offers/apple-iphone-deals"
     },
     {
       "id": "total-16e",
@@ -1357,6 +1478,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/buy/phones/apple-iphone-16e-prepaid"
@@ -1376,6 +1498,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": null,
       "link": "https://www.totalwireless.com/buy/smartphones/samsung-galaxy-a17-5g-prepaid"
@@ -1395,6 +1518,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid"
@@ -1414,6 +1538,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid"
@@ -1433,6 +1558,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/m/plans"
@@ -1452,6 +1578,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/m/plans"
@@ -1471,6 +1598,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/buy/phones/moto-g-stylus-5g-2025-prepaid"
@@ -1490,6 +1618,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.tracfone.com/plans/tracfone-freedom-30-days"
@@ -1509,14 +1638,15 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid"
     },
     {
-      "id": "vz-18pro",
-      "carrier": "Verizon",
-      "offer": "iPhone 18 Pro (Simplicity Pro)",
+      "id": "vzpre-16e",
+      "carrier": "Verizon Prepaid",
+      "offer": "iPhone 16e",
       "kind": "phone",
       "priority": "routine",
       "score": 20,
@@ -1528,9 +1658,10 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.verizon.com/about/news/iphone-duo-verizon-offers"
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/"
     },
     {
       "id": "vzpre-a17",
@@ -1547,28 +1678,10 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.verizon.com/prepaid/deals/"
-    },
-    {
-      "id": "wm-vzpre-a17",
-      "carrier": "Verizon Prepaid at Walmart",
-      "offer": "Samsung Galaxy A17 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.walmart.com/ip/Verizon-Prepaid-Galaxy-A17-5G-128GB-Prepaid-Smartphone-Black/17874774562"
     },
     {
       "id": "visible",
@@ -1585,6 +1698,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.visible.com/m/deals"
@@ -1604,6 +1718,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": null,
       "link": "https://www.visible.com/m/deals"
@@ -1623,6 +1738,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.visible.com/plans"
@@ -1642,6 +1758,7 @@
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.visible.com/plans"
