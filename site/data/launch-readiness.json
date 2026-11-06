@@ -21,7 +21,7 @@
     "note": "Human checkout evidence is valid only for a documented customer scenario and expires or invalidates after material changes."
   },
   "automation": {
-    "lastScan": "2026-11-06T17:36:28.424Z",
+    "lastScan": "2026-11-06T17:51:07.039Z",
     "scanAgeDays": 0,
     "scanStatus": "recent",
     "note": "Automated source reachability and partial headline matching never establish full checkout terms."
