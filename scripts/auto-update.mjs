@@ -131,7 +131,13 @@ const sources=[
   ...((await mapped(homepageSources,scanSource))),
 ];
 const sourceSuccess = sources.filter(s => s.ok).length;
-if (sourceSuccess === 0) throw new Error('No source pages could be fetched; preserving previous data');
+const sourceBlackout = sourceSuccess === 0;
+// An external outage must NOT preserve an expired, carrier-published offer.
+// Continue with already-known deterministic expirations and a clearly degraded
+// monitoring report. Never infer a new price, eligibility, or checkout result.
+if (sourceBlackout) {
+  console.warn('No public source pages were reachable. Recording a monitoring blackout and publishing only known catalog expirations; no prices are revalidated.');
+}
 
 const alerts = [];
 const automaticChanges = [...expiredPromos, ...expiredPhones].map(x => ({ ...x, type: 'expiration' }));
@@ -222,6 +228,7 @@ const status = {
   method: 'Deterministic public-source monitoring (no AI). HTTP availability does not prove a deal is valid.',
   summary: {
     sourcesChecked: sourceInputs.length, sourcesReachable: sourceSuccess,
+    sourceBlackout,
     sourcesAccessBlocked: sources.filter(s=>s.failureReason==='automated_access_blocked').length,
     sourcesUnavailableFor7Days: persistentSourceFailures(sources,now.toISOString(),7),
     offerLinksChecked: urlList.length, offerLinksReachable: scannedLinks.filter(x => x.ok).length,
@@ -278,7 +285,7 @@ if (!dryRun) {
 }
 console.log(JSON.stringify({
   date: today, dryRun,
-  sources: `${sourceSuccess}/${sourceInputs.length}`,
+  sources: `${sourceSuccess}/${sourceInputs.length}`, sourceBlackout,
   links: `${status.summary.offerLinksReachable}/${urlList.length}`,
   priceCandidatesForReview: status.summary.priceCandidatesForReview,
   officialHeadlineMatches: priceEvidence.summary.headlineMatches,
