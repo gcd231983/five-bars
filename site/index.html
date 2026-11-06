@@ -856,6 +856,14 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
         <button type="button" id="fb-plans-refine-filters">Refine filters</button>
       </div>
       <p class="fb-plan-filters-summary" id="fb-plans-filters-summary" aria-live="polite"></p>
+      <div class="fb-plan-search-bar" role="search">
+        <label for="fb-plan-search">Find a carrier, plan or data allowance</label>
+        <div class="fb-plan-search-fields">
+          <input id="fb-plan-search" type="search" placeholder="Search Tello, 20GB, Verizon…" autocomplete="off" spellcheck="false" aria-controls="plans-list">
+          <button type="button" id="fb-plan-search-clear" hidden>Clear search</button>
+        </div>
+      </div>
+      <p id="fb-plan-search-status" role="status" aria-live="polite" hidden></p>
     </div>
     <p class="note" id="plans-note"></p>
     <ol class="list" id="plans-list"></ol>
@@ -1194,9 +1202,11 @@ function renderPlans(){
   if(state.net!=="any")active.push(NET[state.net]?.name||"Selected network");
   if(state.provider!=="any")active.push(state.provider);
   if(L!==1)active.push(L+" lines");
-  $("#fb-plans-catalog-count").textContent=
+  const countNode=$("#fb-plans-catalog-count");
+  countNode.dataset.baseline=
     "Showing "+rows.length+" of "+PLANS.length+" listed plans. "+
     (rows.length<PLANS.length?"Other plans may be hidden by filters or multi-line eligibility.":"All catalog plans are displayed.");
+  countNode.textContent=countNode.dataset.baseline;
   $("#fb-plans-filters-summary").textContent=active.length?
     "Active: "+active.join(" · ")+". Select a catalog view above to reset filters, or refine them.":
     "Full catalog view · all networks, one line, no data or provider restrictions.";
@@ -1209,7 +1219,7 @@ function renderPlans(){
     ? "12-month cost covers all " + L + " lines. Annual prepaid plans without an explicit multi-line upfront quote are excluded. Other unknown multi-line prices are estimated from one-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
     : "New-customer, port-in, and AutoPay/eBilling/Auto-Refill discounts are excluded until you confirm eligibility. Known carrier provider and activation fees are included only where documented. Taxes and unknown charges may add more. Annual prepaid amounts are due upfront.";
   const list = $("#plans-list");
-  if(!rows.length){ list.replaceChildren(emptyState()); return; }
+  if(!rows.length){list.replaceChildren(emptyState());applyPlanSearch();return;}
   list.replaceChildren(...rows.map(({p,c},i)=>{
     const n = NET[p.net];
     const scan = AUTO_STATUS?.offers?.[p.id];
@@ -1237,7 +1247,12 @@ function renderPlans(){
         p.promo.req==="port" ? ". Bring your number." : ". Confirm eligible new-line/customer terms.",
         c.promoState.ends ? " " + c.promoState.ends.text + "." : "");
     }
-    return el("li",{class:"row", id:"r-"+p.id, style:"--net:"+n.c},
+    // Keyword filtering only changes what's visible on this page; it does
+    // not remove offers from catalog data, alter ranking or infer eligibility.
+    const searchIndex=[p.carrier,p.plan,p.data,p.unl?'unlimited':'limited',n.name]
+      .filter(Boolean).join(' ').toLocaleLowerCase('en-US');
+    return el("li",{class:"row", id:"r-"+p.id, style:"--net:"+n.c,
+      "data-plan-search":searchIndex},
       el("div",{class:"who"},
         el("div",{class:"rank"}, "#" + (i+1)),
         el("div",{class:"carrier"}, p.carrier),
@@ -1266,7 +1281,43 @@ function renderPlans(){
           el("button",{type:"button",class:"fb-compare-btn","data-compare-type":"plan","data-compare-id":p.id,onclick:()=>window.fiveBarsCompare?.("plan",p.id)},"＋ Add to compare"))
     );
   }));
+  applyPlanSearch();
 }
+function applyPlanSearch(){
+  const input=$("#fb-plan-search");
+  if(!input)return;
+  const query=input.value.trim().toLocaleLowerCase('en-US');
+  const entries=[...document.querySelectorAll('#plans-list li.row')];
+  let visible=0;
+  for(const row of entries){
+    const match=!query||(row.dataset.planSearch||'').includes(query);
+    row.hidden=!match;
+    if(match)visible++;
+  }
+  const countNode=$("#fb-plans-catalog-count");
+  if(countNode){
+    countNode.textContent=query?
+      'Showing '+visible+' of '+entries.length+' plans matching "'+input.value.trim()+
+        '" ('+PLANS.length+' total listings).':
+      countNode.dataset.baseline||'Plan listings are loading.';
+  }
+  const clear=$("#fb-plan-search-clear");
+  if(clear)clear.hidden=!query;
+  const message=$("#fb-plan-search-status");
+  if(message){
+    message.hidden=!query;
+    message.textContent=query?
+      visible===0?'No plans match that search. Try another carrier, plan name or data allowance.':
+      'Search is narrowing the current plan list only. Clear search to restore all '+entries.length+' currently matching plans.':'';
+  }
+}
+$("#fb-plan-search").addEventListener('input',applyPlanSearch);
+$("#fb-plan-search-clear").addEventListener('click',()=>{
+  const input=$("#fb-plan-search");
+  input.value='';
+  applyPlanSearch();
+  input.focus();
+});
 
 /* Summarize active phone filters without modifying price or eligibility logic. */
 function renderPhoneFilterStatus(){
@@ -1384,6 +1435,10 @@ function renderPhones(){
  // Returning to the full catalog intentionally uses one line, because some
  // annual prepaid and retail plans have no documented multi-line quote.
 function browsePlans(mode="all"){
+  // A request to browse all plans or all unlimited plans must not leave an old
+  // text search quietly hiding matches from a previous visit.
+  const search=$("#fb-plan-search");
+  if(search)search.value='';
   state.lines=1;
   state.net="any";
   state.provider="any";
