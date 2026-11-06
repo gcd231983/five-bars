@@ -206,8 +206,9 @@ try {
     const allResultCards=await page.locator('#fb-finder-results .fb-result').count();
     const visibleResultCards=await page.locator('#fb-finder-results .fb-result:visible').count();
     assert.ok(visibleResultCards<=allResultCards,'Results must not duplicate offers');
-    assert.ok(visibleResultCards<=5+await page.locator('#fb-finder-results .fb-result:not([hidden]):visible').count()-visibleResultCards,
-      'Initial plan results should be limited to five');
+    assert.ok(visibleResultCards>=1,'At least one matching result should be visible');
+    assert.ok(await page.locator('#fb-finder-results .fb-result-heading:visible').count()<=5,
+      'Initially no more than five plan results should be visible');
     if(await page.locator('.fb-more-plans').count()){
       assert.equal(await page.locator('#fb-finder-results .fb-result-heading').count()>5,true);
       assert.equal(await page.locator('#fb-finder-results .fb-provider-mark').count()>0,true);
