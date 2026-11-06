@@ -11,7 +11,7 @@ import { buildAlertFeed } from './alert-engine.mjs';
 import { withSourceHistory, persistentSourceFailures } from './source-health.mjs';
 import {
   easternDate, expireKnownOffers, offerDiff,
-  parseBoostCandidates, reviewBoostCandidates, safeSourceUrl,
+  parseBoostCandidates, reviewBoostCandidates, safeSourceUrl, fetchPublicResponse,
 } from './auto-core.mjs';
 
 const root = new URL('../', import.meta.url);
@@ -43,15 +43,19 @@ async function writeJson(url, data) {
 async function download(url) {
   if (!safeSourceUrl(url)) return { ok: false, error: 'Non-public or invalid HTTPS URL' };
   try {
-    const r = await fetch(url, {
-      headers: {
-        'user-agent': 'FiveBarsDealMonitor/2.0 (+https://github.com/gcd231983/five-bars)',
-        accept: url==='https://www.h2owireless.com/' ? 'text/html,application/xhtml+xml,text/plain;q=0.9' : 'text/html,application/xhtml+xml,application/xml,text/xml,text/plain;q=0.9',
+    const received = await fetchPublicResponse(url,{
+      headers:{
+        'user-agent':'FiveBarsDealMonitor/2.0 (+https://github.com/gcd231983/five-bars)',
+        accept:url==='https://www.h2owireless.com/'?
+          'text/html,application/xhtml+xml,text/plain;q=0.9':
+          'text/html,application/xhtml+xml,application/xml,text/xml,text/plain;q=0.9'
       },
-      redirect: 'follow', signal: AbortSignal.timeout(requestTimeoutMs),
+      signal:AbortSignal.timeout(requestTimeoutMs),
     });
-    if (!r.ok) return { ok: false, status: r.status, error: 'HTTP ' + r.status };
-    if (!safeSourceUrl(r.url)) return { ok: false, error: 'Unexpected redirect destination' };
+    if(!received.response)return {ok:false,status:received.status||null,error:received.error};
+    const r=received.response;
+    if(!r.ok)return {ok:false,status:r.status,error:'HTTP '+r.status};
+    if(!safeSourceUrl(received.finalUrl))return {ok:false,error:'Unexpected redirect destination'};
     const contentType = r.headers.get('content-type') || '';
     if (contentType && !/(text\/|html|xml)/i.test(contentType)) {
       return { ok: false, error: 'Source did not return text or HTML' };
@@ -75,7 +79,7 @@ async function download(url) {
     if (/<title>\s*(?:access denied|just a moment|attention required|captcha)/i.test(html)) {
       return { ok: false, error: 'Source blocked automated access' };
     }
-    return { ok: true, status: r.status, html, finalUrl: r.url };
+    return { ok: true, status: r.status, html, finalUrl: received.finalUrl };
   } catch (e) { return { ok: false, error: String(e?.message || e).slice(0, 110) }; }
 }
 
