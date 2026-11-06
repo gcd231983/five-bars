@@ -16,6 +16,7 @@ function extract(name){
 }
 const state={lines:1,t:{}};
 const context={state,today:'2026-11-06'};
+context.easternDay=()=>context.today; // Simulate the actual Eastern date moving while the page stays open.
 const functions=runInNewContext(['endInfo','planCalc','phoneCalc'].map(extract).join('\n')+
  '\n;({planCalc,phoneCalc})',context);
 
