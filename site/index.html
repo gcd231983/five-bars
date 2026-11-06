@@ -306,6 +306,21 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
   #p-plans .extra,#p-phones .extra,#p-plans .fb-review,#p-phones .fb-review{font-size:.76rem;line-height:1.4;margin-top:2px}
   .fb-tab-swipe{font-size:.7rem!important;line-height:1.25;padding:3px 12px!important}
 }
+/* Mobile polish: less intrusive tabs and compact, accessible actions. */
+@media (max-width:620px){
+  .tabs{position:relative;top:auto;box-shadow:none!important}
+  .tabs .wrap{padding:0 8px;gap:0}
+  .tabs .tab{min-height:44px;padding:9px 12px;font-size:.88rem}
+  .fb-tab-swipe{display:block!important;font-size:.68rem!important;line-height:1.2!important;padding:2px 8px 4px!important}
+  #p-plans .foot,#p-phones .foot{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+  #p-plans .foot .fb-compare-btn,#p-phones .foot .fb-compare-btn{grid-column:auto!important}
+  #p-plans .foot button,#p-phones .foot button{min-height:44px!important}
+  #p-plans .foot button:last-child,#p-phones .foot button:last-child{grid-column:1/-1}
+  #p-plans .foot a,#p-phones .foot a{font-size:.76rem}
+  #p-plans .fb-offer-details,#p-phones .fb-offer-details{grid-column:1/-1;font-size:.81rem;line-height:1.45;color:var(--muted);margin-top:4px}
+  #p-plans .fb-offer-details summary,#p-phones .fb-offer-details summary{cursor:pointer;min-height:40px;display:flex;align-items:center;color:var(--accent);font-weight:650}
+  #p-plans .fb-offer-details .extra,#p-phones .fb-offer-details .extra{margin:2px 0 8px}
+}
 /* Launch polish: accessible entry points without changing comparison logic. */
 .fb-topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
 .fb-topnav strong{font-size:.94rem;letter-spacing:.02em}
@@ -810,7 +825,7 @@ function renderPlans(){
         priceDisputed ? el("li",{class:"warn"},"Official plan-rate evidence conflicts; estimated costs are suppressed") : null,
         c.promoFamilyUnconfirmed ? el("li",{class:"warn"},"Multi-line intro discount not verified") : null),
       priceDisputed ? el("div",{class:"deal off"},"Advertised rate is under review. Check the provider before purchasing.") : deal,
-      !priceDisputed && p.extra ? el("div",{class:"extra"}, p.extra) : null,
+      !priceDisputed && p.extra ? el("details",{class:"fb-offer-details"},el("summary",null,"Offer details and conditions"),el("div",{class:"extra"},p.extra)) : null,
       p.priceSourceDate ? el("div",{class:"fb-plan-source"},"Published rate source noted on "+p.priceSourceDate+"; no complete independent offer verification.") : null,
       el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
@@ -886,7 +901,7 @@ function renderPhones(){
       d.postpaid ? el("li",{class:"warn"},"A financed promotional phone is NOT guaranteed free at checkout. Retail balance, installments, credits and payoff need verification.") : null,
       d.postpaid&&Number.isFinite(d.grossRetailPrice) ? el("li",{class:"warn"},"Published GROSS retail "+money(d.grossRetailPrice)+" before CONDITIONAL credits; cash total withheld") : null),
       ends ? el("div",{class: ends.expired ? "deal off" : "deal"}, ends.expired ? ends.text + ". Recheck before you go." : ends.text + ".") : null,
-      d.note ? el("div",{class:"extra"}, d.note) : null,
+      d.note ? el("details",{class:"fb-offer-details"},el("summary",null,"Offer details and conditions"),el("div",{class:"extra"},d.note)) : null,
       el("div",{class:"fb-review", "data-verification":""}, "Price and terms have not been independently verified"),
       el("div",{class:"foot"},
         priceDisputed ? el("span",{class:"yr fb-watch-warning"},"Device cost and first-year totals are suppressed pending review of the official headline.") :
