@@ -202,6 +202,10 @@ try {
       document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false,
       {timeout:15000});
     await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
+    // The page can restore a previously saved section after async catalog
+    // boot. Open Finder explicitly before testing its optional evidence panel.
+    await page.locator('#t-finder').click();
+    assert.equal(await page.locator('.fb-mobile-evidence summary').isVisible(),true);
     assert.equal(await page.locator('.fb-mobile-evidence').getAttribute('open'),null,
       'Long pricing evidence should be collapsed by default on both mobile and desktop');
     await page.locator('.fb-mobile-evidence summary').click();
