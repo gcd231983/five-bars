@@ -127,6 +127,43 @@ export function offerDiff(previous, next) {
   };
 }
 
+// Do not let fetch() automatically follow an external site's HTTP redirect
+// before the destination has been checked. This is important in a GitHub
+// runner: public carrier URLs are not allowed to redirect to loopback,
+// private services, HTTP, authenticated URLs, or nonstandard ports.
+export async function fetchPublicResponse(url,{fetcher=fetch,headers={},signal,maxRedirects=5}={}){
+  if(!safeSourceUrl(url))return {response:null,error:'Non-public or invalid HTTPS URL'};
+  const visited=new Set();
+  let target=url;
+  for(let hop=0;hop<=maxRedirects;hop++){
+    if(visited.has(target))return {response:null,error:'Redirect loop detected'};
+    visited.add(target);
+    const response=await fetcher(target,{headers,signal,redirect:'manual'});
+    if(response.status>=300&&response.status<400){
+      const location=response.headers?.get?.('location');
+      if(!location)return {response:null,status:response.status,error:'Redirect location missing'};
+      let next;
+      try{next=new URL(location,target).href;}
+      catch{return {response:null,status:response.status,error:'Invalid redirect location'};}
+      if(!safeSourceUrl(next))
+        return {response:null,status:response.status,error:'Unsafe redirect destination'};
+      try{await response.body?.cancel?.();}catch{}
+      target=next;
+      continue;
+    }
+    // A transport that silently auto-followed redirects despite manual mode
+    // cannot be trusted to have checked the intermediate destinations.
+    if(response.url){
+      let actual;
+      try{actual=new URL(response.url).href;}catch{}
+      if(actual!==new URL(target).href)
+        return {response:null,status:response.status,error:'Unexpected auto-followed redirect'};
+    }
+    return {response,finalUrl:target};
+  }
+  return {response:null,error:'Too many redirects'};
+}
+
 export function safeSourceUrl(url) {
   try {
     const u = new URL(url);
