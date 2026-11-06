@@ -130,6 +130,12 @@ function planSummary(plan,data,today){
  const dataAllowance=plan.data?'Data: '+String(plan.data):'Data limits and priority: check carrier terms';
  return {info,rate,year,caution,more,dataAllowance,link:compareLink(plan.id)};
 }
+function breadcrumbJsonLd(canonical,title){
+ const parts=[{"@type":"ListItem",position:1,name:"Home",item:BASE}];
+ if(canonical.includes('/compare/'))parts.push({"@type":"ListItem",position:2,name:"Carrier comparisons",item:BASE+"carrier-comparisons.html"});
+ parts.push({"@type":"ListItem",position:parts.length+1,name:title,item:canonical});
+ return '<script type="application/ld+json">'+JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:parts}).replace(/</g,'\\u003c')+'</script>';
+}
 function pageStart({title,description,canonical}){
  const safeTitle=escapeHtml(title),safeDescription=escapeHtml(description),url=escapeHtml(canonical);
  return '<!doctype html>\n<html lang="en"><head><meta charset="utf-8">'+
@@ -140,6 +146,7 @@ function pageStart({title,description,canonical}){
   '<meta property="og:description" content="'+safeDescription+'">'+
   '<meta property="og:url" content="'+url+'"><link rel="canonical" href="'+url+'">'+
   '<title>'+safeTitle+' | Five Bars</title>'+
+  breadcrumbJsonLd(canonical,title)+
   '<link rel="stylesheet" href="'+(canonical.includes('/compare/')?'../':'')+'comparison-styles.css">'+
   '</head><body><header class="wrap"><nav aria-label="Navigation"><a href="'+(canonical.includes('/compare/')?'../':'./')+'">Five Bars home</a>'+
   '<a href="'+(canonical.includes('/compare/')?'../':'./')+'#switch-save">Switch &amp; Save</a>'+
