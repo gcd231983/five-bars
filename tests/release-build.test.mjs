@@ -46,7 +46,7 @@ test('release manifest records only a validated commit SHA and deterministic sou
  assert.deepEqual(manifest,{schema:1,revision,contentHash:r.version});
  const next=await buildRelease({...f,revision});
  assert.equal(next.version,r.version);
- assert.equal(await readFile(join(f.output,'release.json'),'utf8'),JSON.stringify(manifest,null,2)+'\\n');
+ assert.equal(await readFile(join(f.output,'release.json'),'utf8'),JSON.stringify(manifest,null,2)+'\n');
  await assert.rejects(buildRelease({...f,revision:'not-a-commit'}),/full commit SHA/);
 });
 
