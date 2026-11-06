@@ -478,6 +478,26 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
  .fb-wizard-mobile .fb-wizard-nav button[hidden]{display:none}
  #fb-finder-form>button[type="submit"][hidden]{display:none}
 }
+
+/* Fix small-screen hero contrast and stacking; no decorative glow over text. */
+.fb-welcome{isolation:isolate;color:#f4fbff}
+.fb-welcome:before{pointer-events:none;opacity:.28;z-index:0}
+.fb-welcome>*{position:relative;z-index:1}
+.fb-welcome h2{color:#fff;overflow-wrap:normal;word-break:normal}
+.fb-welcome p:not(.fb-eyebrow),.fb-welcome small{color:#d2e3eb}
+.fb-welcome .fb-eyebrow{color:#5fe4d6!important}
+.fb-welcome .fb-quick-actions button{background:#27c7b9;color:#062b32;border-color:#27c7b9}
+@media(max-width:620px){
+ .fb-welcome{min-height:0;padding:20px 18px;background:#102b3c;box-shadow:none}
+ .fb-welcome:before{display:none}
+ .fb-welcome h2{font-size:clamp(1.55rem,7vw,2rem);line-height:1.18;letter-spacing:-.025em;max-width:none;margin:8px 0 12px}
+ .fb-welcome p:not(.fb-eyebrow){font-size:.94rem;line-height:1.5;margin-bottom:16px}
+ .fb-welcome .fb-eyebrow{font-size:.68rem!important;letter-spacing:.11em}
+ .fb-welcome small{display:block;margin-top:12px;font-size:.76rem;line-height:1.4}
+ .fb-home-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fb-evidence-summary,.fresh{font-size:.76rem}
+ .fb-price-guide{padding:10px 12px}
+}
 </style>
 </head>
 <body>
@@ -1180,7 +1200,7 @@ async function boot(){
 }
 boot();
 </script>
-<script type="module" src="value-ui.mjs"></script>
+<script type="module" src="value-ui.mjs?v=20261106-wizard2"></script>
 <script type="module" src="watchlist-ui.mjs"></script>
 <script type="module" src="switch-ui.mjs"></script>
 </body>
