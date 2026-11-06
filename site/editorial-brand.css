@@ -1,0 +1,56 @@
+/* Five Bars shared editorial brand. Uses the ORIGINAL five ascending bars,
+   not a replacement illustration. No third-party assets or tracking. */
+html:root{
+ color-scheme:dark;
+ --bg:#09141d;--paper:#09141d;--fg:#f2f8fa;--text:#f2f8fa;
+ --surface:#13232f;--card:#13232f;
+ --muted:#a5b9c4;--line:#29414d;--teal:#52d9c8;--accent:#52d9c8;
+ --chip:#1c3340;--warning:#f2c666;--alertbg:#322b1c;
+}
+body{background:#09141d;color:#f2f8fa;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.66}
+a{color:#52d9c8;text-underline-offset:3px}
+header{border-bottom:1px solid #29414d;padding-top:16px!important;padding-bottom:16px!important}
+header nav{display:flex;flex-wrap:wrap;align-items:center;gap:9px 19px}
+header nav a{color:#b7cbd3;text-decoration:none;font-size:.85rem;font-weight:650;min-height:40px;display:inline-flex;align-items:center}
+header nav a:hover,header nav a:focus-visible{color:#fff}
+header nav a:first-child[href="./"],
+header nav a:first-child[href="../"]{
+ display:inline-flex;align-items:center;gap:11px;color:#f2f8fa;
+ font-size:clamp(1.13rem,2.2vw,1.38rem);font-weight:800;letter-spacing:-.04em;
+ text-decoration:none;margin-right:auto;min-height:48px;
+}
+header nav a:first-child[href="./"]::before,
+header nav a:first-child[href="../"]::before{
+ content:"";display:block;width:38px;height:36px;flex:none;
+ background:url("five-bars-mark.svg") center/contain no-repeat;
+}
+main{padding-top:20px}
+h1{font-size:clamp(1.85rem,4.4vw,3.05rem);letter-spacing:-.04em;line-height:1.13;color:#f2f8fa}
+h2{color:#f2f8fa;letter-spacing:-.02em}
+h3,h4{color:#f2f8fa}
+.lede{font-size:clamp(1rem,1.5vw,1.13rem);line-height:1.66;color:#c1d1d8}
+section,.panel,.guide,.fb-review-offer,.fb-action-card{background:#13232f;border:1px solid #29414d;border-radius:14px;box-shadow:none}
+.caution{background:#322b1c;color:#f6e0a7;border-color:#6a5834;border-left:4px solid #f2c666}
+.cta,.button{background:#52d9c8;color:#072a2a;border-radius:9px;font-weight:800;text-decoration:none}
+.cta:hover,.button:hover{background:#82eadb;color:#072a2a}
+table{font-size:.87rem}
+thead{background:#1c3340}
+tr.needs-review{background:#322b1c}
+footer{border-top:1px solid #29414d;color:#a5b9c4}
+footer nav{gap:7px 17px}
+footer nav a{font-size:.81rem}
+input,select,button,textarea{border:1px solid #36515d;background:#0c1d28;color:#f2f8fa;border-radius:8px}
+button:hover{background:#1c3340}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #52d9c8;outline-offset:3px}
+@media(max-width:680px){
+ header nav{gap:4px 15px}
+ header nav a:first-child[href="./"],header nav a:first-child[href="../"]{flex-basis:100%;font-size:1.28rem}
+ header nav a:first-child[href="./"]::before,header nav a:first-child[href="../"]::before{width:32px;height:30px}
+ main{padding-top:12px}
+ section,.panel{padding:17px}
+}
+@media(print){
+ body{background:white!important;color:black!important}
+ h1,h2,h3,h4{color:black}
+ header nav a:first-child::before{display:none}
+}
