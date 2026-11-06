@@ -245,7 +245,7 @@ try {
     assert.match(await page.locator('.fb-finder-browse-summary').innerText(),/Showing 5 of \d+ matching unlimited plans from 38 catalog listings/);
     const allUnlimited=await unlimitedResults.count();
     await page.locator('.fb-more-plans').click();
-    assert.equal(await unlimitedResults.filter({visible:true}).count(),allUnlimited,
+    assert.equal(await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result):visible').count(),allUnlimited,
       'Show all must actually reveal every matching unlimited plan');
     const displayedUnlimited=await unlimitedResults.allInnerTexts();
     assert.ok(!displayedUnlimited.some(s=>/Consumer Cellular — Basic 1GB/.test(s)),
