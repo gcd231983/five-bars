@@ -118,7 +118,7 @@ test('scanner publishes review alerts without verified-price claims or catalog m
   try {
     await mkdir(join(fixture, 'scripts'));
     await mkdir(join(fixture, 'site/data'), { recursive: true });
-    for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs', 'mvno-evidence.mjs', 'review-queue.mjs', 'alert-engine.mjs', 'source-health.mjs']) {
+    for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs', 'mvno-evidence.mjs', 'review-queue.mjs', 'source-research.mjs', 'alert-engine.mjs', 'source-health.mjs']) {
       await copyFile(new URL('../scripts/' + name, import.meta.url), join(fixture, 'scripts', name));
     }
 
