@@ -220,7 +220,7 @@ try {
     await page.locator('#fb-finder-form button[type="submit"]').click();
     const annualText=await page.locator('#fb-finder-results').innerText();
     assert.match(annualText,/\$60\.00 UPFRONT/i,'annual plan must expose $60 upfront');
-    assert.match(annualText,/not a monthly subscription/i);
+    assert.match(annualText,/Annual prepaid — not monthly billing/i);
     assert.match(annualText,/Phone offers \(0 match the selected filters\)/,
       'provider preference must exclude other carriers handset promotions');
     await page.screenshot({path:join(output,view+'-mvno-annual.png'),fullPage:true});
