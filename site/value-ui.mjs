@@ -2,7 +2,7 @@
 // UI never makes unverified offer claims. All inputs remain in this browser.
 import {
   MAX_COMPARE, localDay, pastEnd, usd, verificationState, planCost, phoneCost,
-  rankMatches, normalizeCompare, offerLinkCheck
+  rankMatches, normalizeCompare, comparisonPriceOverview, offerLinkCheck
 } from './value-core.mjs';
 import {reportLink} from './report-core.mjs';
 
@@ -616,7 +616,8 @@ function renderCompare(){
   renderCompareTray();
 
   const workspace=element('div',null,'fb-compare-workspace');
-  workspace.append(element('p','Choose two or three offers to see them side by side. Add or remove items here, or browse the plan and phone lists.','fb-compare-intro'));
+  if(selected.length>=2)workspace.classList.add('fb-compare-workspace-ready');
+  else workspace.append(element('p','Choose two or three offers to see them side by side. Add or remove items here, or browse the plan and phone lists.','fb-compare-intro'));
   if(dropped)workspace.append(note('Expired, held, out-of-stock, conflicting-price or removed saved comparisons were cleared. Confirm current carrier offers before making a decision.'));
   if(compareNotice)workspace.append(element('p',compareNotice,'fb-compare-notice'));
   const mode=selected[0]?.type||compareBrowseType;
@@ -654,7 +655,12 @@ function renderCompare(){
     }else slot.append(element('span','＋ Choose '+(i+1),'fb-compare-chip-empty'));
     chips.append(slot);
   }
-  workspace.append(chips);
+  if(selected.length>=2){
+    const edit=element('details',null,'fb-compare-edit');
+    edit.append(element('summary','Edit selected offers ('+selected.length+')'));
+    edit.append(chips);
+    workspace.append(edit);
+  }else workspace.append(chips);
   compareRoot.append(workspace);
 
   if(selected.length<MAX_COMPARE){
@@ -706,8 +712,6 @@ function renderCompare(){
     search.addEventListener('input',()=>{compareQuery=search.value;compareExpanded=false;drawChoices();});
     drawChoices();
     compareRoot.append(picker);
-  }else{
-    compareRoot.append(note('Three offers selected. Remove one to replace it with another.'));
   }
 
   if(selected.length<2){
@@ -736,25 +740,105 @@ function renderCompare(){
   compareRoot.append(toolbar);
   const records=selected.map(item=>
     (type==='plan'?catalog.plans:catalog.phones).find(p=>p.id===item.id)).filter(Boolean);
-  compareRoot.append(element('h3','Your side-by-side comparison'));
+  const eligibility={
+    cannotPort:comparePrefs.cannotPort,canPort:comparePrefs.canPort,
+    newCustomer:comparePrefs.newCustomer,discountQualified:comparePrefs.discountQualified
+  };
+  const overview=comparisonPriceOverview(type,records,comparePrefs.lines,eligibility,localDay());
+  if(overview){
+    const lowest=overview.cheapestIndices.map(index=>compareName(type,records[index])).join(' and ');
+    const insight=element('section',null,'fb-compare-insight');
+    insight.setAttribute('aria-label','Price-only comparison insight');
+    insight.append(element('span','LOWEST LISTED 12-MONTH ESTIMATE','fb-compare-insight-eyebrow'));
+    insight.append(element('strong',lowest+' · '+usd(overview.lowest),'fb-compare-insight-headline'));
+    insight.append(element('p',
+      (overview.range>0?'Difference between the highest and lowest estimates: '+usd(overview.range)+'. ':'These selected estimates are tied. ')+
+      'Lowest price does not mean best fit. Data allowances, coverage and conditions can differ; these are not checkout-verified totals.','fb-compare-insight-copy'));
+    compareRoot.append(insight);
+  }else{
+    compareRoot.append(note('Not every selected offer has a comparable 12-month price. Financing, multi-line terms or eligibility may require a carrier quote; no cheapest option is claimed.'));
+  }
+  compareRoot.append(element('h3','Compare at a glance'));
+  compareRoot.append(element('p','Estimated catalog totals for your selected offers. Inspect data, network and upfront charges before choosing. Taxes and conditions may change actual checkout.','fb-compare-shared-note'));
   const highlights=element('div',null,'fb-compare-highlights');
-  for(const p of records){
+  for(const [index,p] of records.entries()){
     const card=element('article',null,'fb-compare-highlight');
-    card.append(element('h4',compareName(type,p)));
-    const verified=verificationState(p,reviews[p.id]).status==='verified';
-    card.append(element('p',verified?
-      'A dated checkout scenario was reviewed; your checkout may differ':
-      'Catalog estimate · checkout not verified','fb-compare-card-status'));
-    const metrics=type==='plan'?
-      [['year','Estimated 12 months'],['monthly','Current service'],['billing','Due at signup']] :
-      [['year','Estimated 12 months'],['data','Due today'],['hotspot','Minimum commitment']];
+    if(overview?.cheapestIndices.includes(index))card.classList.add('fb-compare-lowest');
+    const header=element('div',null,'fb-compare-card-header');
+    header.append(element('h4',compareName(type,p)));
+    const remove=button('Remove',()=>removeFromCompare(type,p.id),'fb-compare-card-remove');
+    remove.setAttribute('aria-label','Remove '+compareName(type,p)+' from comparison');
+    header.append(remove);
+    card.append(header);
+    const c=type==='plan'?planCost(p,comparePrefs.lines,{...eligibility,today:localDay()}):
+      phoneCost(p,{discountQualified:comparePrefs.discountQualified,newCustomer:comparePrefs.newCustomer});
+    const highlight=element('div',null,'fb-compare-primary-price');
+    highlight.append(element('span','ESTIMATED FIRST-YEAR TOTAL','fb-compare-price-label'));
+    highlight.append(element('strong',c&&Number.isFinite(c.year)?usd(c.year):'Ask carrier','fb-compare-price-value'));
+    if(overview?.cheapestIndices.includes(index))
+      highlight.append(element('span',overview.tied?'Tied lowest listed estimate':'Lowest listed estimate · price only','fb-compare-lowest-label'));
+    card.append(highlight);
+    const facts=element('div',null,'fb-compare-quickfacts');
+    if(type==='plan'){
+      const data=fieldValue(type,p,'data');
+      const network=fieldValue(type,p,'network');
+      const hot=p.hot?(p.hot.length>72?'Details in full comparison':p.hot):'Not specified';
+      for(const [label,value] of [['Data',data],['Network',network],['Hotspot',hot]]){
+        const item=element('div',null,'fb-compare-quickfact');
+        item.append(element('span',label),element('strong',value));
+        facts.append(item);
+      }
+    }else{
+      for(const [label,value] of [['Network',fieldValue(type,p,'network')],
+        ['Required plan',fieldValue(type,p,'monthly')]]){
+        const item=element('div',null,'fb-compare-quickfact');
+        item.append(element('span',label),element('strong',value));
+        facts.append(item);
+      }
+    }
+    card.append(facts);
+    const metrics=type==='plan'
+      ? [['monthly','Monthly rate (est.)'],['billing','Due to start (est.)']]
+      : [['data','Estimated due today'],['hotspot','Minimum service commitment']];
     const dl=element('dl',null,'fb-compare-metrics');
     for(const [key,label] of metrics){
       const box=element('div');
-      box.append(element('dt',label),element('dd',fieldValue(type,p,key)));
+      const value=type==='plan'&&key==='monthly'&&c?
+        usd(c.monthTotal)+(c.annualPrepaid?' equivalent/mo':'/mo')+
+          (c.estimatedFamilyPrice?' · family rate unconfirmed':''):
+        type==='plan'&&key==='billing'&&c?
+          usd(c.upfrontDue):fieldValue(type,p,key);
+      box.append(element('dt',label),element('dd',value));
       dl.append(box);
     }
     card.append(dl);
+    if(type==='plan'&&c&&Number.isFinite(c.year)){
+      const pieces=[];
+      if(c.annualPrepaid){
+        pieces.push(usd(c.upfrontDue)+' is prepaid for 12 months, not monthly billing');
+      }else{
+        if(c.promoUsed&&Number.isInteger(p.promo?.months)){
+          const months=Math.min(p.promo.months,12);
+          pieces.push(usd(c.monthTotal)+'/mo for '+months+' months, then '+
+            usd(c.regularMonthTotal)+'/mo');
+        }else if(c.firstMonthAdjusted){
+          pieces.push('First service month '+usd(c.firstMonthDue+c.knownMonthlyFeeTotal)+
+            ', then '+usd(c.monthTotal)+'/mo');
+        }else{
+          pieces.push(usd(c.monthTotal)+'/mo for 12 months');
+        }
+        if(c.knownActivationFeeTotal>0)
+          pieces.push('+ '+usd(c.knownActivationFeeTotal)+' known one-time activation');
+      }
+      if(c.knownMonthlyFeeTotal>0)
+        pieces.push(usd(c.knownMonthlyFeeTotal)+'/mo published carrier fees included');
+      if(c.conditionalDiscountUnconfirmed||c.promoSuppressedForUnconfirmedAutopay)
+        pieces.push('Unconfirmed AutoPay discounts excluded');
+      const explanation=element('p','How estimated total is built: '+pieces.join(' · ') + '.','fb-compare-breakdown');
+      card.append(explanation);
+    }
+    const verified=verificationState(p,reviews[p.id]).status==='verified';
+    if(verified)card.append(element('p','Dated checkout scenario reviewed; your own checkout may differ','fb-compare-card-status'));
     card.append(linkTo(p.url,'See official offer'));
     highlights.append(card);
   }

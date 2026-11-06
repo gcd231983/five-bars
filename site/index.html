@@ -622,6 +622,49 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
  .fb-compare-metrics>div{align-items:flex-start}
  body.fb-has-compare-tray #main-content{padding-bottom:190px}
 }
+
+/* A comparison should communicate price AND plan fit without repeating the
+   same three product names in a second permanent row of chips. */
+.fb-compare-workspace.fb-compare-workspace-ready{padding:12px 18px}
+.fb-compare-workspace-ready .fb-compare-modes{margin:0 0 11px}
+.fb-compare-workspace-ready .fb-compare-mode{min-height:42px;padding:8px 14px}
+.fb-compare-workspace-ready .fb-compare-progress{margin-bottom:0}
+.fb-compare-workspace-ready .fb-compare-edit{margin-top:3px}
+.fb-compare-edit{margin-top:10px}
+.fb-compare-edit>summary{cursor:pointer;color:var(--accent);font-size:.84rem;font-weight:700;padding:6px 0}
+.fb-compare-edit .fb-compare-chips{margin-top:8px}
+.fb-compare-insight{display:grid;gap:4px;margin:16px 0 20px;padding:16px 19px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:13px;background:var(--surface)}
+.fb-compare-insight-eyebrow{font-size:.73rem;letter-spacing:.07em;font-weight:800;color:var(--accent)}
+.fb-compare-insight-headline{font-size:clamp(1.2rem,2.8vw,1.6rem);font-weight:800;letter-spacing:-.025em;line-height:1.3;overflow-wrap:anywhere}
+.fb-compare-insight-copy{margin:5px 0 0!important;color:var(--muted);font-size:.85rem!important;max-width:none!important}
+.fb-compare-shared-note{font-size:.83rem!important;color:var(--muted);margin:2px 0 12px!important;max-width:none!important}
+.fb-compare-highlight{display:flex;flex-direction:column;gap:10px;padding:18px 17px}
+.fb-compare-highlight.fb-compare-lowest{border-color:var(--accent)}
+.fb-compare-card-header{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;min-height:41px}
+.fb-compare-card-header h4{line-height:1.35;margin:0;flex:1;overflow-wrap:anywhere}
+.fb-compare-card-remove{cursor:pointer;font-size:.76rem;flex:none;min-height:34px;background:none;border:0;color:var(--accent);padding:4px 1px;font-weight:750}
+.fb-compare-primary-price{display:flex;flex-direction:column;gap:3px;padding:12px 0 13px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.fb-compare-price-label{font-size:.71rem;color:var(--muted);letter-spacing:.04em;font-weight:750}
+.fb-compare-price-value{font-size:clamp(1.9rem,3.3vw,2.45rem);letter-spacing:-.04em;line-height:1.15;font-weight:850}
+.fb-compare-lowest-label{font-size:.74rem;color:var(--accent);font-weight:800}
+.fb-compare-quickfacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.fb-compare-quickfact{display:flex;flex-direction:column;gap:3px;min-width:0;padding:8px 9px;border-radius:9px;background:var(--chip)}
+.fb-compare-quickfact span{color:var(--muted);font-size:.72rem}
+.fb-compare-quickfact strong{font-size:.86rem;line-height:1.32;overflow-wrap:anywhere}
+.fb-compare-quickfact:first-child strong{font-size:.96rem}
+.fb-compare-quickfact:last-child:nth-child(odd){grid-column:1/-1}
+.fb-compare-highlight .fb-compare-metrics{margin:0}
+.fb-compare-highlight .fb-compare-metrics>div{gap:9px;padding:8px 0}
+.fb-compare-highlight .fb-compare-metrics dt{font-size:.78rem;flex:1.2}
+.fb-compare-highlight .fb-compare-metrics dd{font-size:.84rem;flex:1.1;line-height:1.4;font-weight:700}
+.fb-compare-breakdown{margin:0!important;padding:10px 0 0;border-top:1px solid var(--line);color:var(--muted);font-size:.76rem!important;line-height:1.45;max-width:none!important}
+.fb-compare-highlight>a{margin-top:auto;display:inline-flex;align-self:flex-start;min-height:40px;align-items:center;font-size:.84rem;font-weight:750}
+.fb-compare-highlight .fb-compare-card-status{margin:0!important}
+@media(max-width:680px){
+ .fb-compare-insight{margin:12px 0 16px;padding:13px 15px}
+ .fb-compare-highlight{padding:15px}
+ .fb-compare-quickfacts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 /* Mobile task navigation: all primary actions visible, secondary tools in
    an accessible More menu rather than a clipped eight-tab horizontal strip. */
 .tabs .wrap.fb-tabs-shell{display:flex;align-items:stretch;gap:0;overflow:visible}

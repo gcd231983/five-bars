@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {Script,runInNewContext} from 'node:vm';
 import {
   localDay, validDay, pastEnd, offerSignature, verificationState,
-  planCost, phoneCost, rankMatches, normalizeCompare
+  planCost, phoneCost, rankMatches, normalizeCompare, comparisonPriceOverview
 } from '../site/value-core.mjs';
 import {checkoutRecord} from './helpers/checkout-fixtures.mjs';
 
@@ -363,4 +363,34 @@ test('US Mobile port-in promos require separately confirmed AutoPay, preserving 
   assert.equal(finder.plans[0].cost.promoUsed,false);
   assert.ok(finder.messages.some(m=>m.includes('AutoPay-required introductory')));
  }
+});
+
+test('price-only comparison reports lowest selected estimate without mistaking it for best plan',()=>{
+ const catalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ const names=['cc','cricket-supreme','tello-power'];
+ const choices=names.map(id=>catalog.plans.find(plan=>plan.id===id));
+ assert.ok(choices.every(Boolean));
+ const result=comparisonPriceOverview('plan',choices,1,{},'2026-11-06');
+ assert.deepEqual(result,{lowest:240,highest:720,range:480,cheapestIndices:[2],tied:false});
+ assert.equal(planCost(choices[0],1,{today:'2026-11-06'}).knownActivationFeeTotal,10,
+   'Consumer Cellular model includes a one-time published activation fee');
+ assert.equal(planCost(choices[0],1,{today:'2026-11-06'}).monthTotal,30,
+   'Known recurring carrier fees are already in the monthly estimate');
+ assert.equal(comparisonPriceOverview('plan',choices,2,{},'2026-11-06'),null,
+   'Do not name a winning quote when any selected offer is single-line-only');
+ const unknown=[{price:15},{price:20}];
+ assert.equal(comparisonPriceOverview('plan',unknown,2,{},'2026-11-06'),null,
+   'Do not rank extrapolated multi-line prices as confidently comparable');
+ const tied=comparisonPriceOverview('plan',[{price:20},{price:20}],1,{},'2026-11-06');
+ assert.deepEqual(tied.cheapestIndices,[0,1]);
+ assert.equal(tied.tied,true);
+});
+test('price-only comparison withholds ranking for financing, expired and held handsets',()=>{
+ const a={price:0,planPrice:60,stay:3,prepay:0};
+ const b={price:20,planPrice:50,stay:3,prepay:0};
+ assert.ok(comparisonPriceOverview('phone',[a,b],1,{},'2026-11-06'));
+ assert.equal(comparisonPriceOverview('phone',[{...a,postpaid:true},b],1,{},'2026-11-06'),null);
+ assert.equal(comparisonPriceOverview('phone',[{...a,listingHold:true},b],1,{},'2026-11-06'),null);
+ assert.equal(comparisonPriceOverview('phone',[{...a,ends:'2026-11-05'},b],1,{},'2026-11-06'),null);
+ assert.equal(comparisonPriceOverview('phone',[{...a,availability:'out_of_stock'},b],1,{},'2026-11-06'),null);
 });
