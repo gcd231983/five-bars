@@ -51,8 +51,8 @@ export function startReleaseNotice({
   if(!doc.hidden)void probe(true);
  });
  const timer=win.setInterval(()=>{void probe();},PERIOD_MS);
- void probe(true);
- return {probe,dispose:()=>win.clearInterval(timer)};
+ const ready=probe(true);
+ return {probe,ready,dispose:()=>win.clearInterval(timer)};
 }
 
 if(typeof document!=='undefined')startReleaseNotice();
