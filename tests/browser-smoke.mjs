@@ -786,8 +786,8 @@ try {
 
     // Mint annual-plan cash must NEVER be disguised as ordinary month-to-month billing.
     // A full reload intentionally resets progressive-disclosure controls; reopen for filtering.
-    await page.locator('.fb-advanced-filters summary').click();
     await page.locator('#t-plans').click();
+    await page.locator('.fb-advanced-filters summary').click();
     await page.locator('#carrier').selectOption('Mint Mobile');
     await page.locator('#lines').selectOption('1');
     assert.match(await page.locator('#r-mint').innerText(),/Pay \$360(?:\.00)? upfront for 12 months/);
