@@ -45,7 +45,7 @@ test('a comparison opened across midnight withholds expired handset cash and ren
  const offer=catalog.phones[0];
  for(const key of ['monthly','year','data','hotspot','eligibility'])
   assert.equal(fieldValue('phone',offer,key),'Promotion ended — no current cost quote');
- assert.match(src,/if\(type==='phone'&&offer&&pastEnd\(offer\.ends,localDay\(\)\)\)/);
+ assert.match(src,/if\(type==='phone'&&pastEnd\(offer\.ends,localDay\(\)\)\)/);
  assert.match(src,/Expired, held, out-of-stock, conflicting-price or removed saved comparisons were cleared/);
  assert.match(src,/const valid=normalizeCompare\(selected,catalog,localDay\(\)\)/);
 });
