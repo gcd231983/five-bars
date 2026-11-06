@@ -494,6 +494,8 @@ function renderFinder() {
         prefs.dataPreference==='unlimited'?
           'No unlimited plans match those budget, provider, network and line requirements. Increase the budget, change a filter, or browse every unlimited plan above.':
           'No matching plans. Try a larger budget, choose another data allowance or browse the catalog above.'));
+      const planGrid=element('div',null,'fb-results-grid fb-results-plan-grid');
+      if(ranked.plans.length)root.append(planGrid);
       for(const [i,item] of ranked.plans.entries()) {
         const p=item.offer;const c=item.cost;
         const card = element('article',null,'fb-result');
@@ -502,6 +504,14 @@ function renderFinder() {
         heading.append(mark);
         heading.append(element('strong',(i+1)+'. '+p.carrier+' — '+p.plan));
         card.append(heading);
+        const facts=element('div',null,'fb-result-keyfacts');
+        const networkName={att:'AT&T',vzw:'Verizon',tmo:'T-Mobile',multi:'Multiple networks'}[p.net]||'Network varies';
+        for(const part of [
+          p.unl?'Unlimited plan':'Limited data',
+          p.data?String(p.data):null,
+          networkName
+        ].filter(Boolean))facts.append(element('span',part));
+        card.append(facts);
         const price=element('p',null,'fb-result-price');
         price.append(element('strong',usd(c.monthTotal)+(c.annualPrepaid?'/mo equivalent':'/mo estimated')));
         price.append(element('span',c.annualPrepaid?
@@ -530,23 +540,28 @@ function renderFinder() {
         info.append(button('Watch plan',()=>window.fiveBarsWatch?.('plan',p.id)));
         info.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('plan',p.id)));
         card.append(actions);
-        root.append(card);
+        planGrid.append(card);
       }
     }
     if(showPhones) {
       root.append(element('h4',ranked.lines>1 ? 'Phone leads ('+ranked.phoneMatches+' options; household cost unconfirmed)' : 'Phone offers ('+ranked.phoneMatches+' match the selected filters)'));
       if(!ranked.phones.length) root.append(note('No matching offers. Consider keeping your phone or changing the network filter.'));
-      const phoneCards=[];
-      const initiallyVisiblePhones=5;
-      let phonesExpanded=false;
+      const phoneGrid=element('div',null,'fb-results-grid fb-results-phone-grid');
+      if(ranked.phones.length)root.append(phoneGrid);
       for(const [i,item] of ranked.phones.entries()) {
         const p=item.offer,c=item.cost;
         const card=element('article',null,'fb-result fb-phone-result');
-        if(i>=initiallyVisiblePhones)card.hidden=true;
         const heading=element('div',null,'fb-result-heading');
         heading.append(providerIcon(p));
         heading.append(element('strong',p.phone+' — '+p.carrier));
         card.append(heading);
+        const phoneFacts=element('div',null,'fb-result-keyfacts');
+        for(const fact of [
+          ({att:'AT&T',vzw:'Verizon',tmo:'T-Mobile',multi:'Multiple networks'}[p.net]||'Network varies'),
+          Number.isFinite(p.planPrice)?'Required plan: '+usd(p.planPrice)+'/mo':null,
+          p.postpaid?'Financing terms require quote':'Device offer'
+        ].filter(Boolean))phoneFacts.append(element('span',fact));
+        card.append(phoneFacts);
         card.append(element('p',c.financingUncertain?
           'Financed or trade-in promotion: no reliable upfront, device payoff or first-year quote without the installment agreement.':
           'Estimated upfront '+usd(c.due)+'; first year '+usd(c.year)+' (one device).'));
@@ -566,18 +581,7 @@ function renderFinder() {
         else card.append(note('Savings comparison unavailable until full financing and bill-credit terms are documented.'));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
-        root.append(card);
-        phoneCards.push(card);
-      }
-      if(phoneCards.length>initiallyVisiblePhones){
-        const morePhones=button('Show all '+phoneCards.length+' phone offers',()=>{
-          phonesExpanded=!phonesExpanded;
-          for(const [index,card] of phoneCards.entries())card.hidden=!phonesExpanded&&index>=initiallyVisiblePhones;
-          morePhones.textContent=phonesExpanded?'Show fewer phone offers':'Show all '+phoneCards.length+' phone offers';
-          morePhones.setAttribute('aria-expanded',String(phonesExpanded));
-        },'btn ghost fb-more-plans fb-more-phones');
-        morePhones.setAttribute('aria-expanded','false');
-        root.append(morePhones);
+        phoneGrid.append(card);
       }
     }
     syncCompareButtons();
