@@ -273,15 +273,18 @@ function addToCompare(type,id) {
     compareNotice='This offer cannot be compared at its current evidence or availability status.';
     renderCompare();return;
   }
-  if(compareBrowseType!==type){
-    compareQuery='';
-    compareExpanded=false;
-  }
   selected=next;
   compareBrowseType=type;
+  // A previous carrier search must not hide the other choices after an add.
+  // Reset the picker so shoppers can immediately choose a different provider.
+  compareQuery='';
+  compareExpanded=false;
   compareNotice='';
   saveCompare();
   renderCompare();
+  if(selected.length<MAX_COMPARE && document.getElementById('p-compare')?.hidden===false){
+    document.getElementById('fb-compare-search')?.focus({preventScroll:true});
+  }
   // Stay in the catalog: the visible selection tray takes shoppers to results
   // only when they choose to compare, rather than stranding them at one column.
 }
