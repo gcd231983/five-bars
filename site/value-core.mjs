@@ -266,6 +266,11 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
   const hasBudget = preferences.budget !== '' && preferences.budget !== null &&
     preferences.budget !== undefined && Number.isFinite(budget) && budget >= 0;
   const network = preferences.network || 'any';
+  // The Finder data preference is independent of the classic catalog toggle.
+  // A shopper asking for unlimited must never receive a 5GB plan simply
+  // because it ranks as cheaper. Unrecognized/legacy choices mean all plans.
+  const dataPreference=preferences.dataPreference==='unlimited'?'unlimited':
+    preferences.dataPreference==='limited'?'limited':'any';
   const cannotPort = !!preferences.cannotPort;
   const canPort = preferences.canPort===true && !cannotPort;
   const unconfirmedPhonePorts=(catalog.phones||[]).filter(d=>d.port===true && d.availability!=='out_of_stock' && !canPort).length;
@@ -273,6 +278,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
   const unconfirmedNewLines=(catalog.phones||[]).filter(d=>d.newLineRequired===true&&d.availability!=='out_of_stock'&&preferences.newCustomer!==true).length;
   const plans = (catalog.plans || [])
     .filter(p => networkOK(p.net,network) && (!preferences.provider || preferences.provider==='any' || p.carrier===preferences.provider) && (!p.maxLines || lines<=p.maxLines) &&
+      (dataPreference==='any'||(dataPreference==='unlimited'?p.unl===true:p.unl!==true)) &&
       (!preferences.priority || p.pri===true) && (!preferences.hotspot || !!p.hot))
     .map(p => {
       const cost = planCost(p,lines,{today,cannotPort,canPort,newCustomer:preferences.newCustomer===true,
@@ -298,7 +304,10 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
     .filter(item=> !hasBudget || lines>1 || item.cost.planPrice===null || item.cost.planPrice <= budget)
     .sort(trustworthySort);
   return {
-    plans: plans.slice(0,5),phones: phones.slice(0,5),
+    // Preserve every matching offer. The UI initially displays five and
+    // offers explicit "Show all" controls; truncating here made those
+    // controls impossible and silently hid catalog alternatives.
+    plans,phones,
     planMatches:plans.length,phoneMatches:phones.length,lines,
     messages:[
       ...(lines>1 ? ['Phone offers are priced per device; do not treat them as a multi-line household quote.'] : []),

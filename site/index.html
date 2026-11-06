@@ -665,6 +665,31 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
  .fb-compare-highlight{padding:15px}
  .fb-compare-quickfacts{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* Plan shopping must never conceal the 38-item catalog behind a default
+   advanced Unlimited toggle, nor confuse five displayed Finder cards with
+   five total available plans. */
+.fb-plan-catalog-toolbar{margin:12px 0 14px;padding:17px 18px;background:var(--surface);border:1px solid var(--line);border-radius:15px}
+.fb-plan-catalog-intro h2{font-size:1.35rem;letter-spacing:-.02em;margin:0 0 3px}
+.fb-plan-catalog-intro p{color:var(--muted);font-size:.89rem;margin:0 0 12px}
+.fb-plan-catalog-actions{display:flex;gap:9px;flex-wrap:wrap}
+.fb-plan-catalog-actions button{cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:9px 13px;min-height:44px;font-weight:750}
+.fb-plan-catalog-actions button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fb-plan-catalog-actions #fb-plans-refine-filters{color:var(--accent);font-weight:700}
+.fb-plan-filters-summary{color:var(--muted);font-size:.82rem;line-height:1.45;margin:11px 0 0}
+.fb-finder-browse{margin:12px 0 20px;padding:16px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+.fb-finder-browse-summary{margin:0 0 12px!important;font-size:.92rem!important;color:var(--ink);font-weight:650}
+.fb-finder-browse-actions{display:flex;gap:9px;flex-wrap:wrap}
+.fb-finder-browse-actions button{min-height:44px}
+.fb-finder-browse>.fb-subtle{font-size:.78rem!important;margin:11px 0 0!important}
+@media(max-width:620px){
+ .fb-plan-catalog-toolbar{padding:13px}
+ .fb-plan-catalog-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fb-plan-catalog-actions button{padding:10px 6px;font-size:.83rem}
+ .fb-plan-catalog-actions #fb-plans-refine-filters{grid-column:1/-1}
+ .fb-finder-browse-actions{flex-direction:column}
+ .fb-finder-browse-actions button{width:100%}
+}
 /* Mobile task navigation: all primary actions visible, secondary tools in
    an accessible More menu rather than a clipped eight-tab horizontal strip. */
 .tabs .wrap.fb-tabs-shell{display:flex;align-items:stretch;gap:0;overflow:visible}
@@ -794,6 +819,18 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
     </div>
   </section>
   <section id="p-plans" role="tabpanel" aria-labelledby="t-plans" hidden>
+    <div class="fb-plan-catalog-toolbar" aria-label="Browse the full plan catalog">
+      <div class="fb-plan-catalog-intro">
+        <h2>Browse phone plans</h2>
+        <p id="fb-plans-catalog-count" role="status" aria-live="polite">Loading available plan listings...</p>
+      </div>
+      <div class="fb-plan-catalog-actions">
+        <button type="button" id="fb-plans-show-unlimited" aria-pressed="false">All unlimited plans</button>
+        <button type="button" id="fb-plans-show-all" aria-pressed="false">Full plan catalog</button>
+        <button type="button" id="fb-plans-refine-filters">Refine filters</button>
+      </div>
+      <p class="fb-plan-filters-summary" id="fb-plans-filters-summary" aria-live="polite"></p>
+    </div>
     <p class="note" id="plans-note"></p>
     <ol class="list" id="plans-list"></ol>
   </section>
@@ -1121,8 +1158,27 @@ function renderPlans(){
     ['conflict','invalid'].includes(RESEARCH_AUDIT?.offers?.find(x=>x.id===p.id)?.researchState);
   rows.sort((a,b)=> Number(priceUnderReview(a.p))-Number(priceUnderReview(b.p)) ||
     (state.lines>1 && a.c.famKnown!==b.c.famKnown ? (a.c.famKnown?-1:1) : by(a,b)));
-  $("#c-plans").textContent = rows.length;
+  $("#c-plans").textContent = " ("+PLANS.length+")";
   const L = state.lines;
+  const active=[];
+  if(state.t.unl)active.push("Unlimited data only");
+  if(state.t.pri)active.push("Priority data");
+  if(state.t.hot)active.push("Hotspot");
+  if(state.t.tax)active.push("Taxes included");
+  if(state.net!=="any")active.push(NET[state.net]?.name||"Selected network");
+  if(state.provider!=="any")active.push(state.provider);
+  if(L!==1)active.push(L+" lines");
+  $("#fb-plans-catalog-count").textContent=
+    "Showing "+rows.length+" of "+PLANS.length+" listed plans. "+
+    (rows.length<PLANS.length?"Other plans may be hidden by filters or multi-line eligibility.":"All catalog plans are displayed.");
+  $("#fb-plans-filters-summary").textContent=active.length?
+    "Active: "+active.join(" · ")+". Select a catalog view above to reset filters, or refine them.":
+    "Full catalog view · all networks, one line, no data or provider restrictions.";
+  $("#fb-plans-show-unlimited").setAttribute("aria-pressed",
+    String(!!state.t.unl&&state.net==="any"&&state.provider==="any"&&L===1&&
+      !state.t.pri&&!state.t.hot&&!state.t.tax));
+  $("#fb-plans-show-all").setAttribute("aria-pressed",String(rows.length===PLANS.length));
+
   $("#plans-note").textContent = L>1
     ? "12-month cost covers all " + L + " lines. Annual prepaid plans without an explicit multi-line upfront quote are excluded. Other unknown multi-line prices are estimated from one-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
     : "New-customer, port-in, and AutoPay/eBilling/Auto-Refill discounts are excluded until you confirm eligibility. Known carrier provider and activation fees are included only where documented. Taxes and unknown charges may add more. Annual prepaid amounts are due upfront.";
@@ -1298,6 +1354,21 @@ function renderPhones(){
   }));
 }
 
+// Explicit browse actions are independent of Finder budget/provider filters.
+ // Returning to the full catalog intentionally uses one line, because some
+ // annual prepaid and retail plans have no documented multi-line quote.
+function browsePlans(mode="all"){
+  state.lines=1;
+  state.net="any";
+  state.provider="any";
+  state.t=mode==="unlimited"?{unl:true}:{};
+  state.mode="byop";
+  state.sort="year";
+  showTab("plans");
+  document.getElementById("fb-plans-catalog-count")?.scrollIntoView({block:"start",behavior:"smooth"});
+}
+window.fiveBarsBrowsePlans=browsePlans;
+
 function emptyState(){
   return el("li",{class:"empty"},
     el("div",null,"Nothing matches every must-have. Turn one off to see more."),
@@ -1339,6 +1410,15 @@ document.querySelectorAll(".tab").forEach(b=>{
   });
 });
 
+$("#fb-plans-show-all").addEventListener("click",()=>browsePlans("all"));
+$("#fb-plans-show-unlimited").addEventListener("click",()=>browsePlans("unlimited"));
+$("#fb-plans-refine-filters").addEventListener("click",()=>{
+  const details=document.querySelector(".fb-advanced-filters");
+  if(!details)return;
+  details.open=true;
+  details.scrollIntoView({block:"start",behavior:"smooth"});
+  details.querySelector("summary")?.focus({preventScroll:true});
+});
 document.querySelectorAll('[data-more-tab]').forEach(button=>{
   button.addEventListener('click',()=>{
     document.getElementById('fb-tabs-more').open=false;

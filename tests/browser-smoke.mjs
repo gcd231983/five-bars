@@ -231,6 +231,46 @@ try {
       await page.locator('#fb-finder-form button[type="submit"]').evaluate(node=>node.hidden=false);
       await page.addStyleTag({content:'.fb-wizard-step[hidden]{display:block!important} #fb-finder-form>button[type="submit"][hidden]{display:block!important}'});
     }
+    // The full plan catalog must not be silently capped at five, and the
+    // Finder's unlimited request must never admit a cheap capped-data plan.
+    assert.equal(await page.locator('#fb-data-preference').inputValue(),'unlimited');
+    await page.locator('#fb-provider').selectOption('any');
+    await page.locator('#fb-net').selectOption('any');
+    await page.locator('#fb-device').selectOption('byop');
+    await page.locator('#fb-budget').fill('');
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    const unlimitedResults=page.locator('#fb-finder-results .fb-result:not(.fb-phone-result)');
+    assert.ok(await unlimitedResults.count()>5,'Unlimited results must include options beyond the first five');
+    assert.equal(await unlimitedResults.filter({hasText:'Cricket — Supreme Unlimited'}).count(),1);
+    assert.match(await page.locator('.fb-finder-browse-summary').innerText(),/Showing 5 of \d+ matching unlimited plans from 38 catalog listings/);
+    const allUnlimited=await unlimitedResults.count();
+    await page.locator('.fb-more-plans').click();
+    assert.equal(await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result):visible').count(),allUnlimited,
+      'Show all must actually reveal every matching unlimited plan');
+    const displayedUnlimited=await unlimitedResults.allInnerTexts();
+    assert.ok(!displayedUnlimited.some(s=>/Consumer Cellular — Basic 1GB/.test(s)),
+      '1GB capped plans cannot be recommended for an unlimited request');
+    // Deliberately broaden from Unlimited to all data tiers to test catalog
+    // access; a source-conflicted price may still be present but under review.
+    await page.locator('#fb-data-preference').selectOption('any');
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    assert.match(await page.locator('.fb-finder-browse-summary').innerText(),/from 38 catalog listings/);
+    await page.locator('.fb-browse-all').click();
+    assert.equal(await page.locator('#p-plans').isVisible(),true);
+    assert.equal(await page.locator('#plans-list li.row').count(),38,
+      'Full catalog must show all 38 listings after explicit reset');
+    assert.match(await page.locator('#fb-plans-catalog-count').innerText(),/Showing 38 of 38/);
+    await page.locator('#fb-plans-show-unlimited').click();
+    assert.equal(await page.locator('#plans-list li.row').count(),24);
+    assert.match(await page.locator('#fb-plans-catalog-count').innerText(),/Showing 24 of 38/);
+    await page.locator('#fb-plans-show-all').click();
+    assert.equal(await page.locator('#plans-list li.row').count(),38);
+    await page.locator('#fb-plans-refine-filters').click();
+    assert.equal(await page.locator('.fb-advanced-filters').getAttribute('open'),'');
+    await page.locator('.fb-advanced-filters summary').click();
+    await page.locator('#t-finder').click();
+    await page.locator('#fb-data-preference').selectOption('unlimited');
+
     // Port-in promotions are omitted from quotes until a person confirms eligibility.
     assert.equal(await page.locator('#fb-port-status').inputValue(),'unknown');
     await page.locator('#fb-net').selectOption('any');
@@ -304,6 +344,7 @@ try {
     await page.locator('#fb-discount-qualified').uncheck();
     await page.locator('#fb-device').selectOption('either');
     // MVNO expansion: find an exact provider, and verify annual billing on mobile and desktop.
+    await page.locator('#fb-data-preference').selectOption('any');
     await page.locator('#fb-net').selectOption('att');
     await page.locator('#fb-provider').selectOption('Consumer Cellular');
     await page.locator('#fb-lines').selectOption('1');
@@ -450,9 +491,11 @@ try {
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Official plan rate matches/);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Dated carrier source.*partial/i);
     assert.match(await page.locator('#r-h2o-unlimited [data-verification] a').getAttribute('href'),/research-h2o-unlimited/);
-    // Advanced filters are intentionally collapsed in the new guided homepage.
+    // Earlier in this test we deliberately cleared all catalog filters.
+    // Reapply Unlimited-only before checking that its toggle reveals capped plans.
+    await page.locator('#fb-plans-show-unlimited').click();
     await page.locator('.fb-advanced-filters summary').click();
-    // Consumer Cellular 1GB is excluded by the default Unlimited-only filter.
+    // Consumer Cellular 1GB is excluded by the active Unlimited-only filter.
     await page.getByRole('button',{name:'Unlimited data',exact:true}).click();
     await page.locator('#carrier').selectOption('Consumer Cellular');
     assert.match(await page.locator('#r-cc .price .now').innerText(),/\$25/);

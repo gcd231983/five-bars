@@ -317,6 +317,13 @@ function renderFinder() {
         <label for="fb-lines">How many lines?
           <select id="fb-lines" name="lines"><option value="1">1 line</option><option value="2">2 lines</option><option value="3">3 lines</option><option value="4">4 lines</option><option value="5">5 lines</option></select>
         </label>
+        <label for="fb-data-preference">How much data do you want?
+          <select id="fb-data-preference" name="dataPreference">
+            <option value="unlimited" selected>Unlimited plans only</option>
+            <option value="any">All plans, including limited data</option>
+            <option value="limited">Limited-data plans only</option>
+          </select>
+        </label>
         <label for="fb-budget">Monthly service budget (all lines)
           <input id="fb-budget" name="budget" type="number" min="0" max="2000" step="5" placeholder="No maximum"/>
         </label>
@@ -342,8 +349,8 @@ function renderFinder() {
   const fields=[...finderForm.querySelector('.fb-fields').children];
   const checks=[...finderForm.querySelector('.fb-checks').children];
   const steps=[
-    {title:'Your service',description:'Network, provider and number of lines',items:fields.slice(0,3)},
-    {title:'Your budget and phone',description:'Set a budget and choose whether to keep your phone',items:fields.slice(3)},
+    {title:'Your service',description:'Network, lines and data allowance',items:fields.slice(0,4)},
+    {title:'Your budget and phone',description:'Set a budget and choose whether to keep your phone',items:fields.slice(4)},
     {title:'Deal eligibility',description:'Confirm only conditions you know you meet',items:checks}
   ];
   const wizard=document.createElement('div');
@@ -390,6 +397,7 @@ function renderFinder() {
     const data = new FormData(f);
     const prefs = {
       network:data.get('net'),provider:data.get('provider'),lines:Number(data.get('lines')),budget:data.get('budget'),
+      dataPreference:data.get('dataPreference')||'unlimited',
       cannotPort:data.get('portStatus')==='no',canPort:data.get('portStatus')==='yes',
       newCustomer:data.has('newCustomer'),discountQualified:data.has('discountQualified'),
       priority:data.has('priority'),hotspot:data.has('hotspot'),
@@ -410,6 +418,29 @@ function renderFinder() {
     root.replaceChildren();
     root.append(element('h3','Matching options'));
     root.append(note('Matches are ranked by estimated cost. These are not checkout quotes; confirm eligibility and final carrier pricing.'));
+    // Match counts reflect actual offer records, not a hard-coded five-item
+    // list. The whole catalog remains explicitly accessible even if network,
+    // budget or data filters result in very few matching offers.
+    const browse=element('div',null,'fb-finder-browse');
+    const selectedData=prefs.dataPreference==='unlimited'?'unlimited':
+      prefs.dataPreference==='limited'?'limited-data':'all-data';
+    const firstVisiblePlans=Math.min(ranked.planMatches,5);
+    const browseCount=element('p',
+      'Showing '+firstVisiblePlans+' of '+ranked.planMatches+' matching '+selectedData+
+      ' plans from '+catalog.plans.length+' catalog listings. Your budget, network and line count may hide other plans.',
+      'fb-finder-browse-summary');
+    if(data.get('device')!=='phone')browse.append(browseCount);
+    const browseLinks=element('div',null,'fb-finder-browse-actions');
+    const unlimitedTotal=catalog.plans.filter(plan=>plan.unl===true).length;
+    browseLinks.append(button('Browse all '+unlimitedTotal+' unlimited plans',()=>{
+      window.fiveBarsBrowsePlans?.('unlimited');
+    },'btn fb-browse-unlimited'));
+    browseLinks.append(button('Browse full '+catalog.plans.length+'-plan catalog',()=>{
+      window.fiveBarsBrowsePlans?.('all');
+    },'btn ghost fb-browse-all'));
+    browse.append(browseLinks);
+    browse.append(element('p','Browsing the full catalog resets hidden plan filters and uses a one-line view; changing the catalog view does not verify carrier prices.','fb-subtle'));
+    root.append(browse);
     const sourceHealth=scanStatus?.summary;
     if(sourceHealth?.sourceBlackout===true ||
        (Number.isInteger(sourceHealth?.sourcesChecked) && sourceHealth.sourcesChecked>0 &&
@@ -438,12 +469,17 @@ function renderFinder() {
     if(showPlans) {
       root.append(element('h4','Plan options ('+ranked.planMatches+' match the selected filters)'));
       if(ranked.plans.length) {
-        root.append(note('Top matches based on your selected filters and estimated costs. Review upfront payments, eligibility and carrier checkout before choosing.'));
+        root.append(note(ranked.plans.length>5?
+          'The first five recommendations are shown below. Select "Show all" after the cards to see every matching plan, or browse the entire catalog above.':
+          'All matching plans are shown below. Browse the full catalog above to see plans outside these filters.'));
       }
       const initiallyVisible=5;
       const morePlans=ranked.plans.length>initiallyVisible;
       let plansExpanded=false;
-      if(!ranked.plans.length) root.append(note('No matching plans. Try a larger budget or fewer must-haves.'));
+      if(!ranked.plans.length) root.append(note(
+        prefs.dataPreference==='unlimited'?
+          'No unlimited plans match those budget, provider, network and line requirements. Increase the budget, change a filter, or browse every unlimited plan above.':
+          'No matching plans. Try a larger budget, choose another data allowance or browse the catalog above.'));
       const planCards=[];
       for(const [i,item] of ranked.plans.entries()) {
         const p=item.offer;const c=item.cost;
@@ -491,6 +527,9 @@ function renderFinder() {
           for(const [index,card] of planCards.entries())card.hidden=!plansExpanded&&index>=initiallyVisible;
           more.textContent=plansExpanded?'Show fewer plans':'Show all '+ranked.plans.length+' matching plans';
           more.setAttribute('aria-expanded',String(plansExpanded));
+          browseCount.textContent='Showing '+(plansExpanded?ranked.planMatches:Math.min(5,ranked.planMatches))+
+            ' of '+ranked.planMatches+' matching '+selectedData+' plans from '+catalog.plans.length+
+            ' catalog listings. Your budget, network and line count may hide other plans.';
           if(!plansExpanded)root.querySelector('.fb-result-heading')?.scrollIntoView({block:'nearest'});
         },'btn ghost fb-more-plans');
         more.setAttribute('aria-expanded','false');

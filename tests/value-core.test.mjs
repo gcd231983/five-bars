@@ -394,3 +394,31 @@ test('price-only comparison withholds ranking for financing, expired and held ha
  assert.equal(comparisonPriceOverview('phone',[{...a,ends:'2026-11-05'},b],1,{},'2026-11-06'),null);
  assert.equal(comparisonPriceOverview('phone',[{...a,availability:'out_of_stock'},b],1,{},'2026-11-06'),null);
 });
+
+
+test('Finder gives shoppers all 38 plans and unlimited-only results beyond the top five',()=>{
+ const catalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ const all=rankMatches(catalog,{lines:1,dataPreference:'any'},'2026-11-06');
+ assert.equal(catalog.plans.length,38);
+ assert.equal(all.planMatches,38);
+ assert.equal(all.plans.length,38,'Core must not truncate before the Show all button');
+ const unlimited=rankMatches(catalog,{lines:1,dataPreference:'unlimited'},'2026-11-06');
+ assert.equal(unlimited.planMatches,24);
+ assert.equal(unlimited.plans.length,24);
+ assert.ok(unlimited.plans.every(({offer})=>offer.unl===true),
+  'No 1GB or 5GB limited plan can appear in unlimited results');
+ assert.ok(unlimited.plans.some(({offer})=>offer.id==='cricket-supreme'));
+ const limited=rankMatches(catalog,{lines:1,dataPreference:'limited'},'2026-11-06');
+ assert.equal(limited.planMatches,14);
+ assert.ok(limited.plans.every(({offer})=>offer.unl!==true));
+ const withBudget=rankMatches(catalog,{lines:1,dataPreference:'unlimited',budget:15},'2026-11-06');
+ assert.ok(withBudget.plans.every(({offer})=>offer.unl===true));
+ assert.ok(withBudget.planMatches<=unlimited.planMatches);
+});
+test('Finder returns every eligible phone match without a hidden five-item ceiling',()=>{
+ const catalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ const ranked=rankMatches(catalog,{lines:1,newCustomer:true,canPort:true},'2026-11-06');
+ assert.equal(ranked.phones.length,ranked.phoneMatches);
+ assert.ok(ranked.phones.length>5);
+ assert.equal(new Set(ranked.phones.map(p=>p.id)).size,ranked.phoneMatches);
+});
