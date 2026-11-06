@@ -533,6 +533,9 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 #fb-finder-results .fb-provider-mark{position:relative;overflow:hidden;background:#173642;border-color:#315964;color:#9debe3}
 #fb-finder-results .fb-provider-icon{display:block;width:28px;height:28px;object-fit:contain;border-radius:5px;background:transparent}
 #fb-finder-results .fb-provider-initials[hidden]{display:none}
+
+.fb-catalog-freshness{padding:13px 16px;border:1px solid #d5a14a;border-radius:12px;background:#392d17;color:#ffe5a9;font-weight:650;line-height:1.5;margin:12px 0 20px}
+.fb-catalog-freshness[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -616,6 +619,8 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 </nav>
 
 <main class="wrap" id="main-content" tabindex="-1">
+  <p id="fb-catalog-freshness" class="fb-catalog-freshness" role="status" hidden></p>
+  
   <aside class="fb-price-guide" aria-label="How to read comparison prices"><details><summary>How to read prices and upfront costs</summary><p>Upfront costs and required future payments are different. Prices, eligibility, taxes and fees can change; verify carrier checkout.</p><details class="fb-pricing-details"><summary>More about our pricing and review standards</summary><p>Monthly cost, upfront payment and minimum service commitment are different amounts. Promotional prices may end; taxes, fees and eligibility can change the final bill. Check the source and review status before choosing a provider.</p><a href="disclosures.html">How we calculate and qualify prices</a> · <a href="editorial.html">Our review standards</a></details></details></aside>
   <section id="p-finder" role="tabpanel" aria-labelledby="t-finder">
     <div class="panel">
@@ -1192,6 +1197,25 @@ function renderEvidenceSummary(){
 }
 
 /* ---------- sources ---------- */
+function catalogAgeDays(day){
+  if(typeof day!=="string"||!/^\\d{4}-\\d{2}-\\d{2}$/.test(day))return null;
+  const ms=Date.parse(day+"T12:00:00Z");
+  if(!Number.isFinite(ms)||new Date(ms).toISOString().slice(0,10)!==day)return null;
+  return Math.floor((Date.now()-ms)/86400000);
+}
+function renderCatalogFreshness(){
+  const node=$("#fb-catalog-freshness");
+  const days=catalogAgeDays(CHECKED);
+  const scanTime=Date.parse(AUTO_STATUS?.generatedAt||"");
+  const scanAge=Number.isFinite(scanTime)?(Date.now()-scanTime)/86400000:null;
+  const messages=[];
+  if(days===null||days<0)messages.push("Catalog review date is unavailable or invalid.");
+  else if(days>7)messages.push("Catalog prices were last reviewed "+days+" days ago ("+CHECKED+"). Treat offers as potentially outdated.");
+  if(scanAge===null||scanAge<0)messages.push("Automatic source scan recency is unconfirmed.");
+  else if(scanAge>2)messages.push("Last automatic source scan is over 48 hours old.");
+  node.hidden=messages.length===0;
+  node.textContent=messages.join(" ")+" Carrier checkout determines current prices, taxes and eligibility.";
+}
 function renderSources(){
 $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"}) + ". Always confirm current prices, eligibility and taxes on the carrier’s site.";
   const n = AUTO_STATUS?.summary;
@@ -1227,6 +1251,7 @@ async function boot(){
     if(r.ok){const data=await r.json();if(data?.schema===1&&Array.isArray(data.offers))RESEARCH_AUDIT=data;}
   }catch(e){}
   renderEvidenceSummary();
+  renderCatalogFreshness();
   renderSources();
   if(state.tab==="ask") state.tab = "plans";
   const requested=location.hash.slice(1);
