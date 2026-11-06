@@ -1233,9 +1233,32 @@ $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:0
   $("#scan-status").textContent = scanHealth+" "+(n ? "Last automatic source scan: " + new Date(AUTO_STATUS.generatedAt).toLocaleString("en-US") +
     ". " + n.sourcesReachable + "/" + n.sourcesChecked + " public sources reachable. " +
     (n.priceCandidatesForReview??0) + " price candidates need manual review; " + n.reviewAlerts +
-    " link/term alerts. A working link does NOT prove the offer or its conditions." :
+    " link/term alerts. "+(n.sourcesAccessBlocked??0)+" sources restrict automated access; "+
+    (n.sourcesUnavailableFor7Days??0)+" sources have been unavailable to the scanner for 7+ days. "+
+    "A working link does NOT prove the offer or its conditions." :
     "No automatic scan has completed yet. Listed deals may be outdated.");
-$("#src-list").replaceChildren(...SOURCES.map(s=>el("li",null, el("a",{href:s.url, target:"_blank", rel:"noopener"}, s.name), ": " + s.what)));
+  const sourceByUrl=new Map((AUTO_STATUS?.sources||[]).map(s=>[s.url,s]));
+  const reasonLabels={
+    automated_access_blocked:"automated scanner access restricted",
+    rate_limited:"scanner rate limited",
+    response_too_large:"response exceeded scanner safety limit",
+    request_timeout:"scanner request timed out",
+    unexpected_redirect:"unexpected redirect",
+    source_server_error:"source server error",
+    request_unavailable:"scanner request failed"
+  };
+  $("#src-list").replaceChildren(...SOURCES.map(s=>{
+    const health=sourceByUrl.get(s.url);
+    const assessment=!scanFresh?"Last scanner report is stale; current reachability unknown":
+      !health?"Not checked in last scan":
+      health.ok?"Source reachable to scanner (not a verified offer)":
+      (reasonLabels[health.failureReason]||"Source unavailable to scanner")+
+        (health.unavailableSince&&Number.isFinite(Date.parse(health.unavailableSince))?
+         " since "+new Date(health.unavailableSince).toLocaleDateString("en-US",{timeZone:"America/New_York",month:"short",day:"numeric",year:"numeric"}):"")+
+        " — do not assume the offer ended";
+    return el("li",null,el("a",{href:s.url,target:"_blank",rel:"noopener noreferrer"},s.name),
+      ": "+s.what+" — ",el("span",{class:"fb-source-health"},assessment));
+  }));
 }
 
 /* ---------- start ---------- */

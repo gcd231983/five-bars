@@ -8,6 +8,7 @@ import { BOOST_SOURCE, evaluatePriceEvidence } from './price-evidence.mjs';
 import { evaluateMvnoEvidence } from './mvno-evidence.mjs';
 import { buildReviewQueue } from './review-queue.mjs';
 import { buildAlertFeed } from './alert-engine.mjs';
+import { withSourceHistory, persistentSourceFailures } from './source-health.mjs';
 import {
   easternDate, expireKnownOffers, offerDiff,
   parseBoostCandidates, reviewBoostCandidates, safeSourceUrl,
@@ -106,14 +107,17 @@ const sourceInputs = (previous.sources || []).filter(s => s && safeSourceUrl(s.u
 const scanSource = async s => {
   const result = await download(s.url);
   const hash = result.ok ? createHash('sha256').update(result.html.replace(/\s+/g, ' ').slice(0, 20000)).digest('hex') : null;
+  const former=previousStatus.sources?.find(p=>p.url===s.url);
   return {
-    name: s.name, url: s.url, ok: result.ok,
-    finalUrl: result.ok ? result.finalUrl : null,
-    status: result.status || null, note: description(result),
-    changedSincePreviousScan: !!(hash && previousStatus.sources?.find(p => p.url === s.url)?.hash && previousStatus.sources.find(p => p.url === s.url).hash !== hash),
-    hash,
-    // transient raw content is only used for matching, not committed
-    _html: result.ok ? result.html : null,
+    ...withSourceHistory({
+      name:s.name,url:s.url,ok:result.ok,
+      finalUrl:result.ok?result.finalUrl:null,
+      status:result.status||null,note:description(result),
+      changedSincePreviousScan:!!(hash&&former?.hash&&former.hash!==hash),
+      hash,
+    },former,now.toISOString(),previousStatus.generatedAt),
+    // Transient content is only used for matching, not committed.
+    _html:result.ok?result.html:null,
   };
 };
 // Official H2O homepage is public but sensitive to concurrent requests.
@@ -218,6 +222,8 @@ const status = {
   method: 'Deterministic public-source monitoring (no AI). HTTP availability does not prove a deal is valid.',
   summary: {
     sourcesChecked: sourceInputs.length, sourcesReachable: sourceSuccess,
+    sourcesAccessBlocked: sources.filter(s=>s.failureReason==='automated_access_blocked').length,
+    sourcesUnavailableFor7Days: persistentSourceFailures(sources,now.toISOString(),7),
     offerLinksChecked: urlList.length, offerLinksReachable: scannedLinks.filter(x => x.ok).length,
     priceCandidatesForReview: priceReviews.length,
     officialHeadlineMatches: priceEvidence.summary.headlineMatches,
