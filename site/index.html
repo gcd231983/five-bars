@@ -1288,8 +1288,29 @@ $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:0
         (health.unavailableSince&&Number.isFinite(Date.parse(health.unavailableSince))?
          " since "+new Date(health.unavailableSince).toLocaleDateString("en-US",{timeZone:"America/New_York",month:"short",day:"numeric",year:"numeric"}):"")+
         " — do not assume the offer ended";
+    // A dated official announcement may help when automated purchase-page
+    // access fails. It never changes scanner status or proves live checkout.
+    const publication=s.officialPublication;
+    let publicationReference=null;
+    if(publication && typeof publication.url==="string" &&
+      /^\\d{4}-\\d{2}-\\d{2}$/.test(publication.publishedOn) &&
+      typeof publication.scope==="string"){
+      try{
+        const sourceHost=new URL(s.url).hostname.replace(/^www\\./,"");
+        const target=new URL(publication.url);
+        const targetHost=target.hostname.replace(/^www\\./,"");
+        if(target.protocol==="https:" && !target.username && !target.password &&
+          !target.port && (targetHost===sourceHost || targetHost.endsWith("."+sourceHost))){
+          publicationReference=el("span",{class:"fb-source-publication"},
+            " · Dated official carrier publication ("+publication.publishedOn+"): ",
+            el("a",{href:target.href,target:"_blank",rel:"noopener noreferrer"},"read published terms"),
+            " — "+publication.scope);
+        }
+      }catch{}
+    }
     return el("li",null,el("a",{href:s.url,target:"_blank",rel:"noopener noreferrer"},s.name),
-      ": "+s.what+" — ",el("span",{class:"fb-source-health"},assessment));
+      ": "+s.what+" — ",el("span",{class:"fb-source-health"},assessment),
+      ...(publicationReference?[publicationReference]:[]));
   }));
 }
 
