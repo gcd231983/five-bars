@@ -168,6 +168,26 @@ try {
     assert.equal(await page.locator('#p-plans').isVisible(),true,'Arrow key activates next tab');
     await page.keyboard.press('Home');
     assert.equal(await page.locator('#p-finder').isVisible(),true,'Home returns to first tab');
+    if(view==='mobile'){
+      // Exercise the actual three-stage mobile journey before running the existing
+      // full-form price and eligibility regression scenarios.
+      assert.equal(await page.locator('.fb-wizard-progress').innerText(),'Step 1 of 3');
+      assert.equal(await page.locator('#fb-device').isVisible(),false);
+      await page.locator('.fb-wizard-next').click();
+      assert.equal(await page.locator('#fb-device').isVisible(),true);
+      await page.locator('.fb-wizard-next').click();
+      assert.equal(await page.locator('#fb-port-status').isVisible(),true);
+      assert.equal(await page.locator('#fb-finder-form button[type="submit"]').isVisible(),true);
+      await page.locator('.fb-wizard-back').click();
+      assert.equal(await page.locator('#fb-budget').isVisible(),true);
+      await page.locator('.fb-wizard-back').click();
+      assert.equal(await page.locator('#fb-net').isVisible(),true);
+      // Existing pricing scenarios manipulate controls from several stages;
+      // expand the steps only for those legacy scenarios.
+      await page.locator('.fb-wizard-step').evaluateAll(nodes=>nodes.forEach(n=>n.hidden=false));
+      await page.locator('#fb-finder-form button[type="submit"]').evaluate(node=>node.hidden=false);
+      await page.addStyleTag({content:'.fb-wizard-step[hidden]{display:block!important} #fb-finder-form>button[type="submit"][hidden]{display:block!important}'});
+    }
     // Port-in promotions are omitted from quotes until a person confirms eligibility.
     assert.equal(await page.locator('#fb-port-status').inputValue(),'unknown');
     await page.locator('#fb-net').selectOption('any');

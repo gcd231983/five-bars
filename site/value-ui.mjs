@@ -196,6 +196,54 @@ function renderFinder() {
       <button type="submit" class="btn" disabled aria-busy="true">Loading deals...</button>
     </form>
     <div id="fb-finder-results" aria-live="polite" aria-atomic="false"></div>`;
+  // Mobile-first progressive form. Keep every original input and its name intact.
+  // Desktop remains a single form; no price or eligibility logic is duplicated.
+  const finderForm=finderRoot.querySelector('#fb-finder-form');
+  const fields=[...finderForm.querySelector('.fb-fields').children];
+  const checks=[...finderForm.querySelector('.fb-checks').children];
+  const steps=[
+    {title:'Your service',description:'Network, provider and number of lines',items:fields.slice(0,3)},
+    {title:'Your budget and phone',description:'Set a budget and choose whether to keep your phone',items:fields.slice(3)},
+    {title:'Deal eligibility',description:'Confirm only conditions you know you meet',items:checks}
+  ];
+  const wizard=document.createElement('div');
+  wizard.className='fb-wizard';
+  wizard.innerHTML='<p class="fb-wizard-progress" aria-live="polite"></p><div class="fb-wizard-steps"></div><div class="fb-wizard-nav"><button type="button" class="btn ghost fb-wizard-back">Back</button><button type="button" class="btn fb-wizard-next">Continue</button></div>';
+  const stepRoot=wizard.querySelector('.fb-wizard-steps');
+  for(const [index,step] of steps.entries()){
+    const panel=document.createElement('section');
+    panel.className='fb-wizard-step';
+    panel.dataset.step=String(index);
+    panel.innerHTML='<h3></h3><p class="fb-subtle"></p>';
+    panel.querySelector('h3').textContent=step.title;
+    panel.querySelector('p').textContent=step.description;
+    for(const item of step.items)panel.append(item);
+    stepRoot.append(panel);
+  }
+  finderForm.querySelector('.fb-fields').remove();
+  finderForm.querySelector('.fb-checks').remove();
+  finderForm.insertBefore(wizard,finderForm.querySelector('button[type="submit"]'));
+  let currentStep=0;
+  const mobileWizard=window.matchMedia('(max-width:620px)');
+  function showWizardStep(){
+    const active=mobileWizard.matches;
+    wizard.classList.toggle('fb-wizard-mobile',active);
+    for(const panel of stepRoot.children)panel.hidden=active && Number(panel.dataset.step)!==currentStep;
+    wizard.querySelector('.fb-wizard-progress').textContent=active?'Step '+(currentStep+1)+' of '+steps.length:'';
+    wizard.querySelector('.fb-wizard-back').hidden=!active||currentStep===0;
+    wizard.querySelector('.fb-wizard-next').hidden=!active||currentStep===steps.length-1;
+    finderForm.querySelector('button[type="submit"]').hidden=active&&currentStep!==steps.length-1;
+  }
+  wizard.querySelector('.fb-wizard-back').addEventListener('click',()=>{
+    currentStep=Math.max(0,currentStep-1);showWizardStep();
+    wizard.scrollIntoView({block:'start',behavior:'smooth'});
+  });
+  wizard.querySelector('.fb-wizard-next').addEventListener('click',()=>{
+    currentStep=Math.min(steps.length-1,currentStep+1);showWizardStep();
+    wizard.scrollIntoView({block:'start',behavior:'smooth'});
+  });
+  mobileWizard.addEventListener('change',showWizardStep);
+  showWizardStep();
   finderRoot.querySelector('form').addEventListener('submit', e => {
     e.preventDefault();
     const f = e.currentTarget;

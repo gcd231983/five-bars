@@ -459,6 +459,25 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
  #p-finder .panel>h2{font-size:1.35rem;margin-bottom:4px}
  #p-finder .panel>.note{font-size:.85rem;margin-bottom:10px}
 }
+
+/* Three-stage mobile plan finder; all original form controls remain available. */
+.fb-wizard-steps{display:grid;gap:12px}
+.fb-wizard-step{min-width:0}
+.fb-wizard-step>label{display:flex;flex-direction:column;gap:7px;margin:12px 0;font-weight:600}
+.fb-wizard-step>label:has(input[type="checkbox"]){flex-direction:row;align-items:flex-start;font-weight:400}
+.fb-wizard-step select,.fb-wizard-step input[type="number"]{width:100%;max-width:100%;min-height:44px}
+.fb-wizard-nav,.fb-wizard-progress{display:none}
+@media(max-width:620px){
+ .fb-wizard-mobile .fb-wizard-progress{display:block;color:var(--accent);font-weight:700;margin:8px 0}
+ .fb-wizard-mobile .fb-wizard-steps{display:block}
+ .fb-wizard-mobile .fb-wizard-step{padding:4px 0 12px}
+ .fb-wizard-mobile .fb-wizard-step[hidden]{display:none}
+ .fb-wizard-mobile .fb-wizard-step h3{font-size:1.1rem;margin:4px 0}
+ .fb-wizard-mobile .fb-wizard-nav{display:flex;gap:10px;margin:14px 0}
+ .fb-wizard-mobile .fb-wizard-nav button{flex:1;min-height:46px}
+ .fb-wizard-mobile .fb-wizard-nav button[hidden]{display:none}
+ #fb-finder-form>button[type="submit"][hidden]{display:none}
+}
 </style>
 </head>
 <body>
