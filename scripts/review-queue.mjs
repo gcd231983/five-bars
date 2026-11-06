@@ -78,6 +78,22 @@ export function buildReviewQueue({catalog,status={},mvnoEvidence={},phoneEvidenc
     const scan=linkMap[offer.id];
     if(scan?.state==='source_unavailable'){
       reasons.push(reason('offer_page_unavailable','The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.',60));
+      // A week of failed checks elevates a still-listed conditional promotion
+      // for EDITORIAL review. It never asserts that the deal was withdrawn or
+      // automatically creates a GitHub notification from a scrape failure.
+      const promo=offer.promo;
+      const scanTime=Date.parse(scan.checkedAt);
+      const firstFailure=Date.parse(scan.unavailableSince);
+      const runTime=Date.parse(generatedAt);
+      const scanRecent=Number.isFinite(scanTime)&&Number.isFinite(runTime)&&
+        runTime>=scanTime&&runTime-scanTime<=48*3600000;
+      const repeatedFailures=Number.isFinite(firstFailure)&&Number.isFinite(scanTime)&&
+        firstFailure<=scanTime&&scanTime-firstFailure>=7*86400000;
+      const introStillListed=promo&&Number.isFinite(promo.price)&&Number.isInteger(promo.months)&&
+        promo.months>0&&(!validDay(promo.ends)||promo.ends>=today);
+      if(scanRecent&&repeatedFailures&&introStillListed)
+        reasons.push(reason('conditional_promo_uncheckable_7d',
+          'An advertised introductory offer has had an unreadable official purchase link across scans spanning 7+ days. Escalate for direct editorial research; do not assume the price is wrong, withdrawn or checkout-verified.',82));
     }
     const sourceDate=offer.priceSourceDate;
     if(validDay(sourceDate)&&daysBetween(sourceDate,today)>21){
@@ -103,6 +119,8 @@ export function buildReviewQueue({catalog,status={},mvnoEvidence={},phoneEvidenc
       score,reasonCodes:reasons.map(x=>x.code),reasons:reasons.map(x=>x.why),
       officialEvidenceState:p?.state||null,sourceStatus:scan?.state||'not_checked',
       officialResearchState:published?.state||null,manualReviewStatus:review.status,
+      linkUnavailableSince:scan?.state==='source_unavailable'?
+        (typeof scan.unavailableSince==='string'?scan.unavailableSince:null):null,
       lastCatalogReference:validDay(sourceDate)?sourceDate:null,
       link,
     });
@@ -128,6 +146,7 @@ export function buildReviewQueue({catalog,status={},mvnoEvidence={},phoneEvidenc
       medium:items.filter(x=>x.priority==='medium').length,
       routine:items.filter(x=>x.priority==='routine').length,
       withoutCurrentManualReview:missingFull,
+      prolongedConditionalPromos:items.filter(x=>x.reasonCodes.includes('conditional_promo_uncheckable_7d')).length,
       retailerHolds:all.filter(offer=>!!offer.listingHold).length,
       stockHolds:all.filter(offer=>offer.availability==='out_of_stock').length,
       publicationEvidence:researchEvidence?{
