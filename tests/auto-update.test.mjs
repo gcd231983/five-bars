@@ -175,6 +175,9 @@ test('scanner publishes review alerts without verified-price claims or catalog m
     assert.equal(status.summary.actionablePriceAlerts,0);
     assert.equal(status.summary.pricesMatchedOnCarrierPage, undefined);
     assert.equal(status.offers['boost-a17'].state, 'source_reachable');
+    assert.equal(status.offers['boost-a17'].sourceUrl,'https://example.com/phones');
+    assert.equal(status.offers['boost-a17'].lastReachableAt,status.generatedAt);
+    assert.equal(status.offers['boost-a17'].unavailableSince,null);
     assert.equal(status.offers['boost-a17'].priceEvidenceState,'not_found');
     assert.equal(status.summary.officialHeadlineMatches,0);
     assert.equal(status.offers['boost-a17'].reviewRequired, true);
