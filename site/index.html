@@ -536,6 +536,11 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 
 .fb-catalog-freshness{padding:13px 16px;border:1px solid #d5a14a;border-radius:12px;background:#392d17;color:#ffe5a9;font-weight:650;line-height:1.5;margin:12px 0 20px}
 .fb-catalog-freshness[hidden]{display:none!important}
+.fb-release-notice{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:13px 16px;border:1px solid #587ca0;border-radius:12px;background:#182e45;color:#eaf4ff;line-height:1.5;margin:12px 0 20px}
+.fb-release-notice[hidden]{display:none!important}
+.fb-release-notice p{margin:0;flex:1 1 290px}
+.fb-release-notice button{cursor:pointer;padding:9px 13px;border:1px solid #9bd9de;border-radius:9px;background:#18434d;color:#ecffff;font-weight:700}
+.fb-release-notice button:focus-visible{outline:3px solid #f3d47a;outline-offset:3px}
 </style>
 </head>
 <body>
@@ -620,6 +625,10 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 
 <main class="wrap" id="main-content" tabindex="-1">
   <p id="fb-catalog-freshness" class="fb-catalog-freshness" role="status" hidden></p>
+  <aside id="fb-release-notice" class="fb-release-notice" role="status" aria-live="polite" hidden>
+    <p><strong>A newer Five Bars release is available.</strong> This open tab may show older deals or review information. Reload to see the latest published information; confirm final prices at carrier checkout. Unsaved form entries may be lost.</p>
+    <button id="fb-release-reload" type="button">Reload latest deals</button>
+  </aside>
   
   <aside class="fb-price-guide" aria-label="How to read comparison prices"><details><summary>How to read prices and upfront costs</summary><p>Upfront costs and required future payments are different. Prices, eligibility, taxes and fees can change; verify carrier checkout.</p><details class="fb-pricing-details"><summary>More about our pricing and review standards</summary><p>Monthly cost, upfront payment and minimum service commitment are different amounts. Promotional prices may end; taxes, fees and eligibility can change the final bill. Check the source and review status before choosing a provider.</p><a href="disclosures.html">How we calculate and qualify prices</a> · <a href="editorial.html">Our review standards</a></details></details></aside>
   <section id="p-finder" role="tabpanel" aria-labelledby="t-finder">
@@ -1320,6 +1329,7 @@ async function boot(){
 boot();
 </script>
 <script type="module" src="value-ui.mjs?v=20261106-phone-results"></script>
+<script type="module" src="release-notice.mjs"></script>
 <script type="module" src="watchlist-ui.mjs"></script>
 <script type="module" src="switch-ui.mjs"></script>
 <script>
