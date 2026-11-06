@@ -242,18 +242,20 @@ try {
     const unlimitedResults=page.locator('#fb-finder-results .fb-result:not(.fb-phone-result)');
     assert.ok(await unlimitedResults.count()>5,'Unlimited results must include options beyond the first five');
     assert.equal(await unlimitedResults.filter({hasText:'Cricket — Supreme Unlimited'}).count(),1);
-    assert.match(await page.locator('.fb-finder-browse-summary').innerText(),/Showing 5 of \d+ matching unlimited plans from 38 catalog listings/);
+    assert.match(await page.locator('.fb-finder-browse-summary').innerText(),/Showing all \d+ matching unlimited plans from 38 catalog listings/);
     const allUnlimited=await unlimitedResults.count();
-    await page.locator('.fb-more-plans').click();
     assert.equal(await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result):visible').count(),allUnlimited,
-      'Show all must actually reveal every matching unlimited plan');
+      'Every matching unlimited plan should be visible without searching for a Show all button');
+    assert.equal(await page.locator('.fb-more-plans').count(),0,'No hidden plan list expansion should be needed');
+    assert.equal(await page.locator('.fb-finder-data-toggle[aria-pressed="true"]').innerText(),'Unlimited data only');
     const displayedUnlimited=await unlimitedResults.allInnerTexts();
     assert.ok(!displayedUnlimited.some(s=>/Consumer Cellular — Basic 1GB/.test(s)),
       '1GB capped plans cannot be recommended for an unlimited request');
     // Deliberately broaden from Unlimited to all data tiers to test catalog
     // access; a source-conflicted price may still be present but under review.
-    await page.locator('#fb-data-preference').selectOption('any');
-    await page.locator('#fb-finder-form button[type="submit"]').click();
+    await page.getByRole('button',{name:'All data allowances',exact:true}).click();
+    assert.equal(await page.locator('#fb-data-preference').inputValue(),'any');
+    assert.equal(await page.locator('.fb-finder-data-toggle[aria-pressed="true"]').innerText(),'All data allowances');
     assert.match(await page.locator('.fb-finder-browse-summary').innerText(),/from 38 catalog listings/);
     await page.locator('.fb-browse-all').click();
     assert.equal(await page.locator('#p-plans').isVisible(),true);
@@ -296,23 +298,18 @@ try {
     const visibleResultCards=await page.locator('#fb-finder-results .fb-result:visible').count();
     assert.ok(visibleResultCards<=allResultCards,'Results must not duplicate offers');
     assert.ok(visibleResultCards>=1,'At least one matching result should be visible');
-    assert.ok(await page.locator('#fb-finder-results .fb-result-heading:visible').count()<=5,
-      'Initially no more than five plan results should be visible');
-    if(await page.locator('.fb-more-plans').count()){
-      assert.equal(await page.locator('#fb-finder-results .fb-result-heading').count()>5,true);
-      assert.equal(await page.locator('#fb-finder-results .fb-provider-mark').count()>0,true);
-      const iconSources=await page.locator('#fb-finder-results .fb-provider-icon').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('src')));
-      assert.ok(iconSources.every(src=>src.startsWith('https://www.google.com/s2/favicons?domain=')),
-        'Provider icons must use canonical carrier domain favicons');
-      assert.ok(iconSources.some(src=>src.includes('domain=usmobile.com')),
-        'US Mobile must use its canonical site, not a reseller or referral host');
-      assert.ok(await page.locator('#fb-finder-results .fb-provider-initials').count()>0,
-        'Every provider icon needs an initials fallback');
-      await page.locator('.fb-more-plans').click();
-      const visiblePlans=await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result):visible').count();
-      const allPlans=await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result)').count();
-      assert.equal(visiblePlans,allPlans,'Show all must reveal every matching plan');
-    }
+    assert.equal(
+      await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result):visible').count(),
+      await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result)').count(),
+      'Every result matching an explicit provider must be visible');
+    assert.equal(await page.locator('.fb-more-plans').count(),0);
+    assert.ok(await page.locator('#fb-finder-results .fb-provider-mark').count()>0);
+    const iconSources=await page.locator('#fb-finder-results .fb-provider-icon').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('src')));
+    assert.ok(iconSources.every(src=>src.startsWith('https://www.google.com/s2/favicons?domain=')),
+      'Provider icons must use canonical carrier domain favicons');
+    assert.ok(iconSources.some(src=>src.includes('domain=usmobile.com')),
+      'US Mobile must use its canonical site, not a reseller or referral host');
+    assert.ok(await page.locator('#fb-finder-results .fb-provider-initials').count()>0);
     const phoneResults=page.locator('#fb-finder-results .fb-phone-result');
     const phoneCount=await phoneResults.count();
     assert.ok(await page.locator('#fb-finder-results .fb-phone-result:visible').count()<=5,
