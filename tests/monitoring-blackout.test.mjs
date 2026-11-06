@@ -92,7 +92,7 @@ test('guided finder also shows a warning outside collapsed pricing details',()=>
  const warning=js.indexOf("PUBLIC-SOURCE MONITORING UNAVAILABLE:");
  const details=js.indexOf("const details=element('details',null,'fb-finder-caveats');");
  assert.ok(warning>0&&details>warning,'warning appears before collapsed details');
- assert.match(js,/sourceHealth\.sourceBlackout===true/);
+ assert.match(js,/sourceHealth\?\.sourceBlackout===true/);
  assert.match(js,/warning\.setAttribute\('role','status'\)/);
  assert.match(js,/known published promotion deadlines are still enforced/i);
  assert.match(js,/Listed prices and eligibility remain unconfirmed/i);
