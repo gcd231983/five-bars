@@ -232,7 +232,8 @@ function renderFinder() {
     if(showPlans) {
       root.append(element('h4','Plan options ('+ranked.planMatches+' match the selected filters)'));
       if(!ranked.plans.length) root.append(note('No matching plans. Try a larger budget or fewer must-haves.'));
-      for(const [i,item] of ranked.plans.slice(0,3).entries()) {
+      const planCards=[];
+      for(const [i,item] of ranked.plans.entries()) {
         const p=item.offer;const c=item.cost;
         const card = element('article',null,'fb-result');
         card.append(element('strong',(i+1)+'. '+p.carrier+' — '+p.plan));
@@ -252,13 +253,26 @@ function renderFinder() {
         actions.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('plan',p.id)));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
+        if(i>=3)card.hidden=true;
         root.append(card);
+        planCards.push(card);
+      }
+      if(planCards.length>3){
+        const more=button('Show all '+planCards.length+' matching plans',()=>{
+          const expand=planCards[3].hidden;
+          planCards.slice(3).forEach(card=>{card.hidden=!expand;});
+          more.textContent=expand?'Show top 3 plans':'Show all '+planCards.length+' matching plans';
+          more.setAttribute('aria-expanded',String(expand));
+        });
+        more.setAttribute('aria-expanded','false');
+        root.append(more);
       }
     }
     if(showPhones) {
       root.append(element('h4',ranked.lines>1 ? 'Phone leads ('+ranked.phoneMatches+' options; household cost unconfirmed)' : 'Phone offers ('+ranked.phoneMatches+' match the selected filters)'));
       if(!ranked.phones.length) root.append(note('No matching offers. Consider keeping your phone or changing the network filter.'));
-      for(const item of ranked.phones.slice(0,3)) {
+      const phoneCards=[];
+      for(const [i,item] of ranked.phones.entries()) {
         const p=item.offer,c=item.cost;
         const card=element('article',null,'fb-result');
         card.append(element('strong',p.phone+' — '+p.carrier));
@@ -278,7 +292,19 @@ function renderFinder() {
         else card.append(note('Savings comparison unavailable until full financing and bill-credit terms are documented.'));
         actions.append(linkTo(p.url,'Carrier details'));
         card.append(actions);
+        if(i>=3)card.hidden=true;
         root.append(card);
+        phoneCards.push(card);
+      }
+      if(phoneCards.length>3){
+        const more=button('Show all '+phoneCards.length+' matching phones',()=>{
+          const expand=phoneCards[3].hidden;
+          phoneCards.slice(3).forEach(card=>{card.hidden=!expand;});
+          more.textContent=expand?'Show top 3 phones':'Show all '+phoneCards.length+' matching phones';
+          more.setAttribute('aria-expanded',String(expand));
+        });
+        more.setAttribute('aria-expanded','false');
+        root.append(more);
       }
     }
   });
