@@ -791,6 +791,33 @@ try {
     await satellite.getByRole('link',{name:'Switch & Save',exact:true}).click();
     await satellite.locator('#p-switch').waitFor({state:'visible'});
     await satellite.close();
+    // A complete external monitoring outage must NOT be invisible to shoppers.
+    // Simulate the response locally; never claim these are real carrier prices.
+    const blackoutPage=await context.newPage();
+    blackoutPage.on('pageerror',e=>errors.push(view+' monitoring blackout: '+e.message));
+    await blackoutPage.route('**/data/status.json',async route=>{
+      const response=await route.fetch();
+      const snapshot=await response.json();
+      snapshot.generatedAt=new Date().toISOString();
+      snapshot.summary={...snapshot.summary,
+        sourcesChecked:18,sourcesReachable:0,sourceBlackout:true};
+      await route.fulfill({status:200,contentType:'application/json',
+        body:JSON.stringify(snapshot)});
+    });
+    await blackoutPage.goto(base,{waitUntil:'domcontentloaded'});
+    await blackoutPage.waitForFunction(()=>
+      document.querySelector('#fb-catalog-freshness')?.textContent?.includes('Public-source monitoring blackout'));
+    assert.equal(await blackoutPage.locator('#fb-catalog-freshness').isVisible(),true,
+      'a recent but completely blocked scan must still warn on the homepage');
+    await blackoutPage.waitForFunction(()=>
+      document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false);
+    await blackoutPage.locator('#fb-finder-form').evaluate(form=>
+      form.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));
+    assert.match(await blackoutPage.locator('#fb-finder-results').innerText(),
+      /PUBLIC-SOURCE MONITORING UNAVAILABLE.*No monitored source responded/is);
+    assert.match(await blackoutPage.locator('#fb-finder-results').innerText(),
+      /Listed prices and eligibility remain unconfirmed/);
+    await blackoutPage.close();
     if(process.env.FIVE_BARS_SITE_DIR)assert.equal(assetVersions.size,1,'all styles and modules use the same release version');
     await context.close();
   }

@@ -1214,6 +1214,11 @@ function renderCatalogFreshness(){
   else if(days>7)messages.push("Catalog prices were last reviewed "+days+" days ago ("+CHECKED+"). Treat offers as potentially outdated.");
   if(scanAge===null||scanAge<0)messages.push("Automatic source scan recency is unconfirmed.");
   else if(scanAge>2)messages.push("Last automatic source scan is over 48 hours old.");
+  const health=AUTO_STATUS?.summary;
+  if(health?.sourceBlackout===true ||
+    (Number.isInteger(health?.sourcesChecked) && health.sourcesChecked>0 && health.sourcesReachable===0)){
+    messages.push("Public-source monitoring blackout: no monitored source was reachable. Catalog prices have NOT been revalidated; known published expirations are still enforced.");
+  }
   node.hidden=messages.length===0;
   node.textContent=messages.join(" ")+" Carrier checkout determines current prices, taxes and eligibility.";
 }

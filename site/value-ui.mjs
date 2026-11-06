@@ -321,6 +321,16 @@ function renderFinder() {
     root.replaceChildren();
     root.append(element('h3','Matching options'));
     root.append(note('Matches are ranked by estimated cost. These are not checkout quotes; confirm eligibility and final carrier pricing.'));
+    const sourceHealth=scanStatus?.summary;
+    if(sourceHealth?.sourceBlackout===true ||
+       (Number.isInteger(sourceHealth?.sourcesChecked) && sourceHealth.sourcesChecked>0 &&
+        sourceHealth.sourcesReachable===0)){
+      const warning=element('p',
+        'PUBLIC-SOURCE MONITORING UNAVAILABLE: No monitored source responded during the last scan. Listed prices and eligibility remain unconfirmed. Known published promotion deadlines are still enforced; check the current carrier checkout before buying.',
+        'fb-result-warning');
+      warning.setAttribute('role','status');
+      root.append(warning);
+    }
     const caveats=[
       'Estimated costs include recorded fixed carrier fees and one-time activation charges where known. Unknown taxes and fees are not estimated.',
       ...(suppressedPhones || suppressedPlans ? [suppressedPlans+' plan(s) and '+suppressedPhones+' phone offer(s) excluded due to conflicting official price evidence. See Price watch.'] : []),
