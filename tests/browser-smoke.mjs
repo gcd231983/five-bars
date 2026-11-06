@@ -220,8 +220,24 @@ try {
       assert.ok(await page.locator('#fb-finder-results .fb-provider-initials').count()>0,
         'Every provider icon needs an initials fallback');
       await page.locator('.fb-more-plans').click();
-      assert.equal(await page.locator('#fb-finder-results .fb-result:visible').count(),allResultCards,
-        'Show all must reveal every matching card');
+      const visiblePlans=await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result):visible').count();
+      const allPlans=await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result)').count();
+      assert.equal(visiblePlans,allPlans,'Show all must reveal every matching plan');
+    }
+    const phoneResults=page.locator('#fb-finder-results .fb-phone-result');
+    const phoneCount=await phoneResults.count();
+    assert.ok(await page.locator('#fb-finder-results .fb-phone-result:visible').count()<=5,
+      'Show at most five phone offers initially');
+    if(phoneCount>5){
+      const phoneToggle=page.locator('#fb-finder-results .fb-more-phones');
+      assert.equal(await phoneToggle.getAttribute('aria-expanded'),'false');
+      await phoneToggle.click();
+      assert.equal(await page.locator('#fb-finder-results .fb-phone-result:visible').count(),phoneCount,
+        'Expanding phone offers must reveal all matching phones');
+      assert.equal(await phoneToggle.getAttribute('aria-expanded'),'true');
+      await phoneToggle.click();
+      assert.equal(await page.locator('#fb-finder-results .fb-phone-result:visible').count(),5,
+        'Collapsing phone offers must restore the initial five');
     }
     assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated first year/);
     await page.locator('#fb-port-status').selectOption('yes');
