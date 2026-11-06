@@ -616,7 +616,8 @@ function renderCompare(){
   renderCompareTray();
 
   const workspace=element('div',null,'fb-compare-workspace');
-  workspace.append(element('p','Choose two or three offers to see them side by side. Add or remove items here, or browse the plan and phone lists.','fb-compare-intro'));
+  if(selected.length>=2)workspace.classList.add('fb-compare-workspace-ready');
+  else workspace.append(element('p','Choose two or three offers to see them side by side. Add or remove items here, or browse the plan and phone lists.','fb-compare-intro'));
   if(dropped)workspace.append(note('Expired, held, out-of-stock, conflicting-price or removed saved comparisons were cleared. Confirm current carrier offers before making a decision.'));
   if(compareNotice)workspace.append(element('p',compareNotice,'fb-compare-notice'));
   const mode=selected[0]?.type||compareBrowseType;
@@ -711,8 +712,6 @@ function renderCompare(){
     search.addEventListener('input',()=>{compareQuery=search.value;compareExpanded=false;drawChoices();});
     drawChoices();
     compareRoot.append(picker);
-  }else{
-    compareRoot.append(note('Three offers selected. Remove one to replace it with another.'));
   }
 
   if(selected.length<2){
@@ -799,12 +798,17 @@ function renderCompare(){
     }
     card.append(facts);
     const metrics=type==='plan'
-      ? [['monthly','Monthly service estimate'],['billing','Estimated initial payment']]
+      ? [['monthly','Monthly rate (est.)'],['billing','Due to start (est.)']]
       : [['data','Estimated due today'],['hotspot','Minimum service commitment']];
     const dl=element('dl',null,'fb-compare-metrics');
     for(const [key,label] of metrics){
       const box=element('div');
-      box.append(element('dt',label),element('dd',fieldValue(type,p,key)));
+      const value=type==='plan'&&key==='monthly'&&c?
+        usd(c.monthTotal)+(c.annualPrepaid?' equivalent/mo':'/mo')+
+          (c.estimatedFamilyPrice?' · family rate unconfirmed':''):
+        type==='plan'&&key==='billing'&&c?
+          usd(c.upfrontDue):fieldValue(type,p,key);
+      box.append(element('dt',label),element('dd',value));
       dl.append(box);
     }
     card.append(dl);
