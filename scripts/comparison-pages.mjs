@@ -245,7 +245,7 @@ export function renderHub(data){
 export function renderSitemap(data){
  const day=validDay(data?.catalog?.checked)?data.catalog.checked:'2026-10-29';
  const urls=['','about.html','contact.html','editorial.html','privacy.html','disclosures.html','switching-guide.html',
-  'carrier-comparisons.html','satellite.html','source-research.html','launch-readiness.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html')];
+  'carrier-comparisons.html','phone-deals.html','satellite.html','source-research.html','launch-readiness.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html')];
  const xmlEscape=escapeHtml;
  return '<?xml version="1.0" encoding="UTF-8"?>\n'+
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+
