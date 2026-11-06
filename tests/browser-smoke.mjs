@@ -202,15 +202,14 @@ try {
       document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false,
       {timeout:15000});
     await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
-    if(view==='mobile'){
-      assert.equal(await page.locator('.fb-mobile-evidence').getAttribute('open'),null,
-        'Mobile pricing evidence should be collapsed by default');
-      await page.locator('.fb-mobile-evidence summary').click();
-    }
+    assert.equal(await page.locator('.fb-mobile-evidence').getAttribute('open'),null,
+      'Long pricing evidence should be collapsed by default on both mobile and desktop');
+    await page.locator('.fb-mobile-evidence summary').click();
     const evidenceSnapshot=await page.locator('#fb-evidence-summary-copy').innerText();
     assert.match(evidenceSnapshot,/76 of 78 offers have dated public-source research/);
     assert.ok(evidenceSnapshot.includes(auditSummary.manuallyFullyReviewed+' independently documented full-checkout reviews'));
     assert.match(evidenceSnapshot,/3 retailer checkout offers on hold/);
+    await page.locator('.fb-mobile-evidence summary').click();
     assert.equal(await page.locator('a.fb-skip-link[href="#main-content"]').count(),1);
     assert.equal(await page.locator('main#main-content').count(),1);
     await page.locator('a.fb-skip-link').focus();
