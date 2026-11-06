@@ -44,6 +44,6 @@ test('restored comparisons also apply current official price-conflict guard',()=
  assert.match(fn,/!officialHeadlineUnderReview\(offer\)/);
  assert.match(fn,/saveCompare\(\)/);
  assert.match(fn,/conflicting-price or removed saved comparisons were cleared/);
- assert.match(html,/if\(offer && officialHeadlineUnderReview\(offer\)\)/,
+ assert.match(html,/if\(officialHeadlineUnderReview\(offer\)\)/,
   'the direct Add to Compare path and saved restoration must agree');
 });
