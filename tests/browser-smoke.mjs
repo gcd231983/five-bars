@@ -279,6 +279,47 @@ try {
     assert.equal(await page.locator('#plans-list li.row').count(),38,
       'Full catalog must show all 38 listings after explicit reset');
     assert.match(await page.locator('#fb-plans-catalog-count').innerText(),/Showing 38 of 38/);
+    const catalogSearch=page.locator('#fb-plans-search');
+    assert.equal(await catalogSearch.isVisible(),true,
+      'Every shopper must see a plan search without opening hidden advanced filters');
+    assert.equal(await page.locator('#fb-plans-network').isVisible(),true);
+    assert.equal(await page.locator('#fb-plans-order').isVisible(),true);
+    await catalogSearch.fill('Tello');
+    const telloCatalogCards=page.locator('#plans-list li.row');
+    const telloCatalogCount=await telloCatalogCards.count();
+    assert.ok(telloCatalogCount>0&&telloCatalogCount<38,
+      'Search should filter the displayed catalog rather than hiding offers after five');
+    assert.ok((await telloCatalogCards.allInnerTexts()).every(t=>t.includes('Tello')),
+      'Carrier search results should all match the requested provider');
+    assert.match(await page.locator('#fb-plans-catalog-count').innerText(),/matching plans out of 38 eligible listings/);
+    assert.equal(await page.locator('#fb-plans-clear-search').isVisible(),true);
+    await catalogSearch.fill('no-such-carrier-ever-12345');
+    assert.equal(await page.locator('#plans-list li.row').count(),0);
+    assert.match(await page.locator('#plans-list li.empty').innerText(),/No plans match/);
+    await page.locator('#fb-plans-clear-search').click();
+    assert.equal(await catalogSearch.inputValue(),'');
+    assert.equal(await page.locator('#plans-list li.row').count(),38,
+      'Clearing a search should restore the full catalog');
+    assert.equal(await page.locator('#fb-plans-clear-search').isVisible(),false);
+    await page.locator('#fb-plans-network').selectOption('att');
+    const attCatalogCount=await page.locator('#plans-list li.row').count();
+    assert.ok(attCatalogCount>0&&attCatalogCount<38,
+      'Network selection should narrow the list without altering the catalog');
+    assert.equal(await page.locator('#net').inputValue(),'att',
+      'Visible network control must use the same underlying conservative filter');
+    await page.locator('#fb-plans-network').selectOption('any');
+    assert.equal(await page.locator('#plans-list li.row').count(),38);
+    await page.locator('#fb-plans-order').selectOption('reg');
+    assert.equal(await page.locator('#sort').inputValue(),'reg',
+      'Visible sort must stay synchronized with existing ranking options');
+    await page.locator('#fb-plans-order').selectOption('year');
+    await catalogSearch.fill('Cricket');
+    await page.locator('#fb-plans-show-unlimited').click();
+    assert.equal(await catalogSearch.inputValue(),'',
+      'Explicit browse all unlimited should clear the prior search instead of hiding matches');
+    assert.equal(await page.locator('#plans-list li.row').count(),24);
+    await page.locator('#fb-plans-show-all').click();
+    assert.equal(await page.locator('#plans-list li.row').count(),38);
     await page.locator('#fb-plans-show-unlimited').click();
     assert.equal(await page.locator('#plans-list li.row').count(),24);
     assert.match(await page.locator('#fb-plans-catalog-count').innerText(),/Showing 24 of 38/);
