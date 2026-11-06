@@ -905,6 +905,36 @@ try {
     assert.doesNotMatch(compareText,/Straight Talk at Walmart|razr|Boost Mobile/i);
     assert.match(compareText,/conflicting-price or removed saved comparisons were cleared/i);
     await cachePage.close();
+    if(process.env.FIVE_BARS_SITE_DIR){
+      // An old open page must notify, never automatically discard form input.
+      // The mocked manifest is NOT a simulated carrier price verification.
+      const oldTab=await context.newPage();
+      oldTab.on('pageerror',e=>errors.push(view+' release notice: '+e.message));
+      await oldTab.route('**/release.json',async route=>{
+        const response=await route.fetch();
+        const latest=await response.json();
+        latest.contentHash=latest.contentHash==='0000000000000000'?
+          '1111111111111111':'0000000000000000';
+        await route.fulfill({status:200,contentType:'application/json',
+          body:JSON.stringify(latest)});
+      });
+      await oldTab.goto(base,{waitUntil:'domcontentloaded'});
+      await oldTab.locator('#fb-release-notice').waitFor({state:'visible',timeout:15000});
+      assert.match(await oldTab.locator('#fb-release-notice').innerText(),
+        /A newer Five Bars release is available/i);
+      assert.match(await oldTab.locator('#fb-release-notice').innerText(),
+        /Unsaved form entries may be lost/);
+      await oldTab.evaluate(()=>window.__unsavedInputMarker='still here');
+      await oldTab.waitForTimeout(100);
+      assert.equal(await oldTab.evaluate(()=>window.__unsavedInputMarker),'still here',
+        'detecting new data must never silently reload shopper inputs');
+      assert.equal(await oldTab.locator('#fb-release-reload').isVisible(),true);
+      await Promise.all([
+        oldTab.waitForEvent('framenavigated',{timeout:10000}),
+        oldTab.locator('#fb-release-reload').click()
+      ]);
+      await oldTab.close();
+    }
     if(process.env.FIVE_BARS_SITE_DIR)assert.equal(assetVersions.size,1,'all styles and modules use the same release version');
     await context.close();
   }
