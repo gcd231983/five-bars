@@ -1,54 +1,72 @@
-# Five Bars release acceptance and outstanding evidence — 2026-11-06
+# Five Bars — engineering acceptance and owner handoff
+**Snapshot date:** November 6, 2026 (America/New_York)  
+**Technical outcome:** PUBLIC BETA ENGINEERING ACCEPTED — validated CI, published GitHub Pages, independently probed production revision.  
+**Business outcome:** NOT approved for guaranteed checkout pricing, paid referral operation, or commercial-launch certification.
 
-## Acceptance scope
+## 1. Verifiable production acceptance
 
-**Code merged and CI validated:** PR #78 (mobile offer browsing), #79 (catalog freshness), #80 (source-health and affiliate disclosure), #81 (affiliate activation guardrails), #82 (SEO integrity tests), and #83 (outbound link and privacy tests). PR #83's regression and browser smoke checks both completed successfully before merge. These results validate repository changes; they **do not independently prove the live domain is serving the latest build**.
+- Canonical site: **https://fivebars.info/**
+- Most recent successful production workflow at this snapshot: [Five Bars no-AI deal checks & website #42244972423](https://github.com/gcd231983/five-bars/actions/runs/42244972423).
+- The production workflow passed all four dependent jobs: **update**, **browser**, **deploy**, and **Verify public production website**.
+- The public smoke check independently retrieved the HTML homepage, current `/data/status.json`, canonical `/sitemap.xml`, and `/release.json`.
+- **Publicly verified release SHA:** `45abfda352a17bc37efd213fad419730fb9c3490`; release content fingerprint `a77d8ad6298e4a68`.
+- A successful GitHub merge alone does **not** establish public deployment. The complete workflow and live `release.json` check are required for each later release.
 
-**Production deployment:** Not independently verified in this audit. The GitHub Actions workflow at `.github/workflows/daily.yml` has an update → browser → deploy gate. An actual successful Pages deployment run and live response from `https://fivebars.info/` must be checked before calling the site production-verified. This audit's external requests to the domain and GitHub Actions did not return usable responses.
+### Accepted changes (each merged after both regression and mobile/desktop browser CI)
 
-## Source-monitoring snapshot
+| PR | Consumer protection |
+| --- | --- |
+| [#98](https://github.com/gcd231983/five-bars/pull/98) | A dated official Tello promotion publication can be viewed separately from an inaccessible purchase page, without certifying checkout. |
+| [#99](https://github.com/gcd231983/five-bars/pull/99) | US Mobile Starter and Premium six-month introductory estimates require **both** confirmed eligible number transfer **and** confirmed AutoPay eligibility. |
+| [#100](https://github.com/gcd231983/five-bars/pull/100) | Dated first-party US Mobile family and prepaid guides appear as narrow research alternatives; invalid and future publication dates are rejected. |
+| [#102](https://github.com/gcd231983/five-bars/pull/102) | Editorial queue prioritizes official publication gaps, retailer-channel holds, dated stock holds and conflicting source facts. |
+| [#103](https://github.com/gcd231983/five-bars/pull/103) | Same-URL link failure history elevates **still-listed conditional promotions** that remain uncheckable across scans spanning seven days, for *manual editorial review only*. |
 
-Repository `site/data/status.json`, generated **2026-11-06 11:24:53 UTC**, reports:
+No new automatic price inference, checkout sign-offs, merchant approvals, outbound affiliate tracking or removal of held offers was authorized by these changes.
 
-| Metric | Value |
-| --- | ---: |
-| Public sources reachable / checked | 10 / 18 |
-| Offer links reachable / checked | 44 / 60 |
-| Official headline matches | 3 |
-| MVNO headline matches | 7 |
-| Offers needing review | 78 |
-| Review alerts | 31 |
-| High-priority reviews | 1 |
-| Actionable price alerts | 1 |
+## 2. Recorded catalogue and monitoring snapshot
 
-These are scanner observations, **not carrier checkout verification**. The human catalog review date remains **2026-10-29**. Never silently advance it based on automated reachability.
+Machine scan completed **2026-11-06 15:38:55 UTC**:
 
-### Eight unreachable public sources
+| Measure | Recorded result | Meaning |
+| --- | ---: | --- |
+| Catalog offers | 78 | 38 service plans and 40 phone offers |
+| Public source URLs fetched | 10 of 18 reachable | Reachability is **not** verified price/terms |
+| Distinct offer links fetched | 46 of 60 reachable | No guarantee of current promotional eligibility |
+| Official dated research | 72 matched / 4 partial / 2 unresearched | First-party publication scope only |
+| Current independent full-terms checkout scenarios | **0 of 78** | Customer-specific prices/taxes remain unverified |
+| Maintenance reviews | 8 high / 26 medium / 44 routine | These are **review priorities**, not proof of invalid deals |
+| Retailer-specific evidence holds | 3 | Suppress exact checkout and savings claims until genuine channel-specific proof |
+| Dated out-of-stock holds | 6 | Remain excluded from recommendations until observed availability supports release |
+| Seven-day uncheckable conditional offers | 0 | Per-offer history began tracking; no artificial prior-week outages inferred |
 
-| Source | Scanner outcome | Action |
-| --- | --- | --- |
-| Clark.com new cell phone deals | HTTP 403 | Leave unverified; consider a permitted alternative |
-| Clark.com best cell phone plans | HTTP 403 | Leave unverified; consider a permitted alternative |
-| BestPhonePlans | Exceeded 1.5 MB safety limit | Preserve size guard; consider a narrower permitted resource |
-| US Mobile family plan guide | HTTP 403 | Leave unverified; check official alternative manually |
-| US Mobile prepaid plan guide | HTTP 403 | Leave unverified; check official alternative manually |
-| Tello plans | HTTP 403 | Leave unverified; check official alternative manually |
-| Red Pocket monthly plans | HTTP 403 | Leave unverified; check official alternative manually |
-| H2O Wireless homepage rates | HTTP 403 | Leave unverified; check official alternative manually |
+The editorial catalog reference date remains **2026-10-29**. The routine scanner's timestamp **must not** silently advance a full human review date. Full-terms attestation requires real anonymized evidence; passing tests, page responses, research articles or synthetic fixtures do not qualify.
 
-Do not bypass access restrictions, inflate source-success counts, or claim blocked offers are current.
+## 3. Time-sensitive safeguard
 
-## Time-sensitive promotion
+The Tello Everyday 10GB introductory offer is cataloged as **$10/month for three months** for eligible newly activated lines, then **$15/month**, with a published end date **November 9, 2026 at 11:59 p.m. EST**. The official carrier publication corroborates the published deadline, not any visitor's checkout. The code uses the Eastern calendar boundary: on **November 10, 2026**, the automated workflow removes only the expired introductory promotion and retains the standard $15/month plan. Exact-date tests cover the last valid day and the following day. Confirm later scheduled scans and do not reactivate this promotion without new source evidence.
 
-`site/data/alerts.json` generated on 2026-11-06 records the **Tello Everyday 10GB** published promotional deadline as **2026-11-09** (carrier announcement observed 2026-11-02). The published introductory rate is not a verified live checkout quote. Confirm that the scheduled workflow expires the introductory discount after the deadline and retains the regular price; investigate failures rather than fabricating new terms.
+## 4. What is safe to rely on now
 
-## Remaining gates
+- The working public-beta site and guided comparisons, with conservative 12-month/upfront/required-service distinctions.
+- Documented source links, last-scan and source-status disclosures, automatic known-expiration processing and recovery warnings.
+- Curated comparison/research pages, sitemap, review workbench, human review safeguards and correction reporting.
+- Recurring no-paid-AI GitHub Actions (daily `17 10 * * *` UTC, or **5:17 a.m. EST / 6:17 a.m. EDT**) with test → scan → browser → deployment → production verification gates.
+- An inaccessible (403, timeout, oversized) source **does not** automatically prove an offer was withdrawn, nor may an HTTP 200 independently certify its advertised terms.
 
-1. **Technical operator:** Confirm the latest `Five Bars - no-AI deal checks and website` run has successful update, browser, and deploy jobs; verify live homepage, `/data/status.json`, and `/sitemap.xml` from an external browser. These checks remain unverified here.
-2. **Editorial operator:** Resolve the one high-priority review and one actionable price alert; assess 78 offers needing review and the eight blocked sources using attributable official terms. Checkout-only terms require actual documented human review.
-3. **Owner:** Provide actual affiliate network/carrier acceptance, program terms, IDs, and permitted links before activation. No affiliate commissions or approval are claimed.
-4. **Owner/operator:** Validate production privacy notice and disclosures before any new analytics or monetized link is enabled.
+## 5. Explicit remaining owner and editorial gates — NOT COMPLETE
 
-## Release rule
+1. **Real independent checkout observations:** Record at least ten diverse genuine, itemized, anonymous carrier checkout or written quote scenarios. The prioritized offer IDs and exact evidence checklist are in [issue #32](https://github.com/gcd231983/five-bars/issues/32) and the [read-only workbench](https://fivebars.info/review-workbench.html). Do not submit account numbers, transfer PINs, payment information or unredacted personal documents.
+2. **Three held retailer activations:** Verify the selected Walmart/retailer-channel Verizon Prepaid A17, Straight Talk A17 and Simple Mobile A16 offers with actual channel-specific terms, customer scenario, inventory, taxes and required service. See [issue #28](https://github.com/gcd231983/five-bars/issues/28); keep the existing holds in place.
+3. **Remaining blocked or partially scoped public sources:** Conduct attributable editorial research when source access permits. H2O, Red Pocket, Clark and BestPhonePlans scanner limitations are not permission to bypass access restrictions; public-source alternatives never establish private checkout facts. See [issue #87](https://github.com/gcd231983/five-bars/issues/87).
+4. **Owner-approved support and privacy:** Confirm a genuinely private working support inbox, appropriate data handling, retention/moderation practice, and review of privacy disclosures.
+5. **Independent real-user validation:** Test representative iOS/Android phones, slow connections, keyboard and screen readers, and comprehension of upfront payment versus monthly cost and device credit exposure. Automated browser tests are not a certification.
+6. **Commercial and affiliate authorization:** Confirm business/legal and advertising compliance requirements, actual network/carrier program acceptance, signed terms, authorized referral destinations, tracking/disclosure rules and tax/payment onboarding. No paid link may be activated on the strength of an application alone.
 
-Keep new feature work frozen until production verification and the outstanding high-priority pricing review are addressed. Do not mark this audit fully accepted without evidence for the remaining gates.
+### Operational closeout rule
+
+**Engineering/public beta:** accepted at the verified release SHA above.  
+**Commercial conversion / verified-checkout claims:** blocked until owner and real-world evidence gates are closed with checkable records.  
+**Future automated changes:** preserve the date-based expiry and price safeguards, require new green CI and post-deployment production smoke, and never imply an unreadable source is a confirmed price change.
+
+This report is a dated repository snapshot, **not** a live carrier quote, legal opinion, or continuing guarantee. For the newest results use [live launch readiness](https://fivebars.info/launch-readiness.html) and [GitHub Actions](https://github.com/gcd231983/five-bars/actions/workflows/daily.yml).
