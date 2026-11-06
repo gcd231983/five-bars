@@ -109,6 +109,10 @@ jobs:
       - run: node tests/browser-smoke.mjs
         env:
           FIVE_BARS_SITE_DIR: _site
+      - name: Stress-test browsing, stored preferences and savings result freshness
+        run: node tests/adversarial-browser.mjs
+        env:
+          FIVE_BARS_SITE_DIR: _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
