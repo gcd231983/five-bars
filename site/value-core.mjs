@@ -179,6 +179,7 @@ export function planCost(plan, count = 1, options = {}) {
   const introAvailable = !!promo && !pastEnd(promo.ends,today) &&
     !(promo.req==='port' && (options.canPort!==true || options.cannotPort===true)) &&
     !(promo.req === 'new' && options.newCustomer !== true) &&
+    !(promo.autopayRequired===true && options.discountQualified!==true) &&
     promoAllowedLines && Number.isFinite(promo.price) && Number.isInteger(promo.months) && promo.months > 0;
   const intro = introAvailable && lines > 1 && promo.family && typeof promo.family[String(lines)] === 'number'
     ? promo.family[String(lines)] : promo?.price;
@@ -206,7 +207,8 @@ export function planCost(plan, count = 1, options = {}) {
     promoSuppressedForNoPort:!!promo && !!options.cannotPort && promo.req==='port',
     promoSuppressedForUnconfirmedPort:!!promo && promo.req==='port' &&
       (options.canPort!==true || options.cannotPort===true),
-    promoSuppressedForNotNew:!!promo && promo.req==='new' && options.newCustomer!==true};
+    promoSuppressedForNotNew:!!promo && promo.req==='new' && options.newCustomer!==true,
+    promoSuppressedForUnconfirmedAutopay:!!promo && promo.autopayRequired===true && options.discountQualified!==true};
 }
 export function phoneCost(phone, options = {}) {
   if(phone.listingHold)return {due:null,commitment:null,year:null,netDevice:null,
@@ -313,6 +315,8 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
         [unavailablePhones+' phone promotion(s) observed out of stock are excluded from recommendations and savings estimates.'] : []),
       ...(unconfirmedPhonePorts>0 ?
         ['Port-in-only phone promotions are excluded from recommendations until you confirm number-transfer eligibility. You can still browse them under Phone Deals.'] : []),
+      ...(plans.some(x=>x.cost.promoSuppressedForUnconfirmedAutopay)?
+        ['AutoPay-required introductory prices are excluded until you confirm the carrier payment enrollment condition.'] : []),
       ...(plans.some(x=>x.cost.conditionalDiscountUnconfirmed)?
         ['AutoPay, Auto-Refill or AutoPay + eBilling discounts are excluded until you confirm all required enrollment conditions.'] : []),
       ...(plans.some(x=>x.cost.knownMonthlyFeeTotal>0||x.cost.knownActivationFeeTotal>0)?

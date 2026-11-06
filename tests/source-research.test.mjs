@@ -308,21 +308,23 @@ test('Metro first bill and optional new-line Boost/Red Pocket discounts are chec
   scenario:{currentMonthly:80,lines:1,horizon:12,today:date,newCustomer:true}});
  assert.equal(newReport.chosen.serviceTotal,210);
 });
-test('US Mobile selected port-in headline is never applied without confirmed eligible transfer',()=>{
+test('US Mobile selected port-in headline requires confirmed transfer AND AutoPay qualification',()=>{
  for(const [id,regular,discounted] of [
   ['usm-starter',300,240],['usm-premium',528,414]]){
   const offer=get(id),record=research.records[id];
   assert.equal(record.publishedPromoRequirement,'port');
   assert.equal(researchStatus(offer,record,{today:date}).state,'published_match');
   assert.equal(planCost(offer,1,{today:date}).year,regular);
-  assert.equal(planCost(offer,1,{today:date,canPort:true}).year,discounted);
+  assert.equal(planCost(offer,1,{today:date,canPort:true}).year,regular,'port alone is not AutoPay');
+  assert.equal(planCost(offer,1,{today:date,discountQualified:true}).year,regular,'AutoPay alone is not port');
+  assert.equal(planCost(offer,1,{today:date,canPort:true,discountQualified:true}).year,discounted);
   const falsePromo={...offer,promo:{...offer.promo,price:1}};
   assert.equal(researchStatus(falsePromo,record,{today:date}).state,'conflict');
   const base=simulateSwitch({catalog,type:'plan',id,researchEvidence:research,
    scenario:{lines:1,currentMonthly:80,horizon:12,today:date,canPort:false}});
   assert.equal(base.chosen.serviceTotal,regular);
   const eligible=simulateSwitch({catalog,type:'plan',id,researchEvidence:research,
-   scenario:{lines:1,currentMonthly:80,horizon:12,today:date,canPort:true}});
+   scenario:{lines:1,currentMonthly:80,horizon:12,today:date,canPort:true,discountQualified:true}});
   assert.equal(eligible.chosen.serviceTotal,discounted);
   assert.equal(eligible.confidence,'indicative_not_fully_verified');
  }

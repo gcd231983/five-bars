@@ -108,14 +108,15 @@
       "promo": {
         "price": 15,
         "months": 6,
-        "text": "$15/mo for the first 6 months for eligible port-ins (selected online offer); verify checkout code",
-        "req": "port"
+        "text": "$15/mo for 6 months with eligible number transfer and AutoPay; then $25/mo. Confirm at checkout",
+        "req": "port",
+        "autopayRequired": true
       },
       "tax": true,
       "pri": false,
       "hot": "20GB hotspot",
       "video": "SD video by default; higher resolution may require a plan/network upgrade",
-      "extra": "First 6 months at $15/mo for eligible port-ins on current monthly offer, then $25/mo; annual option is distinct. Unlimited Starter 20GB hotspot on Dark Star; hotspot and high-speed data terms vary by network. The current plans page shows this selected offer; separate official US Mobile October articles advertise alternate codes/prices. Do not assume campaigns stack or the advertised discount applies without confirmed port-in, offer channel and checkout.",
+      "extra": "First 6 months at $15/mo for eligible port-ins on current monthly offer, then $25/mo; annual option is distinct. Unlimited Starter 20GB hotspot on Dark Star; hotspot and high-speed data terms vary by network. The current plans page shows this selected offer; separate official US Mobile October articles advertise alternate codes/prices. An eligible number transfer and AutoPay enrollment are both required; carrier limits this promotion to five per household. Do not assume campaigns stack, that every additional line qualifies, or that checkout guarantees the discount.",
       "url": "https://www.usmobile.com/plans",
       "family": {
         "2": 25,
@@ -135,14 +136,15 @@
       "promo": {
         "price": 25,
         "months": 6,
-        "text": "$25/mo for the first 6 months for eligible port-ins (selected online offer); verify checkout code",
-        "req": "port"
+        "text": "$25/mo for 6 months with eligible number transfer and AutoPay; then $44/mo. Confirm at checkout",
+        "req": "port",
+        "autopayRequired": true
       },
       "tax": true,
       "pri": true,
       "hot": "Dark Star: 100GB full-speed hotspot, then 100GB at up to 8Mbps; other networks differ",
       "video": "SD video by default on published broadband label; streaming upgrades depend on eligible network",
-      "extra": "First 6 months at $25/mo for eligible port-ins, then $44/mo. Premium hotspot/high-speed allowances vary across Dark Star, Warp and Light Speed; confirm which network you activate. The current plans page shows this selected offer; separate official US Mobile October articles advertise alternate codes/prices. Do not assume campaigns stack or the advertised discount applies without confirmed port-in, offer channel and checkout.",
+      "extra": "First 6 months at $25/mo for eligible port-ins, then $44/mo. Premium hotspot/high-speed allowances vary across Dark Star, Warp and Light Speed; confirm which network you activate. The current plans page shows this selected offer; separate official US Mobile October articles advertise alternate codes/prices. An eligible number transfer and AutoPay enrollment are both required; carrier limits this promotion to five per household. Do not assume campaigns stack, that every additional line qualifies, or that checkout guarantees the discount.",
       "url": "https://www.usmobile.com/plans",
       "family": {
         "2": 44,
