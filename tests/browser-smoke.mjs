@@ -174,7 +174,13 @@ try {
     await page.locator('#fb-provider').selectOption('US Mobile');
     await page.locator('#fb-device').selectOption('byop');
     await page.locator('#fb-finder-form button[type="submit"]').click();
-    assert.match(await page.locator('#fb-finder-results').innerText(),/Port-in introductory discounts are excluded/i);
+    const caveats=page.locator('#fb-finder-results .fb-finder-caveats');
+    assert.equal(await caveats.isVisible(),true,'Eligibility details remain accessible');
+    await caveats.locator('summary').click();
+    assert.match(await caveats.innerText(),/Port-in introductory discounts are excluded/i);
+    assert.equal(await page.locator('#fb-finder-results .fb-result:visible').count(),
+      await page.locator('#fb-finder-results .fb-result').count(),
+      'All eligible matching cards should be visible, not hidden after the third');
     assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated over 12 months/);
     await page.locator('#fb-port-status').selectOption('yes');
     await page.locator('#fb-finder-form button[type="submit"]').click();
