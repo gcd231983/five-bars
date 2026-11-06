@@ -103,7 +103,7 @@ try{
   await scenario('compare-reload-cap-and-carrier-switch',{width:390,height:844},async page=>{
     await ready(page);
     await page.evaluate(()=>window.fiveBarsBrowsePlans('all'));
-    await page.locator('#r-usm-starter .fb-compare-btn').click();
+    await page.locator('#r-usm-starter button[data-compare-type="plan"][data-compare-id="usm-starter"]').click();
     assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 chosen/);
     await changeTab(page,'compare');
     await page.locator('#fb-compare-search').fill('Tello');
@@ -202,7 +202,7 @@ try{
     await ready(page);
     await page.evaluate(()=>window.fiveBarsBrowsePlans('all'));
     assert.equal(await page.locator('#plans-list .row').count(),38);
-    await page.locator('#r-usm-starter .fb-compare-btn').click();
+    await page.locator('#r-usm-starter button[data-compare-type="plan"][data-compare-id="usm-starter"]').click();
     assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 chosen/);
     await changeTab(page,'watchlist');
     assert.match(await page.locator('#fb-watchlist-root').innerText(),/local storage|saved watchlist|Stored on this device/i);
