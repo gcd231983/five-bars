@@ -150,6 +150,11 @@ try {
       document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false,
       {timeout:15000});
     await page.locator('#r-usm-starter').waitFor({state:'attached',timeout:15000});
+    if(view==='mobile'){
+      assert.equal(await page.locator('.fb-mobile-evidence').getAttribute('open'),null,
+        'Mobile pricing evidence should be collapsed by default');
+      await page.locator('.fb-mobile-evidence summary').click();
+    }
     const evidenceSnapshot=await page.locator('#fb-evidence-summary-copy').innerText();
     assert.match(evidenceSnapshot,/76 of 78 offers have dated public-source research/);
     assert.ok(evidenceSnapshot.includes(auditSummary.manuallyFullyReviewed+' independently documented full-checkout reviews'));
@@ -161,8 +166,8 @@ try {
     assert.equal(await page.evaluate(()=>document.activeElement?.id),'main-content',
       'keyboard skip navigation must move focus into the main content');
     await page.locator('#t-finder').click();
-    assert.equal(await page.locator('.fb-tab-swipe').isVisible(),view==='mobile',
-      'mobile navigation should offer a swipe hint');
+    assert.equal(await page.locator('.fb-tab-swipe').isVisible(),false,
+      'Mobile tab instructions should not crowd the page');
     await page.locator('#t-finder').focus();
     await page.keyboard.press('ArrowRight');
     assert.equal(await page.locator('#p-plans').isVisible(),true,'Arrow key activates next tab');

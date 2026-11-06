@@ -498,6 +498,29 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
  .fb-evidence-summary,.fresh{font-size:.76rem}
  .fb-price-guide{padding:10px 12px}
 }
+
+/* Final mobile polish: plain, legible hero and optional source disclosures. */
+.fb-mobile-evidence>summary{cursor:pointer;font-weight:700;color:var(--muted);padding:12px 14px;border:1px solid var(--line);border-radius:12px;list-style:auto}
+.fb-mobile-evidence[open]>summary{margin-bottom:10px}
+.fb-price-guide>details>summary{cursor:pointer;font-weight:700;min-height:40px;display:flex;align-items:center}
+.fb-price-guide>details>p{margin:12px 0}
+@media(min-width:621px){.fb-mobile-evidence>summary{display:none}.fb-mobile-evidence:not([open])>.fresh,.fb-mobile-evidence:not([open])>.fb-evidence-summary{display:flex}}
+@media(max-width:620px){
+ .fb-welcome,.fb-welcome::before,.fb-welcome::after{background-image:none!important;box-shadow:none!important;filter:none!important}
+ .fb-welcome{background-color:#102b3c!important;color:#fff!important;overflow:visible}
+ .fb-welcome::before,.fb-welcome::after{content:none!important;display:none!important}
+ .fb-welcome h2{font-size:clamp(1.5rem,6.8vw,2rem)!important;letter-spacing:-.02em!important;line-height:1.2!important;color:#fff!important;text-shadow:none!important}
+ .fb-welcome p,.fb-welcome small{color:#dce8ed!important;text-shadow:none!important}
+ .fb-welcome .fb-eyebrow{color:#5fe4d6!important}
+ .fb-welcome .fb-quick-actions button{background:#27c7b9!important;color:#062b32!important}
+ .fb-mobile-evidence{margin:8px 0}
+ .fb-mobile-evidence:not([open])>.fresh,.fb-mobile-evidence:not([open])>.fb-evidence-summary{display:none}
+ .fb-price-guide{margin:0 0 10px;border-left-width:2px;padding:7px 12px}
+ .fb-price-guide>details:not([open])>p,.fb-price-guide>details:not([open])>.fb-pricing-details{display:none}
+ .fb-tab-swipe{display:none!important}
+ .tabs .tab{min-height:40px;padding:9px 12px}
+ .tabs{position:static;box-shadow:none}
+}
 </style>
 </head>
 <body>
@@ -557,11 +580,13 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
   </p>
   <div class="toggles" id="toggles" role="group" aria-label="Must-haves"></div>
   </div></details>
+  <details class="fb-mobile-evidence" open><summary>Pricing transparency and review status</summary>
   <p class="fresh" id="fresh"></p>
   <div class="fb-evidence-summary" id="fb-evidence-summary" aria-label="Pricing evidence snapshot">
     <div><strong>Public beta: pricing evidence, not a checkout guarantee</strong><p id="fb-evidence-summary-copy" aria-live="polite">Check published-source research and actual carrier checkout before purchasing.</p></div>
     <a href="launch-readiness.html">View evidence status</a>
   </div>
+  </details>
 </header>
 
 <nav class="tabs" aria-label="Sections">
@@ -579,7 +604,7 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 </nav>
 
 <main class="wrap" id="main-content" tabindex="-1">
-  <aside class="fb-price-guide" aria-label="How to read comparison prices"><strong>Read prices with confidence</strong><p>Upfront costs and required future payments are different. Prices, eligibility, taxes and fees can change; verify carrier checkout.</p><details class="fb-pricing-details"><summary>More about our pricing and review standards</summary><p>Monthly cost, upfront payment and minimum service commitment are different amounts. Promotional prices may end; taxes, fees and eligibility can change the final bill. Check the source and review status before choosing a provider.</p><a href="disclosures.html">How we calculate and qualify prices</a> · <a href="editorial.html">Our review standards</a></details></aside>
+  <aside class="fb-price-guide" aria-label="How to read comparison prices"><details><summary>How to read prices and upfront costs</summary><p>Upfront costs and required future payments are different. Prices, eligibility, taxes and fees can change; verify carrier checkout.</p><details class="fb-pricing-details"><summary>More about our pricing and review standards</summary><p>Monthly cost, upfront payment and minimum service commitment are different amounts. Promotional prices may end; taxes, fees and eligibility can change the final bill. Check the source and review status before choosing a provider.</p><a href="disclosures.html">How we calculate and qualify prices</a> · <a href="editorial.html">Our review standards</a></details></details></aside>
   <section id="p-finder" role="tabpanel" aria-labelledby="t-finder">
     <div class="panel">
       <h2>Find a better wireless plan</h2>
@@ -1203,5 +1228,11 @@ boot();
 <script type="module" src="value-ui.mjs?v=20261106-wizard2"></script>
 <script type="module" src="watchlist-ui.mjs"></script>
 <script type="module" src="switch-ui.mjs"></script>
+<script>
+/* Start mobile evidence collapsed while leaving desktop source status visible. */
+if(window.matchMedia('(max-width:620px)').matches){
+  document.querySelector('.fb-mobile-evidence')?.removeAttribute('open');
+}
+</script>
 </body>
 </html>
