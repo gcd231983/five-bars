@@ -2,7 +2,7 @@
 // UI never makes unverified offer claims. All inputs remain in this browser.
 import {
   MAX_COMPARE, localDay, usd, verificationState, planCost, phoneCost,
-  rankMatches, normalizeCompare
+  rankMatches, normalizeCompare, offerLinkCheck
 } from './value-core.mjs';
 import {reportLink} from './report-core.mjs';
 
@@ -22,6 +22,7 @@ let mvnoHistory = {offers:{}};
 let reviewQueue = null;
 let alertFeed = null;
 let researchAudit = null;
+let scanStatus = null;
 const EVIDENCE_FRESH_MS = 48*60*60*1000;
 
 function element(tag, content, className) {
@@ -112,6 +113,16 @@ function statusNode(offer) {
     'An attributed human checked one specific carrier checkout scenario, NOT a guaranteed price or eligibility for other visitors. Confirm your own checkout.':
     'The catalog price and all promotion terms have not been fully verified';
   wrapper.append(manual);
+  const linkCheck=offerLinkCheck(offer.id,scanStatus);
+  // A 403, timeout, invalid response, or stale scan is NOT proof the carrier
+  // withdrew an offer; nor is HTTP 200 proof that advertised terms still apply.
+  if(linkCheck.state!=='reachable'){
+    const badge=element('span',linkCheck.label,'fb-status fb-evidence-neutral');
+    badge.title=linkCheck.state==='unavailable'?
+      'Latest automated request could not read this offer link. This does not prove the deal has ended or that its price changed. Confirm current terms directly with the carrier.':
+      'No recent, valid automated link check is available. Confirm price, eligibility, taxes and all terms with the carrier.';
+    wrapper.append(badge);
+  }
   if(offer.listingHold){
     const held=element('span','Retail price under review','fb-status fb-evidence-warning');
     held.title='Selected retailer channel and qualifying plan are not independently supported; no purchasable cash quote.';
@@ -350,10 +361,11 @@ function renderFinder() {
           'Pay '+usd(c.upfrontDue)+' upfront for 12 months · '+usd(c.year)+' estimated first year':
           usd(c.year)+' estimated first year · '+usd(c.upfrontDue)+' estimated first payment'));
         card.append(price);
+        // Trust evidence must be visible without opening the details panel.
+        card.append(statusNode(p));
         if(c.annualPrepaid)card.append(element('p','Annual prepaid — not monthly billing','fb-result-warning'));
         const info=element('details',null,'fb-result-details');
         info.append(element('summary','Eligibility, evidence and full cost details'));
-        info.append(statusNode(p));
         if (c.annualPrepaid) info.append(note('This is a prepaid ANNUAL plan, not a monthly subscription. Pay the full '+usd(c.upfrontDue)+' before service starts.'));
         if (c.firstMonthAdjusted) info.append(note('Estimated first payment '+usd(c.upfrontDue)+'; subsequent base service plus known recurring fees '+usd(c.regularMonthTotal)+'/month. Confirm all terms.'));
         if (c.conditionalDiscountUnconfirmed) info.append(note('Payment-method discount NOT assumed. Check AutoPay, eBilling or Auto-Refill eligibility.'));
@@ -859,13 +871,14 @@ async function start() {
     priceHistory=history?.schema===1 && typeof history.offers==='object'?history:{offers:{}};
     mvnoEvidence=mvnoProof?.schema===1 && typeof mvnoProof.offers==='object'?mvnoProof:null;
     mvnoHistory=mvnoRecords?.schema===1 && typeof mvnoRecords.offers==='object'?mvnoRecords:{offers:{}};
+    scanStatus=status?.schema===1 && status.offers && typeof status.offers==='object'?status:null;
     reviewQueue=queue?.schema===1 && Array.isArray(queue.items)?queue:null;
     alertFeed=alerts?.schema===1 && Array.isArray(alerts.events)?alerts:null;
     researchAudit=audit?.schema===1 && Array.isArray(audit.offers)?audit:null;
     window.fiveBarsWatchData={
       catalog,phoneEvidence:priceEvidence||{offers:{}},
       mvnoEvidence:mvnoEvidence||{offers:{}},siteAlerts:alertFeed||{events:[]},
-      status:status?.schema===1?status:{},verifications:reviews,
+      status:scanStatus||{},verifications:reviews,
       researchEvidence:research?.schema===1?research:null,researchAudit
     };
     window.dispatchEvent(new Event('fivebars:watch-data'));
