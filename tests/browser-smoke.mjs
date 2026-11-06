@@ -390,6 +390,55 @@ try {
     assert.ok(await page.evaluate(v=>document.documentElement.scrollWidth<=v+2,viewport.width),
       'New comparison workspace must not overflow the mobile viewport');
     await page.screenshot({path:join(output,view+'-comparison.png'),fullPage:true});
+
+    // Actual reported shopper screenshot: a 1GB plan, unlimited plan and
+    // 20GB plan must show meaningful fit differences alongside price.
+    const decisionPage=await context.newPage();
+    decisionPage.on('pageerror',e=>errors.push(view+' decision comparison: '+e.message));
+    await decisionPage.addInitScript(()=>{
+      localStorage.setItem('fivebars-compare-v1',JSON.stringify([
+        {type:'plan',id:'cc'},{type:'plan',id:'cricket-supreme'},
+        {type:'plan',id:'tello-power'}
+      ]));
+      localStorage.setItem('fivebars-household-compare-v1',
+        JSON.stringify({lines:1,cannotPort:false,canPort:false,
+          newCustomer:false,discountQualified:false,fromFinder:false}));
+    });
+    await decisionPage.goto(base+'#compare',{waitUntil:'domcontentloaded'});
+    await decisionPage.waitForFunction(()=>
+      document.querySelectorAll('.fb-compare-highlight').length===3);
+    assert.equal(await decisionPage.locator('.fb-compare-chips').isVisible(),false,
+      'Repeated selected chips should be collapsed when cards already show the offers');
+    assert.equal(await decisionPage.locator('.fb-compare-card-remove').count(),3,
+      'Cards should provide direct removal without reopening the selected list');
+    const insight=await decisionPage.locator('.fb-compare-insight').innerText();
+    assert.match(insight,/Tello — Power 20GB.*\$240\.00/s);
+    assert.match(insight,/Difference between the highest and lowest estimates: \$480\.00/);
+    assert.match(insight,/not a service recommendation|Lowest price does not mean best fit/i);
+    const consumer=decisionPage.locator('.fb-compare-highlight').filter({hasText:'Consumer Cellular'});
+    assert.match(await consumer.innerText(),/1GB/);
+    assert.match(await consumer.innerText(),/AT&T/);
+    assert.match(await consumer.innerText(),/\$370\.00/);
+    assert.match(await consumer.innerText(),/\$30\.00\/mo for 12 months/);
+    assert.match(await consumer.innerText(),/\$10\.00 known one-time activation/);
+    assert.match(await consumer.innerText(),/\$5\.00\/mo published carrier fees included/);
+    const cricket=decisionPage.locator('.fb-compare-highlight').filter({hasText:'Cricket'});
+    assert.match(await cricket.innerText(),/Unlimited/);
+    assert.match(await cricket.innerText(),/\$720\.00/);
+    const tello=decisionPage.locator('.fb-compare-highlight').filter({hasText:'Tello'});
+    assert.match(await tello.innerText(),/20GB/);
+    assert.match(await tello.innerText(),/T-Mobile/);
+    assert.match(await tello.innerText(),/\$240\.00/);
+    await decisionPage.screenshot({path:join(output,view+'-decision-first-comparison.png'),fullPage:true});
+    assert.ok(await decisionPage.evaluate(width=>document.documentElement.scrollWidth<=width+2,viewport.width),
+      'Decision-first comparison must fit '+view+' width');
+    await consumer.locator('.fb-compare-card-remove').click();
+    assert.equal(await decisionPage.locator('.fb-compare-highlight').count(),2);
+    await decisionPage.locator('.fb-compare-edit summary').click();
+    assert.equal(await decisionPage.locator('.fb-compare-chips').isVisible(),true,
+      'Selected choices remain editable on demand');
+    await decisionPage.close();
+
     await page.locator('#fb-compare-root .fb-compare-clear').click();
     await page.locator('#t-plans').click();
     assert.equal(await page.locator('#p-plans').isVisible(),true);
