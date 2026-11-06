@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 
 const workflow=readFileSync(new URL('../.github/workflows/daily.yml',import.meta.url),'utf8');
-const job=name=>workflow.match(new RegExp('^  '+name+':[\\s\\S]*?(?=^  [a-z]+:|$(?![\\s\\S]))','m'))?.[0]||'';
+const job=name=>workflow.match(new RegExp('^  '+name+':[\\s\\S]*?(?=^  [a-z][a-z-]*:|$(?![\\s\\S]))','m'))?.[0]||'';
 
 test('Pages publishes the exact generated revision that passed regression and browser gates',()=>{
  const update=job('update'),browser=job('browser'),deploy=job('deploy');
@@ -21,6 +21,17 @@ test('Pages publishes the exact generated revision that passed regression and br
  assert.doesNotMatch(deploy,/actions\/checkout|actions\/upload-pages-artifact|build-release/);
  assert.match(deploy,/needs: \[update, browser\]/);
  assert.match(deploy,/needs\.update\.result == 'success' && needs\.browser\.result == 'success'/);
+});
+
+test('a live Pages smoke check must confirm the same validated source commit as the browser artifact',()=>{
+ const update=job('update'),browser=job('browser'),deploy=job('deploy'),production=job('production-smoke');
+ assert.match(browser,/FIVE_BARS_RELEASE_SHA: \$\{\{ needs\.update\.outputs\.validated_sha \}\}/);
+ assert.match(production,/needs: \[update, deploy\]/);
+ assert.match(production,/FIVE_BARS_EXPECTED_SHA: \$\{\{ needs\.update\.outputs\.validated_sha \}\}/);
+ assert.match(production,/ref: \$\{\{ needs\.update\.outputs\.validated_sha \}\}/);
+ assert.match(production,/node scripts\/production-smoke\.mjs/);
+ assert.match(deploy,/actions\/deploy-pages@v4/);
+ assert.match(update,/validated_sha: \$\{\{ steps\.snapshot\.outputs\.sha \}\}/);
 });
 
 test('successful human review workflows publish trusted main without relying on token push events',()=>{

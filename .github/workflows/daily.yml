@@ -103,6 +103,8 @@ jobs:
           node-version: '22'
       - run: npm install --no-save playwright@1.56.1
       - name: Build versioned static release
+        env:
+          FIVE_BARS_RELEASE_SHA: ${{ needs.update.outputs.validated_sha }}
         run: node scripts/build-release.mjs
       - run: node tests/browser-smoke.mjs
         env:
@@ -128,3 +130,23 @@ jobs:
       - uses: actions/configure-pages@v5
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  production-smoke:
+    name: Verify public production website
+    needs: [update, deploy]
+    if: ${{ needs.deploy.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update.outputs.validated_sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify public DNS, homepage, source status, sitemap, and deployed revision
+        env:
+          FIVE_BARS_EXPECTED_SHA: ${{ needs.update.outputs.validated_sha }}
+        run: node scripts/production-smoke.mjs
