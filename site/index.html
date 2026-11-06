@@ -857,7 +857,7 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
       </div>
       <div class="fb-plan-catalog-utilities" role="group" aria-label="Search and sort plan catalog">
         <label class="fb-plan-search-field" for="fb-plans-search">Search plans or carriers
-          <input type="search" id="fb-plans-search" autocomplete="off" placeholder="e.g. Tello, 20GB, Cricket"/>
+          <input type="search" id="fb-plans-search" autocomplete="off" maxlength="80" placeholder="e.g. Tello, 20GB, Cricket"/>
         </label>
         <label for="fb-plans-network">Network
           <select id="fb-plans-network">
@@ -974,6 +974,8 @@ const SORTS = {
   phone:[["year","lowest first-year cost"],["due","least estimated due today"],["price","lowest phone price"]]
 };
 const state = {lines:1, net:"any", provider:"any", mode:"byop", sort:"year", tab:"finder", t:{unl:true}};
+// Ephemeral browsing search: never included in shared links or stored preferences.
+let planBrowseQuery="";
 try{
   const saved = JSON.parse(localStorage.getItem("fivebars-prefs")||"null");
   if(saved && typeof saved==="object"){Object.assign(state, saved); state.t = saved.t||{};}
@@ -1195,7 +1197,14 @@ function renderControls(){
 
 /* ---------- render: plans ---------- */
 function renderPlans(){
-  const rows = PLANS.filter(planVisible).map(p=>({p, c:planCalc(p)}));
+  const eligibleRows = PLANS.filter(planVisible).map(p=>({p, c:planCalc(p)}));
+  const searchText=planBrowseQuery.trim();
+  const needle=searchText.toLocaleLowerCase();
+  // Search affects display only; quotes, eligibility and sorting still come
+  // from the existing calculators and conservative visibility rules.
+  const rows=eligibleRows.filter(({p})=>!needle||
+    [p.carrier,p.plan,p.data,NET[p.net]?.name].filter(Boolean)
+      .join(' ').toLocaleLowerCase().includes(needle));
   const by = {
     year:(a,b)=>a.c.year-b.c.year,
     reg:(a,b)=>a.c.reg-b.c.reg || a.c.year-b.c.year,
@@ -1216,22 +1225,35 @@ function renderPlans(){
   if(state.net!=="any")active.push(NET[state.net]?.name||"Selected network");
   if(state.provider!=="any")active.push(state.provider);
   if(L!==1)active.push(L+" lines");
-  $("#fb-plans-catalog-count").textContent=
+  $("#fb-plans-catalog-count").textContent=searchText?
+    "Showing "+rows.length+" matching plans out of "+eligibleRows.length+
+      " eligible listings ("+PLANS.length+" in the catalog). Search: "+searchText+".":
     "Showing "+rows.length+" of "+PLANS.length+" listed plans. "+
-    (rows.length<PLANS.length?"Other plans may be hidden by filters or multi-line eligibility.":"All catalog plans are displayed.");
+      (rows.length<PLANS.length?"Other plans may be hidden by filters or multi-line eligibility.":"All catalog plans are displayed.");
   $("#fb-plans-filters-summary").textContent=active.length?
     "Active: "+active.join(" · ")+". Select a catalog view above to reset filters, or refine them.":
     "Full catalog view · all networks, one line, no data or provider restrictions.";
+  $("#fb-plans-network").value=state.net;
+  $("#fb-plans-order").value=state.sort;
+  $("#fb-plans-clear-search").hidden=!searchText;
   $("#fb-plans-show-unlimited").setAttribute("aria-pressed",
     String(!!state.t.unl&&state.net==="any"&&state.provider==="any"&&L===1&&
       !state.t.pri&&!state.t.hot&&!state.t.tax));
-  $("#fb-plans-show-all").setAttribute("aria-pressed",String(rows.length===PLANS.length));
+  $("#fb-plans-show-all").setAttribute("aria-pressed",
+    String(!searchText&&eligibleRows.length===PLANS.length));
 
   $("#plans-note").textContent = L>1
     ? "12-month cost covers all " + L + " lines. Annual prepaid plans without an explicit multi-line upfront quote are excluded. Other unknown multi-line prices are estimated from one-line rates. Intro discounts are excluded for multiple lines unless eligibility is explicitly recorded."
     : "New-customer, port-in, and AutoPay/eBilling/Auto-Refill discounts are excluded until you confirm eligibility. Known carrier provider and activation fees are included only where documented. Taxes and unknown charges may add more. Annual prepaid amounts are due upfront.";
   const list = $("#plans-list");
-  if(!rows.length){ list.replaceChildren(emptyState()); return; }
+  if(!rows.length){
+    if(searchText){
+      list.replaceChildren(el("li",{class:"empty"},
+        el("div",null,"No plans match “"+searchText+"” with these filters. You can clear the search or reset to the full catalog."),
+        el("button",{type:"button",class:"btn ghost",onclick:clearPlanBrowseSearch},"Clear search")));
+    } else list.replaceChildren(emptyState());
+    return;
+  }
   list.replaceChildren(...rows.map(({p,c},i)=>{
     const n = NET[p.net];
     const scan = AUTO_STATUS?.offers?.[p.id];
@@ -1406,6 +1428,9 @@ function renderPhones(){
  // Returning to the full catalog intentionally uses one line, because some
  // annual prepaid and retail plans have no documented multi-line quote.
 function browsePlans(mode="all"){
+  // "Browse all" means all—not an unnoticed search left from the last visit.
+  planBrowseQuery="";
+  $("#fb-plans-search").value="";
   state.lines=1;
   state.net="any";
   state.provider="any";
@@ -1458,6 +1483,26 @@ document.querySelectorAll(".tab").forEach(b=>{
   });
 });
 
+function clearPlanBrowseSearch(){
+  planBrowseQuery="";
+  const field=$("#fb-plans-search");
+  field.value="";
+  renderPlans();
+  field.focus();
+}
+$("#fb-plans-search").addEventListener("input",event=>{
+  planBrowseQuery=event.target.value;
+  renderPlans();
+});
+$("#fb-plans-clear-search").addEventListener("click",clearPlanBrowseSearch);
+$("#fb-plans-network").addEventListener("change",event=>{
+  state.net=event.target.value;
+  update();
+});
+$("#fb-plans-order").addEventListener("change",event=>{
+  state.sort=event.target.value;
+  update();
+});
 $("#fb-plans-show-all").addEventListener("click",()=>browsePlans("all"));
 $("#fb-plans-show-unlimited").addEventListener("click",()=>browsePlans("unlimited"));
 $("#fb-plans-refine-filters").addEventListener("click",()=>{
