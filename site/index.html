@@ -1293,9 +1293,13 @@ $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:0
     // access fails. It never changes scanner status or proves live checkout.
     const publication=s.officialPublication;
     let publicationReference=null;
+    const publicationDay=publication?.publishedOn;
+    const publishedAt=Date.parse(publicationDay+"T12:00:00Z");
     if(publication && typeof publication.url==="string" &&
-      /^\d{4}-\d{2}-\d{2}$/.test(publication.publishedOn) &&
-      typeof publication.scope==="string"){
+      /^\d{4}-\d{2}-\d{2}$/.test(publicationDay) &&
+      Number.isFinite(publishedAt) &&
+      new Date(publishedAt).toISOString().slice(0,10)===publicationDay &&
+      publishedAt<=Date.now() && typeof publication.scope==="string"){
       try{
         const sourceHost=new URL(s.url).hostname.replace(/^www\./,"");
         const target=new URL(publication.url);
