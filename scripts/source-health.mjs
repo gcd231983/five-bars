@@ -12,7 +12,7 @@ export function classifySourceFailure(record){
  if(record?.status>=500)return 'source_server_error';
  const text=String(record?.note||record?.error||'').toLowerCase();
  if(text.includes('exceeded')&&text.includes('mb'))return 'response_too_large';
- if(text.includes('timeout')||text.includes('aborted'))return 'request_timeout';
+ if(text.includes('timeout')||text.includes('timed out')||text.includes('aborted'))return 'request_timeout';
  if(text.includes('redirect'))return 'unexpected_redirect';
  if(text.includes('blocked')||text.includes('captcha'))return 'automated_access_blocked';
  return 'request_unavailable';
