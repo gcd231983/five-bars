@@ -91,3 +91,46 @@ test('source panel explains blocked checks without claiming a withdrawn or verif
  assert.match(nodes['#scan-status'].textContent,/1 sources have been unavailable/);
  assert.doesNotMatch(rendered,/checkout verified|price confirmed/i);
 });
+
+test('official Tello publication remains an attributed historical fallback, not proof of a live price',()=>{
+ const html=readFileSync(new URL('../site/index.html',import.meta.url),'utf8');
+ const fn=html.match(/^function renderSources\\(\\)\\{[\\s\\S]*?^\\}/m)?.[0];
+ assert.ok(fn);
+ const publication={
+   url:'https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/',
+   publishedOn:'2026-10-22',
+   scope:'Carrier-published terms only. Not live checkout, taxes or current eligibility verification.'
+ };
+ function view(ref){
+   let rows=[];
+   const nodes={
+     '#src-date':{textContent:''},'#scan-status':{textContent:''},
+     '#src-list':{replaceChildren(...items){rows=items;}}
+   };
+   runInNewContext(fn+';renderSources();',{
+     URL,
+     $:selector=>nodes[selector],
+     CHECKED:'2026-10-29',
+     SOURCES:[{name:'Tello plans',url:'https://tello.com/buy/custom_plans',
+       what:'Official monthly tiers',officialPublication:ref}],
+     AUTO_STATUS:{generatedAt:new Date().toISOString(),summary:{
+       sourcesChecked:1,sourcesReachable:0,reviewAlerts:0},
+       sources:[{url:'https://tello.com/buy/custom_plans',ok:false,
+         failureReason:'automated_access_blocked'}]},
+     el:(tag,props,...children)=>({tag,props,children})
+   });
+   return JSON.stringify(rows);
+ }
+ const result=view(publication);
+ assert.match(result,/Dated official carrier publication/);
+ assert.match(result,/2026-10-22/);
+ assert.match(result,/https:\\/\\/blog\\.tello\\.com\\/news\\/halloween/);
+ assert.match(result,/Not live checkout, taxes or current eligibility verification/);
+ assert.match(result,/do not assume the offer ended/);
+ const thirdParty=view({...publication,url:'https://example.com/claim'});
+ assert.doesNotMatch(thirdParty,/read published terms/);
+ const insecure=view({...publication,url:'http://blog.tello.com/news/claim'});
+ assert.doesNotMatch(insecure,/read published terms/);
+ const malformed=view({...publication,publishedOn:'tomorrow'});
+ assert.doesNotMatch(malformed,/read published terms/);
+});
