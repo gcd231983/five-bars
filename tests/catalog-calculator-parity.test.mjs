@@ -131,3 +131,25 @@ test('Tello promotion stays conditional on its last published day and is exclude
  assert.equal(Boolean(nextDay.live),false);
  assert.equal(coreNext.promoUsed,false);
 });
+
+test('US Mobile introductory quote never assumes AutoPay based on a confirmed port alone',()=>{
+ state.lines=1;
+ context.today='2026-11-06';
+ for(const [id,regular,promo] of [['usm-starter',25,15],['usm-premium',44,25]]){
+  const offer=catalog.plans.find(x=>x.id===id);
+  state.t={canport:true};
+  const withoutPayment=functions.planCalc(offer);
+  assert.equal(withoutPayment.now,regular);
+  assert.equal(withoutPayment.live,false);
+  assert.match(withoutPayment.promoState.why,/requires AutoPay/);
+  state.t={discountqualified:true};
+  assert.equal(functions.planCalc(offer).now,regular,'AutoPay alone does not prove port eligibility');
+  state.t={canport:true,discountqualified:true};
+  const qualified=functions.planCalc(offer);
+  assert.equal(qualified.now,promo);
+  assert.equal(qualified.live,true);
+  assert.equal(qualified.year,6*promo+6*regular);
+  const core=planCost(offer,1,{today:context.today,canPort:true,discountQualified:true});
+  assert.equal(qualified.upfrontDue,core.upfrontDue);
+ }
+});
