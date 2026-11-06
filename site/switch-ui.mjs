@@ -156,6 +156,16 @@ function render(report){
   }));
   section.append(actions);results.append(section);
 }
+// Never display a prior savings quote alongside modified form values.
+// Input, selection and eligibility changes all require a fresh calculation.
+function invalidateStaleSwitchResult(){
+  if(!results.children.length)return;
+  results.replaceChildren();
+  notice('Inputs changed. Recalculate savings using the updated information; the previous estimate is no longer current.');
+}
+form.addEventListener('input',invalidateStaleSwitchResult);
+form.addEventListener('change',invalidateStaleSwitchResult);
+
 form.addEventListener('submit',event=>{
   event.preventDefault();
   const f=new FormData(form);
