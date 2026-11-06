@@ -851,6 +851,28 @@ try {
     assert.doesNotMatch(await expiredCompare.locator('#fb-compare-root').innerText(),
       /Google Pixel 10a/i,'manual comparison attempts must not bypass expiry');
     await expiredCompare.close();
+    // Simulate a tab left open across the published Eastern midnight.
+    // The catalog still contains the expired intro until the next scan;
+    // local date logic must stop advertising it immediately.
+    const rollover=await context.newPage();
+    rollover.on('pageerror',e=>errors.push(view+' calendar rollover: '+e.message));
+    await rollover.clock.install({time:new Date('2026-11-10T04:58:00Z')});
+    await rollover.goto(base,{waitUntil:'domcontentloaded'});
+    await rollover.locator('#r-tello').waitFor({state:'attached',timeout:15000}).catch(()=>{});
+    await rollover.locator('#t-plans').click();
+    await rollover.locator('.fb-advanced-filters summary').click();
+    const unlimited=rollover.getByRole('button',{name:'Unlimited data',exact:true});
+    if(await unlimited.getAttribute('aria-pressed')==='true')await unlimited.click();
+    const newLine=rollover.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'});
+    if(await newLine.getAttribute('aria-pressed')!=='true')await newLine.click();
+    await rollover.locator('#carrier').selectOption('Tello');
+    assert.match(await rollover.locator('#r-tello .price .now').innerText(),/\\$10/,
+      'eligible new-line promo is active through Nov 9 Eastern');
+    await rollover.clock.setFixedTime(new Date('2026-11-10T05:02:00Z'));
+    await rollover.evaluate(()=>window.dispatchEvent(new Event('focus')));
+    assert.match(await rollover.locator('#r-tello .price .now').innerText(),/\\$15/,
+      'the already-open page must remove expired intro rate after midnight Eastern');
+    await rollover.close();
     if(process.env.FIVE_BARS_SITE_DIR)assert.equal(assetVersions.size,1,'all styles and modules use the same release version');
     await context.close();
   }
