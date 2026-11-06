@@ -715,6 +715,16 @@ function appendReviewQueue(root){
     ' medium and '+(stats.routine||0)+' routine reviews. '+
     (stats.withoutCurrentManualReview||0)+' listings have no recent documented full-terms review.',
     'fb-watch-meta'));
+  if(stats.publicationEvidence){
+    const pub=stats.publicationEvidence;
+    section.append(element('p',
+      'Dated public-source research: '+(pub.partial||0)+' partial, '+
+      (pub.unresearched||0)+' missing, '+(pub.aged||0)+' aged, '+
+      (pub.conflictsOrInvalid||0)+' conflicting or invalid. '+
+      (stats.retailerHolds||0)+' retailer-channel holds and '+
+      (stats.stockHolds||0)+' stock holds remain separate. Public source research is not a checkout quote.',
+      'fb-watch-meta'));
+  }
   const blocked=Array.isArray(reviewQueue.blockedProviders)?reviewQueue.blockedProviders:[];
   if(blocked.length){
     section.append(note('Carrier offer pages not fully accessible to the automatic scanner: '+
@@ -746,7 +756,9 @@ function appendReviewQueue(root){
       card.append(title);
       card.append(element('p',
         item.priority.toUpperCase()+' PRIORITY · '+item.kind+
-        (item.manualReviewStatus==='verified'?' · Full terms manually checked':' · Full terms not fully verified'),
+        (item.manualReviewStatus==='verified'?' · Human checkout scenario reviewed':' · Full terms not fully verified')+
+        (item.officialResearchState && item.officialResearchState!=='published_match' ?
+         ' · Published research: '+item.officialResearchState.replaceAll('_',' ') : ''),
         'fb-subtle'));
       for(const detail of item.reasons.slice(0,3))card.append(note(detail));
       const links=element('div',null,'fb-card-actions');

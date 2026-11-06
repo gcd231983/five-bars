@@ -14,7 +14,7 @@ test('when ALL sources reject requests, known expirations still publish and no p
   await mkdir(join(fixture,'site/data'),{recursive:true});
   for(const name of [
    'auto-core.mjs','auto-update.mjs','price-evidence.mjs','mvno-evidence.mjs',
-   'review-queue.mjs','alert-engine.mjs','source-health.mjs'
+   'review-queue.mjs', 'source-research.mjs','alert-engine.mjs','source-health.mjs'
   ])await copyFile(new URL('../scripts/'+name,import.meta.url),join(fixture,'scripts',name));
   await copyFile(new URL('../site/value-core.mjs',import.meta.url),join(fixture,'site/value-core.mjs'));
   const before={

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {buildReviewQueue} from '../scripts/review-queue.mjs';
 import {checkoutRecord} from './helpers/checkout-fixtures.mjs';
+import {readFileSync} from 'node:fs';
 
 const dt='2026-11-02T14:20:00.000Z';
 const today='2026-11-02';
@@ -78,4 +79,51 @@ test('queue output contains only public offer metadata, no scraped web page payl
  assert.doesNotMatch(json,/_html|cookie|authorization/i);
  assert.ok(data.items.every(x=>x.id&&x.carrier&&Array.isArray(x.reasons)));
  assert.ok(data.items.length<=data.summary.offers);
+});
+
+test('real catalog prioritizes partial research and held retailer paths without inventing checkouts',()=>{
+ const catalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ const researchEvidence=JSON.parse(readFileSync(new URL('../site/data/research-evidence.json',import.meta.url),'utf8'));
+ const doc=buildReviewQueue({catalog,researchEvidence,today:'2026-11-06',
+   generatedAt:'2026-11-06T15:00:00.000Z'});
+ assert.equal(doc.summary.offers,78);
+ assert.equal(doc.summary.withoutCurrentManualReview,78);
+ assert.equal(doc.summary.retailerHolds,3);
+ assert.equal(doc.summary.stockHolds,6);
+ assert.deepEqual(doc.summary.publicationEvidence,{
+   publishedMatches:72,partial:4,unresearched:2,aged:0,conflictsOrInvalid:0
+ });
+ const missing=doc.items.find(x=>x.id==='wm-vzpre-a17');
+ assert.ok(missing.reasonCodes.includes('published_research_missing'));
+ assert.ok(missing.reasonCodes.includes('retailer_listing_hold'));
+ assert.equal(missing.priority,'high');
+ const incomplete=doc.items.find(x=>x.id==='vz-18pro');
+ assert.equal(incomplete.officialResearchState,'published_partial');
+ assert.ok(incomplete.reasonCodes.includes('published_research_partial'));
+ assert.equal(incomplete.priority,'high');
+ const stock=doc.items.find(x=>x.reasonCodes.includes('documented_stock_hold'));
+ assert.ok(stock);
+ assert.ok(stock.reasonCodes.includes('full_terms_not_verified'));
+ assert.equal(doc.items[0].id,'tello','near-deadline published promotion remains highest review priority');
+ assert.equal(catalog.checked,'2026-10-29','automatic source research must not modify the human catalog review date');
+});
+
+test('official research conflict or invalid future research is critical, not a verified checkout',()=>{
+ const catalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ const researchEvidence=JSON.parse(readFileSync(new URL('../site/data/research-evidence.json',import.meta.url),'utf8'));
+ const changed=structuredClone(catalog);
+ changed.plans.find(x=>x.id==='usm-starter').price=999;
+ const conflict=buildReviewQueue({catalog:changed,researchEvidence,
+   today:'2026-11-06',generatedAt:'2026-11-06T15:00:00Z'});
+ const item=conflict.items.find(x=>x.id==='usm-starter');
+ assert.equal(item.officialResearchState,'conflict');
+ assert.equal(item.priority,'critical');
+ assert.equal(item.manualReviewStatus,'unverified');
+ const future=structuredClone(researchEvidence);
+ future.records['usm-starter'].observedOn='2099-01-01';
+ const invalid=buildReviewQueue({catalog,researchEvidence:future,
+   today:'2026-11-06',generatedAt:'2026-11-06T15:00:00Z'});
+ assert.equal(invalid.items.find(x=>x.id==='usm-starter').officialResearchState,'invalid');
+ assert.throws(()=>buildReviewQueue({catalog,researchEvidence:{schema:1,records:[]},
+   today:'2026-11-06',generatedAt:'2026-11-06T15:00:00Z'}),/Invalid official research/);
 });

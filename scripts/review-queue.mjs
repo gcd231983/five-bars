@@ -1,6 +1,7 @@
 // Generate an actionable, non-AI review queue from existing catalog evidence.
 // No automated scan or HTTP 200 ever certifies complete carrier terms.
 import {localDay,validDay,verificationState} from '../site/value-core.mjs';
+import {researchStatus} from './source-research.mjs';
 
 const DAY_MS=86400000;
 const unsafe=['headline_mismatch','ambiguous','unresolved_mismatch'];
@@ -16,10 +17,15 @@ function safeUrl(url){
 }
 function sortGroup(a,b){return b.score-a.score||a.carrier.localeCompare(b.carrier)||a.id.localeCompare(b.id);}
 export function buildReviewQueue({catalog,status={},mvnoEvidence={},phoneEvidence={},
-  manualRecords={},generatedAt=new Date().toISOString(),today=localDay(new Date(generatedAt))}){
+  manualRecords={},researchEvidence=null,generatedAt=new Date().toISOString(),today=localDay(new Date(generatedAt))}){
   if(!catalog||!Array.isArray(catalog.plans)||!Array.isArray(catalog.phones) ||
      !validDay(today)||!Number.isFinite(Date.parse(generatedAt)))
     throw Error('Invalid review queue inputs');
+  if(researchEvidence!==null && (researchEvidence?.schema!==1 ||
+      !researchEvidence.records || typeof researchEvidence.records!=='object' ||
+      Array.isArray(researchEvidence.records)))
+    throw Error('Invalid official research evidence; no review queue was generated');
+  const counts={published_match:0,published_partial:0,not_researched:0,aged:0,conflict:0,invalid:0};
   const plans=catalog.plans.map(p=>({...p,_type:'plan'}));
   const phones=catalog.phones.map(p=>({...p,_type:'phone'}));
   const all=[...plans,...phones], items=[];
@@ -34,6 +40,29 @@ export function buildReviewQueue({catalog,status={},mvnoEvidence={},phoneEvidenc
       missingFull++;
       reasons.push(reason('full_terms_not_verified','Full offer terms do not have a current independent manual review.',20));
     }
+    const published=researchEvidence?
+      researchStatus(offer,researchEvidence.records[offer.id],{today}):null;
+    if(published){
+      if(Object.hasOwn(counts,published.state))counts[published.state]++;
+      if(['conflict','invalid'].includes(published.state))
+        reasons.push(reason('published_research_conflict',
+          'Dated official publication evidence conflicts with the catalog or is invalid. Review before quoting a confident price.',100));
+      else if(published.state==='published_partial')
+        reasons.push(reason('published_research_partial',
+          'Only partial official published terms are recorded. Required service, financing or checkout conditions remain unpriced.',76));
+      else if(published.state==='not_researched')
+        reasons.push(reason('published_research_missing',
+          'No dated official publication research is recorded for this offer. Do not imply a carrier-approved rate.',70));
+      else if(published.state==='aged')
+        reasons.push(reason('published_research_aged',
+          'The dated official publication research is over 21 days old; review the original carrier terms.',65));
+    }
+    if(offer.listingHold)
+      reasons.push(reason('retailer_listing_hold',
+        'This retailer-specific purchase path remains on evidence hold. Do not present a checkout quote or clear the hold automatically.',75));
+    if(offer.availability==='out_of_stock')
+      reasons.push(reason('documented_stock_hold',
+        'This dated stock hold needs fresh inventory confirmation before the offer can be recommended.',45));
     const p=proof(offer), checkedAt=proofDate(offer);
     const proofAge=checkedAt?Date.parse(generatedAt)-Date.parse(checkedAt):null;
     const evidenceFresh=Number.isFinite(proofAge)&&proofAge>=-3600000&&proofAge<=48*3600*1000;
@@ -73,7 +102,7 @@ export function buildReviewQueue({catalog,status={},mvnoEvidence={},phoneEvidenc
       priority:score>=90?'critical':score>=75?'high':score>=45?'medium':'routine',
       score,reasonCodes:reasons.map(x=>x.code),reasons:reasons.map(x=>x.why),
       officialEvidenceState:p?.state||null,sourceStatus:scan?.state||'not_checked',
-      manualReviewStatus:review.status,
+      officialResearchState:published?.state||null,manualReviewStatus:review.status,
       lastCatalogReference:validDay(sourceDate)?sourceDate:null,
       link,
     });
@@ -99,6 +128,13 @@ export function buildReviewQueue({catalog,status={},mvnoEvidence={},phoneEvidenc
       medium:items.filter(x=>x.priority==='medium').length,
       routine:items.filter(x=>x.priority==='routine').length,
       withoutCurrentManualReview:missingFull,
+      retailerHolds:all.filter(offer=>!!offer.listingHold).length,
+      stockHolds:all.filter(offer=>offer.availability==='out_of_stock').length,
+      publicationEvidence:researchEvidence?{
+        publishedMatches:counts.published_match,
+        partial:counts.published_partial,unresearched:counts.not_researched,
+        aged:counts.aged,conflictsOrInvalid:counts.conflict+counts.invalid
+      }:null,
       blockedProviders:blockedProviders.length,
     },
     blockedProviders,items,

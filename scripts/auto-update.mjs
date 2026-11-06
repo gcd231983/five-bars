@@ -24,6 +24,7 @@ const mvnoEvidenceFile = new URL('site/data/mvno-evidence.json', root);
 const mvnoHistoryFile = new URL('site/data/mvno-history.json', root);
 const reviewQueueFile = new URL('site/data/review-queue.json',root);
 const manualReviewsFile = new URL('site/data/verifications.json',root);
+const officialResearchFile = new URL('site/data/research-evidence.json',root);
 const alertsFile = new URL('site/data/alerts.json',root);
 const dryRun = process.argv.includes('--dry-run');
 const concurrency = 5;
@@ -254,9 +255,12 @@ const status = {
   alerts: alerts.slice(0, 100),
 };
 const manualReviews = await json(manualReviewsFile,{offers:{}});
+const researchEvidence = await json(officialResearchFile);
+// A missing ledger degrades the queue to old signals rather than inventing a
+// publication match; invalid available evidence fails closed.
 const reviewQueue = buildReviewQueue({
   catalog:next, status, mvnoEvidence, phoneEvidence:priceEvidence,
-  manualRecords:manualReviews?.offers||{},
+  researchEvidence,manualRecords:manualReviews?.offers||{},
   generatedAt:now.toISOString(),today
 });
 status.summary.offersNeedingReview=reviewQueue.summary.needAttention;
