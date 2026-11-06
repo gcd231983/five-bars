@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-06T18:27:13.440Z",
+  "generatedAt": "2026-11-06T18:41:40.907Z",
   "today": "2026-11-06",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
@@ -9,8 +9,8 @@
     "needAttention": 78,
     "critical": 0,
     "high": 8,
-    "medium": 26,
-    "routine": 44,
+    "medium": 27,
+    "routine": 43,
     "withoutCurrentManualReview": 78,
     "prolongedConditionalPromos": 0,
     "retailerHolds": 3,
@@ -22,7 +22,7 @@
       "aged": 0,
       "conflictsOrInvalid": 0
     },
-    "blockedProviders": 10
+    "blockedProviders": 11
   },
   "blockedProviders": [
     {
@@ -107,6 +107,13 @@
       "affected": 1,
       "offerIds": [
         "fi"
+      ]
+    },
+    {
+      "carrier": "Metro by T-Mobile",
+      "affected": 1,
+      "offerIds": [
+        "metro-16e"
       ]
     }
   ],
@@ -469,6 +476,29 @@
       "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
+    },
+    {
+      "id": "metro-16e",
+      "carrier": "Metro by T-Mobile",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T18:41:40.907Z",
+      "lastCatalogReference": null,
+      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
       "id": "mint",
@@ -1307,27 +1337,6 @@
       "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/phone-plans"
-    },
-    {
-      "id": "metro-16e",
-      "carrier": "Metro by T-Mobile",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": null,
-      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
       "id": "metro-a17",
