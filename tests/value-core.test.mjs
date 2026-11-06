@@ -341,3 +341,26 @@ test('verification records are human-maintained and never populated by the sourc
   assert.doesNotMatch(scanner,/writeJson\(manualReviewsFile|writeFile\(manualReviewsFile|review-offer\.mjs/);
   assert.match(scanner,/json\(manualReviewsFile/,'the scanner may read manual evidence without modifying it');
 });
+
+test('US Mobile port-in promos require separately confirmed AutoPay, preserving the regular price otherwise',()=>{
+ const catalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ for(const [id,promoPrice,regular] of [['usm-starter',15,25],['usm-premium',25,44]]){
+  const offer=catalog.plans.find(p=>p.id===id);
+  assert.ok(offer,id+' must exist');
+  assert.equal(offer.promo.autopayRequired,true);
+  assert.equal(offer.promo.req,'port');
+  assert.equal(planCost(offer,1,{today:'2026-11-06',canPort:true}).nowPerLine,regular);
+  assert.equal(planCost(offer,1,{today:'2026-11-06',discountQualified:true}).nowPerLine,regular);
+  const blocked=planCost(offer,1,{today:'2026-11-06',canPort:true});
+  assert.equal(blocked.promoUsed,false);
+  assert.equal(blocked.promoSuppressedForUnconfirmedAutopay,true);
+  const allowed=planCost(offer,1,{today:'2026-11-06',canPort:true,discountQualified:true});
+  assert.equal(allowed.promoUsed,true);
+  assert.equal(allowed.nowPerLine,promoPrice);
+  assert.equal(allowed.regularPerLine,regular);
+  assert.equal(allowed.year,promoPrice*6+regular*6);
+  const finder=rankMatches({plans:[offer],phones:[]},{network:'multi',lines:1,canPort:true},'2026-11-06');
+  assert.equal(finder.plans[0].cost.promoUsed,false);
+  assert.ok(finder.messages.some(m=>m.includes('AutoPay-required introductory')));
+ }
+});
