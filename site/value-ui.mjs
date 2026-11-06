@@ -524,11 +524,16 @@ function fieldValue(type,offer,key) {
 }
 function renderCompare() {
   compareRoot.replaceChildren();
-  const valid=normalizeCompare(selected,catalog,localDay());
+  // Loading previously saved selections must not bypass the live guard that
+  // blocks contradictory official price evidence.
+  const valid=normalizeCompare(selected,catalog,localDay()).filter(item=>{
+    const offer=(item.type==='phone'?catalog.phones:catalog.plans).find(x=>x.id===item.id);
+    return offer&&!officialHeadlineUnderReview(offer);
+  });
   const dropped=valid.length!==selected.length;
   if(dropped){selected=valid;saveCompare();}
   compareRoot.append(note('Choose up to '+MAX_COMPARE+' plans or phone offers. Comparisons use catalog estimates; data is not independently price-verified.'));
-  if(dropped)compareRoot.append(note('Expired, removed or otherwise unavailable saved comparisons were cleared. Confirm current carrier offers before making a decision.'));
+  if(dropped)compareRoot.append(note('Expired, held, out-of-stock, conflicting-price or removed saved comparisons were cleared. Confirm current carrier offers before making a decision.'));
   if(!selected.length) {compareRoot.append(note('Select Compare on any plan or phone offer to start.'));return;}
   const toolbar=element('div',null,'fb-card-actions');
   toolbar.append(button('Clear comparison',()=>{selected=[];saveCompare();renderCompare();}));
