@@ -133,4 +133,44 @@ test('official Tello publication remains an attributed historical fallback, not 
  assert.doesNotMatch(insecure,/read published terms/);
  const malformed=view({...publication,publishedOn:'tomorrow'});
  assert.doesNotMatch(malformed,/read published terms/);
+ const impossible=view({...publication,publishedOn:'2026-02-30'});
+ assert.doesNotMatch(impossible,/read published terms/);
+ const future=view({...publication,publishedOn:'2099-01-01'});
+ assert.doesNotMatch(future,/read published terms/);
+});
+
+test('November US Mobile first-party guide links remain dated historical alternatives when scans are blocked',()=>{
+ const catalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ const names=['US Mobile family plan guide','US Mobile prepaid plan guide'];
+ const refs=names.map(name=>catalog.sources.find(s=>s.name===name));
+ for(const src of refs){
+   assert.ok(src?.officialPublication,'Official publication entry must exist');
+   assert.equal(src.officialPublication.publishedOn,'2026-11-03');
+   assert.equal(new URL(src.officialPublication.url).hostname,'www.usmobile.com');
+   assert.match(src.officialPublication.url,/november-2026\/$/);
+   assert.match(src.officialPublication.scope,/not (current )?checkout/i);
+   assert.ok(src.url.startsWith('https://www.usmobile.com/'),'Original source link stays intact');
+ }
+ const fn=readFileSync(new URL('../site/index.html',import.meta.url),'utf8')
+   .match(/^function renderSources\(\)\{[\s\S]*?^\}/m)?.[0];
+ assert.ok(fn);
+ let rendered=[];
+ const nodes={'#src-date':{textContent:''},'#scan-status':{textContent:''},
+   '#src-list':{replaceChildren(...rows){rendered=rows;}}};
+ runInNewContext(fn+';renderSources();',{
+   URL,
+   $:selector=>nodes[selector],
+   CHECKED:'2026-10-29',SOURCES:refs,
+   AUTO_STATUS:{generatedAt:new Date().toISOString(),
+     summary:{sourcesChecked:2,sourcesReachable:0,reviewAlerts:2},
+     sources:refs.map(x=>({url:x.url,ok:false,failureReason:'automated_access_blocked'}))},
+   el:(tag,props,...children)=>({tag,props,children})
+ });
+ const output=JSON.stringify(rendered);
+ assert.equal(rendered.length,2);
+ assert.match(output,/family-phone-plans-november-2026/);
+ assert.match(output,/best-prepaid-phone-plans-november-2026/);
+ assert.equal((output.match(/Dated official carrier publication/g)||[]).length,2);
+ assert.equal((output.match(/do not assume the offer ended/g)||[]).length,2);
+ assert.doesNotMatch(output,/checkout verified|guaranteed rate/i);
 });
