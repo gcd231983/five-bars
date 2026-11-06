@@ -538,7 +538,7 @@ try {
     assert.equal(await page.locator('.fb-compare-highlight').count(),3,
       'A third phone must be addable entirely inside Compare');
     await page.reload({waitUntil:'domcontentloaded'});
-    await page.locator('#fb-compare-root table').waitFor({timeout:15000});
+    await page.locator('#fb-compare-root table').waitFor({state:'attached',timeout:15000});
     await page.locator('#t-compare').click();
     assert.equal(await page.locator('.fb-compare-highlight').count(),3,
       'Three distinct comparison selections must survive reload');
