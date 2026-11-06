@@ -227,6 +227,11 @@ function render(){
   const tabCount=document.getElementById('c-watchlist');
   if(tabCount)tabCount.textContent=data.watches.length?' '+data.watches.length:'';
 }
+window.addEventListener('fivebars:calendar-day-change',()=>{
+  // A stored price target is not proof the offer is still active; re-check
+  // current Eastern-date eligibility before showing local watch results.
+  if(feeds){render();refreshButtons();}
+});
 window.addEventListener('fivebars:watch-data',()=>{
   const newFeeds=window.fiveBarsWatchData;
   if(!newFeeds?.catalog)return;

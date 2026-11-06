@@ -743,8 +743,10 @@ function easternDay(instant=new Date()){
   }
   return values.year+"-"+values.month+"-"+values.day;
 }
-const today = easternDay();
+let displayedEasternDay = easternDay();
 function endInfo(ends){
+  // Derive Eastern date for each quote, not only when the page first opened.
+  const today=easternDay();
   if(typeof ends!=="string"||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(ends)) return null;
   const days = Math.round((Date.parse(ends+"T12:00:00Z")-Date.parse(today+"T12:00:00Z"))/86400000);
   if(!Number.isFinite(days)) return null;
@@ -1174,6 +1176,22 @@ function update(skipTab){
   renderControls(); renderPlans(); renderPhones(); renderPhonePlatform(); save();
   window.dispatchEvent(new Event("fivebars:render"));
 }
+// Someone may leave Five Bars open across the midnight Eastern expiration
+// boundary. Re-render every price on day rollover; also handle suspended tabs,
+// mobile browsers and back/forward cache restoration on return.
+function refreshCalendarDay(){
+  const current=easternDay();
+  if(current===displayedEasternDay)return;
+  displayedEasternDay=current;
+  update();
+  renderCatalogFreshness();
+  renderSources();
+  window.dispatchEvent(new Event("fivebars:calendar-day-change"));
+}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshCalendarDay();});
+window.addEventListener("focus",refreshCalendarDay);
+window.addEventListener("pageshow",refreshCalendarDay);
+window.setInterval(refreshCalendarDay,60000);
 
 $("#lines").addEventListener("change", e=>{state.lines=+e.target.value; update();});
 $("#net").addEventListener("change", e=>{state.net=e.target.value; update();});

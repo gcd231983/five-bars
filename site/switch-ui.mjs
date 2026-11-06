@@ -1,4 +1,5 @@
 import {simulateSwitch,formatSwitchSummary,switchShareParams,parseSwitchShare} from './switch-core.mjs';
+import {localDay,pastEnd} from './value-core.mjs';
 const root=document.getElementById('fb-switch-root');
 if(!root)throw Error('Missing Switch & Save root');
 const make=(tag,text,cls)=>{
@@ -42,7 +43,7 @@ let catalog=null,phoneEvidence={},mvnoEvidence={},status={},verifications={},res
 let pending=null;
 function listOffers(){
   if(!catalog)return [];
-  return choose('type').value==='phone'?catalog.phones.filter(x=>x.availability!=='out_of_stock'):catalog.plans;
+  return choose('type').value==='phone'?catalog.phones.filter(x=>x.availability!=='out_of_stock'&&!pastEnd(x.ends,localDay())):catalog.plans;
 }
 function updateOptions(){
   const existing=choose('offer').value;
@@ -202,5 +203,14 @@ function updateData(){
   }
   updateOptions();addCardActions();
 }
+window.addEventListener('fivebars:calendar-day-change',()=>{
+  // Previous savings calculations refer to yesterday's promotion/eligibility.
+  // Preserve form inputs, but never leave yesterday's totals on screen.
+  if(results.children.length){
+    results.replaceChildren();
+    notice('Eastern calendar date changed. Recalculate savings using the current promotion terms and confirm checkout.');
+  }
+  updateOptions();
+});
 window.addEventListener('fivebars:watch-data',updateData);
 if(window.fiveBarsWatchData)updateData();
