@@ -127,3 +127,26 @@ test('official research conflict or invalid future research is critical, not a v
  assert.throws(()=>buildReviewQueue({catalog,researchEvidence:{schema:1,records:[]},
    today:'2026-11-06',generatedAt:'2026-11-06T15:00:00Z'}),/Invalid official research/);
 });
+
+test('repeated seven-day failures elevate conditional offers without declaring the promotion withdrawn',()=>{
+ const catalog=mk(),ts='2026-11-08T15:00:00.000Z';
+ const snapshot={state:'source_unavailable',sourceUrl:'https://tello.com/buy/custom_plans',
+   checkedAt:ts,unavailableSince:'2026-11-01T15:00:00.000Z'};
+ const run=(today,scan)=>buildReviewQueue({catalog,today,generatedAt:ts,status:{offers:{tello:scan}}});
+ const old=run('2026-11-08',snapshot);
+ const item=old.items.find(x=>x.id==='tello');
+ assert.ok(item.reasonCodes.includes('conditional_promo_uncheckable_7d'));
+ assert.equal(item.priority,'high');
+ assert.equal(item.linkUnavailableSince,snapshot.unavailableSince);
+ assert.equal(old.summary.prolongedConditionalPromos,1);
+ assert.equal(catalog.plans[0].promo.price,10,'queue never edits an advertised rate');
+ const brief=run('2026-11-08',{...snapshot,unavailableSince:'2026-11-05T15:00:00Z'});
+ assert.equal(brief.summary.prolongedConditionalPromos,0);
+ const stale=run('2026-11-08',{...snapshot,checkedAt:'2026-11-01T15:00:00Z'});
+ assert.equal(stale.summary.prolongedConditionalPromos,0,'stale scanner report never claims a fresh seven-day outage');
+ const recovered=run('2026-11-08',{...snapshot,state:'source_reachable',unavailableSince:null});
+ assert.equal(recovered.summary.prolongedConditionalPromos,0);
+ const afterEnd=run('2026-11-10',snapshot);
+ assert.equal(afterEnd.summary.prolongedConditionalPromos,0,'expired promotions use the separate known-deadline rule');
+ assert.ok(afterEnd.items.find(x=>x.id==='tello').reasonCodes.includes('promotion_past_end'));
+});
