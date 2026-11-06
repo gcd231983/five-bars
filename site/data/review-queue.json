@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-06T15:17:53.093Z",
+  "generatedAt": "2026-11-06T15:38:55.100Z",
   "today": "2026-11-06",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
@@ -9,9 +9,10 @@
     "needAttention": 78,
     "critical": 0,
     "high": 8,
-    "medium": 27,
-    "routine": 43,
+    "medium": 26,
+    "routine": 44,
     "withoutCurrentManualReview": 78,
+    "prolongedConditionalPromos": 0,
     "retailerHolds": 3,
     "stockHolds": 6,
     "publicationEvidence": {
@@ -21,7 +22,7 @@
       "aged": 0,
       "conflictsOrInvalid": 0
     },
-    "blockedProviders": 11
+    "blockedProviders": 10
   },
   "blockedProviders": [
     {
@@ -107,13 +108,6 @@
       "offerIds": [
         "fi"
       ]
-    },
-    {
-      "carrier": "Metro by T-Mobile",
-      "affected": 1,
-      "offerIds": [
-        "metro-16e"
-      ]
     }
   ],
   "items": [
@@ -138,6 +132,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://tello.com/buy/custom_plans"
     },
@@ -162,6 +157,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_partial",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": null,
       "link": "https://www.att.com/buy/phones/apple-iphone-18-pro.html"
     },
@@ -184,6 +180,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_partial",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.t-mobile.com/offers/apple-iphone-deals"
     },
@@ -208,6 +205,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_partial",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": null,
       "link": "https://www.usmobile.com/pixel-promo"
     },
@@ -230,6 +228,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_partial",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.verizon.com/about/news/iphone-duo-verizon-offers"
     },
@@ -254,6 +253,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "not_researched",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://shop.simplemobile.com/shop/en/simplemobile/phones/sm-samsung-galaxy-a16-5g"
     },
@@ -276,6 +276,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.walmart.com/ip/ST-SAMSUNG-S176V-A17-5G-PIB-HANDSET-WALMART-POSA/17591873202"
     },
@@ -300,6 +301,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "not_researched",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.walmart.com/ip/Verizon-Prepaid-Galaxy-A17-5G-128GB-Prepaid-Smartphone-Black/17874774562"
     },
@@ -322,6 +324,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html"
     },
@@ -344,6 +347,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.consumercellular.com/shopping/choose/plan"
     },
@@ -366,6 +370,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://fi.google.com/about/plans"
     },
@@ -390,6 +395,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
     },
@@ -412,6 +418,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
     },
@@ -434,6 +441,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
     },
@@ -458,30 +466,9 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
-    },
-    {
-      "id": "metro-16e",
-      "carrier": "Metro by T-Mobile",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "lastCatalogReference": null,
-      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
       "id": "mint",
@@ -502,6 +489,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.mintmobile.com/plans/"
     },
@@ -524,6 +512,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.mintmobile.com/devices/google-pixel-11/13630805/"
     },
@@ -548,6 +537,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/"
     },
@@ -570,6 +560,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://my.redpocket.com/plans"
     },
@@ -592,6 +583,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://my.redpocket.com/plans"
     },
@@ -614,6 +606,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://my.redpocket.com/plans"
     },
@@ -636,6 +629,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://tello.com/buy/custom_plans"
     },
@@ -658,6 +652,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://tello.com/buy/custom_plans"
     },
@@ -680,6 +675,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://tello.com/buy/custom_plans"
     },
@@ -702,6 +698,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.ultramobile.com/product/unlimited-prepaid-plan/"
     },
@@ -724,6 +721,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.ultramobile.com/product/4gb-prepaid-plan/"
     },
@@ -746,6 +744,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.usmobile.com/plans"
     },
@@ -768,6 +767,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.usmobile.com/plans"
     },
@@ -790,6 +790,7 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.usmobile.com/plans"
     },
@@ -812,6 +813,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal"
     },
@@ -834,6 +836,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream"
     },
@@ -856,6 +859,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue"
     },
@@ -878,6 +882,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.cricketwireless.com/shop/smartphones/motorola-razr-2025-parfait-pink"
     },
@@ -900,6 +905,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-s25-fe-jetblack"
     },
@@ -920,6 +926,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/plans"
     },
@@ -940,6 +947,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/iphone-16e.html"
     },
@@ -960,6 +968,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/galaxy-a17-5g.html"
     },
@@ -980,6 +989,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/moto-g-play-002722.html"
     },
@@ -1000,6 +1010,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/moto-g-2026.html"
     },
@@ -1020,6 +1031,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/pixel-10a-002729.html"
     },
@@ -1040,6 +1052,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/razr-2025.html"
     },
@@ -1060,6 +1073,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.boostmobile.com/shop/moto-g-stylus-2025.html"
     },
@@ -1080,6 +1094,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.cricketwireless.com/shop/smartphones/apple-iphone-16e-128gb-black"
     },
@@ -1100,6 +1115,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.cricketwireless.com/shop/cell-phone-plans/select"
     },
@@ -1120,6 +1136,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a17-5g-black"
     },
@@ -1140,6 +1157,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea"
     },
@@ -1160,6 +1178,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.cricketwireless.com"
     },
@@ -1180,6 +1199,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://annualplans.good2gomobile.com/home-page"
     },
@@ -1200,6 +1220,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://annualplans.good2gomobile.com/home-page"
     },
@@ -1220,6 +1241,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://annualplans.good2gomobile.com/home-page"
     },
@@ -1240,6 +1262,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
     },
@@ -1260,6 +1283,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
     },
@@ -1280,8 +1304,30 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/phone-plans"
+    },
+    {
+      "id": "metro-16e",
+      "carrier": "Metro by T-Mobile",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "routine",
+      "score": 20,
+      "reasonCodes": [
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": null,
+      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
       "id": "metro-a17",
@@ -1300,6 +1346,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a17-5g"
     },
@@ -1320,6 +1367,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a37-5g"
     },
@@ -1340,6 +1388,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.metrobyt-mobile.com/cell-phone/motorola-moto-g-2026"
     },
@@ -1360,6 +1409,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/phone-plans"
     },
@@ -1380,6 +1430,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://mymobilex.com/all-faqs/"
     },
@@ -1400,6 +1451,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://mymobilex.com/all-faqs/"
     },
@@ -1420,6 +1472,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid"
     },
@@ -1440,6 +1493,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid"
     },
@@ -1460,6 +1514,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.straighttalk.com/whyst/bring-your-own-phone"
     },
@@ -1480,6 +1535,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/buy/phones/apple-iphone-16e-prepaid"
     },
@@ -1500,6 +1556,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.totalwireless.com/buy/smartphones/samsung-galaxy-a17-5g-prepaid"
     },
@@ -1520,6 +1577,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid"
     },
@@ -1540,6 +1598,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid"
     },
@@ -1560,6 +1619,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/m/plans"
     },
@@ -1580,6 +1640,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/m/plans"
     },
@@ -1600,6 +1661,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.totalwireless.com/buy/phones/moto-g-stylus-5g-2025-prepaid"
     },
@@ -1620,6 +1682,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.tracfone.com/plans/tracfone-freedom-30-days"
     },
@@ -1640,6 +1703,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid"
     },
@@ -1660,6 +1724,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/"
     },
@@ -1680,6 +1745,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.verizon.com/prepaid/deals/"
     },
@@ -1700,6 +1766,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.visible.com/m/deals"
     },
@@ -1720,6 +1787,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.visible.com/m/deals"
     },
@@ -1740,6 +1808,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.visible.com/plans"
     },
@@ -1760,6 +1829,7 @@
       "sourceStatus": "source_reachable",
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.visible.com/plans"
     }
