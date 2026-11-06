@@ -36,6 +36,22 @@ function button(label, onClick, className = 'btn ghost') {
   b.addEventListener('click', onClick);
   return b;
 }
+// Canonical carrier domains avoid affiliate, retailer and help-center icons.
+const CARRIER_ICON_DOMAINS=Object.freeze({
+  'AT&T':'att.com','AT&T Prepaid':'att.com',
+  'Boost Mobile':'boostmobile.com','Consumer Cellular':'consumercellular.com',
+  'Cricket':'cricketwireless.com','Good2Go Mobile':'good2gomobile.com',
+  'Google Fi':'fi.google.com','H2O Wireless':'h2owireless.com',
+  'Helium Mobile':'hellohelium.com','Metro by T-Mobile':'metrobyt-mobile.com',
+  'Mint Mobile':'mintmobile.com','MobileX':'mymobilex.com',
+  'Red Pocket Mobile':'redpocket.com','Simple Mobile':'simplemobile.com',
+  'Straight Talk':'straighttalk.com','Straight Talk at Walmart':'straighttalk.com',
+  'T-Mobile':'t-mobile.com','Tello':'tello.com',
+  'Total Wireless':'totalwireless.com','Tracfone':'tracfone.com',
+  'US Mobile':'usmobile.com','Ultra Mobile':'ultramobile.com',
+  'Verizon':'verizon.com','Verizon Prepaid':'verizon.com',
+  'Verizon Prepaid at Walmart':'verizon.com','Visible':'visible.com'
+});
 function providerIcon(offer) {
   const carrier=String(offer.carrier||'Carrier').trim();
   const fallback=element('span',carrier.split(/\s+/).map(word=>word[0]||'').slice(0,2).join('').toUpperCase(),'fb-provider-initials');
@@ -43,22 +59,21 @@ function providerIcon(offer) {
   const frame=element('span',null,'fb-provider-mark');
   frame.setAttribute('aria-hidden','true');
   frame.append(fallback);
-  try {
-    const url=new URL(offer.url);
-    if(url.protocol!=='https:' || !url.hostname.includes('.'))return frame;
-    // Only load a site's own favicon. Do not use unlicensed third-party logo CDNs.
-    const icon=document.createElement('img');
-    icon.className='fb-provider-icon';
-    icon.alt='';
-    icon.width=28;
-    icon.height=28;
-    icon.loading='lazy';
-    icon.referrerPolicy='no-referrer';
-    icon.src=url.origin+'/favicon.ico';
-    icon.addEventListener('load',()=>{fallback.hidden=true;});
-    icon.addEventListener('error',()=>{icon.remove();});
-    frame.append(icon);
-  } catch { /* Keep initials when the source URL is missing or malformed. */ }
+  const domain=CARRIER_ICON_DOMAINS[carrier];
+  if(!domain)return frame;
+  const icon=document.createElement('img');
+  icon.className='fb-provider-icon';
+  icon.alt='';
+  icon.width=28;
+  icon.height=28;
+  icon.loading='lazy';
+  icon.referrerPolicy='no-referrer';
+  // The favicon proxy handles the inconsistent /favicon.ico paths used by carriers.
+  // This is carrier website iconography, not a guarantee of an official brand logo.
+  icon.src='https://www.google.com/s2/favicons?domain='+encodeURIComponent(domain)+'&sz=64';
+  icon.addEventListener('load',()=>{if(icon.naturalWidth>0)fallback.hidden=true;});
+  icon.addEventListener('error',()=>{icon.remove();});
+  frame.append(icon);
   return frame;
 }
 function note(text) { return element('p',text,'fb-subtle'); }
