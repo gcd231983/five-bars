@@ -378,10 +378,15 @@ try {
     await page.locator('#carrier').selectOption('US Mobile');
     assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$25/);
     await page.getByRole('button',{name:'I confirm eligible number transfer'}).click();
-    assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$15/);
+    assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$25/,
+      'Confirming port alone must leave US Mobile at the regular rate');
+    await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
+    assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$15/,
+      'Only confirmed port and AutoPay together unlock the introductory rate');
     await page.getByRole('button',{name:'Can’t move my number'}).click();
     assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$25/);
     await page.getByRole('button',{name:'Can’t move my number'}).click();
+    await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
     await page.locator('#carrier').selectOption('Ultra Mobile');
     assert.match(await page.locator('#r-ultra .price .now').innerText(),/\$49/);
     await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
