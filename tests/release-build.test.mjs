@@ -38,6 +38,18 @@ test('release versions local styles and every module import without modifying so
  for(const [name,text] of Object.entries(f.files))assert.equal(await readFile(join(f.source,name),'utf8'),text);
  assert.equal(await readFile(join(f.output,'data/verifications.json'),'utf8'),f.files['data/verifications.json']);
 });
+test('release manifest records only a validated commit SHA and deterministic source content hash',async t=>{
+ const f=await fixture(t);
+ const revision='a'.repeat(40);
+ const r=await buildRelease({...f,revision});
+ const manifest=JSON.parse(await readFile(join(f.output,'release.json'),'utf8'));
+ assert.deepEqual(manifest,{schema:1,revision,contentHash:r.version});
+ const next=await buildRelease({...f,revision});
+ assert.equal(next.version,r.version);
+ assert.equal(await readFile(join(f.output,'release.json'),'utf8'),JSON.stringify(manifest,null,2)+'\\n');
+ await assert.rejects(buildRelease({...f,revision:'not-a-commit'}),/full commit SHA/);
+});
+
 test('identical releases are reproducible; a dependency change invalidates the whole module graph and source output is rejected',async t=>{
  const f=await fixture(t);
  const a=await buildRelease(f),b=await buildRelease(f);
