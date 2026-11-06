@@ -228,6 +228,40 @@ try {
     assert.equal(await page.locator('#p-plans').isVisible(),true,'Arrow key activates next tab');
     await page.keyboard.press('Home');
     assert.equal(await page.locator('#p-finder').isVisible(),true,'Home returns to first tab');
+
+    // Reproduce a real shopping journey with copied links and browser history.
+    // Old behavior changed panels without changing the URL and ignored
+    // same-page hash changes, making bookmarks and Back unpredictable.
+    const routingPage=await context.newPage();
+    routingPage.on('pageerror',e=>errors.push(view+' section routing: '+e.message));
+    await routingPage.goto(base+'#phones',{waitUntil:'domcontentloaded'});
+    await routingPage.locator('#p-phones').waitFor({state:'visible',timeout:15000});
+    assert.equal(new URL(routingPage.url()).hash,'#phones');
+    await routingPage.locator('#t-compare').click();
+    assert.equal(new URL(routingPage.url()).hash,'#compare',
+      'Switching to comparison writes a shareable URL');
+    assert.equal(await routingPage.locator('#p-compare').isVisible(),true);
+    await routingPage.goBack();
+    await routingPage.locator('#p-phones').waitFor({state:'visible',timeout:15000});
+    assert.equal(new URL(routingPage.url()).hash,'#phones',
+      'Browser Back must restore the previously viewed phone offers');
+    await routingPage.goForward();
+    await routingPage.locator('#p-compare').waitFor({state:'visible',timeout:15000});
+    assert.equal(new URL(routingPage.url()).hash,'#compare');
+    await routingPage.evaluate(()=>{location.hash='#plans';});
+    await routingPage.locator('#p-plans').waitFor({state:'visible',timeout:15000});
+    await routingPage.goto(base+'#t-phones',{waitUntil:'domcontentloaded'});
+    await routingPage.locator('#p-phones').waitFor({state:'visible',timeout:15000});
+    assert.equal(new URL(routingPage.url()).hash,'#t-phones',
+      'Existing guide links using #t-phones remain compatible');
+    await routingPage.goto(base+'#switch-save',{waitUntil:'domcontentloaded'});
+    await routingPage.locator('#p-switch').waitFor({state:'visible',timeout:15000});
+    await routingPage.locator('.fb-site-brand').click();
+    await routingPage.locator('#p-finder').waitFor({state:'visible',timeout:15000});
+    assert.equal(new URL(routingPage.url()).hash,'#finder',
+      'The original Five Bars brand should always take shoppers home');
+    await routingPage.close();
+
     if(view==='mobile'){
       // Exercise the actual three-stage mobile journey before running the existing
       // full-form price and eligibility regression scenarios.
