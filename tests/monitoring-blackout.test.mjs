@@ -59,6 +59,9 @@ test('when ALL sources reject requests, known expirations still publish and no p
   assert.equal(status.summary.expiredPhoneDealsRemoved,1);
   assert.ok(status.sources.every(s=>s.ok===false && s.failureReason==='source_server_error'));
   assert.ok(Object.values(status.offers).every(s=>s.state==='source_unavailable'));
+  assert.ok(Object.values(status.offers).every(s=>typeof s.unavailableSince==='string'));
+  assert.ok(Object.values(status.offers).every(s=>s.lastReachableAt===null));
+  assert.ok(Object.values(status.offers).every(s=>s.sourceUrl?.startsWith('https://')));
   assert.equal(prices.summary.headlineMatches,0,'no prices confirmed by failed scans');
   assert.equal(mvno.summary.headlineMatches,0,'no plan prices confirmed by failed scans');
   assert.equal(status.lastFullReview,before.checked);
