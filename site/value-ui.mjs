@@ -36,6 +36,31 @@ function button(label, onClick, className = 'btn ghost') {
   b.addEventListener('click', onClick);
   return b;
 }
+function providerIcon(offer) {
+  const carrier=String(offer.carrier||'Carrier').trim();
+  const fallback=element('span',carrier.split(/\s+/).map(word=>word[0]||'').slice(0,2).join('').toUpperCase(),'fb-provider-initials');
+  fallback.setAttribute('aria-hidden','true');
+  const frame=element('span',null,'fb-provider-mark');
+  frame.setAttribute('aria-hidden','true');
+  frame.append(fallback);
+  try {
+    const url=new URL(offer.url);
+    if(url.protocol!=='https:' || !url.hostname.includes('.'))return frame;
+    // Only load a site's own favicon. Do not use unlicensed third-party logo CDNs.
+    const icon=document.createElement('img');
+    icon.className='fb-provider-icon';
+    icon.alt='';
+    icon.width=28;
+    icon.height=28;
+    icon.loading='lazy';
+    icon.referrerPolicy='no-referrer';
+    icon.src=url.origin+'/favicon.ico';
+    icon.addEventListener('load',()=>{fallback.hidden=true;});
+    icon.addEventListener('error',()=>{icon.remove();});
+    frame.append(icon);
+  } catch { /* Keep initials when the source URL is missing or malformed. */ }
+  return frame;
+}
 function note(text) { return element('p',text,'fb-subtle'); }
 function linkTo(url,text) {
   try {
@@ -299,8 +324,7 @@ function renderFinder() {
         const p=item.offer;const c=item.cost;
         const card = element('article',null,'fb-result');
         const heading=element('div',null,'fb-result-heading');
-        const mark=element('span',String(p.carrier||'?').trim().split(/\\s+/).map(part=>part[0]||'').slice(0,2).join('').toUpperCase(),'fb-provider-mark');
-        mark.setAttribute('aria-hidden','true');
+        const mark=providerIcon(p);
         heading.append(mark);
         heading.append(element('strong',(i+1)+'. '+p.carrier+' — '+p.plan));
         card.append(heading);
