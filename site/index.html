@@ -853,7 +853,29 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
       <div class="fb-plan-catalog-actions">
         <button type="button" id="fb-plans-show-unlimited" aria-pressed="false">All unlimited plans</button>
         <button type="button" id="fb-plans-show-all" aria-pressed="false">Full plan catalog</button>
-        <button type="button" id="fb-plans-refine-filters">Refine filters</button>
+        <button type="button" id="fb-plans-refine-filters">Refine eligibility</button>
+      </div>
+      <div class="fb-plan-catalog-utilities" role="group" aria-label="Search and sort plan catalog">
+        <label class="fb-plan-search-field" for="fb-plans-search">Search plans or carriers
+          <input type="search" id="fb-plans-search" autocomplete="off" placeholder="e.g. Tello, 20GB, Cricket"/>
+        </label>
+        <label for="fb-plans-network">Network
+          <select id="fb-plans-network">
+            <option value="any">All networks</option>
+            <option value="att">AT&amp;T</option>
+            <option value="vzw">Verizon</option>
+            <option value="tmo">T-Mobile</option>
+          </select>
+        </label>
+        <label for="fb-plans-order">Sort plans by
+          <select id="fb-plans-order">
+            <option value="year">Lowest estimated first-year cost</option>
+            <option value="reg">Lowest regular service price</option>
+            <option value="save">Largest eligible intro savings</option>
+            <option value="pri">Priority data first</option>
+          </select>
+        </label>
+        <button id="fb-plans-clear-search" type="button" hidden>Clear search</button>
       </div>
       <p class="fb-plan-filters-summary" id="fb-plans-filters-summary" aria-live="polite"></p>
     </div>
