@@ -120,6 +120,17 @@ body:is([data-active-tab="plans"],[data-active-tab="phones"]) .fb-advanced-filte
 .fb-price-guide summary{padding:12px 16px;min-height:42px;font-size:.85rem;font-weight:700;color:var(--muted)}
 .fb-price-guide p{padding:0 16px 12px;font-size:.85rem;color:var(--muted)}
 
+/* The important stale-offer warning stays visible; long methodology does
+   not have to block the start of plan shopping on every visit. */
+body[data-active-tab="finder"] .fb-price-guide{display:none}
+body[data-active-tab="finder"] .fb-mobile-evidence{margin-top:10px}
+body[data-active-tab="finder"] .fb-mobile-evidence:not([open])>summary{color:#c3d7df}
+@media(min-width:801px){
+ .fb-welcome{padding:clamp(22px,3vw,39px)!important}
+ .fb-welcome h2{font-size:clamp(2.35rem,4.6vw,3.8rem)!important}
+ .fb-hero-steps>div{padding:13px 0}
+ .fb-home-shortcuts a{min-height:87px;padding:14px 18px}
+}
 /* Finder as a recognizable product: polished form with scanable result cards. */
 #p-finder>.panel{padding:12px 0}
 #p-finder .panel>h2{margin:4px 0 3px}
