@@ -1293,12 +1293,12 @@ $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:0
     const publication=s.officialPublication;
     let publicationReference=null;
     if(publication && typeof publication.url==="string" &&
-      /^\\d{4}-\\d{2}-\\d{2}$/.test(publication.publishedOn) &&
+      /^\d{4}-\d{2}-\d{2}$/.test(publication.publishedOn) &&
       typeof publication.scope==="string"){
       try{
-        const sourceHost=new URL(s.url).hostname.replace(/^www\\./,"");
+        const sourceHost=new URL(s.url).hostname.replace(/^www\./,"");
         const target=new URL(publication.url);
-        const targetHost=target.hostname.replace(/^www\\./,"");
+        const targetHost=target.hostname.replace(/^www\./,"");
         if(target.protocol==="https:" && !target.username && !target.password &&
           !target.port && (targetHost===sourceHost || targetHost.endsWith("."+sourceHost))){
           publicationReference=el("span",{class:"fb-source-publication"},
