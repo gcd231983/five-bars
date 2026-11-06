@@ -146,6 +146,11 @@ try {
       status:200,contentType:'application/json',body:JSON.stringify(alertFeed)}));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
+    assert.match(await page.locator('#fb-finder-affiliate-note').innerText(),/does not currently report commission-based rankings/i);
+    await page.locator('#scan-status').waitFor({state:'attached'});
+    await page.waitForFunction(()=>document.querySelector('#scan-status')?.textContent?.includes('public sources'));
+    assert.match(await page.locator('#scan-status').innerText(),/Some public sources could not be reached|No public sources reachable|Public source reachability checks completed|Scan is stale|No scan report available|No public sources checked/);
+
     await page.waitForFunction(()=>document.querySelector('#src-date')?.textContent?.includes('Catalog reference date'));
     const freshness=await page.locator('#fb-catalog-freshness').evaluate(node=>({
       hidden:node.hidden,text:node.textContent,

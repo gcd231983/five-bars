@@ -626,6 +626,7 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
     <div class="panel">
       <h2>Find a better wireless plan</h2>
       <p class="note">Quick questions, transparent estimates, and direct carrier links. No personal information collected.</p>
+      <p class="note" id="fb-finder-affiliate-note">Carrier links currently use the published offer destinations; Five Bars does not currently report commission-based rankings or paid placements. If a link becomes compensated, we will label it next to the link. <a href="disclosures.html">Read our disclosures</a>.</p>
       <div id="fb-finder-root" class="fb-tool"></div>
     </div>
   </section>
@@ -1219,11 +1220,21 @@ function renderCatalogFreshness(){
 function renderSources(){
 $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"}) + ". Always confirm current prices, eligibility and taxes on the carrier’s site.";
   const n = AUTO_STATUS?.summary;
-  $("#scan-status").textContent = n ? "Last automatic source scan: " + new Date(AUTO_STATUS.generatedAt).toLocaleString("en-US") +
+  const scanTime = Date.parse(AUTO_STATUS?.generatedAt||"");
+  const scanDays = Number.isFinite(scanTime)?(Date.now()-scanTime)/86400000:null;
+  const scanFresh = scanDays!==null&&scanDays>=0&&scanDays<=2;
+  const checked = Number.isInteger(n?.sourcesChecked)?n.sourcesChecked:0;
+  const reachable = Number.isInteger(n?.sourcesReachable)?n.sourcesReachable:0;
+  const scanHealth = !n?"No scan report available.":
+    !scanFresh?"Scan is stale or timestamp unavailable; do not treat it as current.":
+    checked===0?"No public sources checked; automatic coverage is unavailable.":
+    reachable===0?"No public sources reachable; investigate scan failures.":
+    reachable<checked?"Some public sources could not be reached; their prices remain unconfirmed.":"Public source reachability checks completed; checkout is still unverified.";
+  $("#scan-status").textContent = scanHealth+" "+(n ? "Last automatic source scan: " + new Date(AUTO_STATUS.generatedAt).toLocaleString("en-US") +
     ". " + n.sourcesReachable + "/" + n.sourcesChecked + " public sources reachable. " +
     (n.priceCandidatesForReview??0) + " price candidates need manual review; " + n.reviewAlerts +
     " link/term alerts. A working link does NOT prove the offer or its conditions." :
-    "No automatic scan has completed yet. Listed deals may be outdated.";
+    "No automatic scan has completed yet. Listed deals may be outdated.");
 $("#src-list").replaceChildren(...SOURCES.map(s=>el("li",null, el("a",{href:s.url, target:"_blank", rel:"noopener"}, s.name), ": " + s.what)));
 }
 

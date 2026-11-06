@@ -34,3 +34,18 @@
 
 ## Phase 2 implementation note
 The catalog's `checked` field is a human-curated reference date, not the timestamp of the automated scan. The website now warns when the catalog date is older than seven days, and separately warns when the automated scan is older than 48 hours or unavailable. These warnings do not silently update the reference date, validate checkout pricing, or suppress access to offers. Follow-up work must audit the actual scheduled workflows and source verification jobs.
+
+## Phase 2 workflow audit (2026-11-06)
+- `.github/workflows/daily.yml` schedules the job daily at 10:17 UTC, also on pushes and successful human-review workflows.
+- The update job validates data, runs deterministic source monitoring, expires documented promotions, regenerates research and comparisons, then commits a validated snapshot.
+- The browser job tests that snapshot and deploy requires both update and browser jobs to succeed.
+- Automatic source reachability and headline observations do not certify current checkout prices. The homepage now distinguishes stale scans and partial source reachability from successful source checks.
+- `site/data/status.json` observed 18 public sources checked and 10 reachable at its 2026-11-06 09:49 UTC timestamp. Follow up on unreachable sources rather than marking them verified.
+- `site/data/deals.json` retains a 2026-10-29 human catalog review date; the daily job must not silently imply a new manual review.
+- `site/data/alerts.json` includes the Tello November 9 deadline; this is a catalog/source alert, not independent checkout confirmation.
+- Daily execution and production deployment success must be checked in Actions; the presence of a cron configuration alone does not prove a successful daily run.
+
+## Phase 3 kickoff: affiliate controls
+- The finder now discloses current lack of reported paid placements and links to the existing disclosures page.
+- Do not change offer URLs, inject referral parameters, claim approvals, or mark links sponsored until actual agreements and accurate per-link disclosures exist.
+- Owner-dependent: obtain program approvals, partner identifiers, tracking terms, and confirm privacy/disclosure obligations before monetized links are activated.
