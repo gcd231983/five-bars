@@ -425,10 +425,11 @@ function renderFinder() {
     const selectedData=prefs.dataPreference==='unlimited'?'unlimited':
       prefs.dataPreference==='limited'?'limited-data':'all-data';
     const firstVisiblePlans=Math.min(ranked.planMatches,5);
-    if(data.get('device')!=='phone')browse.append(element('p',
+    const browseCount=element('p',
       'Showing '+firstVisiblePlans+' of '+ranked.planMatches+' matching '+selectedData+
       ' plans from '+catalog.plans.length+' catalog listings. Your budget, network and line count may hide other plans.',
-      'fb-finder-browse-summary'));
+      'fb-finder-browse-summary');
+    if(data.get('device')!=='phone')browse.append(browseCount);
     const browseLinks=element('div',null,'fb-finder-browse-actions');
     const unlimitedTotal=catalog.plans.filter(plan=>plan.unl===true).length;
     browseLinks.append(button('Browse all '+unlimitedTotal+' unlimited plans',()=>{
@@ -526,6 +527,9 @@ function renderFinder() {
           for(const [index,card] of planCards.entries())card.hidden=!plansExpanded&&index>=initiallyVisible;
           more.textContent=plansExpanded?'Show fewer plans':'Show all '+ranked.plans.length+' matching plans';
           more.setAttribute('aria-expanded',String(plansExpanded));
+          browseCount.textContent='Showing '+(plansExpanded?ranked.planMatches:Math.min(5,ranked.planMatches))+
+            ' of '+ranked.planMatches+' matching '+selectedData+' plans from '+catalog.plans.length+
+            ' catalog listings. Your budget, network and line count may hide other plans.';
           if(!plansExpanded)root.querySelector('.fb-result-heading')?.scrollIntoView({block:'nearest'});
         },'btn ghost fb-more-plans');
         more.setAttribute('aria-expanded','false');
