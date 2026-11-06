@@ -96,7 +96,9 @@ body:is([data-active-tab="plans"],[data-active-tab="phones"]) .fb-advanced-filte
 .fb-advanced-filters,.fb-mobile-evidence{background:var(--surface);border:1px solid var(--line);border-radius:12px}
 .fb-advanced-filters>summary{font-size:.88rem;padding:13px 18px}
 .fb-mobile-evidence{margin:13px 0 0;overflow:hidden}
-.fb-mobile-evidence>summary{cursor:pointer;font-weight:700;font-size:.83rem;padding:12px 17px;min-height:44px;color:var(--muted)}
+.fb-mobile-evidence>summary{display:block!important;cursor:pointer;font-weight:700;font-size:.83rem;padding:12px 17px;min-height:44px;color:var(--muted)}
+.fb-mobile-evidence:not([open])>.fresh,
+.fb-mobile-evidence:not([open])>.fb-evidence-summary{display:none!important}
 .fb-mobile-evidence[open]>summary{border-bottom:1px solid var(--line)}
 .fb-mobile-evidence>.fresh{border:none;background:transparent;margin:0;padding:13px 16px;font-size:.79rem}
 .fb-mobile-evidence .fb-evidence-summary{background:transparent;margin:0 12px 13px;padding:10px 12px}
