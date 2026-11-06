@@ -54,7 +54,9 @@ test('original Five Bars mark and consistent editorial brand styles exist across
  const index=readFileSync(join(site,'index.html'),'utf8');
  assert.match(index,/rel="icon" type="image\/svg\+xml" href="five-bars-mark\.svg"/);
  const common=readFileSync(join(site,'comparison-styles.css'),'utf8');
- assert.match(common,/^@import url\("editorial-brand\.css"\);/);
+ assert.ok(common.includes('Shared original Five Bars identity'),
+   'Versioned comparison CSS must bundle the brand rather than request an unversioned nested import');
+ assert.ok(common.includes('five-bars-mark.svg'));
  const css=readFileSync(join(site,'editorial-brand.css'),'utf8');
  assert.match(css,/five-bars-mark\.svg/);
  for(const name of [
