@@ -94,7 +94,7 @@ test('source panel explains blocked checks without claiming a withdrawn or verif
 
 test('official Tello publication remains an attributed historical fallback, not proof of a live price',()=>{
  const html=readFileSync(new URL('../site/index.html',import.meta.url),'utf8');
- const fn=html.match(/^function renderSources\\(\\)\\{[\\s\\S]*?^\\}/m)?.[0];
+ const fn=html.match(/^function renderSources\(\)\{[\s\S]*?^\}/m)?.[0];
  assert.ok(fn);
  const publication={
    url:'https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/',
@@ -124,7 +124,7 @@ test('official Tello publication remains an attributed historical fallback, not 
  const result=view(publication);
  assert.match(result,/Dated official carrier publication/);
  assert.match(result,/2026-10-22/);
- assert.match(result,/https:\\/\\/blog\\.tello\\.com\\/news\\/halloween/);
+ assert.match(result,/https:\/\/blog\.tello\.com\/news\/halloween/);
  assert.match(result,/Not live checkout, taxes or current eligibility verification/);
  assert.match(result,/do not assume the offer ended/);
  const thirdParty=view({...publication,url:'https://example.com/claim'});
