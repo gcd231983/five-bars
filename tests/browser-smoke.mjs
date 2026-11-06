@@ -478,6 +478,12 @@ try {
     await page.locator('.fb-compare-pick').first().getByRole('button',{name:/Add/}).click();
     assert.equal(await page.locator('.fb-compare-highlight').count(),2,
       'Adding a second plan inside Compare must show a readable two-card summary');
+    assert.equal(await page.locator('#fb-compare-search').inputValue(),'',
+      'Adding a searched offer should clear stale carrier search for the next comparison');
+    assert.ok((await page.locator('.fb-compare-pick').count())>0,
+      'The third comparison slot should show choices without searching again');
+    assert.ok((await page.locator('.fb-compare-pick').first().innerText()).length>0,
+      'Unfiltered comparison choices must be readable immediately after adding');
     await page.locator('.fb-compare-details summary').click();
     assert.match(await page.locator('#fb-compare-root').innerText(),/Billing \/ upfront amount/i);
     assert.match(await page.locator('#fb-compare-root').innerText(),/\$60\.00 upfront for 12 months/i);
