@@ -114,6 +114,25 @@ export function checkoutEvidenceIssues(offer,evidence,verifiedAt) {
   return issues;
 }
 
+// An automated link request is NOT offer, price, eligibility or checkout verification.
+// Favor neutral/uncertain states if the last scan is missing, stale, or malformed.
+export function offerLinkCheck(offerId,snapshot,now=Date.now()){
+  const observed=Date.parse(snapshot?.generatedAt||'');
+  const instant=now instanceof Date?now.getTime():now;
+  if(!Number.isFinite(observed)||!Number.isFinite(instant))
+    return {state:'unknown',label:'Link-check status unavailable'};
+  const age=instant-observed;
+  if(age< -5*60000||age>48*3600000)
+    return {state:'stale',label:'Offer-link scan outdated'};
+  const entries=snapshot?.offers;
+  const link=entries&&Object.hasOwn(entries,offerId)?entries[offerId]:null;
+  if(link?.state==='source_unavailable')
+    return {state:'unavailable',label:'Offer link not checked automatically'};
+  if(link?.state==='source_reachable')
+    return {state:'reachable',label:'Link responded; checkout unverified'};
+  return {state:'unknown',label:'Offer-link check not available'};
+}
+
 export function verificationState(offer, record, today = localDay()) {
   if (!record || typeof record !== 'object') return {status:'unverified',label:'Offer not independently verified'};
   if (record.scope !== 'full_terms') {

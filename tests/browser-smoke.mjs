@@ -118,6 +118,10 @@ try {
       const saved=await response.json();
       saved.generatedAt=checkedAt;
       saved.offers ||= {};
+      saved.offers['usm-starter']={
+        ...(saved.offers['usm-starter']||{}),
+        state:'source_unavailable',checkedAt,note:'HTTP 403',
+      };
       saved.offers['boost-a17']={
         ...(saved.offers['boost-a17']||{}),
         state:'source_reachable',
@@ -215,6 +219,17 @@ try {
     await page.locator('#fb-provider').selectOption('US Mobile');
     await page.locator('#fb-device').selectOption('byop');
     await page.locator('#fb-finder-form button[type="submit"]').click();
+    const starter=page.locator('#fb-finder-results .fb-result:not(.fb-phone-result)')
+      .filter({hasText:'Unlimited Starter'}).first();
+    assert.equal(await starter.count(),1,'Selected plan must be visible in finder');
+    const visibleProof=starter.locator(':scope > .fb-badges');
+    assert.equal(await visibleProof.count(),1,
+      'Manual-review and automated-link warnings must be outside collapsed details');
+    assert.equal(await visibleProof.isVisible(),true);
+    assert.match(await visibleProof.innerText(),/Offer not independently verified/i);
+    assert.match(await visibleProof.innerText(),/Offer link not checked automatically/i);
+    assert.match(await visibleProof.locator('[title*="could not read"]').getAttribute('title'),
+      /does not prove the deal has ended/i);
     const caveats=page.locator('#fb-finder-results .fb-finder-caveats');
     assert.equal(await caveats.isVisible(),true,'Eligibility details remain accessible');
     await caveats.locator('summary').click();
