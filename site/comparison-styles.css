@@ -1,3 +1,4 @@
+@import url("editorial-brand.css");
 /* Five Bars editorial pages. Zero external fonts, trackers or dependencies. */
 :root{color-scheme:light;--paper:#f2f5f7;--surface:#fff;--text:#172330;--muted:#556576;--line:#d5dce3;--accent:#086b62;--chip:#e8f2f0;--warning:#815008;--alertbg:#fff5df}
 @media(prefers-color-scheme:dark){:root{color-scheme:dark;--paper:#101920;--surface:#17252d;--text:#f2f5f7;--muted:#b3c0cc;--line:#334551;--accent:#73ded2;--chip:#213d3b;--warning:#ffe0a1;--alertbg:#49391b}}
