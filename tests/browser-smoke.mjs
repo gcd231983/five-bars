@@ -181,13 +181,13 @@ try {
     assert.equal(await page.locator('#fb-finder-results .fb-result:visible').count(),
       await page.locator('#fb-finder-results .fb-result').count(),
       'All eligible matching cards should be visible, not hidden after the third');
-    assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated over 12 months/);
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated first year/);
     await page.locator('#fb-port-status').selectOption('yes');
     await page.locator('#fb-finder-form button[type="submit"]').click();
-    assert.match(await page.locator('#fb-finder-results').innerText(),/\$240\.00 estimated over 12 months/);
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$240\.00 estimated first year/);
     await page.locator('#fb-port-status').selectOption('no');
     await page.locator('#fb-finder-form button[type="submit"]').click();
-    assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated over 12 months/);
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated first year/);
     await page.locator('#fb-port-status').selectOption('unknown');
     await page.locator('#fb-device').selectOption('either');
     // MVNO expansion: find an exact provider, and verify annual billing on mobile and desktop.
@@ -196,11 +196,13 @@ try {
     await page.locator('#fb-lines').selectOption('1');
     await page.locator('#fb-budget').fill('');
     await page.locator('#fb-finder-form button[type="submit"]').click();
-    assert.match(await page.locator('#fb-finder-results').innerText(),/\$370\.00 estimated over 12 months/);
-    assert.match(await page.locator('#fb-finder-results').innerText(),/\$10\.00 activation fee/);
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$370\.00 estimated first year/);
+    const feeDetails=page.locator('#fb-finder-results .fb-result-details').first();
+    await feeDetails.locator('summary').click();
+    assert.match(await feeDetails.innerText(),/\$10\.00 activation fee/);
     await page.locator('#fb-discount-qualified').check();
     await page.locator('#fb-finder-form button[type="submit"]').click();
-    assert.match(await page.locator('#fb-finder-results').innerText(),/\$310\.00 estimated over 12 months/);
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$310\.00 estimated first year/);
     await page.locator('#fb-discount-qualified').uncheck();
     await page.locator('#fb-provider').selectOption('any');
     await page.locator('#fb-net').selectOption('tmo');
@@ -218,7 +220,7 @@ try {
     await page.locator('#fb-finder-form button[type="submit"]').click();
     const annualText=await page.locator('#fb-finder-results').innerText();
     assert.match(annualText,/\$60\.00 UPFRONT/i,'annual plan must expose $60 upfront');
-    assert.match(annualText,/not a monthly subscription/i);
+    assert.match(annualText,/Annual prepaid — not monthly billing/i);
     assert.match(annualText,/Phone offers \(0 match the selected filters\)/,
       'provider preference must exclude other carriers handset promotions');
     await page.screenshot({path:join(output,view+'-mvno-annual.png'),fullPage:true});
