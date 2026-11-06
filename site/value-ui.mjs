@@ -244,21 +244,29 @@ function renderFinder() {
         const p=item.offer;const c=item.cost;
         const card = element('article',null,'fb-result');
         card.append(element('strong',(i+1)+'. '+p.carrier+' — '+p.plan));
-        card.append(element('p',usd(c.year)+' estimated over 12 months for '+c.lines+' line(s); '+
-          usd(c.monthTotal)+(c.annualPrepaid?'/mo equivalent, PAID '+usd(c.upfrontDue)+' UPFRONT for 12 months.':'/mo at the modeled current rate.')));
-        card.append(statusNode(p));
-        if (c.annualPrepaid) card.append(note('This is a prepaid ANNUAL plan, not a monthly subscription. Pay the full '+usd(c.upfrontDue)+' before service starts.'));
-        if (c.firstMonthAdjusted) card.append(note('Estimated first payment '+usd(c.upfrontDue)+'; subsequent base service plus known recurring fees '+usd(c.regularMonthTotal)+'/month. Confirm all terms.'));
-        if (c.conditionalDiscountUnconfirmed) card.append(note('Payment-method discount NOT assumed. Check AutoPay, eBilling or Auto-Refill eligibility.'));
-        if (c.knownMonthlyFeeTotal||c.knownActivationFeeTotal) card.append(note('Includes '+usd(c.knownMonthlyFeeTotal)+'/mo published provider fees and '+usd(c.knownActivationFeeTotal)+' activation fee where documented; excludes taxes and unrecorded fees.'));
-        if (c.promoFamilyUnconfirmed) card.append(note('Intro promo was NOT assumed for multiple lines; eligibility is unconfirmed.'));
-        if (c.estimatedFamilyPrice) card.append(note('Multi-line price was not published in our catalog; this is a single-line extrapolation.'));
+        const price=element('p',null,'fb-result-price');
+        price.append(element('strong',usd(c.monthTotal)+(c.annualPrepaid?'/mo equivalent':'/mo estimated')));
+        price.append(element('span',c.annualPrepaid?
+          'Pay '+usd(c.upfrontDue)+' upfront for 12 months · '+usd(c.year)+' estimated first year':
+          usd(c.year)+' estimated first year · '+usd(c.upfrontDue)+' estimated first payment'));
+        card.append(price);
+        if(c.annualPrepaid)card.append(element('p','Annual prepaid — not monthly billing','fb-result-warning'));
+        const info=element('details',null,'fb-result-details');
+        info.append(element('summary','Eligibility, evidence and full cost details'));
+        info.append(statusNode(p));
+        if (c.annualPrepaid) info.append(note('This is a prepaid ANNUAL plan, not a monthly subscription. Pay the full '+usd(c.upfrontDue)+' before service starts.'));
+        if (c.firstMonthAdjusted) info.append(note('Estimated first payment '+usd(c.upfrontDue)+'; subsequent base service plus known recurring fees '+usd(c.regularMonthTotal)+'/month. Confirm all terms.'));
+        if (c.conditionalDiscountUnconfirmed) info.append(note('Payment-method discount NOT assumed. Check AutoPay, eBilling or Auto-Refill eligibility.'));
+        if (c.knownMonthlyFeeTotal||c.knownActivationFeeTotal) info.append(note('Includes '+usd(c.knownMonthlyFeeTotal)+'/mo published provider fees and '+usd(c.knownActivationFeeTotal)+' activation fee where documented; excludes taxes and unrecorded fees.'));
+        if (c.promoFamilyUnconfirmed) info.append(note('Intro promo was NOT assumed for multiple lines; eligibility is unconfirmed.'));
+        if (c.estimatedFamilyPrice) info.append(note('Multi-line price was not published in our catalog; this is a single-line extrapolation.'));
+        card.append(info);
         const actions=element('div',null,'fb-card-actions');
         actions.append(button('Compare',()=>addToCompare('plan',p.id)));
-        actions.append(button('See in plan list',()=>goToRow(p.id,'plan')));
-        actions.append(button('Watch plan',()=>window.fiveBarsWatch?.('plan',p.id)));
-        actions.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('plan',p.id)));
         actions.append(linkTo(p.url,'Carrier details'));
+        info.append(button('See in plan list',()=>goToRow(p.id,'plan')));
+        info.append(button('Watch plan',()=>window.fiveBarsWatch?.('plan',p.id)));
+        info.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('plan',p.id)));
         card.append(actions);
         root.append(card);
         planCards.push(card);
