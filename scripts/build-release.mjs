@@ -15,7 +15,8 @@ async function readTree(dir,prefix=''){
  }
  return result.sort(([a],[b])=>a.localeCompare(b,'en'));
 }
-export async function buildRelease({source=join(root,'site'),output=join(root,'_site')}={}){
+export async function buildRelease({source=join(root,'site'),output=join(root,'_site'),revision=process.env.FIVE_BARS_RELEASE_SHA||null}={}){
+ if(revision!==null&&!/^[0-9a-f]{40}$/.test(revision))throw Error('Release revision must be a full commit SHA');
  source=resolve(source);output=resolve(output);
  const within=(parent,child)=>child===parent||child.startsWith(parent.endsWith(sep)?parent:parent+sep);
  if(within(output,source)||within(source,output))
@@ -49,6 +50,7 @@ export async function buildRelease({source=join(root,'site'),output=join(root,'_
   }
   const dest=join(output,file);await mkdir(dirname(dest),{recursive:true});await writeFile(dest,result);
  }
+ await writeFile(join(output,'release.json'),JSON.stringify({schema:1,revision,contentHash:version},null,2)+'\n');
  return {version,files:files.length,output};
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))
