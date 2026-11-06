@@ -7,13 +7,13 @@
 - Preserve original offer URLs, source attribution, and eligibility/financing disclosures.
 - Do not activate affiliate links without approved program credentials and accurate disclosures.
 
-## Phase 1 — Mobile browsing (in progress)
+## Phase 1 — Mobile browsing (merged in PR #78)
 - Show five ranked phone offers initially, with an accessible expand/collapse button.
 - Add canonical carrier icons to phone cards and preserve a fallback.
 - Preserve ranking, price warnings, and the existing plan-card expansion.
 - Acceptance: all matching offers remain accessible; automated browser and regression suites pass.
 
-## Phase 2 — Price reliability
+## Phase 2 — Price reliability (in progress: stale catalog and source scan warnings)
 - Audit data ingestion and last-successful-check timestamps for all plan and phone feeds.
 - Distinguish source headline checks, human-reviewed checkout evidence, and stale/unverified deals.
 - Surface expired/changed promotions without presenting unverified checkout prices.
@@ -31,3 +31,6 @@
 - Monitor scheduled refreshes, dead links, and promotion deadlines.
 - Maintain an owner review queue for checkout-only terms and partner account approvals.
 - Publish a final acceptance report listing only verified completed items and remaining owner-dependent steps.
+
+## Phase 2 implementation note
+The catalog's `checked` field is a human-curated reference date, not the timestamp of the automated scan. The website now warns when the catalog date is older than seven days, and separately warns when the automated scan is older than 48 hours or unavailable. These warnings do not silently update the reference date, validate checkout pricing, or suppress access to offers. Follow-up work must audit the actual scheduled workflows and source verification jobs.

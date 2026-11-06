@@ -146,6 +146,17 @@ try {
       status:200,contentType:'application/json',body:JSON.stringify(alertFeed)}));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
+    await page.waitForFunction(()=>document.querySelector('#src-date')?.textContent?.includes('Catalog reference date'));
+    const freshness=await page.locator('#fb-catalog-freshness').evaluate(node=>({
+      hidden:node.hidden,text:node.textContent,
+      catalogDay:document.querySelector('#src-date')?.textContent
+    }));
+    assert.ok(freshness.text.includes('Carrier checkout')||freshness.hidden,
+      'Stale-data warning must explain that checkout prices are not verified');
+    const checkedAge=Math.floor((Date.now()-Date.parse('2026-10-29T12:00:00Z'))/86400000);
+    if(checkedAge>7)assert.equal(freshness.hidden,false,
+      'Catalog older than seven days must show a visible warning');
+
     await page.waitForFunction(()=>
       document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false,
       {timeout:15000});
