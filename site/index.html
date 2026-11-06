@@ -715,36 +715,56 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
  .fb-tabs-more-menu button:hover,.fb-tabs-more-menu button:focus-visible{background:var(--chip)}
 }
 </style>
+<link rel="stylesheet" href="redesign.css?v=20261106-v3">
 </head>
 <body>
 <a class="fb-skip-link" href="#main-content">Skip to main content</a>
 
-<div class="wrap"><nav class="fb-topnav" aria-label="Site navigation"><strong>FIVE BARS</strong><div class="fb-topnav-links"><a href="carrier-comparisons.html">Carrier guides</a><a href="phone-deals.html">Phone deal guide</a><a href="switching-guide.html">Switching guide</a><a href="about.html">About</a><a href="contact.html">Contact</a></div></nav></div>
+<div class="wrap fb-masthead-wrap">
+  <nav class="fb-topnav" aria-label="Site navigation">
+    <a class="fb-site-brand" href="./#finder" aria-label="Five Bars — go to plan finder">
+      <svg class="bars fb-original-bars" viewBox="0 0 50 44" role="img" aria-label="Five ascending signal bars">
+        <rect x="0" y="34" width="7" height="10" rx="1.5"/>
+        <rect x="10.5" y="26" width="7" height="18" rx="1.5"/>
+        <rect x="21" y="18" width="7" height="26" rx="1.5"/>
+        <rect x="31.5" y="9" width="7" height="35" rx="1.5"/>
+        <rect x="42" y="0" width="7" height="44" rx="1.5"/>
+      </svg>
+      <span class="fb-brand-name">Five Bars</span>
+    </a>
+    <div class="fb-topnav-links">
+      <a href="carrier-comparisons.html">Carrier guides</a>
+      <a href="satellite.html">Satellite texting</a>
+      <a href="about.html">About</a>
+      <a class="fb-help-link" href="contact.html">Help &amp; contact</a>
+    </div>
+  </nav>
+</div>
 <header class="hero wrap">
-  <div class="brand">
-    <svg class="bars" viewBox="0 0 50 44" aria-hidden="true">
-      <rect x="0" y="34" width="7" height="10" rx="1.5"/>
-      <rect x="10.5" y="26" width="7" height="18" rx="1.5"/>
-      <rect x="21" y="18" width="7" height="26" rx="1.5"/>
-      <rect x="31.5" y="9" width="7" height="35" rx="1.5"/>
-      <rect x="42" y="0" width="7" height="44" rx="1.5"/>
-    </svg>
-    <h1>Five Bars <span class="fb-visually-hidden">— Compare phone plans, phone deals and total wireless costs</span></h1>
-  </div>
+  <h1 class="fb-visually-hidden">Five Bars — Compare phone plans, phone deals and true first-year costs</h1>
   <section class="fb-welcome" aria-label="Start comparing">
-    <p class="fb-eyebrow">COMPARE SMARTER · SAVE MORE</p>
-    <h2>Find a better phone plan.</h2>
-    <p>Compare estimated costs and carrier options in minutes.</p>
-    <div class="fb-quick-actions"><button type="button" onclick="document.getElementById('t-finder').click();document.getElementById('main-content').scrollIntoView();">Find my best plan →</button></div>
-    <small>Free comparison · No account needed</small>
+    <div class="fb-hero-copy">
+      <p class="fb-eyebrow">COMPARE WITH CONFIDENCE</p>
+      <h2>Better wireless. <span>Less guesswork.</span></h2>
+      <p class="fb-hero-subhead">Find unlimited or limited-data plans, compare real upfront requirements and see estimated first-year costs—without getting lost in the fine print.</p>
+      <div class="fb-quick-actions">
+        <button type="button" onclick="document.getElementById('t-finder').click();document.getElementById('fb-finder-root').scrollIntoView({block:'start',behavior:'smooth'});">Find my plan</button>
+        <button type="button" class="fb-secondary-action" onclick="window.fiveBarsBrowsePlans?.('unlimited')">Browse unlimited plans</button>
+      </div>
+      <small>Free to compare · No account required · Carrier checkout determines final prices</small>
+    </div>
+    <div class="fb-hero-steps" aria-label="What you can do">
+      <div><span class="fb-step-numeral">01</span><strong>Choose what matters</strong><span>Coverage, data and budget</span></div>
+      <div><span class="fb-step-numeral">02</span><strong>See the full picture</strong><span>Monthly, upfront and annual costs</span></div>
+      <div><span class="fb-step-numeral">03</span><strong>Check the source</strong><span>Original offer and review status</span></div>
+    </div>
   </section>
-  <div class="fb-home-shortcuts" aria-label="Explore Five Bars">
-    <a href="phone-deals.html"><strong>Phone deals</strong><span>Browse current offers →</span></a>
-    <a href="carrier-comparisons.html"><strong>Compare carriers</strong><span>Explore networks and plans →</span></a>
+  <div class="fb-home-shortcuts" aria-label="Quick paths">
+    <a href="./#plans" onclick="document.getElementById('t-plans').click();return false"><strong>Browse all plans</strong><span>Unlimited and limited-data options</span></a>
+    <a href="./#phones" onclick="document.getElementById('t-phones').click();return false"><strong>Find a phone deal</strong><span>See required service and upfront costs</span></a>
+    <a href="./#compare" onclick="document.getElementById('t-compare').click();return false"><strong>Compare side by side</strong><span>Keep up to three offers together</span></a>
   </div>
-  <p class="fb-home-trust">Independent comparisons. Transparent estimates. Confirm final prices with carriers.</p>
-  <div class="fb-home-resources"><a href="switching-guide.html">Switching guide</a> · <a href="satellite.html">Can your phone text by satellite?</a></div>
-
+  <p class="fb-home-trust">Independent catalog estimates, not carrier checkout quotes. See <a href="disclosures.html">how prices are calculated</a>.</p>
   <details class="fb-advanced-filters"><summary>Refine results <span>Lines, network, provider &amp; eligibility</span></summary><div class="fb-filter-body">
   <p class="sentence">
     I need
@@ -818,7 +838,7 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
   <section id="p-finder" role="tabpanel" aria-labelledby="t-finder">
     <div class="panel">
       <h2>Find a better wireless plan</h2>
-      <p class="note">Quick questions, transparent estimates, and direct carrier links. No personal information collected.</p>
+      <p class="note fb-finder-intro">Tell us your priorities. We'll show every matching plan—not just a small shortlist—with estimates you can inspect.</p>
       <p class="note" id="fb-finder-affiliate-note">Carrier links currently use the published offer destinations; Five Bars does not currently report commission-based rankings or paid placements. If a link becomes compensated, we will label it next to the link. <a href="disclosures.html">Read our disclosures</a>.</p>
       <div id="fb-finder-root" class="fb-tool"></div>
     </div>
