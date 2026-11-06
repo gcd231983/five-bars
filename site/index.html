@@ -1100,7 +1100,7 @@ function renderPhones(){
           priceDisputed || d.listingHold ? "Price under review" : d.availability==="out_of_stock" ? "Out of stock" :
           d.postpaid ? "Financing — quote required" :
           d.bundle ? money(d.price)+" phone + "+d.bundle+" months service" :
-          d.price===0 ? "Free" : money(d.price)),
+          d.price===0 ? "Advertised $0 device" : money(d.price)),
         !priceDisputed && !d.listingHold && d.was ? el("div",{class:"was"}, "was ", el("s",null, money(d.was))) : null,
         !priceDisputed && !d.listingHold && d.rebate ? el("div",{class:"was"}, money(d.rebate) + " conditional later reward; NOT deducted") : null),
       el("ul",{class:"facts"}, NEWIDS.has(d.id) ? el("li",{class:"new"},"New") : null, facts.map(f=>el("li",null,f)), d.warn ? el("li",{class:"warn"}, d.warn) : null, scan?.state==="source_unavailable" ? el("li",{class:"warn"}, "Offer link could not be checked") : null, scan?.reviewRequired ? el("li",{class:"warn"}, "Price candidate needs manual review; listed terms are unverified") : null,
