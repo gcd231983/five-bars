@@ -118,7 +118,7 @@ test('scanner publishes review alerts without verified-price claims or catalog m
   try {
     await mkdir(join(fixture, 'scripts'));
     await mkdir(join(fixture, 'site/data'), { recursive: true });
-    for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs', 'mvno-evidence.mjs', 'review-queue.mjs', 'alert-engine.mjs']) {
+    for (const name of ['auto-core.mjs', 'auto-update.mjs', 'price-evidence.mjs', 'mvno-evidence.mjs', 'review-queue.mjs', 'alert-engine.mjs', 'source-health.mjs']) {
       await copyFile(new URL('../scripts/' + name, import.meta.url), join(fixture, 'scripts', name));
     }
 
@@ -150,6 +150,10 @@ test('scanner publishes review alerts without verified-price claims or catalog m
     const alertsFeed=JSON.parse(await readFile(join(fixture,'site/data/alerts.json'),'utf8'));
     assert.deepEqual(saved, data);
     assert.deepEqual(status.automaticChanges, []);
+    assert.equal(status.summary.sourcesAccessBlocked,0,'mocked successful scan has no access blocks');
+    assert.equal(status.summary.sourcesUnavailableFor7Days,0);
+    assert.equal(status.sources[0].lastReachableAt,status.generatedAt);
+    assert.equal(status.sources[0].failureReason,null);
     assert.equal(status.summary.priceCandidatesForReview, 1);
     assert.equal(proof.schema,1);
     assert.equal(proof.summary.offersChecked,1);
