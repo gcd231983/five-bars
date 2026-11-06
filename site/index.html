@@ -345,6 +345,10 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
 .fb-phone-pricing-details{margin:0 0 10px}
 @media(max-width:620px){.fb-price-guide{padding:12px 14px;margin-bottom:10px}.fb-price-guide p{font-size:.83rem;line-height:1.45}.fb-phone-platform{margin:4px 0 9px}}
 .fb-visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.fb-phone-filter-status{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 9px;font-size:.82rem;color:var(--muted)}
+.fb-phone-filter-status[hidden]{display:none}
+.fb-phone-filter-status button{min-height:44px;padding:6px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);font:inherit;font-weight:650;cursor:pointer}
+.fb-phone-filter-status button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 /* Launch polish: accessible entry points without changing comparison logic. */
 .fb-topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
 .fb-topnav strong{font-size:.94rem;letter-spacing:.02em}
@@ -498,6 +502,7 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
       </div>
       <span class="fb-platform-count" id="fb-platform-count" aria-live="polite"></span>
     </div>
+    <div class="fb-phone-filter-status" id="fb-phone-filter-status" aria-live="polite" hidden><span id="fb-phone-filter-summary"></span><button type="button" id="fb-phone-clear-filters">Clear filters</button></div>
     <p class="note fb-phone-pricing-summary">Costs are per line. “Due today” includes required signup payments; “minimum commitment” also includes future required service. Confirm actual checkout, taxes and eligibility.</p><details class="fb-pricing-details fb-phone-pricing-details"><summary>Full pricing assumptions and exclusions</summary><p>Costs are per line. “Due today” estimates the device plus service required at signup. “Minimum commitment” also counts required future service. Delayed rebates, gift cards and promotional credits are excluded from ALL estimated totals until eligibility and redemption are confirmed. Taxes, fees, financing and clawbacks may cost extra; confirm actual carrier checkout.</p></details>
         <ol class="list" id="phones-list"></ol>
   </section>
@@ -872,12 +877,27 @@ function renderPlans(){
   }));
 }
 
+/* Summarize active phone filters without modifying price or eligibility logic. */
+function renderPhoneFilterStatus(){
+  const active=[];
+  if(state.net!=="any")active.push(({vzw:"Verizon",att:"AT&T",tmo:"T-Mobile",multi:"Multi-network"})[state.net]||state.net);
+  for(const [key,label] of PHONE_TOGS)if(state.t[key])active.push(label);
+  const node=$("#fb-phone-filter-status");
+  node.hidden=active.length===0;
+  $("#fb-phone-filter-summary").textContent=active.length ? "Active filters: "+active.join(", ") : "";
+}
+$("#fb-phone-clear-filters").addEventListener("click",()=>{
+  state.t={};
+  state.net="any";
+  update();
+});
 /* Keep the prominent phone-type selector synchronized with existing advanced toggles. */
 function renderPhonePlatform(){
   const platform=state.t.iphone && !state.t.android ? "iphone" : state.t.android && !state.t.iphone ? "android" : "all";
   document.querySelectorAll(".fb-platform-option").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.platform===platform)));
   const count=PHONES.filter(phoneVisible).length;
   $("#fb-platform-count").textContent=count+" matching "+(count===1?"deal":"deals");
+  renderPhoneFilterStatus();
 }
 document.querySelectorAll(".fb-platform-option").forEach(button=>button.addEventListener("click",()=>{
   const choice=button.dataset.platform;
