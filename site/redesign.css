@@ -194,6 +194,16 @@ body[data-active-tab="finder"] .fb-mobile-evidence:not([open])>summary{color:#c3
 .fb-plan-catalog-actions{gap:8px}
 .fb-plan-catalog-actions button{min-height:46px;padding:10px 15px}
 .fb-plan-catalog-actions button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+/* Search is explicit and reversible; default still shows every eligible plan. */
+.fb-plan-search-bar{display:grid;gap:7px;margin-top:17px;padding-top:15px;border-top:1px solid var(--line)}
+.fb-plan-search-bar label{font-size:.84rem;font-weight:750;color:var(--ink)}
+.fb-plan-search-fields{display:flex;align-items:center;gap:9px}
+.fb-plan-search-fields input{flex:1;min-width:0;min-height:46px;border:1px solid #3b5b68;border-radius:10px;background:#091d27;color:var(--ink);font-size:.94rem;padding:10px 14px}
+.fb-plan-search-fields input::placeholder{color:#92aeb9}
+.fb-plan-search-fields #fb-plan-search-clear{cursor:pointer;flex:none;padding:9px 13px;min-height:44px;border-radius:9px;background:transparent;border:1px solid var(--line);color:var(--accent);font-weight:700}
+#fb-plan-search-clear[hidden],#fb-plan-search-status[hidden]{display:none!important}
+#fb-plan-search-status{margin:9px 0 0!important;color:var(--muted);font-size:.8rem;line-height:1.5}
+#plans-list li.row[hidden]{display:none!important}
 #plans-list,#phones-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding:0 0 36px;margin:12px 0}
 #plans-list .row,#phones-list .row{
   display:grid;grid-template-columns:minmax(0,1fr) auto;min-width:0;margin:0;
