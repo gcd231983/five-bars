@@ -197,7 +197,9 @@ try {
     await page.locator('#fb-budget').fill('');
     await page.locator('#fb-finder-form button[type="submit"]').click();
     assert.match(await page.locator('#fb-finder-results').innerText(),/\$370\.00 estimated first year/);
-    assert.match(await page.locator('#fb-finder-results').innerText(),/\$10\.00 activation fee/);
+    const feeDetails=page.locator('#fb-finder-results .fb-result-details').first();
+    await feeDetails.locator('summary').click();
+    assert.match(await feeDetails.innerText(),/\$10\.00 activation fee/);
     await page.locator('#fb-discount-qualified').check();
     await page.locator('#fb-finder-form button[type="submit"]').click();
     assert.match(await page.locator('#fb-finder-results').innerText(),/\$310\.00 estimated first year/);
