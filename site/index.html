@@ -1234,7 +1234,7 @@ $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:0
     ". " + n.sourcesReachable + "/" + n.sourcesChecked + " public sources reachable. " +
     (n.priceCandidatesForReview??0) + " price candidates need manual review; " + n.reviewAlerts +
     " link/term alerts. A working link does NOT prove the offer or its conditions." :
-    "No automatic scan has completed yet. Listed deals may be outdated.";
+    "No automatic scan has completed yet. Listed deals may be outdated.");
 $("#src-list").replaceChildren(...SOURCES.map(s=>el("li",null, el("a",{href:s.url, target:"_blank", rel:"noopener"}, s.name), ": " + s.what)));
 }
 
