@@ -42,3 +42,27 @@ test('sitemap URLs resolve to deployed pages and include the satellite guide',()
   assert.ok(existsSync(path),url.href);
  }
 });
+
+test('original Five Bars mark and consistent editorial brand styles exist across all information pages',()=>{
+ const mark=readFileSync(join(site,'five-bars-mark.svg'),'utf8');
+ assert.deepEqual([...mark.matchAll(/<rect\s+x="([^"]+)"\s+y="([^"]+)"\s+width="([^"]+)"\s+height="([^"]+)"/g)]
+   .map(([,x,y,width,height])=>({x:Number(x),y:Number(y),width:Number(width),height:Number(height)})),[
+   {x:0,y:34,width:7,height:10},{x:10.5,y:26,width:7,height:18},
+   {x:21,y:18,width:7,height:26},{x:31.5,y:9,width:7,height:35},
+   {x:42,y:0,width:7,height:44}
+ ]);
+ const index=readFileSync(join(site,'index.html'),'utf8');
+ assert.match(index,/rel="icon" type="image\/svg\+xml" href="five-bars-mark\.svg"/);
+ const common=readFileSync(join(site,'comparison-styles.css'),'utf8');
+ assert.ok(common.includes('Shared original Five Bars identity'),
+   'Versioned comparison CSS must bundle the brand rather than request an unversioned nested import');
+ assert.ok(common.includes('five-bars-mark.svg'));
+ const css=readFileSync(join(site,'editorial-brand.css'),'utf8');
+ assert.match(css,/five-bars-mark\.svg/);
+ for(const name of [
+   'about.html','contact.html','privacy.html','disclosures.html','editorial.html',
+   'switching-guide.html','launch-readiness.html']){
+    const html=readFileSync(join(site,name),'utf8');
+    assert.match(html,/href="editorial-brand\.css"/,name+' must use the same masthead/theme');
+ }
+});

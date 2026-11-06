@@ -752,6 +752,14 @@ try {
     const articles=await context.newPage();
     articles.on('pageerror',e=>errors.push(view+' editorial: '+e.message));
     await articles.goto(new URL('carrier-comparisons.html',base).href,{waitUntil:'domcontentloaded'});
+    const hubBrand=await articles.locator('header nav a').first().evaluate(node=>({
+      image:getComputedStyle(node,'::before').backgroundImage,
+      body:getComputedStyle(document.body).backgroundColor
+    }));
+    assert.ok(hubBrand.image.includes('five-bars-mark.svg'),
+      'Curated guides should use the original five-bar mark in their masthead');
+    assert.equal(hubBrand.body,'rgb(9, 20, 29)',
+      'Curated guides must use the same dark background as the homepage');
     assert.match(await articles.locator('h1').innerText(),/Compare wireless carriers/);
     assert.equal(await articles.locator('.guide').count(),4,'Four curated carrier comparisons should exist');
     assert.match(await articles.locator('main').innerText(),/unverified starting point/i);
@@ -764,6 +772,14 @@ try {
     const articleOverflow=await articles.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(articleOverflow<=viewport.width+2,'Comparison page must fit '+view+' viewport');
     await articles.screenshot({path:join(output,view+'-carrier-comparison.png'),fullPage:true});
+    await articles.goto(new URL('about.html',base).href,{waitUntil:'domcontentloaded'});
+    const aboutBrand=await articles.locator('header nav a').first().evaluate(node=>({
+      image:getComputedStyle(node,'::before').backgroundImage,
+      body:getComputedStyle(document.body).backgroundColor
+    }));
+    assert.ok(aboutBrand.image.includes('five-bars-mark.svg'),
+      'About, support and policy pages should share the original header mark');
+    assert.equal(aboutBrand.body,'rgb(9, 20, 29)');
     await articles.close();
 
     // Human reviewer dashboard is read-only and never falsely signs off offers.

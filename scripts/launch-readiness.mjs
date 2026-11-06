@@ -60,7 +60,7 @@ export function renderReadiness(model){
   'main,header,footer{max-width:880px;margin:auto;padding:18px}nav{display:flex;gap:14px;flex-wrap:wrap}a{color:LinkText}h1{font-size:clamp(1.75rem,5vw,2.5rem);line-height:1.2}'+
   '.notice{border:2px solid currentColor;padding:16px;border-radius:10px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:18px 0}.stat{border:1px solid #8888;border-radius:10px;padding:12px}.stat dt{font-size:.88rem}.stat dd{font-size:1.65rem;font-weight:750;margin:0}'+
   '.pending{display:inline-block;margin-left:8px;font-size:.8rem;border:1px solid #888;border-radius:8px;padding:1px 8px}li{margin-bottom:18px}li p{margin:.3em 0 0}footer{border-top:1px solid #8888}'+
-  '@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}</style></head><body>'+
+  '@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}</style><link rel="stylesheet" href="editorial-brand.css"></head><body>'+
   '<header><nav aria-label="Navigation"><a href="./">Five Bars home</a><a href="source-research.html">Source research</a><a href="editorial.html">Editorial policy</a><a href="report.html">Report a correction</a></nav></header>'+
   '<main><h1>Five Bars launch readiness</h1><p class="notice"><strong>Public beta, not a certified checkout service or approved affiliate business.</strong> '+
   'The website compares attributed catalog offers, but no carrier price, tax total or customer eligibility is guaranteed. Review carrier checkout before buying.</p>'+
