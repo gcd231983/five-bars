@@ -2,17 +2,19 @@
 
 Five Bars compares US phone plans and advertised phone offers. The website is a static GitHub Pages site. A scheduled GitHub Actions workflow checks public sources and publishes **conservative** updates without Claude, AI subscriptions, paid APIs, or external servers.
 
+**Engineering acceptance (November 6, 2026):** Latest public release passed all four production gates and exact-revision smoke verification. Read [the final public-beta acceptance and owner handoff](FINAL_ACCEPTANCE_2026-11-06.md). Commercial launch remains blocked pending actual checkout evidence, privacy/support, user testing, legal requirements and partner acceptance.
+
 **Feature freeze (November 4, 2026):** delivery is limited to defect fixes, verification and operational maintenance. New product features require the owner to reopen scope. Checkout evidence, retailer activation holds and commercial approvals remain separate gates in [#28](https://github.com/gcd231983/five-bars/issues/28) and [#32](https://github.com/gcd231983/five-bars/issues/32).
 
 ## Current evidence dashboard
 
-The live [launch-readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html) is generated from the repository's current evidence; do not use earlier README counts as a live inventory. At the November 3, 2026 research baseline, 78 listings were tracked, 76 had partial or matching first-party published-source records (72 matches, four partial), three retailer-channel checkout-price holds remained, and zero had a documented current full checkout scenario. No source record is a binding price quote.
+The live [launch-readiness dashboard](https://fivebars.info/launch-readiness.html) is generated from the repository's current evidence; do not use earlier README counts as a live inventory. At the November 3, 2026 research baseline, 78 listings were tracked, 76 had partial or matching first-party published-source records (72 matches, four partial), three retailer-channel checkout-price holds remained, and zero had a documented current full checkout scenario. No source record is a binding price quote.
 
 **New manual sign-off gate:** a carrier URL and typed attestation alone are insufficient. Authorized reviewers must record a specific anonymized quote, the observed initial payment and renewal billing amount including mandatory fees, customer eligibility, service commitments, inventory, and ten checked material terms. The stored record is tied to a GitHub reviewer and exact catalog signature. See [Checkout verification protocol](CHECKOUT_VERIFICATION.md). A reviewed scenario never guarantees another customer's checkout price.
 
 ## Latest public-beta launch status
 
-The generated [Launch readiness dashboard](https://gcd231983.github.io/five-bars/launch-readiness.html) reads real repository evidence after each source scan and shows what remains blocked. It never upgrades published prices to checkout-verified status, assumes signed affiliate contracts, or certifies private support. The current site is an educational **public beta**, not a commercially approved referral service.
+The generated [Launch readiness dashboard](https://fivebars.info/launch-readiness.html) reads real repository evidence after each source scan and shows what remains blocked. It never upgrades published prices to checkout-verified status, assumes signed affiliate contracts, or certifies private support. The current site is an educational **public beta**, not a commercially approved referral service.
 
 The workflow generator is `node scripts/launch-readiness.mjs`. Its outputs are `site/launch-readiness.html` and `site/data/launch-readiness.json`. Missing legal, support, independent checkout, user-testing, and affiliate approvals stay pending until actual evidence is collected and separately reviewed.
 
@@ -38,7 +40,7 @@ For a public repo, this design typically runs with GitHub-hosted Actions and Git
 1. Keep this repo **public** if using free GitHub Pages and Actions.
 2. Go to **Settings → Pages → Build and deployment** and select **GitHub Actions** (same as before).
 3. In **Actions → Five Bars - no-AI deal checks and website → Run workflow**, launch one run after the changes are merged.
-4. Look for successful **update**, **browser** and **deploy** jobs. The site is typically at `https://gcd231983.github.io/five-bars/`.
+4. Require successful **update**, **browser**, **deploy** and **Verify public production website** jobs. The canonical site is `https://fivebars.info/`; the historical GitHub Pages origin may redirect. A merge alone is not evidence that the latest build is live.
 5. Open the **Sources & refresh** tab to see link-check results, the last full review date, and alert counts.
 
 No Claude subscription token or Anthropic secret is used. You may delete `CLAUDE_CODE_OAUTH_TOKEN` from Actions secrets after verifying the new workflow if nothing else needs it.
