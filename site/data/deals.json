@@ -24,12 +24,22 @@
     {
       "name": "US Mobile family plan guide",
       "url": "https://www.usmobile.com/blog/family-phone-plans/",
-      "what": "Multi-line prices at 2 to 5 lines (written by a carrier, so cross-checked)"
+      "what": "Multi-line prices at 2 to 5 lines (written by a carrier, so cross-checked)",
+      "officialPublication": {
+        "url": "https://www.usmobile.com/blog/family-phone-plans-november-2026/",
+        "publishedOn": "2026-11-03",
+        "scope": "Carrier's November 3 family guide documents standard Starter $25 and Premium $44 per line, plus six-month port-in + AutoPay introductory pricing. Published terms only, not current checkout or household-specific eligibility."
+      }
     },
     {
       "name": "US Mobile prepaid plan guide",
       "url": "https://www.usmobile.com/blog/best-prepaid-phone-plans/",
-      "what": "Prepaid plan tiers and prices (written by a carrier, so cross-checked)"
+      "what": "Prepaid plan tiers and prices (written by a carrier, so cross-checked)",
+      "officialPublication": {
+        "url": "https://www.usmobile.com/blog/best-prepaid-phone-plans-november-2026/",
+        "publishedOn": "2026-11-03",
+        "scope": "Carrier's November 3 prepaid guide covers Light 2GB $10 monthly, Starter $25 and Premium $44 standard monthly rates and conditional six-month port-in + AutoPay promos. Not current checkout, activation or customer eligibility verification."
+      }
     },
     {
       "name": "Slickdeals cell phone service deals",
