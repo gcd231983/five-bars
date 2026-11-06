@@ -212,6 +212,11 @@ try {
     if(await page.locator('.fb-more-plans').count()){
       assert.equal(await page.locator('#fb-finder-results .fb-result-heading').count()>5,true);
       assert.equal(await page.locator('#fb-finder-results .fb-provider-mark').count()>0,true);
+      const iconSources=await page.locator('#fb-finder-results .fb-provider-icon').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('src')));
+      assert.ok(iconSources.every(src=>/^https:\/\/[^/]+\/favicon\.ico$/.test(src)),
+        'Provider icons must originate from carrier source websites, not third-party logo CDNs');
+      assert.ok(await page.locator('#fb-finder-results .fb-provider-initials').count()>0,
+        'Every provider icon needs an initials fallback');
       await page.locator('.fb-more-plans').click();
       assert.equal(await page.locator('#fb-finder-results .fb-result:visible').count(),allResultCards,
         'Show all must reveal every matching card');
