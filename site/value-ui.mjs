@@ -1,7 +1,7 @@
 // Five Bars guided decisions and side-by-side comparison.
 // UI never makes unverified offer claims. All inputs remain in this browser.
 import {
-  MAX_COMPARE, localDay, usd, verificationState, planCost, phoneCost,
+  MAX_COMPARE, localDay, pastEnd, usd, verificationState, planCost, phoneCost,
   rankMatches, normalizeCompare, offerLinkCheck
 } from './value-core.mjs';
 import {reportLink} from './report-core.mjs';
@@ -182,6 +182,10 @@ function saveCompare() {
 }
 function addToCompare(type,id) {
   const offer=(type==='phone'?catalog.phones:catalog.plans).find(p=>p.id===id);
+  if(type==='phone'&&offer&&pastEnd(offer.ends,localDay())){
+    window.alert('This device promotion has passed its published end date and cannot be compared as a current offer.');
+    return;
+  }
   if(type==='phone'&&offer?.listingHold){
     window.alert('This retailer-specific phone headline is under evidence review. Price comparisons remain paused.');
     return;
@@ -452,6 +456,9 @@ function renderFinder() {
   });
 }
 function fieldValue(type,offer,key) {
+  if(type==='phone' && pastEnd(offer.ends,localDay()) &&
+     ['monthly','year','data','hotspot','eligibility'].includes(key))
+    return 'Promotion ended — no current cost quote';
   if(type==='plan' && offer.maxLines && comparePrefs.lines>offer.maxLines)
     return 'Not offered for '+comparePrefs.lines+' lines';
   if(type==='plan' && officialHeadlineUnderReview(offer) &&
@@ -505,7 +512,11 @@ function fieldValue(type,offer,key) {
 }
 function renderCompare() {
   compareRoot.replaceChildren();
+  const valid=normalizeCompare(selected,catalog,localDay());
+  const dropped=valid.length!==selected.length;
+  if(dropped){selected=valid;saveCompare();}
   compareRoot.append(note('Choose up to '+MAX_COMPARE+' plans or phone offers. Comparisons use catalog estimates; data is not independently price-verified.'));
+  if(dropped)compareRoot.append(note('Expired, removed or otherwise unavailable saved comparisons were cleared. Confirm current carrier offers before making a decision.'));
   if(!selected.length) {compareRoot.append(note('Select Compare on any plan or phone offer to start.'));return;}
   const toolbar=element('div',null,'fb-card-actions');
   toolbar.append(button('Clear comparison',()=>{selected=[];saveCompare();renderCompare();}));

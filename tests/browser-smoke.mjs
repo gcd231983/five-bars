@@ -818,6 +818,39 @@ try {
     assert.match(await blackoutPage.locator('#fb-finder-results').innerText(),
       /Listed prices and eligibility remain unconfirmed/);
     await blackoutPage.close();
+    // Cached comparisons must not resurrect an expired phone promotion when
+    // the local browser has old saved selections or an old catalog snapshot.
+    const expiredCompare=await context.newPage();
+    expiredCompare.on('pageerror',e=>errors.push(view+' expired compare: '+e.message));
+    await expiredCompare.addInitScript(()=>{
+      localStorage.setItem('fivebars-compare-v1',
+        JSON.stringify([{type:'phone',id:'boost-p10a'}]));
+    });
+    await expiredCompare.route('**/data/deals.json',async route=>{
+      const response=await route.fetch();
+      const snapshot=await response.json();
+      const offer=snapshot.phones.find(x=>x.id==='boost-p10a');
+      assert.ok(offer,'expired comparison fixture phone must exist');
+      offer.ends='2000-01-01';
+      await route.fulfill({status:200,contentType:'application/json',
+        body:JSON.stringify(snapshot)});
+    });
+    await expiredCompare.goto(base,{waitUntil:'domcontentloaded'});
+    await expiredCompare.waitForFunction(()=>
+      document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false);
+    assert.match(await expiredCompare.locator('#fb-compare-root').innerText(),
+      /Select Compare on any plan or phone offer to start/);
+    assert.doesNotMatch(await expiredCompare.locator('#fb-compare-root').innerText(),
+      /Google Pixel 10a/i,'expired saved handset must not be restored');
+    let expiredDialog='';
+    expiredCompare.on('dialog',async d=>{
+      expiredDialog=d.message();await d.dismiss();
+    });
+    await expiredCompare.evaluate(()=>window.fiveBarsCompare('phone','boost-p10a'));
+    assert.match(expiredDialog,/passed its published end date/i);
+    assert.doesNotMatch(await expiredCompare.locator('#fb-compare-root').innerText(),
+      /Google Pixel 10a/i,'manual comparison attempts must not bypass expiry');
+    await expiredCompare.close();
     if(process.env.FIVE_BARS_SITE_DIR)assert.equal(assetVersions.size,1,'all styles and modules use the same release version');
     await context.close();
   }

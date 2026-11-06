@@ -326,7 +326,7 @@ export function rankMatches(catalog, preferences = {}, today = localDay()) {
     ],
   };
 }
-export function normalizeCompare(items, catalog) {
+export function normalizeCompare(items, catalog, today=localDay()) {
   const entries = Array.isArray(items) ? items : [];
   const taken = new Set();
   const result = [];
@@ -335,7 +335,9 @@ export function normalizeCompare(items, catalog) {
     if (result.length >= MAX_COMPARE) break;
     if (result.length && entry.type!==result[0].type) continue;
     const found = (entry.type==='plan' ? catalog.plans : catalog.phones || []).find(p=>p.id===entry.id);
-    if (!found || taken.has(entry.id)) continue;
+    // A stored browser comparison must never revive a device promotion after its published deadline.
+    // An expired PLAN introduction is different: the regular plan remains comparable.
+    if (!found || taken.has(entry.id) || (entry.type==='phone' && pastEnd(found.ends,today))) continue;
     taken.add(entry.id);
     result.push({type:entry.type,id:entry.id});
   }
