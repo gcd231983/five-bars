@@ -8,7 +8,7 @@ import { BOOST_SOURCE, evaluatePriceEvidence } from './price-evidence.mjs';
 import { evaluateMvnoEvidence } from './mvno-evidence.mjs';
 import { buildReviewQueue } from './review-queue.mjs';
 import { buildAlertFeed } from './alert-engine.mjs';
-import { withSourceHistory, persistentSourceFailures } from './source-health.mjs';
+import { withSourceHistory, withOfferLinkHistory, persistentSourceFailures } from './source-health.mjs';
 import {
   easternDate, expireKnownOffers, offerDiff,
   parseBoostCandidates, reviewBoostCandidates, safeSourceUrl, fetchPublicResponse,
@@ -184,9 +184,16 @@ const linkMap = new Map(scannedLinks.map(({ url, ok, status, error }) => [url, {
 const offerStatuses = {};
 for (const offer of allOffers) {
   const link = linkMap.get(offer.url);
+  const state=link?.ok===true?'source_reachable':'source_unavailable';
+  const checkedAt=now.toISOString();
+  const sourceUrl=safeSourceUrl(offer.url)?offer.url:null;
+  // A URL change starts a new failure history. Legacy reports without a
+  // same-URL identity also start afresh, rather than inventing a long outage.
+  const history=sourceUrl?
+    withOfferLinkHistory({sourceUrl,state,checkedAt},previousStatus.offers?.[offer.id]):
+    {sourceUrl:null,unavailableSince:null,lastReachableAt:null};
   offerStatuses[offer.id] = {
-    state: link?.ok ? 'source_reachable' : 'source_unavailable',
-    checkedAt: now.toISOString(),
+    state,checkedAt,...history,
     note: link?.ok ? 'Carrier or retailer page reachable; individual deal terms are not verified' : (link?.error || 'Invalid URL'),
   };
 }

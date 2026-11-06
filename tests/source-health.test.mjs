@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
-import {classifySourceFailure,withSourceHistory,persistentSourceFailures} from '../scripts/source-health.mjs';
+import {classifySourceFailure,withSourceHistory,withOfferLinkHistory,persistentSourceFailures} from '../scripts/source-health.mjs';
 
 const url='https://tello.com/buy/custom_plans';
 const blocked=(status=403)=>({name:'Tello plans',url,ok:false,status,note:'HTTP '+status});
@@ -173,4 +173,31 @@ test('November US Mobile first-party guide links remain dated historical alterna
  assert.equal((output.match(/Dated official carrier publication/g)||[]).length,2);
  assert.equal((output.match(/do not assume the offer ended/g)||[]).length,2);
  assert.doesNotMatch(output,/checkout verified|guaranteed rate/i);
+});
+
+test('per-offer link history starts fresh, preserves only matching URL failures, and resets on recovery',()=>{
+ const url='https://tello.com/buy/custom_plans';
+ const t0='2026-11-01T15:00:00.000Z',t1='2026-11-08T15:00:00.000Z';
+ const first=withOfferLinkHistory({sourceUrl:url,state:'source_unavailable',checkedAt:t0},null);
+ assert.equal(first.unavailableSince,t0);
+ assert.equal(first.lastReachableAt,null);
+ const next=withOfferLinkHistory({sourceUrl:url,state:'source_unavailable',checkedAt:t1},
+   {state:'source_unavailable',checkedAt:t0,...first});
+ assert.equal(next.unavailableSince,t0,'same purchase URL retains known outage interval');
+ const changed=withOfferLinkHistory({sourceUrl:'https://tello.com/new-offer',state:'source_unavailable',checkedAt:t1},
+   {state:'source_unavailable',checkedAt:t0,...first});
+ assert.equal(changed.unavailableSince,t1,'different promotion URL cannot inherit unrelated 7-day outage');
+ const recovered=withOfferLinkHistory({sourceUrl:url,state:'source_reachable',checkedAt:t1},
+   {state:'source_unavailable',checkedAt:t0,...first});
+ assert.equal(recovered.unavailableSince,null);
+ assert.equal(recovered.lastReachableAt,t1);
+ const failedAgain=withOfferLinkHistory({sourceUrl:url,state:'source_unavailable',checkedAt:'2026-11-09T15:00:00Z'},
+   {state:'source_reachable',checkedAt:t1,...recovered});
+ assert.equal(failedAgain.unavailableSince,'2026-11-09T15:00:00Z');
+ assert.equal(failedAgain.lastReachableAt,t1);
+ const future=withOfferLinkHistory({sourceUrl:url,state:'source_unavailable',checkedAt:t1},
+   {state:'source_unavailable',checkedAt:t0,sourceUrl:url,unavailableSince:'2099-01-01T00:00:00Z'});
+ assert.equal(future.unavailableSince,t0,'future-dated outage must not be trusted');
+ assert.throws(()=>withOfferLinkHistory({sourceUrl:'http://example.com',state:'source_unavailable',checkedAt:t1}),/HTTPS/);
+ assert.throws(()=>withOfferLinkHistory({sourceUrl:url,state:'price_verified',checkedAt:t1}),/link state/);
 });
