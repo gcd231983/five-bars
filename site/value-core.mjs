@@ -349,3 +349,29 @@ export function normalizeCompare(items, catalog, today=localDay()) {
   }
   return result;
 }
+
+/**
+ * Relative, price-only comparison of the currently selected offers.
+ * This is NOT a carrier checkout or a "best plan" recommendation: plans
+ * may have different data allowances and networks. Skip highlights when
+ * any quote is missing, financing is unknown or household prices are
+ * extrapolated. Eligibility uses the exact same calculator as the cards.
+ */
+export function comparisonPriceOverview(type,offers,lines=1,eligibility={},today=localDay()){
+  if(!['plan','phone'].includes(type)||!Array.isArray(offers)||
+      offers.length<2||offers.length>MAX_COMPARE)return null;
+  const cost=offers.map(offer=>{
+    if(!offer||typeof offer!=='object')return null;
+    if(type==='phone' &&
+      (pastEnd(offer.ends,today)||offer.listingHold||offer.availability==='out_of_stock'))return null;
+    return type==='plan'?planCost(offer,lines,{...eligibility,today}):phoneCost(offer,eligibility);
+  });
+  if(cost.some(c=>!c||!Number.isFinite(c.year)||c.year<0||
+      c.estimatedFamilyPrice||c.promoFamilyUnconfirmed||c.financingUncertain||
+      c.listingHold||c.unavailable||c.requiresNewLine))return null;
+  const values=cost.map(c=>c.year);
+  const lowest=Math.min(...values),highest=Math.max(...values);
+  const cheapestIndices=values.flatMap((value,i)=>value===lowest?[i]:[]);
+  return {lowest,highest,range:highest-lowest,cheapestIndices,
+    tied:cheapestIndices.length>1};
+}
