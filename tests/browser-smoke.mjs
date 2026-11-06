@@ -858,7 +858,6 @@ try {
     rollover.on('pageerror',e=>errors.push(view+' calendar rollover: '+e.message));
     await rollover.clock.install({time:new Date('2026-11-10T04:58:00Z')});
     await rollover.goto(base,{waitUntil:'domcontentloaded'});
-    await rollover.locator('#r-tello').waitFor({state:'attached',timeout:15000}).catch(()=>{});
     await rollover.locator('#t-plans').click();
     await rollover.locator('.fb-advanced-filters summary').click();
     const unlimited=rollover.getByRole('button',{name:'Unlimited data',exact:true});
