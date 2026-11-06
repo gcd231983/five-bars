@@ -622,6 +622,25 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
  .fb-compare-metrics>div{align-items:flex-start}
  body.fb-has-compare-tray #main-content{padding-bottom:190px}
 }
+/* Mobile task navigation: all primary actions visible, secondary tools in
+   an accessible More menu rather than a clipped eight-tab horizontal strip. */
+.tabs .wrap.fb-tabs-shell{display:flex;align-items:stretch;gap:0;overflow:visible}
+.fb-tab-buttons{display:flex;gap:2px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none}
+.fb-tabs-more{display:none}
+@media(max-width:620px){
+ .tabs .wrap.fb-tabs-shell{display:grid;grid-template-columns:minmax(0,1fr) 75px;padding:0 8px;gap:0;scroll-snap-type:none}
+ .fb-tab-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;overflow:visible}
+ .tabs .fb-tab-buttons .tab{display:flex;align-items:center;justify-content:center;min-height:50px;padding:8px 2px;font-size:.77rem;line-height:1.18;white-space:normal;text-align:center;scroll-snap-align:none;flex-wrap:wrap;gap:2px}
+ .tabs .fb-tab-buttons #t-switch,.tabs .fb-tab-buttons #t-watchlist,
+ .tabs .fb-tab-buttons #t-pricewatch,.tabs .fb-tab-buttons #t-sources{display:none}
+ .fb-tabs-more{display:block;position:relative;min-width:0}
+ .fb-tabs-more>summary{list-style:none;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:50px;padding:8px 2px;font-size:.77rem;font-weight:700;color:var(--muted);text-align:center;border-bottom:3px solid transparent}
+ .fb-tabs-more>summary::-webkit-details-marker{display:none}
+ .fb-tabs-more[data-active="true"]>summary{border-bottom-color:var(--accent);color:var(--ink)}
+ .fb-tabs-more-menu{position:absolute;right:0;top:100%;min-width:220px;z-index:30;border:1px solid var(--line);border-radius:0 0 13px 13px;background:var(--surface);box-shadow:0 12px 28px rgba(0,0,0,.25);padding:7px}
+ .fb-tabs-more-menu button{display:block;width:100%;min-height:44px;text-align:left;padding:10px 13px;border:0;border-radius:8px;background:none;color:var(--ink);font-weight:650;cursor:pointer}
+ .fb-tabs-more-menu button:hover,.fb-tabs-more-menu button:focus-visible{background:var(--chip)}
+}
 </style>
 </head>
 <body>
@@ -691,7 +710,8 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
 </header>
 
 <nav class="tabs" aria-label="Sections">
-  <div class="wrap" role="tablist" aria-label="Five Bars tools">
+  <div class="wrap fb-tabs-shell">
+    <div class="fb-tab-buttons" role="tablist" aria-label="Five Bars tools">
     <button class="tab" role="tab" data-tab="finder" id="t-finder" aria-controls="p-finder">Find my plan</button>
     <button class="tab" role="tab" data-tab="plans" id="t-plans" aria-controls="p-plans">Plans<span class="count" id="c-plans"></span></button>
     <button class="tab" role="tab" data-tab="phones" id="t-phones" aria-controls="p-phones">Phone deals<span class="count" id="c-phones"></span></button>
@@ -700,8 +720,18 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
     <button class="tab" role="tab" data-tab="watchlist" id="t-watchlist" aria-controls="p-watchlist">My watchlist<span class="count" id="c-watchlist"></span></button>
     <button class="tab" role="tab" data-tab="pricewatch" id="t-pricewatch" aria-controls="p-pricewatch">Price watch</button>
     <button class="tab" role="tab" data-tab="sources" id="t-sources" aria-controls="p-sources">Sources &amp; refresh</button>
+    </div>
+    <details class="fb-tabs-more" id="fb-tabs-more" data-active="false">
+      <summary>More tools</summary>
+      <div class="fb-tabs-more-menu" role="group" aria-label="Additional Five Bars tools">
+        <button type="button" data-more-tab="switch">Switch &amp; save</button>
+        <button type="button" data-more-tab="watchlist">My watchlist</button>
+        <button type="button" data-more-tab="pricewatch">Price watch</button>
+        <button type="button" data-more-tab="sources">Sources &amp; refresh</button>
+      </div>
+    </details>
   </div>
-  <p class="fb-tab-swipe" id="fb-tab-hint">Swipe the tabs sideways to see Compare, Switch &amp; save, Watchlist, Price watch and Sources.</p>
+  <p class="fb-tab-swipe" id="fb-tab-hint">Find a plan, browse deals, or compare. Additional tools are in the More menu.</p>
 </nav>
 
 <main class="wrap" id="main-content" tabindex="-1">
@@ -1235,6 +1265,8 @@ function emptyState(){
 function showTab(t){
   state.tab = t;
   document.body.dataset.activeTab=t;
+  const moreTab=document.getElementById('fb-tabs-more');
+  if(moreTab)moreTab.dataset.active=String(['switch','watchlist','pricewatch','sources'].includes(t));
   if(t==="plans") state.mode = "byop";
   if(t==="phones") state.mode = "phone";
   for(const b of document.querySelectorAll(".tab")){
@@ -1252,7 +1284,7 @@ function showTab(t){
 document.querySelectorAll(".tab").forEach(b=>{
   b.addEventListener("click",()=>showTab(b.dataset.tab));
   b.addEventListener("keydown",event=>{
-    const tabs=[...document.querySelectorAll(".tab")];
+    const tabs=[...document.querySelectorAll(".tab")].filter(tab=>tab.getClientRects().length>0);
     const current=tabs.indexOf(b);
     const index= event.key==="ArrowRight" ? (current+1)%tabs.length :
       event.key==="ArrowLeft" ? (current+tabs.length-1)%tabs.length :
@@ -1262,6 +1294,21 @@ document.querySelectorAll(".tab").forEach(b=>{
     showTab(tabs[index].dataset.tab);
     tabs[index].focus();
   });
+});
+
+document.querySelectorAll('[data-more-tab]').forEach(button=>{
+  button.addEventListener('click',()=>{
+    document.getElementById('fb-tabs-more').open=false;
+    showTab(button.dataset.moreTab);
+  });
+});
+// Clicking outside or Escape closes the mobile tools menu.
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape')document.getElementById('fb-tabs-more').open=false;
+});
+document.addEventListener('click',event=>{
+  const more=document.getElementById('fb-tabs-more');
+  if(more?.open&&!more.contains(event.target))more.open=false;
 });
 
 function update(skipTab){
