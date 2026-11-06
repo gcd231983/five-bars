@@ -39,7 +39,7 @@ export async function probe(path,{dns=lookup,request=fetch,expectedRevision=null
   if(path==='/sitemap.xml'&&
      (!body.includes('<urlset')||!body.includes('<loc>https://fivebars.info/</loc>')))
      throw Error('Live sitemap is missing the canonical homepage');
-  if(path==='/'&&(!/<html[\\s>]/i.test(body)||!body.includes('Five Bars')))
+  if(path==='/'&&(!/<html[\s>]/i.test(body)||!body.includes('Five Bars')))
     throw Error('Live homepage is missing Five Bars HTML');
   return {path,bytes:body.length};
 }
