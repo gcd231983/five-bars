@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 
 const workflow=readFileSync(new URL('../.github/workflows/daily.yml',import.meta.url),'utf8');
-const job=name=>workflow.match(new RegExp('^  '+name+':[\\s\\S]*?(?=^  [a-z]+:|$(?![\\s\\S]))','m'))?.[0]||'';
+const job=name=>workflow.match(new RegExp('^  '+name+':[\\s\\S]*?(?=^  [a-z][a-z-]*:|$(?![\\s\\S]))','m'))?.[0]||'';
 
 test('Pages publishes the exact generated revision that passed regression and browser gates',()=>{
  const update=job('update'),browser=job('browser'),deploy=job('deploy');
