@@ -426,6 +426,39 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 #fb-finder-results .fb-result-details summary{cursor:pointer;font-size:.9rem;min-height:40px;display:flex;align-items:center}
 #fb-finder-results .fb-result-details .fb-subtle{font-size:.9rem;margin:8px 0}
 #fb-finder-results .fb-result .fb-card-actions{margin-top:10px}
+
+/* Mobile-first homepage: one clear path to the finder, with supporting research on demand. */
+.fb-home-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.fb-home-shortcuts a{display:flex;flex-direction:column;gap:6px;text-decoration:none;border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0;background:var(--surface)}
+.fb-home-shortcuts strong{color:var(--ink);font-size:1rem}
+.fb-home-shortcuts span{color:var(--accent);font-size:.85rem}
+.fb-home-trust{font-size:.88rem;color:var(--muted);margin:12px 0}
+.fb-home-resources{font-size:.85rem;margin:8px 0 16px}
+@media(max-width:620px){
+ .fb-topnav-links{display:none}
+ .hero{padding-top:12px;padding-bottom:12px}
+ .fb-welcome{padding:20px 18px;margin:10px 0}
+ .fb-welcome h2{font-size:clamp(1.75rem,7vw,2.3rem);line-height:1.12}
+ .fb-welcome p{font-size:.98rem;line-height:1.45}
+ .fb-welcome .fb-quick-actions{display:block}
+ .fb-welcome .fb-quick-actions button{width:100%;min-height:50px}
+ .fb-home-shortcuts{gap:9px;margin:10px 0}
+ .fb-home-shortcuts a{padding:12px 10px}
+ .fb-home-shortcuts strong{font-size:.9rem}
+ .fb-home-shortcuts span{font-size:.77rem}
+ .fb-home-trust{margin:10px 0}
+ .fb-home-resources{margin:6px 0 12px}
+ .fb-advanced-filters,.fb-evidence-summary,.fb-price-guide{margin-top:8px;margin-bottom:8px}
+ .fb-advanced-filters:not([open]) .fb-filter-body{display:none}
+ .fb-evidence-summary{padding:9px 12px}
+ .fb-evidence-summary p{margin:4px 0;font-size:.78rem}
+ .fb-evidence-summary a{font-size:.78rem}
+ .fresh{font-size:.78rem;line-height:1.35}
+ .tabs .wrap{gap:4px}
+ #p-finder .panel{padding:14px}
+ #p-finder .panel>h2{font-size:1.35rem;margin-bottom:4px}
+ #p-finder .panel>.note{font-size:.85rem;margin-bottom:10px}
+}
 </style>
 </head>
 <body>
@@ -443,10 +476,19 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
     </svg>
     <h1>Five Bars <span class="fb-visually-hidden">— Compare phone plans, phone deals and total wireless costs</span></h1>
   </div>
-  <section class="fb-welcome" aria-label="Start comparing"><p class="fb-eyebrow">COMPARE SMARTER · SWITCH CONFIDENTLY</p><h2>Find the right phone plan. <em>Keep more of your money.</em></h2><p>Answer a few simple questions, then compare real costs, network options and deal conditions in one place.</p><div class="fb-quick-actions"><button type="button" onclick="document.getElementById('t-finder').click();document.getElementById('main-content').scrollIntoView();">Find my plan</button><button type="button" onclick="document.getElementById('t-phones').click();document.getElementById('main-content').scrollIntoView();">Browse phone deals</button></div><small>Independent comparisons · No account required · Prices and terms must be confirmed with carriers.</small></section>
-  <p class="tagline">Find affordable wireless plans, compare estimated real costs, and check the conditions before you switch. No account required.</p>
-  <p class="tagline"><a href="carrier-comparisons.html">Explore in-depth carrier comparisons</a> — source-linked guides for major MVNO choices.</p>
-  <p class="tagline"><a href="satellite.html">Can your phone text by satellite?</a></p>
+  <section class="fb-welcome" aria-label="Start comparing">
+    <p class="fb-eyebrow">COMPARE SMARTER · SAVE MORE</p>
+    <h2>Find a better phone plan.</h2>
+    <p>Compare estimated costs and carrier options in minutes.</p>
+    <div class="fb-quick-actions"><button type="button" onclick="document.getElementById('t-finder').click();document.getElementById('main-content').scrollIntoView();">Find my best plan →</button></div>
+    <small>Free comparison · No account needed</small>
+  </section>
+  <div class="fb-home-shortcuts" aria-label="Explore Five Bars">
+    <a href="phone-deals.html"><strong>Phone deals</strong><span>Browse current offers →</span></a>
+    <a href="carrier-comparisons.html"><strong>Compare carriers</strong><span>Explore networks and plans →</span></a>
+  </div>
+  <p class="fb-home-trust">Independent comparisons. Transparent estimates. Confirm final prices with carriers.</p>
+  <div class="fb-home-resources"><a href="switching-guide.html">Switching guide</a> · <a href="satellite.html">Can your phone text by satellite?</a></div>
 
   <details class="fb-advanced-filters"><summary>Refine results <span>Lines, network, provider &amp; eligibility</span></summary><div class="fb-filter-body">
   <p class="sentence">
