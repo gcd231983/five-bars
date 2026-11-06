@@ -788,6 +788,7 @@ function planCalc(p){
     if(ei && ei.expired) promoState = {off:true, why:ei.text + ". Recheck for a new offer."};
     else if(promo.req==="port" && (state.t.noport || state.t.canport!==true)) promoState = {off:true, why:state.t.noport?"Port-in promotion excluded: number transfer unavailable.":"Port-in promotion excluded until you confirm eligible number transfer."};
     else if(promo.req==="new" && state.t.newcustomer!==true) promoState = {off:true, why:"New-customer or new-line pricing excluded until you confirm carrier eligibility."};
+    else if(promo.autopayRequired===true && state.t.discountqualified!==true) promoState = {off:true, why:"This introductory price also requires AutoPay. Confirm payment enrollment before using the promo estimate."};
     else promoState = {off:false, ends:ei};
   }
   const familyPromoEligible = L===1 || promo?.familyEligible===true ||
