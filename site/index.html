@@ -1401,9 +1401,27 @@ function emptyState(){
     el("button",{class:"btn ghost", type:"button", onclick:()=>{state.t={}; state.net="any"; update();}}, "Clear filters"));
 }
 
-/* ---------- tabs ---------- */
-function showTab(t){
+/* ---------- tabs and shareable section URLs ---------- */
+const PANEL_TABS=['finder','plans','phones','compare','switch','watchlist','pricewatch','sources'];
+function tabFromHash(hash=location.hash){
+  const raw=String(hash||'').replace(/^#/,'');
+  // Keep existing published links working: #t-phones and #switch-save.
+  const name=raw==='switch-save'?'switch':raw.replace(/^(?:t-|p-)/,'');
+  return PANEL_TABS.includes(name)?name:null;
+}
+function showTab(t,{route='push'}={}){
+  if(!PANEL_TABS.includes(t))return;
+  const previous=state.tab;
   state.tab = t;
+  // Write the selected section to the URL without navigating or scrolling to
+  // an invisible tab panel. This preserves any ?switch= share scenario.
+  if(route==='push'&&(previous!==t||tabFromHash()!==t)){
+    try{
+      history.pushState({...history.state,fiveBarsTab:t},'','#'+t);
+    }catch{
+      // Restricted browsers still retain functional in-page navigation.
+    }
+  }
   document.body.dataset.activeTab=t;
   const moreTab=document.getElementById('fb-tabs-more');
   if(moreTab)moreTab.dataset.active=String(['switch','watchlist','pricewatch','sources'].includes(t));
@@ -1421,6 +1439,19 @@ function showTab(t){
   }
   update(true);
 }
+function restoreTabFromAddress(event){
+  const route=tabFromHash();
+  if(route){
+    showTab(route,{route:'none'});
+    return;
+  }
+  // A normal skip-to-content anchor must never reset the current section.
+  if(location.hash)return;
+  const tab=event?.state?.fiveBarsTab;
+  showTab(PANEL_TABS.includes(tab)?tab:'finder',{route:'none'});
+}
+window.addEventListener('popstate',restoreTabFromAddress);
+window.addEventListener('hashchange',restoreTabFromAddress);
 document.querySelectorAll(".tab").forEach(b=>{
   b.addEventListener("click",()=>showTab(b.dataset.tab));
   b.addEventListener("keydown",event=>{
@@ -1623,11 +1654,14 @@ async function boot(){
   renderEvidenceSummary();
   renderCatalogFreshness();
   renderSources();
-  if(state.tab==="ask") state.tab = "plans";
-  const requested=location.hash.slice(1);
-  const target=requested==="switch-save"?"switch":requested;
-  const available=["finder","plans","phones","compare","switch","watchlist","pricewatch","sources"];
-  showTab(available.includes(target)?target:(state.tab || "plans"));
+  if(state.tab==="ask")state.tab="plans";
+  const firstTab=tabFromHash()||(PANEL_TABS.includes(state.tab)?state.tab:'finder');
+  showTab(firstTab,{route:'none'});
+  // Record the initial tab in this history entry so browser Back restores
+  // it even when the initial URL had no hash, without creating an extra entry.
+  try{
+    history.replaceState({...history.state,fiveBarsTab:firstTab},'',location.href);
+  }catch{}
   if(document.fonts) document.fonts.ready.then(()=>renderControls());
 }
 boot();
