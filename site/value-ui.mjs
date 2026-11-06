@@ -15,6 +15,10 @@ let comparePrefs = {lines:1,cannotPort:false,canPort:false,newCustomer:false,dis
 let catalog = {plans:[],phones:[]};
 let reviews = {};
 let selected = [];
+let compareBrowseType='plan';
+let compareQuery='';
+let compareExpanded=false;
+let compareNotice='';
 let priceEvidence = null;
 let priceHistory = {offers:{}};
 let mvnoEvidence = null;
@@ -180,42 +184,107 @@ function saveCompare() {
     localStorage.setItem(COMPARE_PREFS_KEY,JSON.stringify(comparePrefs));
   } catch {}
 }
+const compareTray=element('aside',null,'fb-compare-tray');
+compareTray.id='fb-compare-tray';
+compareTray.setAttribute('aria-label','Your comparison selections');
+compareTray.hidden=true;
+document.body.append(compareTray);
+function compareName(type,p){
+  return type==='plan' ? p.carrier+' — '+p.plan : p.phone+' — '+p.carrier;
+}
+function selectedCompare(type,id){
+  return selected.some(item=>item.type===type&&item.id===id);
+}
+function syncCompareButtons(){
+  for(const node of document.querySelectorAll('button[data-compare-type][data-compare-id]')){
+    const active=selectedCompare(node.dataset.compareType,node.dataset.compareId);
+    node.textContent=active?'✓ Added':'＋ Add to compare';
+    node.setAttribute('aria-pressed',String(active));
+    node.title=active?'Remove this offer from your comparison':'Add this offer to your comparison without leaving this page';
+  }
+}
+function renderCompareTray(){
+  const viewingCompare=document.getElementById('p-compare')?.hidden===false;
+  const visible=selected.length>0&&!viewingCompare;
+  compareTray.hidden=!visible;
+  document.body.classList.toggle('fb-has-compare-tray',visible);
+  compareTray.replaceChildren();
+  if(!visible)return;
+  const info=element('div',null,'fb-tray-info');
+  info.append(element('strong',selected.length+' of '+MAX_COMPARE+' chosen','fb-tray-title'));
+  const names=selected.map(item=>{
+    const offer=(item.type==='phone'?catalog.phones:catalog.plans).find(p=>p.id===item.id);
+    return offer?offer.carrier:'Offer';
+  }).join(' · ');
+  info.append(element('span',names+(selected.length===1?' · Choose one more to compare':''),'fb-tray-names'));
+  if(compareNotice)info.append(element('span',compareNotice,'fb-compare-notice'));
+  const actions=element('div',null,'fb-tray-actions');
+  actions.append(button(selected.length===1?'Add another / Compare': 'Compare '+selected.length+' offers',()=>{
+    compareNotice='';
+    window.showTab?.('compare');
+    renderCompareTray();
+    document.getElementById('p-compare')?.scrollIntoView({block:'start',behavior:'smooth'});
+    document.getElementById('fb-compare-search')?.focus({preventScroll:true});
+  },'btn fb-tray-open'));
+  actions.append(button('Clear',()=>{
+    selected=[];compareNotice='';saveCompare();renderCompare();
+  },'btn ghost fb-tray-clear'));
+  compareTray.append(info,actions);
+}
+function removeFromCompare(type,id){
+  selected=selected.filter(item=>!(item.type===type&&item.id===id));
+  compareNotice='';saveCompare();renderCompare();
+}
 function addToCompare(type,id) {
   const offer=(type==='phone'?catalog.phones:catalog.plans).find(p=>p.id===id);
-  if(type==='phone'&&offer&&pastEnd(offer.ends,localDay())){
+  if(!offer)return;
+  if(selectedCompare(type,id)){removeFromCompare(type,id);return;}
+  if(type==='phone'&&pastEnd(offer.ends,localDay())){
     window.alert('This device promotion has passed its published end date and cannot be compared as a current offer.');
     return;
   }
-  if(type==='phone'&&offer?.listingHold){
+  if(type==='phone'&&offer.listingHold){
     window.alert('This retailer-specific phone headline is under evidence review. Price comparisons remain paused.');
     return;
   }
-  if(type==='phone'&&offer?.availability==='out_of_stock'){
+  if(type==='phone'&&offer.availability==='out_of_stock'){
     window.alert('This phone was observed out of stock. Cost comparisons are paused until the carrier confirms inventory.');
     return;
   }
-  if(offer && officialHeadlineUnderReview(offer)){
+  if(officialHeadlineUnderReview(offer)){
     window.alert('This offer has conflicting official price evidence and is temporarily excluded from cost comparisons. Check Price watch.');
     return;
   }
-  if (!comparePrefs.fromFinder) {
-    const selectedLines=Number(document.querySelector('#lines')?.value);
-    if(Number.isInteger(selectedLines) && selectedLines>=1 && selectedLines<=5) comparePrefs.lines=selectedLines;
+  if(selected.length&&selected[0].type!==type){
+    compareNotice='You are comparing '+(selected[0].type==='plan'?'plans':'phones')+
+      '. Clear the selection first to compare '+(type==='plan'?'plans':'phones')+'.';
+    renderCompare();return;
   }
-  const next = normalizeCompare([...selected,{type,id}],catalog);
-  if (selected.length && selected[0].type!==type) {
-    selected = [{type,id}];
-  } else if (!next.some(x=>x.type===type && x.id===id) && selected.length>=MAX_COMPARE) {
-    window.alert('Compare up to '+MAX_COMPARE+' items at once. Remove an item first.');
-    return;
-  } else selected = next;
+  if(selected.length>=MAX_COMPARE){
+    compareNotice='Three offers already selected. Remove one before adding another.';
+    renderCompare();return;
+  }
+  if(!comparePrefs.fromFinder){
+    const lines=Number(document.querySelector('#lines')?.value);
+    if(Number.isInteger(lines)&&lines>=1&&lines<=5)comparePrefs.lines=lines;
+  }
+  const next=normalizeCompare([...selected,{type,id}],catalog,localDay());
+  if(next.length!==selected.length+1){
+    compareNotice='This offer cannot be compared at its current evidence or availability status.';
+    renderCompare();return;
+  }
+  selected=next;
+  compareBrowseType=type;
+  compareNotice='';
   saveCompare();
   renderCompare();
-  if (typeof window.showTab === 'function') window.showTab('compare');
-  document.getElementById('p-compare')?.scrollIntoView({block:'start',behavior:'smooth'});
+  // Stay in the catalog: the visible selection tray takes shoppers to results
+  // only when they choose to compare, rather than stranding them at one column.
 }
 window.fiveBarsCompare = addToCompare;
-window.addEventListener('fivebars:render', decorateCards);
+window.addEventListener('fivebars:render',()=>{
+  decorateCards();syncCompareButtons();renderCompareTray();
+});
 // A browser tab can stay open past the Eastern day a promotion ends.
 // Re-run only comparisons that the shopper already requested, using their
 // unchanged filters; do not invent fresh carrier prices or checkout evidence.
@@ -400,7 +469,10 @@ function renderFinder() {
         if (c.estimatedFamilyPrice) info.append(note('Multi-line price was not published in our catalog; this is a single-line extrapolation.'));
         card.append(info);
         const actions=element('div',null,'fb-card-actions');
-        actions.append(button('Compare',()=>addToCompare('plan',p.id)));
+        const compareButton=button('＋ Add to compare',()=>addToCompare('plan',p.id),'btn ghost fb-compare-btn');
+        compareButton.dataset.compareType='plan';
+        compareButton.dataset.compareId=p.id;
+        actions.append(compareButton);
         actions.append(linkTo(p.url,'Carrier details'));
         info.append(button('See in plan list',()=>goToRow(p.id,'plan')));
         info.append(button('Watch plan',()=>window.fiveBarsWatch?.('plan',p.id)));
@@ -444,7 +516,10 @@ function renderFinder() {
         if(c.conditionalDiscountUnconfirmed) card.append(note('Required service is '+usd(c.planPrice)+'/mo without AutoPay; the advertised '+usd(p.planPrice)+'/mo discount is not assumed.'));
         if(c.firstMonthPlanPrice!==null && c.firstMonthPlanPrice!==c.planPrice) card.append(note('First service bill '+usd(c.firstMonthPlanPrice)+'; continuing service '+usd(c.planPrice)+'/mo subject to eligibility.'));
         const actions=element('div',null,'fb-card-actions');
-        actions.append(button('Compare',()=>addToCompare('phone',p.id)));
+        const compareButton=button('＋ Add to compare',()=>addToCompare('phone',p.id),'btn ghost fb-compare-btn');
+        compareButton.dataset.compareType='phone';
+        compareButton.dataset.compareId=p.id;
+        actions.append(compareButton);
         actions.append(button('See offer',()=>goToRow(p.id,'phone')));
         actions.append(button('Watch phone',()=>window.fiveBarsWatch?.('phone',p.id)));
         if(!p.postpaid)actions.append(button('Calculate switch savings',()=>window.fiveBarsSwitch?.('phone',p.id)));
@@ -465,6 +540,7 @@ function renderFinder() {
         root.append(morePhones);
       }
     }
+    syncCompareButtons();
   });
 }
 function fieldValue(type,offer,key) {
@@ -522,23 +598,122 @@ function fieldValue(type,offer,key) {
     default:return '—';
   }
 }
-function renderCompare() {
+function renderCompare(){
   compareRoot.replaceChildren();
-  // Loading previously saved selections must not bypass the live guard that
-  // blocks contradictory official price evidence.
+  // Old browser storage never bypasses present-day holds or conflicting prices.
   const valid=normalizeCompare(selected,catalog,localDay()).filter(item=>{
     const offer=(item.type==='phone'?catalog.phones:catalog.plans).find(x=>x.id===item.id);
     return offer&&!officialHeadlineUnderReview(offer);
   });
   const dropped=valid.length!==selected.length;
   if(dropped){selected=valid;saveCompare();}
-  compareRoot.append(note('Choose up to '+MAX_COMPARE+' plans or phone offers. Comparisons use catalog estimates; data is not independently price-verified.'));
-  if(dropped)compareRoot.append(note('Expired, held, out-of-stock, conflicting-price or removed saved comparisons were cleared. Confirm current carrier offers before making a decision.'));
-  if(!selected.length) {compareRoot.append(note('Select Compare on any plan or phone offer to start.'));return;}
-  const toolbar=element('div',null,'fb-card-actions');
-  toolbar.append(button('Clear comparison',()=>{selected=[];saveCompare();renderCompare();}));
-  compareRoot.append(toolbar);
+  if(selected.length)compareBrowseType=selected[0].type;
+  syncCompareButtons();
+  renderCompareTray();
+
+  const workspace=element('div',null,'fb-compare-workspace');
+  workspace.append(element('p','Choose two or three offers to see them side by side. Add or remove items here, or browse the plan and phone lists.','fb-compare-intro'));
+  if(dropped)workspace.append(note('Expired, held, out-of-stock, conflicting-price or removed saved comparisons were cleared. Confirm current carrier offers before making a decision.'));
+  if(compareNotice)workspace.append(element('p',compareNotice,'fb-compare-notice'));
+  const mode=selected[0]?.type||compareBrowseType;
+  const modeRow=element('div',null,'fb-compare-modes');
+  for(const type of ['plan','phone']){
+    const toggle=button(type==='plan'?'Compare plans':'Compare phone deals',()=>{
+      if(selected.length&&selected[0].type!==type){
+        compareNotice='Clear your '+(selected[0].type==='plan'?'plan':'phone')+
+          ' selection to compare the other offer type.';
+      }else{
+        compareBrowseType=type;compareQuery='';compareExpanded=false;compareNotice='';
+      }
+      renderCompare();
+    },'fb-compare-mode');
+    toggle.setAttribute('aria-pressed',String(type===mode));
+    modeRow.append(toggle);
+  }
+  workspace.append(modeRow);
+  const line=element('div',null,'fb-compare-progress');
+  line.append(element('strong',selected.length+' of '+MAX_COMPARE+' selected'));
+  if(selected.length){
+    line.append(button('Clear all',()=>{selected=[];compareNotice='';saveCompare();renderCompare();},'fb-compare-clear'));
+  }
+  workspace.append(line);
+  const chips=element('div',null,'fb-compare-chips');
+  for(let i=0;i<MAX_COMPARE;i++){
+    const slot=element('div',null,'fb-compare-chip');
+    const item=selected[i];
+    if(item){
+      const p=(item.type==='phone'?catalog.phones:catalog.plans).find(x=>x.id===item.id);
+      slot.append(element('span',p?compareName(item.type,p):'Selected offer'));
+      const remove=button('×',()=>removeFromCompare(item.type,item.id),'fb-compare-chip-remove');
+      remove.setAttribute('aria-label','Remove '+(p?compareName(item.type,p):'selected offer')+' from comparison');
+      slot.append(remove);
+    }else slot.append(element('span','＋ Choose '+(i+1),'fb-compare-chip-empty'));
+    chips.append(slot);
+  }
+  workspace.append(chips);
+  compareRoot.append(workspace);
+
+  if(selected.length<MAX_COMPARE){
+    const picker=element('section',null,'fb-compare-picker');
+    picker.append(element('h3',selected.length?'Add another '+(mode==='plan'?'plan':'phone deal'):
+      'Start with a '+(mode==='plan'?'plan':'phone deal')));
+    const searchLabel=element('label',null,'fb-compare-search-label');
+    searchLabel.append(element('span','Search by carrier, '+(mode==='plan'?'plan':'phone')+' name'));
+    const search=element('input');
+    search.type='search';search.id='fb-compare-search';search.autocomplete='off';
+    search.placeholder=mode==='plan'?'e.g. Tello, US Mobile or Mint':'e.g. Galaxy, Pixel or iPhone';
+    search.value=compareQuery;
+    searchLabel.append(search);
+    picker.append(searchLabel);
+    const options=element('div',null,'fb-compare-picks');
+    picker.append(options);
+    const more=button('Show more choices',()=>{compareExpanded=true;drawChoices();},'btn ghost fb-compare-more');
+    picker.append(more);
+    function drawChoices(){
+      const query=compareQuery.trim().toLowerCase();
+      const matches=(mode==='plan'?catalog.plans:catalog.phones)
+        .filter(p=>!selectedCompare(mode,p.id)&&!officialHeadlineUnderReview(p)&&
+          (mode==='plan'||(!p.listingHold&&p.availability!=='out_of_stock'&&!pastEnd(p.ends,localDay()))))
+        .filter(p=>!query||compareName(mode,p).toLowerCase().includes(query))
+        .sort((x,y)=>x.carrier.localeCompare(y.carrier)||
+          (x.plan||x.phone||'').localeCompare(y.plan||y.phone||''));
+      const visible=matches.slice(0,compareExpanded?matches.length:6);
+      options.replaceChildren();
+      for(const offer of visible){
+        const item=element('article',null,'fb-compare-pick');
+        const copy=element('div',null,'fb-compare-pick-copy');
+        copy.append(element('strong',compareName(mode,offer)));
+        const description=mode==='plan'?
+          'Published regular rate: '+usd(offer.price)+'/mo per line'+
+          (offer.billingUpfront?' · '+usd(offer.billingUpfront)+' annual prepay':'') :
+          offer.postpaid?'Financing terms require carrier confirmation':
+          'Advertised device: '+usd(offer.price)+' · required plan: '+
+            (Number.isFinite(offer.planPrice)?usd(offer.planPrice)+'/mo':'check carrier');
+        copy.append(element('span',description));
+        const add=button('Add',()=>addToCompare(mode,offer.id),'btn fb-compare-pick-add');
+        add.setAttribute('aria-label','Add '+compareName(mode,offer)+' to comparison');
+        item.append(copy,add);
+        options.append(item);
+      }
+      if(!matches.length)options.append(note('No eligible offers match that search. Try a carrier or device name, or clear your search.'));
+      more.hidden=compareExpanded||matches.length<=visible.length;
+      more.textContent='Show all '+matches.length+' available choices';
+    }
+    search.addEventListener('input',()=>{compareQuery=search.value;compareExpanded=false;drawChoices();});
+    drawChoices();
+    compareRoot.append(picker);
+  }else{
+    compareRoot.append(note('Three offers selected. Remove one to replace it with another.'));
+  }
+
+  if(selected.length<2){
+    compareRoot.append(element('p',selected.length===1?
+      'One chosen. Add at least one more offer above to see a side-by-side comparison.':
+      'Select Compare on any plan or phone offer to start, or choose an offer above.','fb-compare-empty'));
+    return;
+  }
   const type=selected[0].type;
+  const toolbar=element('div',null,'fb-card-actions fb-compare-toolbar');
   if(type==='plan'){
     const label=element('label','Compare household size: ','fb-compare-household');
     const select=element('select');
@@ -550,48 +725,71 @@ function renderCompare() {
     select.value=String(comparePrefs.lines);
     select.addEventListener('change',()=>{
       comparePrefs.lines=Number(select.value);
-      comparePrefs.fromFinder=true;
-      saveCompare();
-      renderCompare();
+      comparePrefs.fromFinder=true;saveCompare();renderCompare();
     });
-    label.append(select);
-    toolbar.append(label);
+    label.append(select);toolbar.append(label);
   }
-  const records=selected.map(s=>(type==='plan'?catalog.plans:catalog.phones).find(p=>p.id===s.id)).filter(Boolean);
+  compareRoot.append(toolbar);
+  const records=selected.map(item=>
+    (type==='plan'?catalog.plans:catalog.phones).find(p=>p.id===item.id)).filter(Boolean);
+  compareRoot.append(element('h3','Your side-by-side comparison'));
+  const highlights=element('div',null,'fb-compare-highlights');
+  for(const p of records){
+    const card=element('article',null,'fb-compare-highlight');
+    card.append(element('h4',compareName(type,p)));
+    const verified=verificationState(p,reviews[p.id]).status==='verified';
+    card.append(element('p',verified?
+      'A dated checkout scenario was reviewed; your checkout may differ':
+      'Catalog estimate · checkout not verified','fb-compare-card-status'));
+    const metrics=type==='plan'?
+      [['year','Estimated 12 months'],['monthly','Current service'],['billing','Due at signup']] :
+      [['year','Estimated 12 months'],['data','Due today'],['hotspot','Minimum commitment']];
+    const dl=element('dl',null,'fb-compare-metrics');
+    for(const [key,label] of metrics){
+      const box=element('div');
+      box.append(element('dt',label),element('dd',fieldValue(type,p,key)));
+      dl.append(box);
+    }
+    card.append(dl);
+    card.append(linkTo(p.url,'See official offer'));
+    highlights.append(card);
+  }
+  compareRoot.append(highlights);
+  const full=element('details',null,'fb-compare-details');
+  full.append(element('summary','See the full comparison: costs, service and eligibility'));
   const labels=type==='plan'
     ? [['network','Network'],['monthly','Current rate ('+comparePrefs.lines+' lines)'],['billing','Billing / upfront amount'],['year','12-month total ('+comparePrefs.lines+' lines)'],['data','Data'],['hotspot','Hotspot'],['priority','Data priority'],['taxes','Taxes'],['eligibility','Promo requirements']]
     : [['network','Network'],['monthly','Required plan'],['year','Estimated 12-month cost'],['data','Due today (est.)'],['hotspot','Minimum commitment (est.)'],['priority','Carrier lock'],['taxes','Plan type'],['eligibility','Transfer requirement']];
-  compareRoot.append(element('p','On a phone, swipe the table sideways to see every comparison.','fb-subtle fb-swipe-hint'));
+  full.append(element('p','On smaller screens, scroll the table sideways to see all selected offers.','fb-subtle fb-swipe-hint'));
   const wrap=element('div',null,'fb-table-wrap');
   const table=element('table',null,'fb-table');
   const head=element('thead'),header=element('tr');
   header.append(element('th','Compare '+(type==='plan'?'plans':'phone deals')));
-  records.forEach((p,i)=>{
+  records.forEach(p=>{
     const cell=element('th');
     cell.scope='col';
-    cell.append(element('strong',type==='plan'?p.carrier+' — '+p.plan:p.phone+' — '+p.carrier));
+    cell.append(element('strong',compareName(type,p)));
     cell.append(document.createElement('br'));
     cell.append(statusNode(p));
     cell.append(document.createElement('br'));
-    cell.append(button('Remove',()=>{selected.splice(i,1);saveCompare();renderCompare();},'fb-remove'));
+    cell.append(button('Remove',()=>removeFromCompare(type,p.id),'fb-remove'));
     header.append(cell);
   });
   head.append(header);table.append(head);
   const body=element('tbody');
-  for (const [key,label] of labels) {
+  for(const [key,label] of labels){
     const tr=element('tr');const th=element('th',label);th.scope='row';tr.append(th);
-    for(const item of records) tr.append(element('td',fieldValue(type,item,key)));
+    for(const item of records)tr.append(element('td',fieldValue(type,item,key)));
     body.append(tr);
   }
-  const links=element('tr'); const source=element('th','Carrier website');source.scope='row';links.append(source);
-  for(const item of records){const cell=element('td');cell.append(linkTo(item.url,'View published offer'));links.append(cell);}
-  body.append(links);table.append(body);wrap.append(table);compareRoot.append(wrap);
-  if(records.some(officialHeadlineUnderReview)){
-    compareRoot.append(element('p','Selected offers with conflicting official price evidence have their dollar totals suppressed pending review.','fb-watch-warning'));
-  }
-  compareRoot.append(note(type==='plan' ?
-    'Household estimates for '+comparePrefs.lines+' '+(comparePrefs.lines===1?'line':'lines')+'. Annual prepaid offers are paid upfront, not monthly; unavailable family tiers are marked. Unknown multi-line prices extrapolate one-line rates; unconfirmed family intro offers are excluded. Taxes and eligibility may change actual costs.' :
-    'Device promotions are quoted per handset, NOT for the full household. Credits, delayed rebates, taxes and financing terms may alter estimated totals.'));
+  const links=element('tr');const source=element('th','Carrier website');source.scope='row';links.append(source);
+  for(const p of records){const cell=element('td');cell.append(linkTo(p.url,'View published offer'));links.append(cell);}
+  body.append(links);table.append(body);wrap.append(table);full.append(wrap);
+  compareRoot.append(full);
+  compareRoot.append(note(type==='plan'?
+    'Estimates for '+comparePrefs.lines+' '+(comparePrefs.lines===1?'line':'lines')+
+    '. Annual plans must be paid upfront; unconfirmed family discounts are excluded. Taxes and eligibility can change your bill.':
+    'Phone offers are per handset. Unknown financing, delayed credits, taxes and rebates are not treated as guaranteed savings.'));
 }
 /* ---------- price evidence and observation history ---------- */
 function priceSparkline(rows,kind='advertised device') {
