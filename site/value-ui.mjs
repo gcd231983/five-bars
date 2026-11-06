@@ -227,7 +227,7 @@ function renderCompareTray(){
     document.getElementById('fb-compare-search')?.focus({preventScroll:true});
   },'btn fb-tray-open'));
   actions.append(button('Clear',()=>{
-    selected=[];compareNotice='';saveCompare();renderCompare();
+    selected=[];compareNotice='';compareQuery='';compareExpanded=false;saveCompare();renderCompare();
   },'btn ghost fb-tray-clear'));
   compareTray.append(info,actions);
 }
@@ -272,6 +272,10 @@ function addToCompare(type,id) {
   if(next.length!==selected.length+1){
     compareNotice='This offer cannot be compared at its current evidence or availability status.';
     renderCompare();return;
+  }
+  if(compareBrowseType!==type){
+    compareQuery='';
+    compareExpanded=false;
   }
   selected=next;
   compareBrowseType=type;
@@ -634,7 +638,7 @@ function renderCompare(){
   const line=element('div',null,'fb-compare-progress');
   line.append(element('strong',selected.length+' of '+MAX_COMPARE+' selected'));
   if(selected.length){
-    line.append(button('Clear all',()=>{selected=[];compareNotice='';saveCompare();renderCompare();},'fb-compare-clear'));
+    line.append(button('Clear all',()=>{selected=[];compareNotice='';compareQuery='';compareExpanded=false;saveCompare();renderCompare();},'fb-compare-clear'));
   }
   workspace.append(line);
   const chips=element('div',null,'fb-compare-chips');
