@@ -529,12 +529,12 @@ try {
     await page.locator('#fb-compare-tray .fb-tray-open').click();
     assert.equal(await page.locator('#fb-compare-root table').count(),0,
       'The first phone must not create an unusable one-column table');
-    assert.ok((await page.locator('#fb-compare-picks .fb-compare-pick').count())>0);
-    await page.locator('#fb-compare-picks .fb-compare-pick-add').first().click();
+    assert.ok((await page.locator('.fb-compare-picks .fb-compare-pick').count())>0);
+    await page.locator('.fb-compare-picks .fb-compare-pick-add').first().click();
     assert.equal(await page.locator('.fb-compare-highlight').count(),2);
     await page.locator('.fb-compare-details summary').click();
     assert.ok((await page.locator('#fb-compare-root').innerText()).includes('Due today (est.)'));
-    await page.locator('#fb-compare-picks .fb-compare-pick-add').first().click();
+    await page.locator('.fb-compare-picks .fb-compare-pick-add').first().click();
     assert.equal(await page.locator('.fb-compare-highlight').count(),3,
       'A third phone must be addable entirely inside Compare');
     await page.reload({waitUntil:'domcontentloaded'});
