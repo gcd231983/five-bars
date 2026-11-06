@@ -160,16 +160,16 @@ test('published promo expiration is enforced after its last eligible day, not on
 test('promo expiration uses the Eastern date rather than the visitor local date', {skip},()=>{
   const html=readFileSync(sitePath,'utf8');
   const dayStart=html.indexOf('function easternDay(');
-  const todayStart=html.indexOf('const today = easternDay();',dayStart);
-  const endStart=html.indexOf('function endInfo(',todayStart);
+  const dayStateStart=html.indexOf('let displayedEasternDay = easternDay();',dayStart);
+  const endStart=html.indexOf('function endInfo(',dayStateStart);
   const elementStart=html.indexOf('function el(',endStart);
-  assert.ok(dayStart>=0&&todayStart>dayStart&&endStart>todayStart&&elementStart>endStart,
-    'Eastern day and deadline helpers exist in the homepage');
-  const dayFn=html.slice(dayStart,todayStart);
+  assert.ok(dayStart>=0&&dayStateStart>dayStart&&endStart>dayStateStart&&elementStart>endStart,
+    'Eastern day and dynamic deadline helpers exist in the homepage');
+  const dayFn=html.slice(dayStart,dayStateStart);
   const endFn=html.slice(endStart,elementStart);
   const evaluate=instant=>runInNewContext(
-    dayFn+'\nconst today=easternDay(new Date('+JSON.stringify(instant)+'));\n'+endFn+'\nendInfo("2026-11-09")',
-    {Date,Intl,Math});
+    dayFn+'\n'+endFn+'\nendInfo("2026-11-09")',
+    {Date:class extends Date{constructor(...args){super(...(args.length?args:[instant]));}},Intl,Math});
   const before=evaluate('2026-11-10T04:59:00Z'); // 11:59 p.m. Eastern Nov 9
   const after=evaluate('2026-11-10T05:00:00Z'); // midnight Eastern Nov 10
   assert.equal(before.expired,false);
