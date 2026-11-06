@@ -328,6 +328,15 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
   #p-plans .foot button.fb-watch-toggle,#p-phones .foot button.fb-watch-toggle{grid-column:2!important}
   #p-plans .foot button.fb-switch-button,#p-phones .foot button.fb-switch-button{grid-column:1/-1!important}
 }
+/* Visible mobile-first phone platform selector; uses existing filter state. */
+.fb-phone-platform{display:flex;align-items:center;flex-wrap:wrap;gap:9px 12px;margin:12px 0 16px}
+.fb-platform-label{font-weight:700;font-size:.87rem}
+.fb-platform-options{display:flex;gap:5px;flex-wrap:wrap}
+.fb-platform-option{min-height:44px;padding:8px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);font:inherit;font-weight:650;cursor:pointer}
+.fb-platform-option[aria-pressed="true"]{background:var(--accent);color:#061a1c;border-color:var(--accent)}
+.fb-platform-option:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.fb-platform-count{font-size:.81rem;color:var(--muted)}
+@media(max-width:620px){.fb-phone-platform{align-items:stretch;flex-direction:column;gap:6px}.fb-platform-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.fb-platform-option{padding:8px 4px;font-size:.84rem}}
 /* Launch polish: accessible entry points without changing comparison logic. */
 .fb-topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
 .fb-topnav strong{font-size:.94rem;letter-spacing:.02em}
@@ -473,6 +482,15 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 
   <section id="p-phones" role="tabpanel" aria-labelledby="t-phones" hidden>
     <p class="note">Costs are per line. “Due today” estimates the device plus service required at signup. “Minimum commitment” also counts required future service. Delayed rebates, gift cards and promotional credits are excluded from ALL estimated totals until eligibility and redemption are confirmed. Taxes, fees, financing and clawbacks may cost extra; confirm actual carrier checkout.</p>
+    <div class="fb-phone-platform" role="group" aria-label="Filter phone deals by operating system">
+      <span class="fb-platform-label">Phone type</span>
+      <div class="fb-platform-options">
+        <button type="button" class="fb-platform-option" data-platform="all" aria-pressed="true">All phones</button>
+        <button type="button" class="fb-platform-option" data-platform="iphone" aria-pressed="false">iPhone</button>
+        <button type="button" class="fb-platform-option" data-platform="android" aria-pressed="false">Android</button>
+      </div>
+      <span class="fb-platform-count" id="fb-platform-count" aria-live="polite"></span>
+    </div>
     <ol class="list" id="phones-list"></ol>
   </section>
 
@@ -846,8 +864,23 @@ function renderPlans(){
   }));
 }
 
+/* Keep the prominent phone-type selector synchronized with existing advanced toggles. */
+function renderPhonePlatform(){
+  const platform=state.t.iphone && !state.t.android ? "iphone" : state.t.android && !state.t.iphone ? "android" : "all";
+  document.querySelectorAll(".fb-platform-option").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.platform===platform)));
+  const count=PHONES.filter(phoneVisible).length;
+  $("#fb-platform-count").textContent=count+" matching "+(count===1?"deal":"deals");
+}
+document.querySelectorAll(".fb-platform-option").forEach(button=>button.addEventListener("click",()=>{
+  const choice=button.dataset.platform;
+  state.t.iphone=choice==="iphone";
+  state.t.android=choice==="android";
+  update();
+}));
+
 /* ---------- render: phones ---------- */
 function renderPhones(){
+  renderPhonePlatform();
   const rows = PHONES.filter(phoneVisible).map(d=>({d, c:phoneCalc(d)}));
   const big = 1e9;
   const by = {
