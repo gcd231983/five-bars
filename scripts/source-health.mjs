@@ -33,6 +33,26 @@ export function withSourceHistory(current,previous,scannedAt,previousScannedAt){
   lastReachableAt
  };
 }
+// Track repeated offer-link scanner failures only for the SAME canonical URL.
+// These timestamps indicate scanner reachability, never promotion eligibility,
+// withdrawal, a confirmed offer price, or independent checkout evidence.
+export function withOfferLinkHistory(current,previous){
+ const {sourceUrl,state,checkedAt}=current||{};
+ const now=Date.parse(checkedAt);
+ if(typeof sourceUrl!=='string'||!sourceUrl.startsWith('https://')||
+    !Number.isFinite(now)||!['source_reachable','source_unavailable'].includes(state))
+   throw Error('Valid HTTPS offer link, link state and timestamp required');
+ const same=previous?.sourceUrl===sourceUrl?previous:null;
+ const lastReachableAt=validObservedAt(same?.lastReachableAt,now)||
+   (same?.state==='source_reachable'?validObservedAt(same.checkedAt,now):null);
+ const unavailableSince=state==='source_reachable'?null:
+   ((same?.state==='source_unavailable'?
+     validObservedAt(same.unavailableSince,now)||validObservedAt(same.checkedAt,now):null)||
+     checkedAt);
+ return {sourceUrl,unavailableSince,
+   lastReachableAt:state==='source_reachable'?checkedAt:lastReachableAt};
+}
+
 export function persistentSourceFailures(sources,now,days=7){
  const time=Date.parse(now);
  if(!Number.isFinite(time)||!Array.isArray(sources))return 0;
