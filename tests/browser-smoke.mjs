@@ -33,6 +33,15 @@ const browser=await chromium.launch({headless:true,channel:'chrome',args:['--no-
 const output=resolve(dirname(fileURLToPath(import.meta.url)),'../browser-artifacts');
 await mkdir(output,{recursive:true});
 let errors=[];
+async function openSection(page,section){
+  const tab=page.locator('#t-'+section);
+  if(await tab.isVisible())return tab.click();
+  const menu=page.locator('#fb-tabs-more');
+  assert.equal(await menu.isVisible(),true,'Mobile tools menu must be available for '+section);
+  await menu.locator('summary').click();
+  await menu.locator('[data-more-tab="'+section+'"]').click();
+  assert.equal(await page.locator('#p-'+section).isVisible(),true);
+}
 try {
   for (const [view,viewport] of Object.entries({
     mobile:{width:390,height:844},desktop:{width:1280,height:840}
@@ -150,6 +159,15 @@ try {
       status:200,contentType:'application/json',body:JSON.stringify(alertFeed)}));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
+    const compact=view==='mobile';
+    assert.equal(await page.locator('#fb-tabs-more').isVisible(),compact,
+      'Mobile navigation must use a short primary strip and a More menu');
+    if(compact){
+      for(const tab of ['finder','plans','phones','compare'])
+        assert.equal(await page.locator('#t-'+tab).isVisible(),true,'Primary section should never be clipped or hidden: '+tab);
+      assert.equal(await page.locator('#t-pricewatch').isVisible(),false,
+        'Secondary tools belong in the explicit More menu on phones');
+    }
     assert.match(await page.locator('#fb-finder-affiliate-note').innerText(),/does not currently report commission-based rankings/i);
     await page.locator('#scan-status').waitFor({state:'attached'});
     await page.waitForFunction(()=>document.querySelector('#scan-status')?.textContent?.includes('public sources'));
@@ -481,7 +499,7 @@ try {
     const phoneOverflow=await page.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(phoneOverflow<=viewport.width+2,
       'Price-under-review row must not cause page overflow on '+view+': '+phoneOverflow);
-    await page.locator('#t-pricewatch').click();
+    await openSection(page,'pricewatch');
     assert.equal(await page.locator('#p-pricewatch').isVisible(),true);
     const alerts=page.locator('#fb-action-alerts');
     assert.equal(await alerts.locator('.fb-action-card').count(),2,'only actionable alerts may appear');
@@ -794,7 +812,7 @@ try {
     await page.locator('#lines').selectOption('2');
     assert.equal(await page.locator('#r-mint').count(),0,'no fabricated multi-line monthly Mint quote');
     await page.locator('#lines').selectOption('1');
-    await page.locator('#t-switch').click();
+    await openSection(page,'switch');
     await page.locator('#fb-switch-type').selectOption('plan');
     await page.locator('#fb-switch-offer').selectOption('mint');
     await page.locator('[name="payoff"]').fill('0');
@@ -809,7 +827,7 @@ try {
     assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$360/);
     await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
     assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$250/);
-    await page.locator('#t-switch').click();
+    await openSection(page,'switch');
     await page.locator('#fb-switch-offer').selectOption('total-max');
     await page.locator('#fb-switch-discountqualified').check();
     await page.locator('#fb-switch-form button[type="submit"]').click();
