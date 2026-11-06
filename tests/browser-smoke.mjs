@@ -159,6 +159,20 @@ try {
       status:200,contentType:'application/json',body:JSON.stringify(alertFeed)}));
     await page.goto(base,{waitUntil:'domcontentloaded'});
     await page.locator('#fb-finder-form').waitFor({timeout:15000});
+    // Restored original five ascending bars must be visible in the masthead
+    // on every route, even when the hero is hidden on secondary tool pages.
+    const brand=page.locator('.fb-topnav .fb-site-brand');
+    assert.equal(await brand.isVisible(),true,'Five Bars original logo must be visible');
+    assert.equal(await brand.locator('svg.fb-original-bars rect').count(),5);
+    const barHeights=await brand.locator('svg.fb-original-bars rect')
+      .evaluateAll(rects=>rects.map(r=>Number(r.getAttribute('height'))));
+    assert.deepEqual(barHeights,[10,18,26,35,44],
+      'Use exactly the original five ascending bar shapes, not a new logo');
+    assert.match(await brand.innerText(),/Five Bars/);
+    assert.equal(await page.locator('.fb-welcome').isVisible(),true,
+      'New homepage must lead with a focused starting point');
+    assert.equal(await page.locator('.fb-site-brand').count(),1,
+      'One consistent visible brand in place of duplicate header labels');
     const compact=view==='mobile';
     assert.equal(await page.locator('#fb-tabs-more').isVisible(),compact,
       'Mobile navigation must use a short primary strip and a More menu');
@@ -312,19 +326,14 @@ try {
     assert.ok(await page.locator('#fb-finder-results .fb-provider-initials').count()>0);
     const phoneResults=page.locator('#fb-finder-results .fb-phone-result');
     const phoneCount=await phoneResults.count();
-    assert.ok(await page.locator('#fb-finder-results .fb-phone-result:visible').count()<=5,
-      'Show at most five phone offers initially');
-    if(phoneCount>5){
-      const phoneToggle=page.locator('#fb-finder-results .fb-more-phones');
-      assert.equal(await phoneToggle.getAttribute('aria-expanded'),'false');
-      await phoneToggle.click();
-      assert.equal(await page.locator('#fb-finder-results .fb-phone-result:visible').count(),phoneCount,
-        'Expanding phone offers must reveal all matching phones');
-      assert.equal(await phoneToggle.getAttribute('aria-expanded'),'true');
-      await phoneToggle.click();
-      assert.equal(await page.locator('#fb-finder-results .fb-phone-result:visible').count(),5,
-        'Collapsing phone offers must restore the initial five');
-    }
+    assert.equal(await page.locator('#fb-finder-results .fb-phone-result:visible').count(),phoneCount,
+      'All matching phone offers must be visible by default, not hidden after five cards');
+    assert.equal(await page.locator('#fb-finder-results .fb-more-phones').count(),0);
+    assert.equal(await page.locator('#fb-finder-results .fb-results-plan-grid .fb-result:not(.fb-phone-result)').count(),
+      await page.locator('#fb-finder-results .fb-result:not(.fb-phone-result)').count(),
+      'Every finder plan should live in the new scan-friendly recommendation grid');
+    assert.ok(await page.locator('#fb-finder-results .fb-result-keyfacts').count()>0,
+      'Finder cards should show useful data and network facts without opening details');
     assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated first year/);
     await page.locator('#fb-port-status').selectOption('yes');
     await page.locator('#fb-finder-form button[type="submit"]').click();
@@ -894,6 +903,11 @@ try {
     // Mint annual-plan cash must NEVER be disguised as ordinary month-to-month billing.
     // A full reload intentionally resets progressive-disclosure controls; reopen for filtering.
     await page.locator('#t-plans').click();
+    assert.equal(await brand.isVisible(),true,'Brand remains on top when navigating to Plans');
+    assert.equal(await page.locator('.fb-welcome').isVisible(),false,
+      'Shopping catalog should not repeat the marketing hero');
+    assert.equal(await page.locator('#plans-list').evaluate(el=>getComputedStyle(el).display),'grid',
+      'Catalog browsing uses a responsive card grid, not oversized full-width rows');
     await page.locator('.fb-advanced-filters summary').click();
     await page.locator('#carrier').selectOption('Mint Mobile');
     await page.locator('#lines').selectOption('1');
