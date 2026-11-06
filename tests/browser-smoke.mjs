@@ -273,11 +273,17 @@ try {
     assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated first year/);
     await page.locator('#fb-port-status').selectOption('yes');
     await page.locator('#fb-finder-form button[type="submit"]').click();
-    assert.match(await page.locator('#fb-finder-results').innerText(),/\$240\.00 estimated first year/);
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated first year/,
+      'Port eligibility alone must not unlock an AutoPay-required offer');
+    await page.locator('#fb-discount-qualified').check();
+    await page.locator('#fb-finder-form button[type="submit"]').click();
+    assert.match(await page.locator('#fb-finder-results').innerText(),/\$240\.00 estimated first year/,
+      'Both number transfer and AutoPay confirmation are required');
     await page.locator('#fb-port-status').selectOption('no');
     await page.locator('#fb-finder-form button[type="submit"]').click();
     assert.match(await page.locator('#fb-finder-results').innerText(),/\$300\.00 estimated first year/);
     await page.locator('#fb-port-status').selectOption('unknown');
+    await page.locator('#fb-discount-qualified').uncheck();
     await page.locator('#fb-device').selectOption('either');
     // MVNO expansion: find an exact provider, and verify annual billing on mobile and desktop.
     await page.locator('#fb-net').selectOption('att');
