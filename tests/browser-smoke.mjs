@@ -957,10 +957,12 @@ try {
       JSON.parse(localStorage.getItem('fivebars-compare-v1')||'[]'));
     assert.deepEqual(retained,[{type:'phone',id:'metro-motog'}],
       'stored unavailable or price-conflicted offers must be removed before comparing');
-    const compareText=await cachePage.locator('#fb-compare-root').innerText();
-    assert.match(compareText,/Metro/i);
-    assert.doesNotMatch(compareText,/Straight Talk at Walmart|razr|Boost Mobile/i);
-    assert.match(compareText,/conflicting-price or removed saved comparisons were cleared/i);
+    const chosenText=await cachePage.locator('#fb-compare-root .fb-compare-chips').innerText();
+    assert.match(chosenText,/Metro/i);
+    assert.doesNotMatch(chosenText,/Straight Talk at Walmart|razr|Boost Mobile/i,
+      'Dropped unsafe saved selections must not remain in the chosen slots');
+    assert.match(await cachePage.locator('#fb-compare-root').innerText(),
+      /conflicting-price or removed saved comparisons were cleared/i);
     await cachePage.close();
     if(process.env.FIVE_BARS_SITE_DIR){
       // An old open page must notify, never automatically discard form input.
