@@ -213,8 +213,10 @@ try {
       assert.equal(await page.locator('#fb-finder-results .fb-result-heading').count()>5,true);
       assert.equal(await page.locator('#fb-finder-results .fb-provider-mark').count()>0,true);
       const iconSources=await page.locator('#fb-finder-results .fb-provider-icon').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('src')));
-      assert.ok(iconSources.every(src=>/^https:\/\/[^/]+\/favicon\.ico$/.test(src)),
-        'Provider icons must originate from carrier source websites, not third-party logo CDNs');
+      assert.ok(iconSources.every(src=>src.startsWith('https://www.google.com/s2/favicons?domain=')),
+        'Provider icons must use canonical carrier domain favicons');
+      assert.ok(iconSources.some(src=>src.includes('domain=usmobile.com')),
+        'US Mobile must use its canonical site, not a reseller or referral host');
       assert.ok(await page.locator('#fb-finder-results .fb-provider-initials').count()>0,
         'Every provider icon needs an initials fallback');
       await page.locator('.fb-more-plans').click();
