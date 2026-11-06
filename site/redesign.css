@@ -194,6 +194,40 @@ body[data-active-tab="finder"] .fb-mobile-evidence:not([open])>summary{color:#c3
 .fb-plan-catalog-actions{gap:8px}
 .fb-plan-catalog-actions button{min-height:46px;padding:10px 15px}
 .fb-plan-catalog-actions button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+/* Shopping catalog controls stay visible even when advanced eligibility is folded. */
+.fb-plan-catalog-utilities{
+ display:grid;grid-template-columns:minmax(180px,1.5fr) minmax(140px,.8fr) minmax(190px,1.1fr) auto;
+ align-items:end;gap:10px;margin:17px 0 0;
+ padding-top:16px;border-top:1px solid var(--line);
+}
+.fb-plan-catalog-utilities label{
+ display:flex;flex-direction:column;gap:5px;min-width:0;
+ color:var(--muted);font-size:.77rem;font-weight:750;
+}
+.fb-plan-catalog-utilities input,.fb-plan-catalog-utilities select{
+ width:100%;max-width:100%;min-width:0;min-height:46px;
+ border:1px solid #365763;border-radius:10px;background:#0c1d28;
+ color:var(--ink);padding:10px 12px;font-size:.85rem;font-weight:600;
+}
+.fb-plan-catalog-utilities input:focus-visible,.fb-plan-catalog-utilities select:focus-visible{
+ border-color:var(--accent);
+}
+#fb-plans-clear-search{
+ min-height:46px;padding:9px 13px;border:1px solid #41636c;
+ border-radius:10px;background:transparent;color:var(--accent);font-weight:750;
+}
+#fb-plans-clear-search[hidden]{display:none!important}
+@media(max-width:900px){
+ .fb-plan-catalog-utilities{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fb-plan-search-field{grid-column:1/-1}
+ #fb-plans-clear-search{justify-self:start}
+}
+@media(max-width:620px){
+ .fb-plan-catalog-utilities{gap:9px;margin-top:13px;padding-top:13px}
+ .fb-plan-catalog-utilities>label:not(.fb-plan-search-field){grid-column:1/-1}
+ .fb-plan-search-field{grid-column:1/-1}
+}
+
 #plans-list,#phones-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding:0 0 36px;margin:12px 0}
 #plans-list .row,#phones-list .row{
   display:grid;grid-template-columns:minmax(0,1fr) auto;min-width:0;margin:0;
