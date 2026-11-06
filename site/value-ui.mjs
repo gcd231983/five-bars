@@ -287,12 +287,24 @@ function renderFinder() {
     const showPhones = data.get('device')!=='byop';
     if(showPlans) {
       root.append(element('h4','Plan options ('+ranked.planMatches+' match the selected filters)'));
+      if(ranked.plans.length) {
+        root.append(note('Top matches based on your selected filters and estimated costs. Review upfront payments, eligibility and carrier checkout before choosing.'));
+      }
+      const initiallyVisible=5;
+      const morePlans=ranked.plans.length>initiallyVisible;
+      let plansExpanded=false;
       if(!ranked.plans.length) root.append(note('No matching plans. Try a larger budget or fewer must-haves.'));
       const planCards=[];
       for(const [i,item] of ranked.plans.entries()) {
         const p=item.offer;const c=item.cost;
         const card = element('article',null,'fb-result');
-        card.append(element('strong',(i+1)+'. '+p.carrier+' — '+p.plan));
+        const heading=element('div',null,'fb-result-heading');
+        const mark=element('span',String(p.carrier||'?').trim().split(/\\s+/).map(part=>part[0]||'').slice(0,2).join('').toUpperCase(),'fb-provider-mark');
+        mark.setAttribute('aria-hidden','true');
+        heading.append(mark);
+        heading.append(element('strong',(i+1)+'. '+p.carrier+' — '+p.plan));
+        card.append(heading);
+        if(i>=initiallyVisible)card.hidden=true;
         const price=element('p',null,'fb-result-price');
         price.append(element('strong',usd(c.monthTotal)+(c.annualPrepaid?'/mo equivalent':'/mo estimated')));
         price.append(element('span',c.annualPrepaid?
@@ -319,6 +331,17 @@ function renderFinder() {
         card.append(actions);
         root.append(card);
         planCards.push(card);
+      }
+      if(morePlans){
+        const more=button('Show all '+ranked.plans.length+' matching plans',()=>{
+          plansExpanded=!plansExpanded;
+          for(const [index,card] of planCards.entries())card.hidden=!plansExpanded&&index>=initiallyVisible;
+          more.textContent=plansExpanded?'Show fewer plans':'Show all '+ranked.plans.length+' matching plans';
+          more.setAttribute('aria-expanded',String(plansExpanded));
+          if(!plansExpanded)root.querySelector('.fb-result-heading')?.scrollIntoView({block:'nearest'});
+        },'btn ghost fb-more-plans');
+        more.setAttribute('aria-expanded','false');
+        root.append(more);
       }
     }
     if(showPhones) {
