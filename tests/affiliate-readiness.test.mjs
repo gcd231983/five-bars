@@ -32,3 +32,14 @@ test('catalog destinations remain HTTPS and do not include affiliate identifiers
     }
   }
 });
+
+test('publisher application kit stays on the canonical Five Bars domain without invented approvals',()=>{
+  const pipeline=read('AFFILIATE_PIPELINE.md');
+  assert.match(pipeline,/https:\/\/fivebars\.info\/#compare/);
+  assert.match(pipeline,/https:\/\/fivebars\.info\/carrier-comparisons\.html/);
+  assert.doesNotMatch(pipeline,/gcd231983\.github\.io\/five-bars/);
+  assert.match(pipeline,/Application\/approval not verified/);
+  assert.match(pipeline,/No verified visitor count/);
+  assert.match(pipeline,/consumer \*\*Refer a Friend\*\* rewards/);
+  assert.match(pipeline,/Website verification proves control of a web property, not commercial authorization/);
+});
