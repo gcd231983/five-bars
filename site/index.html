@@ -978,7 +978,24 @@ const state = {lines:1, net:"any", provider:"any", mode:"byop", sort:"year", tab
 let planBrowseQuery="";
 try{
   const saved = JSON.parse(localStorage.getItem("fivebars-prefs")||"null");
-  if(saved && typeof saved==="object"){Object.assign(state, saved); state.t = saved.t||{};}
+  // Storage may contain older, corrupted or manually edited preferences.
+  // Never allow unknown modes, impossible line counts or invalid toggles to
+  // break startup or distort a comparison; only restore supported values.
+  if(saved && typeof saved==="object" && !Array.isArray(saved)){
+    if(Number.isInteger(saved.lines) && saved.lines>=1 && saved.lines<=5)state.lines=saved.lines;
+    if(["any","att","vzw","tmo"].includes(saved.net))state.net=saved.net;
+    if(typeof saved.provider==="string" && saved.provider.length<=120)state.provider=saved.provider;
+    if(["byop","phone"].includes(saved.mode))state.mode=saved.mode;
+    if(["year","reg","save","pri","due","price"].includes(saved.sort))state.sort=saved.sort;
+    if(["finder","plans","phones","compare","switch","watchlist","pricewatch","sources","ask"].includes(saved.tab))state.tab=saved.tab;
+    if(saved.t && typeof saved.t==="object" && !Array.isArray(saved.t)){
+      const allowed=new Set([...PLAN_TOGS,...PHONE_TOGS].map(([key])=>key));
+      state.t={};
+      for(const [key,value] of Object.entries(saved.t)){
+        if(allowed.has(key) && typeof value==="boolean")state.t[key]=value;
+      }
+    }
+  }
 }catch(e){}
 function save(){ try{localStorage.setItem("fivebars-prefs", JSON.stringify(state));}catch(e){} }
 
