@@ -276,6 +276,24 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
   .tabs .tab{scroll-snap-align:start}
 }
 
+/* Compact phone deal cards on narrow screens; preserve all cost and review data. */
+@media (max-width:620px){
+  #p-phones .row{padding:12px 12px 14px;gap:7px;margin:10px 0;border-left-width:4px}
+  #p-phones .carrier{font-size:1.04rem;line-height:1.24}
+  #p-phones .rank{font-size:.74rem}
+  #p-phones .plan{font-size:.88rem}
+  #p-phones .price .now{font-size:1.35rem}
+  #p-phones .facts{gap:5px}
+  #p-phones .facts li{font-size:.75rem;padding:3px 7px;line-height:1.3}
+  #p-phones .extra,#p-phones .fb-review{font-size:.75rem;line-height:1.4;margin-top:3px}
+  #p-phones .foot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:4px;padding-top:10px;align-items:stretch}
+  #p-phones .foot .yr,#p-phones .foot .fb-watch-warning{grid-column:1/-1;line-height:1.4;font-size:.83rem}
+  #p-phones .foot .yr span{margin-right:9px!important}
+  #p-phones .foot a,#p-phones .foot button{min-height:44px;min-width:0;width:100%;padding:8px 6px;font-size:.82rem;line-height:1.2;text-align:center;text-wrap:balance}
+  #p-phones .foot a[href*="report.html"]{font-size:.76rem}
+  #p-phones .foot .fb-compare-btn{grid-column:1/-1;background:var(--chip)}
+  #p-phones .deal{margin-top:3px;padding:6px 8px;font-size:.8rem}
+}
 /* Launch polish: accessible entry points without changing comparison logic. */
 .fb-topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
 .fb-topnav strong{font-size:.94rem;letter-spacing:.02em}
