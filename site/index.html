@@ -294,6 +294,18 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
   #p-phones .foot .fb-compare-btn{grid-column:1/-1;background:var(--chip)}
   #p-phones .deal{margin-top:3px;padding:6px 8px;font-size:.8rem}
 }
+/* Shared narrow-screen card layout: compact but keep every disclosure and action. */
+@media (max-width:620px){
+  #p-plans .row,#p-phones .row{padding:12px!important;gap:6px!important;margin:9px 0!important;border-left-width:4px}
+  #p-plans .foot,#p-phones .foot{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important;gap:8px!important;margin-top:5px!important;padding-top:9px!important}
+  #p-plans .foot .yr,#p-phones .foot .yr,#p-plans .foot .fb-watch-warning,#p-phones .foot .fb-watch-warning{grid-column:1/-1;line-height:1.35;font-size:.85rem}
+  #p-plans .foot a,#p-phones .foot a,#p-plans .foot button,#p-phones .foot button{display:flex!important;align-items:center;justify-content:center;box-sizing:border-box;min-height:44px!important;width:100%!important;min-width:0;max-width:100%;padding:7px 5px!important;margin:0!important;text-align:center;font-size:.8rem;line-height:1.2;overflow-wrap:anywhere}
+  #p-plans .foot .fb-compare-btn,#p-phones .foot .fb-compare-btn{grid-column:1/-1}
+  #p-plans .facts,#p-phones .facts{gap:4px;margin-top:2px}
+  #p-plans .facts li,#p-phones .facts li{font-size:.74rem;padding:3px 6px}
+  #p-plans .extra,#p-phones .extra,#p-plans .fb-review,#p-phones .fb-review{font-size:.76rem;line-height:1.4;margin-top:2px}
+  .fb-tab-swipe{font-size:.7rem!important;line-height:1.25;padding:3px 12px!important}
+}
 /* Launch polish: accessible entry points without changing comparison logic. */
 .fb-topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
 .fb-topnav strong{font-size:.94rem;letter-spacing:.02em}
