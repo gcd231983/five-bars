@@ -580,7 +580,7 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
   </p>
   <div class="toggles" id="toggles" role="group" aria-label="Must-haves"></div>
   </div></details>
-  <details class="fb-mobile-evidence"><summary>Pricing transparency and review status</summary>
+  <details class="fb-mobile-evidence" open><summary>Pricing transparency and review status</summary>
   <p class="fresh" id="fresh"></p>
   <div class="fb-evidence-summary" id="fb-evidence-summary" aria-label="Pricing evidence snapshot">
     <div><strong>Public beta: pricing evidence, not a checkout guarantee</strong><p id="fb-evidence-summary-copy" aria-live="polite">Check published-source research and actual carrier checkout before purchasing.</p></div>
@@ -1228,5 +1228,11 @@ boot();
 <script type="module" src="value-ui.mjs?v=20261106-wizard2"></script>
 <script type="module" src="watchlist-ui.mjs"></script>
 <script type="module" src="switch-ui.mjs"></script>
+<script>
+/* Start mobile evidence collapsed while leaving desktop source status visible. */
+if(window.matchMedia('(max-width:620px)').matches){
+  document.querySelector('.fb-mobile-evidence')?.removeAttribute('open');
+}
+</script>
 </body>
 </html>
