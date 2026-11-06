@@ -387,10 +387,16 @@ function renderFinder() {
       root.append(element('h4',ranked.lines>1 ? 'Phone leads ('+ranked.phoneMatches+' options; household cost unconfirmed)' : 'Phone offers ('+ranked.phoneMatches+' match the selected filters)'));
       if(!ranked.phones.length) root.append(note('No matching offers. Consider keeping your phone or changing the network filter.'));
       const phoneCards=[];
+      const initiallyVisiblePhones=5;
+      let phonesExpanded=false;
       for(const [i,item] of ranked.phones.entries()) {
         const p=item.offer,c=item.cost;
-        const card=element('article',null,'fb-result');
-        card.append(element('strong',p.phone+' — '+p.carrier));
+        const card=element('article',null,'fb-result fb-phone-result');
+        if(i>=initiallyVisiblePhones)card.hidden=true;
+        const heading=element('div',null,'fb-result-heading');
+        heading.append(providerIcon(p));
+        heading.append(element('strong',p.phone+' — '+p.carrier));
+        card.append(heading);
         card.append(element('p',c.financingUncertain?
           'Financed or trade-in promotion: no reliable upfront, device payoff or first-year quote without the installment agreement.':
           'Estimated upfront '+usd(c.due)+'; first year '+usd(c.year)+' (one device).'));
@@ -409,6 +415,16 @@ function renderFinder() {
         card.append(actions);
         root.append(card);
         phoneCards.push(card);
+      }
+      if(phoneCards.length>initiallyVisiblePhones){
+        const morePhones=button('Show all '+phoneCards.length+' phone offers',()=>{
+          phonesExpanded=!phonesExpanded;
+          for(const [index,card] of phoneCards.entries())card.hidden=!phonesExpanded&&index>=initiallyVisiblePhones;
+          morePhones.textContent=phonesExpanded?'Show fewer phone offers':'Show all '+phoneCards.length+' phone offers';
+          morePhones.setAttribute('aria-expanded',String(phonesExpanded));
+        },'btn ghost fb-more-plans fb-more-phones');
+        morePhones.setAttribute('aria-expanded','false');
+        root.append(morePhones);
       }
     }
   });
