@@ -337,6 +337,13 @@ body{background:#fff!important;color:#000!important}.wrap{max-width:100%!importa
 .fb-platform-option:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .fb-platform-count{font-size:.81rem;color:var(--muted)}
 @media(max-width:620px){.fb-phone-platform{align-items:stretch;flex-direction:column;gap:6px}.fb-platform-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.fb-platform-option{padding:8px 4px;font-size:.84rem}}
+/* Make phone-type choice immediately visible, with concise but accessible pricing details. */
+.fb-pricing-details{margin-top:7px;color:var(--muted);font-size:.86rem;line-height:1.45}
+.fb-pricing-details summary{cursor:pointer;color:var(--accent);font-weight:650;min-height:44px;display:flex;align-items:center}
+.fb-pricing-details p{margin:5px 0 9px}
+.fb-phone-pricing-summary{margin:6px 0!important;font-size:.84rem;line-height:1.45}
+.fb-phone-pricing-details{margin:0 0 10px}
+@media(max-width:620px){.fb-price-guide{padding:12px 14px;margin-bottom:10px}.fb-price-guide p{font-size:.83rem;line-height:1.45}.fb-phone-platform{margin:4px 0 9px}}
 /* Launch polish: accessible entry points without changing comparison logic. */
 .fb-topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
 .fb-topnav strong{font-size:.94rem;letter-spacing:.02em}
@@ -467,7 +474,7 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 </nav>
 
 <main class="wrap" id="main-content" tabindex="-1">
-  <aside class="fb-price-guide" aria-label="How to read comparison prices"><strong>Read prices with confidence</strong><p>Monthly cost, upfront payment and minimum service commitment are different amounts. Promotional prices may end; taxes, fees and eligibility can change the final bill. Check the source and review status before choosing a provider.</p><a href="disclosures.html">How we calculate and qualify prices</a> · <a href="editorial.html">Our review standards</a></aside>
+  <aside class="fb-price-guide" aria-label="How to read comparison prices"><strong>Read prices with confidence</strong><p>Upfront costs and required future payments are different. Prices, eligibility, taxes and fees can change; verify carrier checkout.</p><details class="fb-pricing-details"><summary>More about our pricing and review standards</summary><p>Monthly cost, upfront payment and minimum service commitment are different amounts. Promotional prices may end; taxes, fees and eligibility can change the final bill. Check the source and review status before choosing a provider.</p><a href="disclosures.html">How we calculate and qualify prices</a> · <a href="editorial.html">Our review standards</a></details></aside>
   <section id="p-finder" role="tabpanel" aria-labelledby="t-finder">
     <div class="panel">
       <h2>Find a better wireless plan</h2>
@@ -481,7 +488,6 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
   </section>
 
   <section id="p-phones" role="tabpanel" aria-labelledby="t-phones" hidden>
-    <p class="note">Costs are per line. “Due today” estimates the device plus service required at signup. “Minimum commitment” also counts required future service. Delayed rebates, gift cards and promotional credits are excluded from ALL estimated totals until eligibility and redemption are confirmed. Taxes, fees, financing and clawbacks may cost extra; confirm actual carrier checkout.</p>
     <div class="fb-phone-platform" role="group" aria-label="Filter phone deals by operating system">
       <span class="fb-platform-label">Phone type</span>
       <div class="fb-platform-options">
@@ -491,7 +497,8 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
       </div>
       <span class="fb-platform-count" id="fb-platform-count" aria-live="polite"></span>
     </div>
-    <ol class="list" id="phones-list"></ol>
+    <p class="note fb-phone-pricing-summary">Costs are per line. “Due today” includes required signup payments; “minimum commitment” also includes future required service. Confirm actual checkout, taxes and eligibility.</p><details class="fb-pricing-details fb-phone-pricing-details"><summary>Full pricing assumptions and exclusions</summary><p>Costs are per line. “Due today” estimates the device plus service required at signup. “Minimum commitment” also counts required future service. Delayed rebates, gift cards and promotional credits are excluded from ALL estimated totals until eligibility and redemption are confirmed. Taxes, fees, financing and clawbacks may cost extra; confirm actual carrier checkout.</p></details>
+        <ol class="list" id="phones-list"></ol>
   </section>
 
   <section id="p-compare" class="panel" role="tabpanel" aria-labelledby="t-compare" hidden>
