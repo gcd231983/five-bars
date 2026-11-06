@@ -582,6 +582,16 @@ try {
     assert.equal(await editor.locator('meta[name="robots"]').getAttribute('content'),'noindex,nofollow');
     await editor.locator('.fb-review-offer').first().waitFor({timeout:15000});
     assert.match(await editor.locator('#fb-review-summary').innerText(),/total catalog offers in the review queue/);
+    assert.equal(await editor.locator('.fb-review-offer').count(),10,
+      'Launch reviewer scope must include ten real checkout scenarios, not all-plan selections');
+    assert.equal(await editor.locator('[data-offer-id="cricket-16e"]').count(),1,
+      'Prepaid zero-dollar handset must appear in the initial reviewer scope');
+    assert.equal(await editor.locator('[data-offer-id="vz-18pro"]').count(),1,
+      'Financed postpaid handset must appear in the initial reviewer scope');
+    assert.match(await editor.locator('[data-offer-id="vz-18pro"]').innerText(),
+      /gross retail balance|conditional monthly bill credits/i);
+    assert.match(await editor.locator('[data-offer-id="tello"]').innerText(),
+      /published promotion ends|after the published promotion ends/i);
     await editor.locator('#fb-review-carrier').selectOption('Tello');
     const tello=editor.locator('.fb-review-offer');
     assert.ok(await tello.count()>=1,'Tello should be filterable for manual review');

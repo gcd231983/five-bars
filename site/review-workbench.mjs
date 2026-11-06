@@ -1,5 +1,6 @@
 // Read-only editorial review dashboard. Browser-only, no tracking or write API.
 import {verificationState,localDay,usd,CHECKOUT_REVIEW_CHECKS,checkoutEvidenceIssues} from './value-core.mjs';
+import {LAUNCH_REVIEW_IDS,LAUNCH_REVIEW_BY_ID} from './launch-review-shortlist.mjs';
 
 const $=id=>document.getElementById(id);
 const create=(tag,text,cls)=>{
@@ -22,14 +23,9 @@ const link=(url,label)=>{
 const button=(label,action)=>{
  const b=create('button',label);b.type='button';b.addEventListener('click',action);return b;
 };
-// Early beta review priorities chosen for coherent carrier comparisons and
-// accessible consumer-plan source locations. They are NOT verified or endorsed.
-export const BETA_REVIEW_IDS=[
- 'usm-starter','usm-premium','usm-light',
- 'visible','visible-plus','visible-pro',
- 'tello','tello-starter','tello-power','tello-max',
- 'mint','cricket-supreme'
-];
+// Editorial review target intentionally includes plans AND device promotions.
+// The list is guidance, never checkout evidence or automatic approval.
+export const BETA_REVIEW_IDS=LAUNCH_REVIEW_IDS;
 const betaIds=new Set(BETA_REVIEW_IDS);
 const stepLabels={
  advertised_and_renewal_price:'Selected offer and renewal charges confirmed in the carrier quote',
@@ -88,6 +84,12 @@ function display(){
   article.setAttribute('data-offer-id',item.id);
   article.append(create('p',item.priority+' priority · '+item.kind+' · '+signed.label,'fb-review-priority'));
   article.append(create('h3',item.carrier+' — '+(item.offer||record.plan||record.phone)));
+  const reviewTarget=LAUNCH_REVIEW_BY_ID.get(item.id);
+  if(reviewTarget){
+    article.append(create('p','Launch scenario: '+reviewTarget.goal,'fb-review-priority'));
+    article.append(create('p','Quote to obtain: '+reviewTarget.check,'fb-review-hint'));
+    article.append(create('p','Do not assume: '+reviewTarget.caution,'fb-review-hint'));
+  }
   article.append(create('p','Offer ID: '+item.id+' · catalog price: '+usd(record.price)+
     (item.kind==='plan'?'/mo equivalent if annual prepaid':' advertised device price')));
   if(record.billingMonths===12&&Number.isFinite(record.billingUpfront))
@@ -258,7 +260,7 @@ function display(){
  const more=$('fb-review-more');more.hidden=results.length<=limit;
  more.textContent='Show more items ('+(results.length-limit)+' remaining)';
  $('fb-review-summary').textContent=queue.length+' total catalog offers in the review queue; '+
-  results.length+' match your filters ('+(scope==='shortlist'?'beta launch shortlist':'all offers')+'). '+
+  results.length+' match your filters ('+(scope==='shortlist'?'ten-scenario launch review checklist':'all offers')+'). '+
   results.filter(i=>fullStatus(i).status==='verified').length+
   ' currently signed off among filtered items. Showing '+Math.min(limit,results.length)+'.';
 }
