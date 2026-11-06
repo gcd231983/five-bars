@@ -1,26 +1,62 @@
 # Five Bars — affiliate and partnership application pipeline
 
-Last public-source research: November 2, 2026. **Statuses are prospects only.** No application or partner approval is recorded; no program links have been installed in consumer comparisons. Programs, acceptance criteria and payouts can change. Reconfirm before applying or publishing commissions.
+Last public-source research: November 6, 2026. **Statuses are prospects only.** The owner's network-application activity is not independently established by this repository; no carrier approval, signed partner contract, active paid link or commission is recorded. An Impact/CJ account or website-verification meta tag does not establish approval to advertise a specific carrier. Programs, criteria and payouts can change; reconfirm in the actual partner portal before acting.
 
 ## Prospect priority and verified program pages
 
 | Prospect | Public program source and network | Publicly stated considerations | Stage | Sensible next action |
 |---|---|---|---|---|
-| **Tello** | https://blog.tello.com/affiliates/ — CJ (Commission Junction) | Carrier states that publishers should register with CJ and email affiliate@tello.com with their publisher ID; approval is discretionary. | Research only; NOT applied | Assemble editorial sample pages, sign up as publisher if desired, and request review when product has credible audited examples. |
-| **US Mobile** | https://www.usmobile.com/affiliate — Impact | Carrier invites publishers and provides review assets following acceptance. Its public page contains more than one advertised payout figure, so the executed agreement, not marketing copy, must determine economics. | Research only; NOT applied | Review Impact application prerequisites and request exact eligibility, restrictions and rates. |
-| **Mint Mobile** | https://www.mintmobile.com/affiliate-program — Impact | Program page lists 3,000+ monthly site visitors or 5,000+ social followers among possible qualifying criteria; all applications are subject to selection. | Research only; NOT applied | Establish real traffic metrics before applying, or ask whether educational comparison publishers qualify earlier. |
+| **Tello** | https://blog.tello.com/affiliates/ — CJ (Commission Junction) | Carrier states that publishers should register with CJ and email affiliate@tello.com with their publisher ID; approval is discretionary. | Application/approval not verified | Assemble editorial sample pages, sign up as publisher if desired, and request review when product has credible audited examples. |
+| **US Mobile** | https://www.usmobile.com/affiliate — Impact | Carrier invites publishers and provides review assets following acceptance. Its public page contains more than one advertised payout figure, so the executed agreement, not marketing copy, must determine economics. | Application/approval not verified | Review Impact application prerequisites and request exact eligibility, restrictions and rates. |
+| **Mint Mobile** | https://www.mintmobile.com/affiliate-program — Impact | Program page lists 3,000+ monthly site visitors or 5,000+ social followers among possible qualifying criteria; all applications are subject to selection. | Application/approval not verified | Establish real traffic metrics before applying, or ask whether educational comparison publishers qualify earlier. |
 | **Cricket Wireless** | https://commerce.sovrn.com/merchants/140927/cricketwireless.com-affiliate-program — third-party Sovrn merchant listing | Merchant listing indicates affiliate network availability, but does NOT establish a direct carrier contract, guaranteed acceptance or approved payout. | Research only; NOT applied | Ask network to confirm current program eligibility, allowed promotion methods, and publisher terms. |
 | **Visible wireless** | https://www.visible.com/plans/bring-a-friend — customer referral information, not a publisher contract | Current public source describes consumer referral credits. Do not assume those are business publisher commissions. | Referral-only research | Explore whether a separate official publisher program exists; do not monetize consumer-referral codes as a partnership. |
 
 ## Pre-application package — evidence we can assemble without inventing metrics
 
-- Public website: https://gcd231983.github.io/five-bars/
-- Representative original educational pages: https://gcd231983.github.io/five-bars/carrier-comparisons.html
-- Reader-focused switching calculator: https://gcd231983.github.io/five-bars/#switch-save
-- Editorial independence and price source controls: https://gcd231983.github.io/five-bars/editorial.html
-- Clear privacy and commercial relationship disclosures: https://gcd231983.github.io/five-bars/privacy.html and https://gcd231983.github.io/five-bars/disclosures.html
+- Public website: https://fivebars.info/
+- Representative original educational pages: https://fivebars.info/carrier-comparisons.html
+- Reader-focused switching calculator: https://fivebars.info/#switch
+- Editorial independence and price source controls: https://fivebars.info/editorial.html
+- Clear privacy and commercial relationship disclosures: https://fivebars.info/privacy.html and https://fivebars.info/disclosures.html
 - Automated QA and review trail in public GitHub: https://github.com/gcd231983/five-bars
 - **Traffic, conversions, testimonials, audience size, legal business status and verified checkout coverage:** DO NOT INVENT. Supply only measured or owner-confirmed facts after beta validation.
+
+## Copy-ready publisher profile (application fields)
+
+Use only statements that are supported by the public website. **The owner must personally confirm audience size, legal/tax fields, individual vs. company status, payment information, and network-account status** before entering them into a third-party form.
+
+**Website name:** Five Bars  
+**Canonical website:** https://fivebars.info/  
+**Business contact published on the website:** support@fivebars.info (inbox delivery, moderation and retention still require owner confirmation)  
+**Primary audience:** People in the United States researching wireless plans, MVNOs, phone offers and switching costs. Do not claim a specific audience size or geographic breakdown without measured data.
+
+**Publisher description — ready to paste:**
+
+> Five Bars is an independent, consumer-focused wireless plan and phone-deal comparison website. We help shoppers explore carrier and MVNO options, review estimated first-year and upfront costs, and understand prepaid billing, minimum service commitments, eligibility and device-financing conditions. Our free browser-based tools link to carrier sources and distinguish automated public-source checks from independent checkout verification. We aim to publish clear, original comparisons and practical switching guidance without paid placement in our rankings.
+
+**Content and interests:** Consumer technology; mobile phone plans and MVNOs; wireless carriers; smartphones; household budgeting; telecom buying guides and switching education. These describe content, not measured traffic segments.
+
+**Current promotional methods:** Original on-site comparison guides, informational pages and free tools. Do not claim email-marketing lists, coupon distribution, paid search, social follower counts or conversions unless those channels are actually established and permitted.
+
+**Sample editorial properties:**
+- https://fivebars.info/carrier-comparisons.html
+- https://fivebars.info/#compare
+- https://fivebars.info/#switch
+- https://fivebars.info/source-research.html
+- https://fivebars.info/editorial.html
+- https://fivebars.info/disclosures.html
+- https://fivebars.info/contact.html
+
+**Not permitted claims:** No verified visitor count, conversion rate, guaranteed savings, signed carrier affiliation, independent checkout certification, authorized tracking link or commission terms have been established by this repository.
+
+### Program-specific submission notes
+
+- **US Mobile — Impact publisher program:** Official page https://www.usmobile.com/affiliate describes the business publisher program. Do not substitute the separate consumer **Refer a Friend** rewards; its FAQ states consumer referrals are not for business/influencer promotion (https://www.usmobile.com/help/docs/billing-and-payments/referral-rewards). The public affiliate page contains conflicting advertised payout figures; rely on the approved contract, not either headline.
+- **Mint Mobile — Impact publisher program:** Official page https://www.mintmobile.com/affiliate-program mentions website-visitor or follower thresholds among possible qualifying criteria, but selection remains discretionary. Do not invent a threshold match or use individual refer-a-friend links as commercial partnership links.
+- **Tello — CJ publisher program:** Official page https://blog.tello.com/affiliates/ says to register as a CJ publisher and then email affiliate@tello.com with a real publisher ID to request review. Do not fabricate a CJ ID or assert acceptance. The network and carrier may impose additional requirements.
+
+**Before any compensated link goes live:** Save genuine program acceptance and current terms, record approved merchant/offer destinations and attribution restrictions, complete privacy and advertising review, add adjacent disclosures, and prove rankings remain commission-independent through automated tests. See [AFFILIATE_ACTIVATION.md](AFFILIATE_ACTIVATION.md). Website verification proves control of a web property, not commercial authorization.
 
 ## Questions to resolve for any partner before adding links
 
