@@ -216,6 +216,18 @@ function addToCompare(type,id) {
 }
 window.fiveBarsCompare = addToCompare;
 window.addEventListener('fivebars:render', decorateCards);
+// A browser tab can stay open past the Eastern day a promotion ends.
+// Re-run only comparisons that the shopper already requested, using their
+// unchanged filters; do not invent fresh carrier prices or checkout evidence.
+window.addEventListener('fivebars:calendar-day-change',()=>{
+  if(!catalog.plans.length&&!catalog.phones.length)return;
+  renderCompare();
+  const root=document.querySelector('#fb-finder-results');
+  if(root?.querySelector('h3')){
+    finderRoot.querySelector('#fb-finder-form')?.dispatchEvent(
+      new Event('submit',{bubbles:true,cancelable:true}));
+  }
+});
 
 function renderFinder() {
   finderRoot.innerHTML = `
