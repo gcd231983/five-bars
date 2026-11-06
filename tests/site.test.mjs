@@ -16,6 +16,8 @@ test('static site JavaScript parses and uses no misleading cash-to-walk-away lab
   new Script(match[1]);
   assert.ok(!html.includes('Cash to walk away'), 'old cost label removed');
   assert.ok(html.includes('Due today (est.)'));
+  assert.ok(html.includes('d.price===0 ? "Advertised $0 device" : money(d.price)'), 'zero-dollar handset price must be described as advertised, not free at checkout');
+  assert.ok(!html.includes('d.price===0 ? "Free" : money(d.price)'), 'unqualified free headline is prohibited');
   assert.match(html,/gift cards and promotional credits are excluded from ALL estimated totals/i);
   assert.ok(html.includes('Catalog last reviewed:'));
   assert.ok(html.includes('monitored sources were reachable in this scan;'));
