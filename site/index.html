@@ -880,7 +880,6 @@ document.querySelectorAll(".fb-platform-option").forEach(button=>button.addEvent
 
 /* ---------- render: phones ---------- */
 function renderPhones(){
-  renderPhonePlatform();
   const rows = PHONES.filter(phoneVisible).map(d=>({d, c:phoneCalc(d)}));
   const big = 1e9;
   const by = {
@@ -1001,7 +1000,7 @@ document.querySelectorAll(".tab").forEach(b=>{
 });
 
 function update(skipTab){
-  renderControls(); renderPlans(); renderPhones(); save();
+  renderControls(); renderPlans(); renderPhones(); renderPhonePlatform(); save();
   window.dispatchEvent(new Event("fivebars:render"));
 }
 
