@@ -58,6 +58,14 @@
         "billingMonths": 1,
         "source": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
         "scope": "official_plan_rate_and_billing_term_headline"
+      },
+      {
+        "date": "2026-11-09",
+        "price": 15,
+        "upfront": null,
+        "billingMonths": 1,
+        "source": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+        "scope": "official_plan_rate_and_billing_term_headline"
       }
     ],
     "helium-infinity": [
@@ -111,6 +119,14 @@
       },
       {
         "date": "2026-11-08",
+        "price": 30,
+        "upfront": null,
+        "billingMonths": 1,
+        "source": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      },
+      {
+        "date": "2026-11-09",
         "price": 30,
         "upfront": null,
         "billingMonths": 1,
@@ -174,6 +190,14 @@
         "billingMonths": 1,
         "source": "https://mymobilex.com/all-faqs/",
         "scope": "official_plan_rate_and_billing_term_headline"
+      },
+      {
+        "date": "2026-11-09",
+        "price": 14.88,
+        "upfront": null,
+        "billingMonths": 1,
+        "source": "https://mymobilex.com/all-faqs/",
+        "scope": "official_plan_rate_and_billing_term_headline"
       }
     ],
     "mobilex-unlimited30": [
@@ -227,6 +251,14 @@
       },
       {
         "date": "2026-11-08",
+        "price": 24.88,
+        "upfront": null,
+        "billingMonths": 1,
+        "source": "https://mymobilex.com/all-faqs/",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      },
+      {
+        "date": "2026-11-09",
         "price": 24.88,
         "upfront": null,
         "billingMonths": 1,
@@ -290,6 +322,14 @@
         "billingMonths": 12,
         "source": "https://annualplans.good2gomobile.com/home-page",
         "scope": "official_plan_rate_and_billing_term_headline"
+      },
+      {
+        "date": "2026-11-09",
+        "price": 5,
+        "upfront": 60,
+        "billingMonths": 12,
+        "source": "https://annualplans.good2gomobile.com/home-page",
+        "scope": "official_plan_rate_and_billing_term_headline"
       }
     ],
     "good2go-annual3": [
@@ -348,6 +388,14 @@
         "billingMonths": 12,
         "source": "https://annualplans.good2gomobile.com/home-page",
         "scope": "official_plan_rate_and_billing_term_headline"
+      },
+      {
+        "date": "2026-11-09",
+        "price": 10,
+        "upfront": 120,
+        "billingMonths": 12,
+        "source": "https://annualplans.good2gomobile.com/home-page",
+        "scope": "official_plan_rate_and_billing_term_headline"
       }
     ],
     "good2go-annual5": [
@@ -401,6 +449,14 @@
       },
       {
         "date": "2026-11-08",
+        "price": 20,
+        "upfront": 240,
+        "billingMonths": 12,
+        "source": "https://annualplans.good2gomobile.com/home-page",
+        "scope": "official_plan_rate_and_billing_term_headline"
+      },
+      {
+        "date": "2026-11-09",
         "price": 20,
         "upfront": 240,
         "billingMonths": 12,
