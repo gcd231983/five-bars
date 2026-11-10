@@ -8,6 +8,7 @@ import {readFile,mkdir} from 'node:fs/promises';
 import {extname,resolve,dirname,join,sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
+import {TELLO_NOV9_PROMO} from './helpers/tello-promo-fixture.mjs';
 
 const site=process.env.FIVE_BARS_SITE_DIR?resolve(process.env.FIVE_BARS_SITE_DIR):
   resolve(dirname(fileURLToPath(import.meta.url)),'../site');
@@ -1135,6 +1136,17 @@ try {
     const rollover=await context.newPage();
     rollover.on('pageerror',e=>errors.push(view+' calendar rollover: '+e.message));
     await rollover.clock.install({time:new Date('2026-11-10T04:58:00Z')});
+    // The live catalog drops the promo once the daily scan expires it, so
+    // replay the dated official Nov 9 terms for this rollover scenario.
+    await rollover.route('**/data/deals.json',async route=>{
+      const response=await route.fetch();
+      const snapshot=await response.json();
+      const offer=snapshot.plans.find(x=>x.id==='tello');
+      assert.ok(offer,'Tello rollover fixture plan must exist');
+      offer.promo=structuredClone(TELLO_NOV9_PROMO);
+      await route.fulfill({status:200,contentType:'application/json',
+        body:JSON.stringify(snapshot)});
+    });
     await rollover.goto(base,{waitUntil:'domcontentloaded'});
     await rollover.locator('#t-plans').click();
     await rollover.locator('.fb-advanced-filters summary').click();
