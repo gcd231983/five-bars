@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 import {planCost,phoneCost} from '../site/value-core.mjs';
+import {withTelloPromo} from './helpers/tello-promo-fixture.mjs';
 
 // Guard the two customer-facing calculators against contradictory estimates.
 // These tests execute the actual homepage function bodies, not copies of the
@@ -114,7 +115,8 @@ test('all catalog phone offers have identical estimates and withheld totals on b
 });
 
 test('Tello promotion stays conditional on its last published day and is excluded the next Eastern day',()=>{
- const offer=catalog.plans.find(p=>p.id==='tello');
+ // The live catalog drops the promotion once it expires; use the dated official terms.
+ const offer=withTelloPromo(catalog).plans.find(p=>p.id==='tello');
  assert.ok(offer?.promo?.ends==='2026-11-09');
  state.lines=1;
  state.t={newcustomer:true};

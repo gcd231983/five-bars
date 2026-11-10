@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {buildReviewQueue} from '../scripts/review-queue.mjs';
 import {checkoutRecord} from './helpers/checkout-fixtures.mjs';
+import {withTelloPromo} from './helpers/tello-promo-fixture.mjs';
 import {readFileSync} from 'node:fs';
 
 const dt='2026-11-02T14:20:00.000Z';
@@ -82,7 +83,9 @@ test('queue output contains only public offer metadata, no scraped web page payl
 });
 
 test('real catalog prioritizes partial research and held retailer paths without inventing checkouts',()=>{
- const catalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ const liveCatalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
+ // Replay Nov 6 with Tello's dated Nov 9 promotion; the live catalog drops it after expiry.
+ const catalog=withTelloPromo(liveCatalog);
  const researchEvidence=JSON.parse(readFileSync(new URL('../site/data/research-evidence.json',import.meta.url),'utf8'));
  const doc=buildReviewQueue({catalog,researchEvidence,today:'2026-11-06',
    generatedAt:'2026-11-06T15:00:00.000Z'});
@@ -105,7 +108,7 @@ test('real catalog prioritizes partial research and held retailer paths without 
  assert.ok(stock);
  assert.ok(stock.reasonCodes.includes('full_terms_not_verified'));
  assert.equal(doc.items[0].id,'tello','near-deadline published promotion remains highest review priority');
- assert.equal(catalog.checked,'2026-10-29','automatic source research must not modify the human catalog review date');
+ assert.equal(liveCatalog.checked,'2026-10-29','automatic source research must not modify the human catalog review date');
 });
 
 test('official research conflict or invalid future research is critical, not a verified checkout',()=>{

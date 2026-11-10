@@ -494,17 +494,6 @@
       "unl": false,
       "data": "10GB",
       "price": 15,
-      "promo": {
-        "price": 10,
-        "months": 3,
-        "text": "$10/mo for the first 3 months on an eligible newly activated line (new customers or existing accounts adding a new line); offer ends November 9, 2026 at 11:59 p.m. EST",
-        "req": "new",
-        "ends": "2026-11-09",
-        "officialDeadlineEvidence": {
-          "sourceUrl": "https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/",
-          "observedOn": "2026-11-02"
-        }
-      },
       "tax": false,
       "pri": false,
       "hot": "Hotspot from plan data",
@@ -517,7 +506,7 @@
         "5": 15
       },
       "priceSourceDate": "2026-11-02",
-      "extra": "Tello's October 22, 2026 published offer allows new customers and existing customers adding a NEW line to activate the Everyday 10GB plan by November 9, 2026, 11:59 p.m. EST. The $10/month rate applies only to that newly activated line for the first 3 months; the regular $15/month rate follows. Any plan change or cancellation ends the discount. The official broadband disclosure lists provider monthly fees as included, one-time purchase fees as none, cost recovery up to $0.30, and government taxes that vary by location. No individual checkout total, additional location-specific taxes or customer eligibility has been independently verified."
+      "extra": "Tello's October 22, 2026 published offer ($10/month for the first 3 months on a newly activated Everyday 10GB line) ended November 9, 2026 at 11:59 p.m. EST and is no longer applied; the regular $15/month rate is shown. The official broadband disclosure lists provider monthly fees as included, one-time purchase fees as none, cost recovery up to $0.30, and government taxes that vary by location. No individual checkout total, additional location-specific taxes or customer eligibility has been independently verified."
     },
     {
       "id": "cc",
