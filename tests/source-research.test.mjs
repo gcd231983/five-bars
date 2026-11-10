@@ -6,6 +6,7 @@ import {buildResearchAudit,researchStatus,renderResearchPage}
  from '../scripts/source-research.mjs';
 import {planCost,phoneCost,rankMatches,verificationState,offerSignature} from '../site/value-core.mjs';
 import {simulateSwitch} from '../site/switch-core.mjs';
+import {withTelloPromo} from './helpers/tello-promo-fixture.mjs';
 
 const read=file=>readFileSync(new URL('../'+file,import.meta.url),'utf8');
 const catalog=JSON.parse(read('site/data/deals.json'));
@@ -68,7 +69,14 @@ test('official dated evidence is auditable, sourced with HTTPS, exact offer IDs,
 test('Tello official documentation confirms new-line-only promotion without fabricating checkout fees',()=>{
  const offer=get('tello'),record=research.records.tello;
  assert.equal(offer.price,15);
- assert.deepEqual({price:offer.promo.price,months:offer.promo.months,req:offer.promo.req,ends:offer.promo.ends},
+ // The Nov 9 promotion is removed from the live catalog once it expires. While
+ // present it must match the official terms; it must never outlive its end date.
+ if(offer.promo){
+  assert.deepEqual({price:offer.promo.price,months:offer.promo.months,req:offer.promo.req,ends:offer.promo.ends},
+    {price:10,months:3,req:'new',ends:'2026-11-09'});
+ }
+ const promoOffer=withTelloPromo(catalog).plans.find(p=>p.id==='tello');
+ assert.deepEqual({price:promoOffer.promo.price,months:promoOffer.promo.months,req:promoOffer.promo.req,ends:promoOffer.promo.ends},
    {price:10,months:3,req:'new',ends:'2026-11-09'});
  assert.equal(record.observedOn,'2026-11-02');
  assert.ok(record.sources.some(s=>s.url.includes('/halloween-deal-10gb-for-10-mo-first-3-months/')));

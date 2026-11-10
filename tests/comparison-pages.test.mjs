@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {GUIDES,renderGuide,renderHub,renderSitemap,escapeHtml,safeHttps} from '../scripts/comparison-pages.mjs';
 import {checkoutRecord} from './helpers/checkout-fixtures.mjs';
+import {withTelloPromo} from './helpers/tello-promo-fixture.mjs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const data={
@@ -45,7 +46,8 @@ test('generated pages have descriptive static SEO copy, canonical URL, disclosur
 });
 test('regardless of intro promotion, static baseline uses standard regular price',()=>{
  const tello=GUIDES.find(g=>g.slug==='tello-vs-mint-mobile');
- const html=renderGuide(tello,data,fixed);
+ // Render with Tello's dated Nov 9 promotion so the intro exclusion is exercised after it expires.
+ const html=renderGuide(tello,{...data,catalog:withTelloPromo(data.catalog)},fixed);
  assert.match(html,/Everyday 10GB/);
  assert.match(html,/\$15\.00\/mo catalog regular/);
  assert.match(html,/\$180\.00/);
