@@ -198,7 +198,7 @@ function htmlDoc(body){
  return '<!doctype html>\n<html lang="en"><head><meta charset="utf-8">'+
   '<meta name="viewport" content="width=device-width,initial-scale=1">'+
   '<meta name="description" content="An evidence-first report on which Five Bars catalog prices have published official source references and which still need checkout review.">'+
-  '<link rel="canonical" href="'+BASE+'source-research.html">'+
+  '<meta name="robots" content="noindex,follow"><link rel="canonical" href="'+BASE+'source-research.html">'+
   '<title>Five Bars official-source evidence audit</title>'+
   '<link rel="stylesheet" href="comparison-styles.css"></head><body>'+
   '<header class="wrap"><nav aria-label="Navigation"><a href="./">Five Bars home</a>'+

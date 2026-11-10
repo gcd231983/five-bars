@@ -3,6 +3,7 @@
 // carrier checkout verification. No advertising SDKs, AI, tracking or scraping.
 import {planCost,verificationState,localDay,validDay,pastEnd,usd} from '../site/value-core.mjs';
 import {researchStatus} from './source-research.mjs';
+import {seoPagePaths,carrierSlug} from './seo-guides.mjs';
 
 const BASE='https://fivebars.info/';
 const COLLISION=/^(?:javascript|data|file|ftp):/i;
@@ -92,7 +93,7 @@ export function safeHttps(value){
 }
 const a=(url,text)=>safeHttps(url)?'<a href="'+escapeHtml(safeHttps(url))+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(text)+'</a>':'Official link unavailable';
 function compareLink(id){return BASE+'?switch=plan%3A'+encodeURIComponent(id)+'#switch-save';}
-function statusFor(plan,{ledger,status,mvnoEvidence,research},today){
+export function statusFor(plan,{ledger,status,mvnoEvidence,research},today){
  const checked=verificationState(plan,ledger?.offers?.[plan.id],today);
  const raw=mvnoEvidence?.offers?.[plan.id]?.state;
  const flagged=status?.offers?.[plan.id];
@@ -145,10 +146,14 @@ function pageStart({title,description,canonical}){
   '<meta property="og:type" content="article"><meta property="og:title" content="'+safeTitle+'">'+
   '<meta property="og:description" content="'+safeDescription+'">'+
   '<meta property="og:url" content="'+url+'"><link rel="canonical" href="'+url+'">'+
+  '<meta property="og:site_name" content="Five Bars"><meta property="og:image" content="'+BASE+'og-card.jpg">'+
+  '<meta name="twitter:card" content="summary_large_image">'+
   '<title>'+safeTitle+' | Five Bars</title>'+
   breadcrumbJsonLd(canonical,title)+
   '<link rel="stylesheet" href="'+(canonical.includes('/compare/')?'../':'')+'comparison-styles.css">'+
   '</head><body><header class="wrap"><nav aria-label="Navigation"><a href="'+(canonical.includes('/compare/')?'../':'./')+'">Five Bars home</a>'+
+  '<a href="'+(canonical.includes('/compare/')?'../':'./')+'best-phone-plans.html">Best plans</a>'+
+  '<a href="'+(canonical.includes('/compare/')?'../':'./')+'carriers.html">Carriers</a>'+
   '<a href="'+(canonical.includes('/compare/')?'../':'./')+'#switch-save">Switch &amp; Save</a>'+
   '<a href="'+(canonical.includes('/compare/')?'../':'./')+'satellite.html">Can your phone text by satellite?</a>'+
   '<a href="'+(canonical.includes('/compare/')?'../':'./')+'editorial.html">Editorial standards</a>'+
@@ -194,7 +199,7 @@ export function renderGuide(guide,data,{today=localDay()}={}){
  html.push('</ol></section>');
  html.push('<section><h2>Single-line standard-rate snapshots</h2><p>This is one line at the cataloged <strong>regular</strong> price (not promotional pricing). Taxes and unknown fees are excluded. No price here is a guaranteed live quote. Family discounts, incentives and final checkout are not presumed.</p>');
  for(const provider of providers){
-  html.push('<h3>'+escapeHtml(provider)+'</h3><div class="table-scroll"><table aria-label="'+escapeHtml(provider)+' plans">'+
+  html.push('<h3><a href="../carriers/'+carrierSlug(provider)+'.html">'+escapeHtml(provider)+'</a></h3><div class="table-scroll"><table aria-label="'+escapeHtml(provider)+' plans">'+
     '<thead><tr><th scope="col">Catalog offer</th><th scope="col">Baseline pricing</th><th scope="col">12-month baseline</th><th scope="col">Evidence and requirements</th><th scope="col">Next step</th></tr></thead><tbody>');
   for(const plan of rowsByProvider[provider]){
    const x=planSummary(plan,data,today),rowClass=x.info.hold?' class="needs-review"':'';
@@ -234,6 +239,7 @@ export function renderHub(data){
  for(const guide of GUIDES)html.push('<article class="guide"><h3><a href="compare/'+escapeHtml(guide.slug)+'.html">'+escapeHtml(guide.left+' vs '+guide.right)+'</a></h3>'+
   '<p>'+escapeHtml(guide.focus)+'</p><p>'+escapeHtml(guide.description)+'</p></article>');
  html.push('</div></section>');
+ html.push('<section><h2>More ways to compare</h2><p>See every carrier we track on the <a href="carriers.html">carrier directory</a>, or jump to our <a href="best-phone-plans.html">best phone plan guides</a>, ranked by estimated 12-month cost.</p></section>');
  html.push('<section><h2>How to use these pages</h2><ol>'+
   '<li>Choose carriers that can support your phone and coverage requirements.</li>'+
   '<li>Read the standard catalog rates and the amount required upfront for annual plans.</li>'+
@@ -244,8 +250,11 @@ export function renderHub(data){
 }
 export function renderSitemap(data){
  const day=validDay(data?.catalog?.checked)?data.catalog.checked:'2026-10-29';
+ // Internal evidence/audit pages (source-research, launch-readiness) stay
+ // public but are noindex, so they are intentionally left out of the sitemap.
  const urls=['','about.html','contact.html','editorial.html','privacy.html','disclosures.html','switching-guide.html',
-  'carrier-comparisons.html','phone-deals.html','satellite.html','source-research.html','launch-readiness.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html')];
+  'carrier-comparisons.html','phone-deals.html','satellite.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html'),
+  ...seoPagePaths(data?.catalog)];
  const xmlEscape=escapeHtml;
  return '<?xml version="1.0" encoding="UTF-8"?>\n'+
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+

@@ -78,6 +78,17 @@ Phone listings show separate **estimated due today**, **estimated minimum commit
 
 The previous Claude-based workflow has been replaced. The old `scripts/deals.mjs` remains solely as a structural validator and backwards-compatible maintenance utility; it is not used to run Claude.
 
+## SEO buying guides and carrier pages (November 2026)
+
+`node scripts/build-comparisons.mjs` now also generates 32 static, crawlable pages from `site/data/deals.json`. The daily workflow runs it and commits the results:
+
+- `site/best-phone-plans.html` and 12 buying guides in `site/best/` (cheap plans, cheap unlimited, family, Verizon/AT&T/T-Mobile network, premium data, hotspot, low-data, annual, free phone deals, iPhone deals).
+- `site/carriers.html` and one page per catalog carrier in `site/carriers/`. Pages for carriers that leave the catalog are deleted automatically.
+
+Rankings use the finder's cost engine (`site/value-core.mjs`): an estimated 12-month cost for one line at the regular price, with AutoPay-style discounts that anyone can get. Intro deals that need a new line or a number transfer are shown separately, and offers held for source conflicts are withheld. Each page has Article, BreadcrumbList, ItemList and FAQPage JSON-LD (never Offer, Product or ratings), Open Graph and Twitter tags, and the shared `og-card.jpg`. Affiliate links come only from approved entries in `site/data/affiliates.json` (see [AFFILIATE_ACTIVATION.md](AFFILIATE_ACTIVATION.md)). Definitions and editorial copy live in `scripts/seo-guides.mjs`; rendering is in `scripts/seo-pages.mjs`; tests are in `tests/seo-pages.test.mjs`.
+
+`source-research.html` and `launch-readiness.html` stay public but are `noindex,follow` and excluded from the sitemap, so search engines focus on reader-facing pages.
+
 ## Five Bars value upgrade — finder, comparison and trust
 
 The site has six sections: **Find my plan**, Plans, Phone deals, Compare, Price watch, and Sources & refresh.

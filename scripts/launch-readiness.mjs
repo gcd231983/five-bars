@@ -55,7 +55,7 @@ export function renderReadiness(model){
  const row=o=>'<li><strong>'+clean(o.label)+'</strong><span class="pending">Owner action pending</span><p>'+clean(o.note)+'</p></li>';
  return '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
   '<meta name="description" content="Five Bars public beta progress, independent evidence coverage and outstanding launch requirements.">'+
-  '<link rel="canonical" href="'+BASE+'launch-readiness.html"><title>Launch readiness and evidence status | Five Bars</title>'+
+  '<meta name="robots" content="noindex,follow"><link rel="canonical" href="'+BASE+'launch-readiness.html"><title>Launch readiness and evidence status | Five Bars</title>'+
   '<style>:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color-scheme:light dark}*{box-sizing:border-box}body{margin:0;background:Canvas;color:CanvasText;line-height:1.6}'+
   'main,header,footer{max-width:880px;margin:auto;padding:18px}nav{display:flex;gap:14px;flex-wrap:wrap}a{color:LinkText}h1{font-size:clamp(1.75rem,5vw,2.5rem);line-height:1.2}'+
   '.notice{border:2px solid currentColor;padding:16px;border-radius:10px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:18px 0}.stat{border:1px solid #8888;border-radius:10px;padding:12px}.stat dt{font-size:.88rem}.stat dd{font-size:1.65rem;font-weight:750;margin:0}'+

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "asOf": "2026-11-09",
+  "asOf": "2026-11-10",
   "scope": "Repository-derived evidence only; no independently certified shopping cart, tax quotation, traffic, legal approval or paid partnerships.",
   "technicalStage": "public_beta_engineering",
   "commercialStage": "blocked_pending_external_evidence",
@@ -22,7 +22,7 @@
   },
   "automation": {
     "lastScan": "2026-11-09T20:48:49.006Z",
-    "scanAgeDays": 0,
+    "scanAgeDays": 1,
     "scanStatus": "recent",
     "note": "Automated source reachability and partial headline matching never establish full checkout terms."
   },

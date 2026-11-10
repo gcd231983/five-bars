@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "readme": "Affiliate links for the buying guides and carrier pages. A program is used ONLY when status is \"active\", approvedOn is a real YYYY-MM-DD date, and url is an HTTPS tracking link supplied by the approved network. Leave everything else inactive. Active links get rel=\"sponsored noopener noreferrer\", an 'Affiliate link' label and an advertiser disclosure on the page. Rankings never change. See AFFILIATE_ACTIVATION.md.",
+  "programs": {
+    "US Mobile": {"status": "inactive", "network": "Impact", "url": null, "approvedOn": null},
+    "Mint Mobile": {"status": "inactive", "network": "Impact", "url": null, "approvedOn": null},
+    "Tello": {"status": "inactive", "network": "CJ", "url": null, "approvedOn": null},
+    "Cricket": {"status": "inactive", "network": "Sovrn (listing only)", "url": null, "approvedOn": null},
+    "Visible": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Total Wireless": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Straight Talk": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Tracfone": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Boost Mobile": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Metro by T-Mobile": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Google Fi": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Ultra Mobile": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Consumer Cellular": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "H2O Wireless": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Helium Mobile": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "MobileX": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Red Pocket Mobile": {"status": "inactive", "network": null, "url": null, "approvedOn": null},
+    "Good2Go Mobile": {"status": "inactive", "network": null, "url": null, "approvedOn": null}
+  }
+}

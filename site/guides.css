@@ -1,0 +1,96 @@
+/* Five Bars buying guides and carrier pages. Loaded after comparison-styles.css,
+   reusing its brand variables (--accent, --surface, --line, --muted, --chip). */
+:root{--vzw:#ff6476;--att:#56b6ec;--tmo:#ff5db1;--multi:#a595f5;--good:#7be0a6;--radius:14px}
+.skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--surface);color:var(--text);padding:10px 14px;border:2px solid var(--accent);border-radius:8px}
+.skip:focus{top:10px}
+.guide-page{max-width:1020px}
+.guide-page h1{max-width:30ch}
+.guide-page section{scroll-margin-top:20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.table-scroll{position:relative}
+.muted{color:var(--muted)}
+
+/* Byline and disclosure */
+.byline{display:flex;flex-wrap:wrap;gap:4px 18px;margin:-4px 0 14px;font-size:.84rem;color:var(--muted)}
+.byline a{color:inherit}
+.disclosure{margin:0 0 18px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:.84rem;color:var(--muted);background:transparent}
+.disclosure strong{color:var(--text)}
+
+/* Quick answer: the snippet a searcher wants first */
+.answer{margin:22px 0;padding:16px 20px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent)}
+.answer p{margin:4px 0;font-size:1.04rem;line-height:1.6}
+.answer .answer-label{font-size:.74rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin:0}
+
+/* Pick cards */
+.picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:14px;margin-top:6px}
+.pick{display:flex;flex-direction:column;gap:2px;padding:18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--chip)}
+.pick h3{margin:2px 0 6px;font-size:1.12rem;line-height:1.3}
+.pick h3 a{color:var(--text);text-decoration-color:var(--line)}
+.pick h3 span{display:block;font-weight:500;font-size:.95rem;color:var(--muted)}
+.pick-label{display:flex;align-items:center;gap:9px;margin:0 0 4px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.rank{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#072a2a;font-size:.8rem;letter-spacing:0}
+.price{margin:2px 0;font-size:.95rem;color:var(--muted)}
+.price strong{font-size:1.75rem;line-height:1.1;color:var(--text);letter-spacing:-.02em}
+.price span{display:block;font-size:.84rem}
+.year{margin:0 0 8px;font-weight:650;font-size:.92rem}
+.facts{list-style:none;padding:0;margin:6px 0 10px;display:flex;flex-direction:column;gap:5px;font-size:.88rem}
+.facts li{margin:0}
+.deal{font-size:.86rem;margin:4px 0 10px;padding:9px 11px;border-radius:9px;background:var(--surface);border:1px dashed var(--line)}
+.actions{margin-top:auto;padding-top:8px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.cta{display:inline-flex;align-items:center;min-height:44px;padding:9px 15px}
+.cta-ghost{background:transparent!important;color:var(--accent)!important;border:1.5px solid var(--accent)}
+.cta-ghost:hover{background:var(--surface)!important}
+.cta-ghost::after{content:"↗";margin-left:6px;font-weight:600}
+.cta-small{min-height:36px;padding:5px 11px;font-size:.84rem}
+.aff-note{font-size:.74rem;color:var(--muted)}
+.fine{margin-top:10px;font-size:.84rem;color:var(--muted)}
+.fine summary{cursor:pointer;font-weight:650;color:var(--text);min-height:32px}
+.fine p{margin:6px 0}
+
+/* Network chips */
+.net{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.78rem;font-weight:700;white-space:nowrap;border:1px solid currentColor}
+.net-vzw{color:var(--vzw)}.net-att{color:var(--att)}.net-tmo{color:var(--tmo)}.net-multi{color:var(--multi)}
+
+/* Ranked tables with the signature cost bar */
+.rank-table{min-width:640px}
+.rank-table caption{caption-side:top;text-align:left;padding:10px 11px;font-size:.82rem;color:var(--muted)}
+.rank-table th[scope=row] a{font-weight:700}
+.rank-table th[scope=row] span{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+.rank-table td:first-child{color:var(--muted);font-weight:700;width:2.2em}
+.rank-table .yr{min-width:130px;font-weight:700;white-space:nowrap}
+.costbar{display:block;height:6px;width:var(--w,0%);max-width:100%;margin:0 0 6px;border-radius:3px;background:linear-gradient(90deg,var(--accent),#2a9d91)}
+.note{font-size:.82rem;color:var(--muted)}
+
+/* Carrier facts box */
+.facts-box{margin:22px 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+.facts-box dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px 20px;margin:0 0 6px}
+.facts-box dt{font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700}
+.facts-box dd{margin:3px 0 0;font-size:1.05rem;font-weight:700}
+.fit{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:8px 26px}
+.fit h3{margin-top:4px}
+.fit ul{padding-left:0;list-style:none}
+.fit li{position:relative;padding-left:24px}
+.good li::before{content:"✓";position:absolute;left:0;color:var(--good);font-weight:800}
+.watch li::before{content:"!";position:absolute;left:5px;color:var(--warning);font-weight:900}
+
+/* Tips, FAQ, link grids, hubs */
+.tips li{margin:10px 0}
+.faq details{border-top:1px solid var(--line);padding:4px 0}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;font-weight:700;padding:10px 0;min-height:44px;display:flex;align-items:center}
+.faq details p{margin:0 0 12px;color:var(--muted)}
+.link-grid{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:4px 18px}
+.link-grid li{margin:4px 0}
+.hub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:12px}
+.hub-card{display:flex;flex-direction:column;gap:6px;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--chip);text-decoration:none;color:var(--text)}
+.hub-card strong{font-size:1.02rem;color:var(--text)}
+.hub-card span{font-size:.86rem;color:var(--muted)}
+.hub-card:hover,.hub-card:focus-visible{border-color:var(--accent)}
+.hub-card:hover strong{color:var(--accent)}
+@media(max-width:650px){
+ .price strong{font-size:1.55rem}
+ .pick{padding:15px}
+ .answer{padding:14px 16px}
+}
+@media print{.cta,.skip,.actions{display:none}.costbar{display:none}}
+.cta:focus-visible,.hub-card:focus-visible,summary:focus-visible,.skip:focus-visible{outline:3px solid var(--accent);outline-offset:3px}

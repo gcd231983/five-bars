@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {GUIDES,renderGuide,renderHub,renderSitemap} from '../scripts/comparison-pages.mjs';
+import {seoPagePaths} from '../scripts/seo-guides.mjs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const data={
@@ -13,8 +14,7 @@ const data={
 const fixed={today:'2026-11-02'};
 const expected=['','about.html','contact.html','editorial.html','privacy.html','disclosures.html',
   'switching-guide.html','carrier-comparisons.html','phone-deals.html','satellite.html',
-  'source-research.html','launch-readiness.html','report.html',
-  ...GUIDES.map(g=>'compare/'+g.slug+'.html')];
+  'report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html'),...seoPagePaths(data.catalog)];
 
 test('sitemap contains every required public guide exactly once with safe canonical URLs',()=>{
   const sitemap=renderSitemap(data);

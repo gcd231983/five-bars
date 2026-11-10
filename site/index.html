@@ -4,13 +4,21 @@
 <meta charset="utf-8">
 <meta name='impact-site-verification' value='39b7b1cf-6520-4ff0-972a-a2fb8e1503d9'>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Five Bars | Find a better phone plan, compare true costs</title>
-<meta name="description" content="Compare prepaid and MVNO wireless plans, phone deals, estimated first-year cost, service requirements, and network fit. See review status before buying.">
+<title>Five Bars | Find a better phone plan: cheap prepaid &amp; MVNO deals</title>
+<meta name="description" content="Compare cheap prepaid and MVNO phone plans, unlimited data, family plans and free phone deals by true 12-month cost. Independent rankings, no sign-up.">
 <meta name="theme-color" content="#0A6B62">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Five Bars — Compare the real cost of phone plans">
 <meta property="og:description" content="Find phone plans and deals with clear upfront estimates, restrictions, and review status.">
 <meta property="og:url" content="https://fivebars.info/">
+<meta property="og:site_name" content="Five Bars">
+<meta property="og:image" content="https://fivebars.info/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Five Bars: compare phone plans by true cost">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://fivebars.info/#website","name":"Five Bars","url":"https://fivebars.info/","description":"Independent comparison of prepaid and MVNO phone plans and phone deals by true 12-month cost.","publisher":{"@id":"https://fivebars.info/#org"},"inLanguage":"en-US"},{"@type":"Organization","@id":"https://fivebars.info/#org","name":"Five Bars","url":"https://fivebars.info/","logo":{"@type":"ImageObject","url":"https://fivebars.info/five-bars-logo.png","width":512,"height":512},"email":"support@fivebars.info","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"support@fivebars.info","availableLanguage":"en"}}]}</script>
 <link rel="canonical" href="https://fivebars.info/">
 <link rel="icon" type="image/svg+xml" href="five-bars-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -715,6 +723,17 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
  .fb-tabs-more-menu button{display:block;width:100%;min-height:44px;text-align:left;padding:10px 13px;border:0;border-radius:8px;background:none;color:var(--ink);font-weight:650;cursor:pointer}
  .fb-tabs-more-menu button:hover,.fb-tabs-more-menu button:focus-visible{background:var(--chip)}
 }
+
+/* Static buying-guide links (crawlable without JavaScript) */
+.fb-seo-guides{margin:34px 0 8px;padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.fb-seo-guides h2{margin:0 0 6px;font-size:clamp(1.3rem,3.6vw,1.6rem);letter-spacing:-.02em}
+.fb-seo-guides>p{color:var(--muted);margin:0 0 14px;max-width:62ch}
+.fb-seo-guides ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:10px}
+.fb-seo-guides li a{display:flex;flex-direction:column;gap:3px;height:100%;box-sizing:border-box;padding:13px 15px;border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--ink)}
+.fb-seo-guides li a:hover,.fb-seo-guides li a:focus-visible{border-color:var(--accent)}
+.fb-seo-guides li strong{font-size:.98rem}
+.fb-seo-guides li span{font-size:.84rem;color:var(--muted)}
+.fb-seo-guides .fb-seo-more{margin:14px 0 0;font-size:.9rem}
 </style>
 <link rel="stylesheet" href="redesign.css?v=20261106-v3">
 </head>
@@ -734,7 +753,9 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
       <span class="fb-brand-name">Five Bars</span>
     </a>
     <div class="fb-topnav-links">
-      <a href="carrier-comparisons.html">Carrier guides</a>
+      <a href="best-phone-plans.html">Best plans</a>
+      <a href="carriers.html">Carriers</a>
+      <a href="carrier-comparisons.html">Compare</a>
       <a href="satellite.html">Satellite texting</a>
       <a href="about.html">About</a>
       <a class="fb-help-link" href="contact.html">Help &amp; contact</a>
@@ -797,7 +818,7 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
   <details class="fb-mobile-evidence"><summary>Pricing transparency and review status</summary>
   <p class="fresh" id="fresh"></p>
   <div class="fb-evidence-summary" id="fb-evidence-summary" aria-label="Pricing evidence snapshot">
-    <div><strong>Public beta: pricing evidence, not a checkout guarantee</strong><p id="fb-evidence-summary-copy" aria-live="polite">Check published-source research and actual carrier checkout before purchasing.</p></div>
+    <div><strong>How we check prices</strong><p id="fb-evidence-summary-copy" aria-live="polite">Prices come from carriers’ published offers. Always confirm the final price at the carrier’s checkout.</p></div>
     <a href="launch-readiness.html">View evidence status</a>
   </div>
   </details>
@@ -932,9 +953,28 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
     <p>Deals with an end date also watch themselves: once a promo expires, its discount drops out of the math; ended phone offers are hidden.</p>
     <p>Editorial maintainers: <a href="review-workbench.html">Open the read-only offer review workbench</a> to investigate unresolved offers and prepare human review notes. Only repository editors can submit signed verifications through GitHub.</p>
   </section>
+  <section class="fb-seo-guides" aria-labelledby="fb-guides-title">
+    <h2 id="fb-guides-title">Popular phone plan guides</h2>
+    <p>Each guide ranks plans by estimated 12-month cost, not teaser prices, and is rebuilt every day from the same catalog as the finder.</p>
+    <ul>
+      <li><a href="best/cheap-phone-plans.html"><strong>Best cheap phone plans</strong><span>Lowest true yearly cost</span></a></li>
+      <li><a href="best/cheap-unlimited-plans.html"><strong>Cheapest unlimited plans</strong><span>High-speed caps and hotspot explained</span></a></li>
+      <li><a href="best/family-phone-plans.html"><strong>Family phone plans</strong><span>Totals for 2 to 4 lines</span></a></li>
+      <li><a href="best/free-phone-deals.html"><strong>Free phone deals</strong><span>$0 phones ranked by real first-year cost</span></a></li>
+      <li><a href="best/iphone-deals.html"><strong>Prepaid iPhone deals</strong><span>Device plus required plan</span></a></li>
+      <li><a href="best/low-data-plans.html"><strong>Low-data plans</strong><span>For Wi-Fi users, seniors and kids</span></a></li>
+      <li><a href="best/verizon-network-plans.html"><strong>Plans on Verizon’s network</strong><span>Verizon coverage for less</span></a></li>
+      <li><a href="best/t-mobile-network-plans.html"><strong>Plans on T-Mobile’s network</strong><span>Mint, Tello, Metro and more</span></a></li>
+      <li><a href="best/att-network-plans.html"><strong>Plans on AT&amp;T’s network</strong><span>Cricket, H2O and more</span></a></li>
+      <li><a href="best/hotspot-plans.html"><strong>Plans with hotspot</strong><span>Allowances and speed caps compared</span></a></li>
+      <li><a href="best/premium-data-plans.html"><strong>Plans with premium data</strong><span>Full speed when towers are busy</span></a></li>
+      <li><a href="best/annual-phone-plans.html"><strong>Annual prepaid plans</strong><span>Pay once, save all year</span></a></li>
+    </ul>
+    <p class="fb-seo-more"><a href="best-phone-plans.html">All buying guides</a> · <a href="carriers.html">Browse every carrier</a> · <a href="carrier-comparisons.html">Head-to-head comparisons</a></p>
+  </section>
   <footer class="fb-footer">
     <h3>Independent comparisons. Transparent limitations.</h3>
-    <p>Five Bars is an independent comparison and educational website, not a wireless carrier or checkout service. Prices are estimates from a curated catalog. Most listings have not undergone a recent complete terms review. Always confirm final costs, eligibility, coverage and unlocking directly with the carrier.</p>
+    <p>Five Bars is an independent comparison and educational website, not a wireless carrier or checkout service. Prices are estimates built from carriers’ published offers, and an automated check runs every day for expired deals and broken links. Always confirm final costs, eligibility, coverage and unlocking directly with the carrier.</p>
     <p>Five Bars currently identifies no paid placements or commission-based rankings. If referral relationships are introduced, we will disclose material compensation clearly near related links and preserve independent rankings.</p>
     <nav aria-label="Website information">
       <a href="about.html">About Five Bars</a>
@@ -944,8 +984,9 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
       <a href="disclosures.html">Disclosures</a>
       <a href="switching-guide.html">Switching guide</a>
       <a href="carrier-comparisons.html">Compare carriers</a>
+      <a href="best-phone-plans.html">Best phone plans</a>
+      <a href="carriers.html">All carriers</a>
       <a href="source-research.html">Official-source research</a>
-      <a href="launch-readiness.html">Launch readiness</a>
       <a href="report.html">Report a correction</a>
     </nav>
   </footer>
