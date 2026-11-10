@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-09T20:48:49.006Z",
-  "today": "2026-11-09",
+  "generatedAt": "2026-11-10T14:52:14.911Z",
+  "today": "2026-11-10",
   "scope": "Alert triggers represent catalog deadlines and narrowly scoped observed official headline evidence. No full checkout guarantees.",
   "summary": {
-    "active": 1,
+    "active": 0,
     "critical": 0,
-    "high": 1,
-    "historical": 0
+    "high": 0,
+    "historical": 1
   },
   "events": [
     {
@@ -27,7 +27,7 @@
       "action": "Keep the dated deadline visible; the scheduled Eastern-date scan removes only the introductory plan discount after the deadline. Check individual checkout taxes, charges and eligibility before purchase.",
       "evidenceScope": "carrier_published_deadline_not_checkout",
       "officialEvidenceObservedOn": "2026-11-02",
-      "active": true,
+      "active": false,
       "firstSeen": "2026-11-02",
       "lastSeen": "2026-11-09"
     }

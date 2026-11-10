@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-09T20:48:49.006Z",
-  "today": "2026-11-09",
+  "generatedAt": "2026-11-10T14:52:14.911Z",
+  "today": "2026-11-10",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
   "summary": {
     "offers": 78,
     "needAttention": 78,
     "critical": 0,
-    "high": 8,
-    "medium": 26,
-    "routine": 44,
+    "high": 7,
+    "medium": 30,
+    "routine": 41,
     "withoutCurrentManualReview": 78,
     "prolongedConditionalPromos": 0,
     "retailerHolds": 3,
@@ -22,7 +22,7 @@
       "aged": 0,
       "conflictsOrInvalid": 0
     },
-    "blockedProviders": 10
+    "blockedProviders": 13
   },
   "blockedProviders": [
     {
@@ -103,39 +103,35 @@
       ]
     },
     {
+      "carrier": "Cricket",
+      "affected": 1,
+      "offerIds": [
+        "cricket-25"
+      ]
+    },
+    {
       "carrier": "Google Fi",
       "affected": 1,
       "offerIds": [
         "fi"
       ]
+    },
+    {
+      "carrier": "Metro by T-Mobile",
+      "affected": 1,
+      "offerIds": [
+        "metro-16e"
+      ]
+    },
+    {
+      "carrier": "Verizon Prepaid",
+      "affected": 1,
+      "offerIds": [
+        "vzpre-16e"
+      ]
     }
   ],
   "items": [
-    {
-      "id": "tello",
-      "carrier": "Tello",
-      "offer": "Everyday 10GB",
-      "kind": "plan",
-      "priority": "high",
-      "score": 80,
-      "reasonCodes": [
-        "promotion_expiring",
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Promotion ends in 0 day(s); confirm that the carrier has not changed or withdrawn it.",
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://tello.com/buy/custom_plans"
-    },
     {
       "id": "att-18pro",
       "carrier": "AT&T",
@@ -352,6 +348,29 @@
       "link": "https://www.consumercellular.com/shopping/choose/plan"
     },
     {
+      "id": "cricket-25",
+      "carrier": "Cricket",
+      "offer": "12-Month Unlimited BYOD — $300 prepaid",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-10T14:52:14.911Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.cricketwireless.com/shop/cell-phone-plans/select"
+    },
+    {
       "id": "fi",
       "carrier": "Google Fi",
       "offer": "Unlimited Essentials",
@@ -469,6 +488,29 @@
       "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.h2owireless.com/plan/monthly"
+    },
+    {
+      "id": "metro-16e",
+      "carrier": "Metro by T-Mobile",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-10T14:52:14.911Z",
+      "lastCatalogReference": null,
+      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
       "id": "mint",
@@ -609,6 +651,29 @@
       "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://my.redpocket.com/plans"
+    },
+    {
+      "id": "tello",
+      "carrier": "Tello",
+      "offer": "Everyday 10GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://tello.com/buy/custom_plans"
     },
     {
       "id": "tello-max",
@@ -793,6 +858,29 @@
       "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.usmobile.com/plans"
+    },
+    {
+      "id": "vzpre-16e",
+      "carrier": "Verizon Prepaid",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-10T14:52:14.911Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/"
     },
     {
       "id": "cricket-a37",
@@ -1099,27 +1187,6 @@
       "link": "https://www.cricketwireless.com/shop/smartphones/apple-iphone-16e-128gb-black"
     },
     {
-      "id": "cricket-25",
-      "carrier": "Cricket",
-      "offer": "12-Month Unlimited BYOD — $300 prepaid",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.cricketwireless.com/shop/cell-phone-plans/select"
-    },
-    {
       "id": "cricket-a17",
       "carrier": "Cricket",
       "offer": "Samsung Galaxy A17 5G",
@@ -1307,27 +1374,6 @@
       "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.metrobyt-mobile.com/phone-plans"
-    },
-    {
-      "id": "metro-16e",
-      "carrier": "Metro by T-Mobile",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": null,
-      "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
       "id": "metro-a17",
@@ -1706,27 +1752,6 @@
       "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid"
-    },
-    {
-      "id": "vzpre-16e",
-      "carrier": "Verizon Prepaid",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/"
     },
     {
       "id": "vzpre-a17",
