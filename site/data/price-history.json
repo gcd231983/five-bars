@@ -79,6 +79,13 @@
         "planPrice": 60,
         "source": "https://www.boostmobile.com/deals",
         "scope": "advertised_device_and_plan_headline"
+      },
+      {
+        "date": "2026-11-13",
+        "price": 0,
+        "planPrice": 60,
+        "source": "https://www.boostmobile.com/deals",
+        "scope": "advertised_device_and_plan_headline"
       }
     ],
     "boost-a17": [
@@ -158,6 +165,13 @@
         "planPrice": 50,
         "source": "https://www.boostmobile.com/deals",
         "scope": "advertised_device_and_plan_headline"
+      },
+      {
+        "date": "2026-11-13",
+        "price": 0,
+        "planPrice": 50,
+        "source": "https://www.boostmobile.com/deals",
+        "scope": "advertised_device_and_plan_headline"
       }
     ],
     "boost-gplay": [
@@ -233,6 +247,13 @@
       },
       {
         "date": "2026-11-12",
+        "price": 0,
+        "planPrice": 50,
+        "source": "https://www.boostmobile.com/deals",
+        "scope": "advertised_device_and_plan_headline"
+      },
+      {
+        "date": "2026-11-13",
         "price": 0,
         "planPrice": 50,
         "source": "https://www.boostmobile.com/deals",

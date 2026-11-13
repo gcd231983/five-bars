@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-12T18:22:39.459Z",
-  "today": "2026-11-12",
+  "generatedAt": "2026-11-13T17:48:32.417Z",
+  "today": "2026-11-13",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
   "summary": {
     "offers": 78,
     "needAttention": 78,
     "critical": 0,
-    "high": 7,
-    "medium": 28,
-    "routine": 43,
+    "high": 9,
+    "medium": 23,
+    "routine": 46,
     "withoutCurrentManualReview": 78,
-    "prolongedConditionalPromos": 0,
+    "prolongedConditionalPromos": 2,
     "retailerHolds": 3,
     "stockHolds": 6,
     "publicationEvidence": {
@@ -22,7 +22,7 @@
       "aged": 0,
       "conflictsOrInvalid": 0
     },
-    "blockedProviders": 11
+    "blockedProviders": 10
   },
   "blockedProviders": [
     {
@@ -46,16 +46,6 @@
       ]
     },
     {
-      "carrier": "US Mobile",
-      "affected": 4,
-      "offerIds": [
-        "usm-p11",
-        "usm-light",
-        "usm-premium",
-        "usm-starter"
-      ]
-    },
-    {
       "carrier": "Mint Mobile",
       "affected": 3,
       "offerIds": [
@@ -68,9 +58,9 @@
       "carrier": "Red Pocket Mobile",
       "affected": 3,
       "offerIds": [
-        "redpocket-essentials",
         "redpocket-plus",
-        "redpocket-premium"
+        "redpocket-premium",
+        "redpocket-essentials"
       ]
     },
     {
@@ -118,6 +108,56 @@
     }
   ],
   "items": [
+    {
+      "id": "redpocket-plus",
+      "carrier": "Red Pocket Mobile",
+      "offer": "Plus 20GB",
+      "kind": "plan",
+      "priority": "high",
+      "score": 82,
+      "reasonCodes": [
+        "conditional_promo_uncheckable_7d",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "An advertised introductory offer has had an unreadable official purchase link across scans spanning 7+ days. Escalate for direct editorial research; do not assume the price is wrong, withdrawn or checkout-verified.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://my.redpocket.com/plans"
+    },
+    {
+      "id": "redpocket-premium",
+      "carrier": "Red Pocket Mobile",
+      "offer": "Premium Unlimited (50GB high-speed)",
+      "kind": "plan",
+      "priority": "high",
+      "score": 82,
+      "reasonCodes": [
+        "conditional_promo_uncheckable_7d",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "An advertised introductory offer has had an unreadable official purchase link across scans spanning 7+ days. Escalate for direct editorial research; do not assume the price is wrong, withdrawn or checkout-verified.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://my.redpocket.com/plans"
+    },
     {
       "id": "att-18pro",
       "carrier": "AT&T",
@@ -175,19 +215,17 @@
       "score": 76,
       "reasonCodes": [
         "published_research_partial",
-        "offer_page_unavailable",
         "full_terms_not_verified"
       ],
       "reasons": [
         "Only partial official published terms are recorded. Required service, financing or checkout conditions remain unpriced.",
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
+      "sourceStatus": "source_reachable",
       "officialResearchState": "published_partial",
       "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "linkUnavailableSince": null,
       "lastCatalogReference": null,
       "link": "https://www.usmobile.com/pixel-promo"
     },
@@ -570,52 +608,6 @@
       "link": "https://my.redpocket.com/plans"
     },
     {
-      "id": "redpocket-plus",
-      "carrier": "Red Pocket Mobile",
-      "offer": "Plus 20GB",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://my.redpocket.com/plans"
-    },
-    {
-      "id": "redpocket-premium",
-      "carrier": "Red Pocket Mobile",
-      "offer": "Premium Unlimited (50GB high-speed)",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://my.redpocket.com/plans"
-    },
-    {
       "id": "tello",
       "carrier": "Tello",
       "offer": "Everyday 10GB",
@@ -752,75 +744,6 @@
       "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.ultramobile.com/product/4gb-prepaid-plan/"
-    },
-    {
-      "id": "usm-light",
-      "carrier": "US Mobile",
-      "offer": "Light 2GB",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.usmobile.com/plans"
-    },
-    {
-      "id": "usm-premium",
-      "carrier": "US Mobile",
-      "offer": "Unlimited Premium",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.usmobile.com/plans"
-    },
-    {
-      "id": "usm-starter",
-      "carrier": "US Mobile",
-      "offer": "Unlimited Starter",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.usmobile.com/plans"
     },
     {
       "id": "cricket-a37",
@@ -1713,6 +1636,69 @@
       "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid"
+    },
+    {
+      "id": "usm-light",
+      "carrier": "US Mobile",
+      "offer": "Light 2GB",
+      "kind": "plan",
+      "priority": "routine",
+      "score": 20,
+      "reasonCodes": [
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.usmobile.com/plans"
+    },
+    {
+      "id": "usm-premium",
+      "carrier": "US Mobile",
+      "offer": "Unlimited Premium",
+      "kind": "plan",
+      "priority": "routine",
+      "score": 20,
+      "reasonCodes": [
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.usmobile.com/plans"
+    },
+    {
+      "id": "usm-starter",
+      "carrier": "US Mobile",
+      "offer": "Unlimited Starter",
+      "kind": "plan",
+      "priority": "routine",
+      "score": 20,
+      "reasonCodes": [
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.usmobile.com/plans"
     },
     {
       "id": "vzpre-16e",
