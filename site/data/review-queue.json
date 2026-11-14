@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-13T17:48:32.417Z",
-  "today": "2026-11-13",
+  "generatedAt": "2026-11-14T16:37:51.084Z",
+  "today": "2026-11-14",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
   "summary": {
@@ -9,8 +9,8 @@
     "needAttention": 78,
     "critical": 0,
     "high": 9,
-    "medium": 23,
-    "routine": 46,
+    "medium": 26,
+    "routine": 43,
     "withoutCurrentManualReview": 78,
     "prolongedConditionalPromos": 2,
     "retailerHolds": 3,
@@ -22,7 +22,7 @@
       "aged": 0,
       "conflictsOrInvalid": 0
     },
-    "blockedProviders": 10
+    "blockedProviders": 11
   },
   "blockedProviders": [
     {
@@ -43,6 +43,16 @@
         "tello-max",
         "tello-power",
         "tello-starter"
+      ]
+    },
+    {
+      "carrier": "US Mobile",
+      "affected": 4,
+      "offerIds": [
+        "usm-p11",
+        "usm-light",
+        "usm-premium",
+        "usm-starter"
       ]
     },
     {
@@ -215,17 +225,19 @@
       "score": 76,
       "reasonCodes": [
         "published_research_partial",
+        "offer_page_unavailable",
         "full_terms_not_verified"
       ],
       "reasons": [
         "Only partial official published terms are recorded. Required service, financing or checkout conditions remain unpriced.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
+      "sourceStatus": "source_unavailable",
       "officialResearchState": "published_partial",
       "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
+      "linkUnavailableSince": "2026-11-14T16:37:51.084Z",
       "lastCatalogReference": null,
       "link": "https://www.usmobile.com/pixel-promo"
     },
@@ -744,6 +756,75 @@
       "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.ultramobile.com/product/4gb-prepaid-plan/"
+    },
+    {
+      "id": "usm-light",
+      "carrier": "US Mobile",
+      "offer": "Light 2GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-14T16:37:51.084Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.usmobile.com/plans"
+    },
+    {
+      "id": "usm-premium",
+      "carrier": "US Mobile",
+      "offer": "Unlimited Premium",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-14T16:37:51.084Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.usmobile.com/plans"
+    },
+    {
+      "id": "usm-starter",
+      "carrier": "US Mobile",
+      "offer": "Unlimited Starter",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 60,
+      "reasonCodes": [
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "published_match",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-14T16:37:51.084Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.usmobile.com/plans"
     },
     {
       "id": "cricket-a37",
@@ -1636,69 +1717,6 @@
       "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid"
-    },
-    {
-      "id": "usm-light",
-      "carrier": "US Mobile",
-      "offer": "Light 2GB",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.usmobile.com/plans"
-    },
-    {
-      "id": "usm-premium",
-      "carrier": "US Mobile",
-      "offer": "Unlimited Premium",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.usmobile.com/plans"
-    },
-    {
-      "id": "usm-starter",
-      "carrier": "US Mobile",
-      "offer": "Unlimited Starter",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.usmobile.com/plans"
     },
     {
       "id": "vzpre-16e",
