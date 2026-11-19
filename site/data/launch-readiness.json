@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "asOf": "2026-11-18",
+  "asOf": "2026-11-19",
   "scope": "Repository-derived evidence only; no independently certified shopping cart, tax quotation, traffic, legal approval or paid partnerships.",
   "technicalStage": "public_beta_engineering",
   "commercialStage": "blocked_pending_external_evidence",
@@ -21,7 +21,7 @@
     "note": "Human checkout evidence is valid only for a documented customer scenario and expires or invalidates after material changes."
   },
   "automation": {
-    "lastScan": "2026-11-18T18:52:54.001Z",
+    "lastScan": "2026-11-19T19:01:44.977Z",
     "scanAgeDays": 0,
     "scanStatus": "recent",
     "note": "Automated source reachability and partial headline matching never establish full checkout terms."
