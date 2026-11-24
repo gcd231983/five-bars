@@ -757,6 +757,7 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
       <a href="carriers.html">Carriers</a>
       <a href="carrier-comparisons.html">Compare</a>
       <a href="satellite.html">Satellite texting</a>
+      <a href="black-friday-2026.html">Black Friday</a>
       <a href="about.html">About</a>
       <a class="fb-help-link" href="contact.html">Help &amp; contact</a>
     </div>
@@ -786,6 +787,7 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
     <a href="./#phones" onclick="document.getElementById('t-phones').click();return false"><strong>Find a phone deal</strong><span>See required service and upfront costs</span></a>
     <a href="./#compare" onclick="document.getElementById('t-compare').click();return false"><strong>Compare side by side</strong><span>Keep up to three offers together</span></a>
   </div>
+  <p class="fb-home-trust"><a href="black-friday-2026.html"><strong>Black Friday 2026: compare phone and plan deals</strong></a></p>
   <p class="fb-home-trust">Independent catalog estimates, not carrier checkout quotes. See <a href="disclosures.html">how prices are calculated</a>.</p>
   <details class="fb-advanced-filters"><summary>Refine results <span>Lines, network, provider &amp; eligibility</span></summary><div class="fb-filter-body">
   <p class="sentence">
@@ -905,6 +907,7 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
   </section>
 
   <section id="p-phones" role="tabpanel" aria-labelledby="t-phones" hidden>
+    <p class="note"><a href="black-friday-2026.html">See Black Friday offers and how each $0 phone deal works</a>.</p>
     <div class="fb-phone-platform" role="group" aria-label="Filter phone deals by operating system">
       <span class="fb-platform-label">Phone type</span>
       <div class="fb-platform-options">
@@ -1704,7 +1707,7 @@ $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:0
   $("#scan-status").textContent = scanHealth+" "+(n ? "Last automatic source scan: " + new Date(AUTO_STATUS.generatedAt).toLocaleString("en-US") +
     ". " + n.sourcesReachable + "/" + n.sourcesChecked + " public sources reachable. " +
     (n.priceCandidatesForReview??0) + " price candidates need manual review; " + n.reviewAlerts +
-    " link/term alerts. "+(n.sourcesAccessBlocked??0)+" sources restrict automated access; "+
+    " link/term alerts. "+(n.seasonalPublishedCandidates? n.seasonalPublishedCandidates+" seasonal code(s) found for manual review. ":"")+(n.sourcesAccessBlocked??0)+" sources restrict automated access; "+
     (n.sourcesUnavailableFor7Days??0)+" sources have been unavailable to the scanner for 7+ days. "+
     "A working link does NOT prove the offer or its conditions." :
     "No automatic scan has completed yet. Listed deals may be outdated.");

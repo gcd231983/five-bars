@@ -1,0 +1,20 @@
+.holiday-main{max-width:62rem}
+.holiday-nav{display:flex;flex-wrap:wrap;gap:.75rem 1.25rem;align-items:center}
+.holiday-brand{display:inline-flex;align-items:center;gap:.45rem;font-weight:800;color:var(--text)}
+.holiday-hero{padding:clamp(1.15rem,4vw,2.5rem);border:1px solid var(--line);border-radius:1.35rem;background:var(--surface)}
+.holiday-hero h1{line-height:1.1;max-width:22ch;margin:.25em 0;font-size:clamp(2rem,7vw,3.6rem)}
+.holiday-hero p{max-width:69ch}
+.holiday-kicker,.holiday-tag{font-size:.84rem;font-weight:750;letter-spacing:.04em;color:var(--accent)}
+.holiday-note{border-left:3px solid var(--accent);padding-left:.8rem;margin-bottom:0}
+.holiday-controls:not([hidden]){display:flex;gap:.9rem;flex-wrap:wrap;margin-top:1.2rem}
+.holiday-controls label{display:grid;gap:.25rem;font-weight:650}
+.holiday-controls select{font:inherit;min-height:2.75rem;max-width:100%;padding:.45rem;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:.45rem}
+.holiday-group{margin:1.7rem 0}
+.holiday-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:.8rem}
+.holiday-card{border:1px solid var(--line);padding:1.1rem;border-radius:.95rem;background:var(--surface);overflow-wrap:anywhere}
+.holiday-card h3{margin:.3rem 0 .5rem;line-height:1.2}
+.holiday-card p{margin:.35rem 0}
+.holiday-price{font-weight:800;font-size:1.13rem}
+.holiday-state{font-size:.9rem}
+.holiday-sources ul{display:flex;flex-wrap:wrap;gap:.45rem 1.45rem;padding-inline-start:1.35rem}
+.holiday-main #holiday-status{min-height:1.2rem}

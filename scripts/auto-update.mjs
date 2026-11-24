@@ -11,7 +11,7 @@ import { buildAlertFeed } from './alert-engine.mjs';
 import { withSourceHistory, withOfferLinkHistory, persistentSourceFailures } from './source-health.mjs';
 import {
   easternDate, expireKnownOffers, offerDiff,
-  parseBoostCandidates, reviewBoostCandidates, safeSourceUrl, fetchPublicResponse,
+  parseBoostCandidates, reviewBoostCandidates, safeSourceUrl, fetchPublicResponse, visiblePromoCandidates,
 } from './auto-core.mjs';
 
 const root = new URL('../', import.meta.url);
@@ -144,7 +144,8 @@ if (sourceBlackout) {
   console.warn('No public source pages were reachable. Recording a monitoring blackout and publishing only known catalog expirations; no prices are revalidated.');
 }
 
-const alerts = [];
+const seasonalCandidates=visiblePromoCandidates(sources);
+const alerts = [...seasonalCandidates];
 const automaticChanges = [...expiredPromos, ...expiredPhones].map(x => ({ ...x, type: 'expiration' }));
 const carrierFeed = sources.find(s => s.url === BOOST_URL && s.ok);
 const extracted = carrierFeed ? parseBoostCandidates(carrierFeed._html) : {};
@@ -245,6 +246,7 @@ const status = {
     sourcesUnavailableFor7Days: persistentSourceFailures(sources,now.toISOString(),7),
     offerLinksChecked: urlList.length, offerLinksReachable: scannedLinks.filter(x => x.ok).length,
     priceCandidatesForReview: priceReviews.length,
+    seasonalPublishedCandidates: seasonalCandidates.length,
     officialHeadlineMatches: priceEvidence.summary.headlineMatches,
     officialHeadlineMismatches: priceEvidence.summary.priceMismatches,
     officialHeadlineReviewAlerts: priceEvidence.summary.needReview,
@@ -303,6 +305,7 @@ console.log(JSON.stringify({
   sources: `${sourceSuccess}/${sourceInputs.length}`, sourceBlackout,
   links: `${status.summary.offerLinksReachable}/${urlList.length}`,
   priceCandidatesForReview: status.summary.priceCandidatesForReview,
+  seasonalPublishedCandidates: seasonalCandidates.length,
   officialHeadlineMatches: priceEvidence.summary.headlineMatches,
   officialHeadlineReviewAlerts: priceEvidence.summary.needReview,
   priceObservations: priceEvidence.summary.observationsRecorded,

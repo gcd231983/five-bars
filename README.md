@@ -389,3 +389,9 @@ Twelve additional handset promotions now have dated official-source references: 
 - Source mismatches stop savings estimates. Material edits to payment conditions invalidate any prior human review signature.
 
 Validation: 176 automated regression tests, catalog validation and mobile/desktop Chromium acceptance checks are required before merge. No automatic source scan can create a human checkout sign-off.
+
+## Seasonal promotions and free phones
+
+The [2026 Black Friday tracker](https://fivebars.info/black-friday-2026.html) is a curated, non-exhaustive view of official published offers and current free-phone leads. It separates instant device discounts, monthly bill credits, other paid-device offers, and service-only promotions. Prices, inventory and individual eligibility are not checkout-verified. The tracker does not feed the primary catalog, pricing engine, affiliate rules, or review ledger.
+
+Maintain `site/data/holiday-offers-2026.json` from first-party terms only. Record each review date and known start/end instants in UTC with the original stated local time in the reader label. Do not infer provider deadlines or costs. Offers without precise end times suppress prices seven days after source review; dated offers suppress prices after their stated time. The daily monitor separately surfaces the selected Visible promo-code mentions as **manual-review candidates**, not price matches. The repeatedly unavailable Reddit RSS was removed from the active source list rather than treated as a carrier signal.

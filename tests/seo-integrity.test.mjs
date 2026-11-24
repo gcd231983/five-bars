@@ -13,7 +13,7 @@ const data={
 };
 const fixed={today:'2026-11-02'};
 const expected=['','about.html','contact.html','editorial.html','privacy.html','disclosures.html',
-  'switching-guide.html','carrier-comparisons.html','phone-deals.html','satellite.html',
+  'switching-guide.html','carrier-comparisons.html','phone-deals.html','black-friday-2026.html','satellite.html',
   'report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html'),...seoPagePaths(data.catalog)];
 
 test('sitemap contains every required public guide exactly once with safe canonical URLs',()=>{

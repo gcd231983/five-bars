@@ -253,7 +253,7 @@ export function renderSitemap(data){
  // Internal evidence/audit pages (source-research, launch-readiness) stay
  // public but are noindex, so they are intentionally left out of the sitemap.
  const urls=['','about.html','contact.html','editorial.html','privacy.html','disclosures.html','switching-guide.html',
-  'carrier-comparisons.html','phone-deals.html','satellite.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html'),
+  'carrier-comparisons.html','phone-deals.html','black-friday-2026.html','satellite.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html'),
   ...seoPagePaths(data?.catalog)];
  const xmlEscape=escapeHtml;
  return '<?xml version="1.0" encoding="UTF-8"?>\n'+
