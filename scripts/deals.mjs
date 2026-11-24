@@ -24,7 +24,6 @@ const FEEDS = [
   { name: "US Mobile family plan guide", url: "https://www.usmobile.com/blog/family-phone-plans/", what: "Multi-line prices at 2 to 5 lines (written by a carrier, so cross-checked)" },
   { name: "US Mobile prepaid plan guide", url: "https://www.usmobile.com/blog/best-prepaid-phone-plans/", what: "Prepaid plan tiers and prices (written by a carrier, so cross-checked)" },
   { name: "Slickdeals cell phone service deals", url: "https://slickdeals.net/deals/cellphone-providers/", what: "Community-spotted carrier deals" },
-  { name: "r/NoContract (Reddit)", url: "https://www.reddit.com/r/NoContract/new/.rss", what: "Fresh prepaid deal posts from the community" },
   { name: "Visible deals", url: "https://www.visible.com/m/deals", what: "Visible’s own current offers" },
   { name: "Verizon Prepaid deals", url: "https://www.verizon.com/prepaid/deals/", what: "Verizon Prepaid’s own current offers" },
   { name: "Boost Mobile deals", url: "https://www.boostmobile.com/deals", what: "Boost’s own current offers" },

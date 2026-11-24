@@ -49,7 +49,7 @@ try {
   })) {
     const context=await browser.newContext({viewport,locale:'en-US'});
     const assetVersions=new Set();
-    context.on('response',response=>{
+    const observeResponse=response=>{
       if(response.url().startsWith(base)&&response.status()>=400)errors.push(view+': HTTP '+response.status()+' '+response.url());
       if(process.env.FIVE_BARS_SITE_DIR&&response.url().startsWith(base)){
         const url=new URL(response.url());
@@ -59,7 +59,35 @@ try {
           assetVersions.add(version);
         }
       }
-    });
+    };
+    context.on('response',observeResponse);
+    // Playwright clock is shared by every page in a context. Keep the seasonal
+    // rollover test isolated from live-date scan freshness fixtures below.
+    const holidayContext=await browser.newContext({viewport,locale:'en-US'});
+    holidayContext.on('response',observeResponse);
+    const holiday=await holidayContext.newPage();
+    holiday.on('pageerror',e=>errors.push(view+': '+e.message));
+    await holiday.clock.install({time:new Date('2026-11-27T15:58:00Z')});
+    await holiday.goto(base);
+    const saleLink=holiday.getByRole('link',{name:'Black Friday 2026: compare phone and plan deals'});
+    assert.equal(await saleLink.isVisible(),true,view+': seasonal page must be reachable from homepage');
+    await saleLink.click();
+    await holiday.locator('#holiday-controls').waitFor();
+    assert.equal(await holiday.getByRole('heading',{name:'Announced · not yet open'}).isVisible(),true);
+    assert.equal(await holiday.locator('#holiday-usm-premium').getByText('$288',{exact:false}).count(),0);
+    await holiday.locator('#holiday-carrier').selectOption('US Mobile');
+    await holiday.clock.fastForward(180000);
+    await holiday.locator('#holiday-usm-premium .holiday-price').waitFor();
+    assert.match(await holiday.locator('#holiday-usm-premium .holiday-price').textContent(),/\$288 prepaid/);
+    await holiday.clock.fastForward(13*60*60*1000);
+    await holiday.getByRole('heading',{name:'Advertised period ended'}).waitFor();
+    assert.equal(await holiday.locator('#holiday-usm-premium .holiday-price').count(),0);
+    await holiday.locator('#holiday-carrier').selectOption('all');
+    await holiday.locator('#holiday-filter').selectOption('instant');
+    assert.equal(await holiday.locator('#holiday-metro-free-a16').isVisible(),true);
+    assert.equal(await holiday.locator('#holiday-tm-iphone-18-pro').count(),0);
+    assert.ok(await holiday.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),view+': seasonal page horizontal overflow');
+    await holidayContext.close();
     const page=await context.newPage();
     page.on('pageerror',e=>errors.push(view+': '+e.message));
     // Deterministic browser fixtures: demonstrate partial proof without implying

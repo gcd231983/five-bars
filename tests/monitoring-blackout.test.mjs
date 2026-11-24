@@ -56,6 +56,7 @@ test('when ALL sources reject requests, known expirations still publish and no p
   assert.equal(status.summary.sourcesReachable,0);
   assert.equal(status.summary.offerLinksReachable,0);
   assert.equal(status.summary.automaticChanges,2);
+  assert.equal(status.summary.seasonalPublishedCandidates,0,'no promotion candidates during outage');
   assert.equal(status.summary.expiredPhoneDealsRemoved,1);
   assert.ok(status.sources.every(s=>s.ok===false && s.failureReason==='source_server_error'));
   assert.ok(Object.values(status.offers).every(s=>s.state==='source_unavailable'));

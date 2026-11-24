@@ -172,3 +172,24 @@ export function safeSourceUrl(url) {
     return /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(u.hostname);
   } catch { return false; }
 }
+// Review-only signal from Visible's official public sale page.
+// Match promotional wording and the code together (not a bare code in scripts,
+// source metadata, navigation, or an arbitrary table price).
+const VISIBLE='https://www.visible.com/m/deals';
+const CODES=['BLACKFRIDAY','HOLIDAYHACK'];
+export function visiblePromoCandidates(sources){
+ const source=sources.find(s=>s?.url===VISIBLE&&s?.ok&&typeof s._html==='string');
+ if(!source)return [];
+ try{
+  const final=new URL(source.finalUrl);
+  if(final.protocol!=='https:'||final.origin!==new URL(VISIBLE).origin||
+     !/^\/m\/deals\/?$/.test(final.pathname))return [];
+ }catch{return [];}
+ const text=source._html
+  .replace(/<!--[\s\S]*?-->/g,' ')
+  .replace(/<(head|script|style|noscript|template|svg)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,' ')
+  .replace(/<[^>]*>/g,' ').replace(/&(?:nbsp|#160|#xa0);/gi,' ').replace(/\s+/g,' ');
+ return CODES.filter(code=>new RegExp('\\b(?:promo(?:tion)?\\s+code|with\\s+code|use\\s+code)\\s*:?\\s*'+code+'\\b','i').test(text))
+  .map(code=>({id:'visible-promo-'+code.toLowerCase(),type:'published_promo_candidate',sourceUrl:VISIBLE,code,
+    reason:'Carrier page mentioned this promotional code. Review live published terms separately; no catalog prices or checkout claims were changed.'}));
+}
