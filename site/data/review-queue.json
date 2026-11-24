@@ -1,26 +1,26 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-24T04:02:17.484Z",
-  "today": "2026-11-23",
+  "generatedAt": "2026-11-24T05:10:41.693Z",
+  "today": "2026-11-24",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
   "summary": {
     "offers": 78,
     "needAttention": 78,
-    "critical": 0,
-    "high": 11,
-    "medium": 23,
-    "routine": 44,
+    "critical": 1,
+    "high": 9,
+    "medium": 61,
+    "routine": 7,
     "withoutCurrentManualReview": 78,
-    "prolongedConditionalPromos": 4,
+    "prolongedConditionalPromos": 2,
     "retailerHolds": 3,
     "stockHolds": 6,
     "publicationEvidence": {
-      "publishedMatches": 72,
+      "publishedMatches": 12,
       "partial": 4,
       "unresearched": 2,
-      "aged": 0,
-      "conflictsOrInvalid": 0
+      "aged": 59,
+      "conflictsOrInvalid": 1
     },
     "blockedProviders": 10
   },
@@ -68,9 +68,9 @@
       "carrier": "Red Pocket Mobile",
       "affected": 3,
       "offerIds": [
+        "redpocket-essentials",
         "redpocket-plus",
-        "redpocket-premium",
-        "redpocket-essentials"
+        "redpocket-premium"
       ]
     },
     {
@@ -112,54 +112,27 @@
   ],
   "items": [
     {
-      "id": "redpocket-plus",
-      "carrier": "Red Pocket Mobile",
-      "offer": "Plus 20GB",
-      "kind": "plan",
-      "priority": "high",
-      "score": 82,
+      "id": "visible-18pro",
+      "carrier": "Visible",
+      "offer": "iPhone 18 Pro",
+      "kind": "phone",
+      "priority": "critical",
+      "score": 100,
       "reasonCodes": [
-        "conditional_promo_uncheckable_7d",
-        "offer_page_unavailable",
+        "published_research_conflict",
         "full_terms_not_verified"
       ],
       "reasons": [
-        "An advertised introductory offer has had an unreadable official purchase link across scans spanning 7+ days. Escalate for direct editorial research; do not assume the price is wrong, withdrawn or checkout-verified.",
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Dated official publication evidence conflicts with the catalog or is invalid. Review before quoting a confident price.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "conflict",
       "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://my.redpocket.com/plans"
-    },
-    {
-      "id": "redpocket-premium",
-      "carrier": "Red Pocket Mobile",
-      "offer": "Premium Unlimited (50GB high-speed)",
-      "kind": "plan",
-      "priority": "high",
-      "score": 82,
-      "reasonCodes": [
-        "conditional_promo_uncheckable_7d",
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "An advertised introductory offer has had an unreadable official purchase link across scans spanning 7+ days. Escalate for direct editorial research; do not assume the price is wrong, withdrawn or checkout-verified.",
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://my.redpocket.com/plans"
+      "linkUnavailableSince": null,
+      "lastCatalogReference": null,
+      "link": "https://www.visible.com/buy/smartphones/iphone-18-pro"
     },
     {
       "id": "usm-premium",
@@ -170,17 +143,21 @@
       "score": 82,
       "reasonCodes": [
         "conditional_promo_uncheckable_7d",
+        "published_research_aged",
+        "catalog_price_stale",
         "offer_page_unavailable",
         "full_terms_not_verified"
       ],
       "reasons": [
         "An advertised introductory offer has had an unreadable official purchase link across scans spanning 7+ days. Escalate for direct editorial research; do not assume the price is wrong, withdrawn or checkout-verified.",
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
         "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
+      "officialResearchState": "aged",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": "2026-11-14T16:37:51.084Z",
       "lastCatalogReference": "2026-11-02",
@@ -195,17 +172,21 @@
       "score": 82,
       "reasonCodes": [
         "conditional_promo_uncheckable_7d",
+        "published_research_aged",
+        "catalog_price_stale",
         "offer_page_unavailable",
         "full_terms_not_verified"
       ],
       "reasons": [
         "An advertised introductory offer has had an unreadable official purchase link across scans spanning 7+ days. Escalate for direct editorial research; do not assume the price is wrong, withdrawn or checkout-verified.",
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
         "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
+      "officialResearchState": "aged",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": "2026-11-14T16:37:51.084Z",
       "lastCatalogReference": "2026-11-02",
@@ -280,9 +261,9 @@
       "sourceStatus": "source_unavailable",
       "officialResearchState": "published_partial",
       "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-14T16:37:51.084Z",
+      "linkUnavailableSince": "2026-11-24T05:10:41.693Z",
       "lastCatalogReference": null,
-      "link": "https://www.usmobile.com/pixel-promo"
+      "link": "https://app.usmobile.com/shop/product/google-pixel-11"
     },
     {
       "id": "vz-18pro",
@@ -317,11 +298,13 @@
       "reasonCodes": [
         "retailer_listing_hold",
         "published_research_missing",
+        "catalog_price_stale",
         "full_terms_not_verified"
       ],
       "reasons": [
         "This retailer-specific purchase path remains on evidence hold. Do not present a checkout quote or clear the hold automatically.",
         "No dated official publication research is recorded for this offer. Do not imply a carrier-approved rate.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
@@ -341,10 +324,12 @@
       "score": 75,
       "reasonCodes": [
         "retailer_listing_hold",
+        "catalog_price_stale",
         "full_terms_not_verified"
       ],
       "reasons": [
         "This retailer-specific purchase path remains on evidence hold. Do not present a checkout quote or clear the hold automatically.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
@@ -365,11 +350,13 @@
       "reasonCodes": [
         "retailer_listing_hold",
         "published_research_missing",
+        "catalog_price_stale",
         "full_terms_not_verified"
       ],
       "reasons": [
         "This retailer-specific purchase path remains on evidence hold. Do not present a checkout quote or clear the hold automatically.",
         "No dated official publication research is recorded for this offer. Do not imply a carrier-approved rate.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
@@ -379,6 +366,1467 @@
       "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
       "link": "https://www.walmart.com/ip/Verizon-Prepaid-Galaxy-A17-5G-128GB-Prepaid-Smartphone-Black/17874774562"
+    },
+    {
+      "id": "boost-16e",
+      "carrier": "Boost Mobile",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.boostmobile.com/shop/iphone-16e.html"
+    },
+    {
+      "id": "boost-a17",
+      "carrier": "Boost Mobile",
+      "offer": "Samsung Galaxy A17 5G",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.boostmobile.com/shop/galaxy-a17-5g.html"
+    },
+    {
+      "id": "boost-gplay",
+      "carrier": "Boost Mobile",
+      "offer": "Moto G Play 2026",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.boostmobile.com/shop/moto-g-play-002722.html"
+    },
+    {
+      "id": "boost-motog",
+      "carrier": "Boost Mobile",
+      "offer": "Moto G 2026",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.boostmobile.com/shop/moto-g-2026.html"
+    },
+    {
+      "id": "boost-p10a",
+      "carrier": "Boost Mobile",
+      "offer": "Google Pixel 10a",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.boostmobile.com/shop/pixel-10a-002729.html"
+    },
+    {
+      "id": "boost-razr",
+      "carrier": "Boost Mobile",
+      "offer": "Motorola razr 2025",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.boostmobile.com/shop/razr-2025.html"
+    },
+    {
+      "id": "boost-stylus",
+      "carrier": "Boost Mobile",
+      "offer": "Moto G Stylus 2025",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.boostmobile.com/shop/moto-g-stylus-2025.html"
+    },
+    {
+      "id": "cc",
+      "carrier": "Consumer Cellular",
+      "offer": "Basic 1GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.consumercellular.com/shopping/choose/plan"
+    },
+    {
+      "id": "cricket-16e",
+      "carrier": "Cricket",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": null,
+      "link": "https://www.cricketwireless.com/shop/smartphones/apple-iphone-16e-128gb-black"
+    },
+    {
+      "id": "cricket-25",
+      "carrier": "Cricket",
+      "offer": "12-Month Unlimited BYOD — $300 prepaid",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.cricketwireless.com/shop/cell-phone-plans/select"
+    },
+    {
+      "id": "cricket-a17",
+      "carrier": "Cricket",
+      "offer": "Samsung Galaxy A17 5G",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": null,
+      "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a17-5g-black"
+    },
+    {
+      "id": "cricket-motog",
+      "carrier": "Cricket",
+      "offer": "Moto G 2026",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "documented_stock_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream"
+    },
+    {
+      "id": "cricket-power",
+      "carrier": "Cricket",
+      "offer": "Moto G Power 2026",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "documented_stock_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue"
+    },
+    {
+      "id": "cricket-razr",
+      "carrier": "Cricket",
+      "offer": "Motorola razr 2025",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "documented_stock_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": null,
+      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-razr-2025-parfait-pink"
+    },
+    {
+      "id": "cricket-s25fe",
+      "carrier": "Cricket",
+      "offer": "Samsung Galaxy S25 FE",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "documented_stock_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": null,
+      "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-s25-fe-jetblack"
+    },
+    {
+      "id": "cricket-stylus",
+      "carrier": "Cricket",
+      "offer": "Moto G Stylus 5G 2025",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": null,
+      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea"
+    },
+    {
+      "id": "cricket-supreme",
+      "carrier": "Cricket",
+      "offer": "Supreme Unlimited",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.cricketwireless.com/plans/phone"
+    },
+    {
+      "id": "good2go-annual1",
+      "carrier": "Good2Go Mobile",
+      "offer": "Annual 1GB (pay $60 upfront)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://annualplans.good2gomobile.com/home-page"
+    },
+    {
+      "id": "good2go-annual3",
+      "carrier": "Good2Go Mobile",
+      "offer": "Annual 3GB (pay $120 upfront)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://annualplans.good2gomobile.com/home-page"
+    },
+    {
+      "id": "good2go-annual5",
+      "carrier": "Good2Go Mobile",
+      "offer": "Annual 5GB (pay $240 upfront)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://annualplans.good2gomobile.com/home-page"
+    },
+    {
+      "id": "fi",
+      "carrier": "Google Fi",
+      "offer": "Unlimited Essentials",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://fi.google.com/about/plans"
+    },
+    {
+      "id": "h2o-10gb",
+      "carrier": "H2O Wireless",
+      "offer": "10GB Monthly",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "official_evidence_missing",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Scoped official price source could not be read. This is not a confirmed price change.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "source_unavailable",
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.h2owireless.com/plan/monthly"
+    },
+    {
+      "id": "h2o-annual10",
+      "carrier": "H2O Wireless",
+      "offer": "Annual 10GB (pay $192 upfront)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.h2owireless.com/plan/monthly"
+    },
+    {
+      "id": "h2o-annual30",
+      "carrier": "H2O Wireless",
+      "offer": "Annual Unlimited (30GB high-speed; $288 upfront)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.h2owireless.com/plan/monthly"
+    },
+    {
+      "id": "h2o-unlimited",
+      "carrier": "H2O Wireless",
+      "offer": "Unlimited (30GB high-speed)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "official_evidence_missing",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Scoped official price source could not be read. This is not a confirmed price change.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "source_unavailable",
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.h2owireless.com/plan/monthly"
+    },
+    {
+      "id": "helium-air",
+      "carrier": "Helium Mobile",
+      "offer": "Air 10GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
+    },
+    {
+      "id": "helium-infinity",
+      "carrier": "Helium Mobile",
+      "offer": "Infinity Unlimited (36GB high-speed)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
+    },
+    {
+      "id": "metro",
+      "carrier": "Metro by T-Mobile",
+      "offer": "Unlimited, bring your phone",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.metrobyt-mobile.com/phone-plans"
+    },
+    {
+      "id": "metro-a17",
+      "carrier": "Metro by T-Mobile",
+      "offer": "Samsung Galaxy A17 5G",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a17-5g"
+    },
+    {
+      "id": "metro-a37",
+      "carrier": "Metro by T-Mobile",
+      "offer": "Samsung Galaxy A37 5G",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a37-5g"
+    },
+    {
+      "id": "metro-premium",
+      "carrier": "Metro by T-Mobile",
+      "offer": "Unlimited Premium 5G Data",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.metrobyt-mobile.com/phone-plans"
+    },
+    {
+      "id": "mint",
+      "carrier": "Mint Mobile",
+      "offer": "Unlimited",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.mintmobile.com/plans/"
+    },
+    {
+      "id": "mint-p11",
+      "carrier": "Mint Mobile",
+      "offer": "Google Pixel 11 + 12 months unlimited",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-24T05:10:41.693Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.mintmobile.com/deals/"
+    },
+    {
+      "id": "mint-s26fe",
+      "carrier": "Mint Mobile",
+      "offer": "Samsung Galaxy S26 FE + 12 months unlimited",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "documented_stock_hold",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-24T05:10:41.693Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.mintmobile.com/deals/"
+    },
+    {
+      "id": "mobilex-unlimited10",
+      "carrier": "MobileX",
+      "offer": "Unlimited 10 (10GB high-speed)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://mymobilex.com/all-faqs/"
+    },
+    {
+      "id": "mobilex-unlimited30",
+      "carrier": "MobileX",
+      "offer": "Unlimited 30 (30GB high-speed)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": "headline_matched",
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://mymobilex.com/all-faqs/"
+    },
+    {
+      "id": "redpocket-essentials",
+      "carrier": "Red Pocket Mobile",
+      "offer": "Essentials 3GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://my.redpocket.com/plans"
+    },
+    {
+      "id": "st-a17",
+      "carrier": "Straight Talk",
+      "offer": "Samsung Galaxy A17 5G",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid"
+    },
+    {
+      "id": "st-stylus",
+      "carrier": "Straight Talk",
+      "offer": "Motorola moto g stylus 2025",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid"
+    },
+    {
+      "id": "tello",
+      "carrier": "Tello",
+      "offer": "Everyday 10GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://tello.com/buy/custom_plans"
+    },
+    {
+      "id": "tello-max",
+      "carrier": "Tello",
+      "offer": "Max Unlimited (50GB high-speed)",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://tello.com/buy/custom_plans"
+    },
+    {
+      "id": "tello-power",
+      "carrier": "Tello",
+      "offer": "Power 20GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://tello.com/buy/custom_plans"
+    },
+    {
+      "id": "tello-starter",
+      "carrier": "Tello",
+      "offer": "Starter 2GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://tello.com/buy/custom_plans"
+    },
+    {
+      "id": "total-16e",
+      "carrier": "Total Wireless",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.totalwireless.com/buy/phones/apple-iphone-16e-prepaid"
+    },
+    {
+      "id": "total-a17",
+      "carrier": "Total Wireless",
+      "offer": "Samsung Galaxy A17 5G",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": null,
+      "link": "https://www.totalwireless.com/buy/smartphones/samsung-galaxy-a17-5g-prepaid"
+    },
+    {
+      "id": "total-all-access",
+      "carrier": "Total Wireless",
+      "offer": "Total ALL ACCESS",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.totalwireless.com/m/plans"
+    },
+    {
+      "id": "total-stylus",
+      "carrier": "Total Wireless",
+      "offer": "Moto G Stylus 5G 2025",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.totalwireless.com/buy/phones/moto-g-stylus-5g-2025-prepaid"
+    },
+    {
+      "id": "tracfone",
+      "carrier": "Tracfone",
+      "offer": "Freedom Unlimited",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.tracfone.com/plans/tracfone-freedom-30-days"
+    },
+    {
+      "id": "tracfone-a17",
+      "carrier": "Tracfone",
+      "offer": "Samsung Galaxy A17 5G",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid"
+    },
+    {
+      "id": "ultra",
+      "carrier": "Ultra Mobile",
+      "offer": "Unlimited",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.ultramobile.com/product/unlimited-prepaid-plan/"
+    },
+    {
+      "id": "ultra-4",
+      "carrier": "Ultra Mobile",
+      "offer": "4GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.ultramobile.com/product/4gb-prepaid-plan/"
+    },
+    {
+      "id": "usm-light",
+      "carrier": "US Mobile",
+      "offer": "Light 2GB",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "offer_page_unavailable",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_unavailable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": "2026-11-14T16:37:51.084Z",
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.usmobile.com/plans"
+    },
+    {
+      "id": "vzpre-16e",
+      "carrier": "Verizon Prepaid",
+      "offer": "iPhone 16e",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/"
+    },
+    {
+      "id": "vzpre-a17",
+      "carrier": "Verizon Prepaid",
+      "offer": "Galaxy A17 5G or Moto G Play 2026",
+      "kind": "phone",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.verizon.com/prepaid/deals/"
+    },
+    {
+      "id": "visible",
+      "carrier": "Visible",
+      "offer": "Visible",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.visible.com/plans"
+    },
+    {
+      "id": "visible-plus",
+      "carrier": "Visible",
+      "offer": "Visible+",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.visible.com/plans"
+    },
+    {
+      "id": "visible-pro",
+      "carrier": "Visible",
+      "offer": "Visible+ Pro",
+      "kind": "plan",
+      "priority": "medium",
+      "score": 65,
+      "reasonCodes": [
+        "published_research_aged",
+        "catalog_price_stale",
+        "full_terms_not_verified"
+      ],
+      "reasons": [
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
+        "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "Full offer terms do not have a current independent manual review."
+      ],
+      "officialEvidenceState": null,
+      "sourceStatus": "source_reachable",
+      "officialResearchState": "aged",
+      "manualReviewStatus": "unverified",
+      "linkUnavailableSince": null,
+      "lastCatalogReference": "2026-11-02",
+      "link": "https://www.visible.com/plans"
     },
     {
       "id": "att-pre-motog",
@@ -400,226 +1848,13 @@
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
+      "lastCatalogReference": "2026-11-23",
       "link": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html"
     },
     {
-      "id": "cc",
-      "carrier": "Consumer Cellular",
-      "offer": "Basic 1GB",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.consumercellular.com/shopping/choose/plan"
-    },
-    {
-      "id": "fi",
-      "carrier": "Google Fi",
-      "offer": "Unlimited Essentials",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://fi.google.com/about/plans"
-    },
-    {
-      "id": "h2o-10gb",
-      "carrier": "H2O Wireless",
-      "offer": "10GB Monthly",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "official_evidence_missing",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Scoped official price source could not be read. This is not a confirmed price change.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "source_unavailable",
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.h2owireless.com/plan/monthly"
-    },
-    {
-      "id": "h2o-annual10",
-      "carrier": "H2O Wireless",
-      "offer": "Annual 10GB (pay $192 upfront)",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.h2owireless.com/plan/monthly"
-    },
-    {
-      "id": "h2o-annual30",
-      "carrier": "H2O Wireless",
-      "offer": "Annual Unlimited (30GB high-speed; $288 upfront)",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.h2owireless.com/plan/monthly"
-    },
-    {
-      "id": "h2o-unlimited",
-      "carrier": "H2O Wireless",
-      "offer": "Unlimited (30GB high-speed)",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "official_evidence_missing",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Scoped official price source could not be read. This is not a confirmed price change.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "source_unavailable",
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.h2owireless.com/plan/monthly"
-    },
-    {
-      "id": "mint",
-      "carrier": "Mint Mobile",
-      "offer": "Unlimited",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.mintmobile.com/plans/"
-    },
-    {
-      "id": "mint-p11",
-      "carrier": "Mint Mobile",
-      "offer": "Google Pixel 11 + 12 months unlimited",
-      "kind": "phone",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.mintmobile.com/devices/google-pixel-11/13630805/"
-    },
-    {
-      "id": "mint-s26fe",
-      "carrier": "Mint Mobile",
-      "offer": "Samsung Galaxy S26 FE + 12 months unlimited",
-      "kind": "phone",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "documented_stock_hold",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/"
-    },
-    {
-      "id": "redpocket-essentials",
+      "id": "redpocket-plus",
       "carrier": "Red Pocket Mobile",
-      "offer": "Essentials 3GB",
+      "offer": "Plus 20GB",
       "kind": "plan",
       "priority": "medium",
       "score": 60,
@@ -636,13 +1871,13 @@
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
+      "lastCatalogReference": "2026-11-23",
       "link": "https://my.redpocket.com/plans"
     },
     {
-      "id": "tello",
-      "carrier": "Tello",
-      "offer": "Everyday 10GB",
+      "id": "redpocket-premium",
+      "carrier": "Red Pocket Mobile",
+      "offer": "Premium Unlimited (50GB high-speed)",
       "kind": "plan",
       "priority": "medium",
       "score": 60,
@@ -659,146 +1894,8 @@
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://tello.com/buy/custom_plans"
-    },
-    {
-      "id": "tello-max",
-      "carrier": "Tello",
-      "offer": "Max Unlimited (50GB high-speed)",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://tello.com/buy/custom_plans"
-    },
-    {
-      "id": "tello-power",
-      "carrier": "Tello",
-      "offer": "Power 20GB",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://tello.com/buy/custom_plans"
-    },
-    {
-      "id": "tello-starter",
-      "carrier": "Tello",
-      "offer": "Starter 2GB",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://tello.com/buy/custom_plans"
-    },
-    {
-      "id": "ultra",
-      "carrier": "Ultra Mobile",
-      "offer": "Unlimited",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.ultramobile.com/product/unlimited-prepaid-plan/"
-    },
-    {
-      "id": "ultra-4",
-      "carrier": "Ultra Mobile",
-      "offer": "4GB",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-06T15:38:55.100Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.ultramobile.com/product/4gb-prepaid-plan/"
-    },
-    {
-      "id": "usm-light",
-      "carrier": "US Mobile",
-      "offer": "Light 2GB",
-      "kind": "plan",
-      "priority": "medium",
-      "score": 60,
-      "reasonCodes": [
-        "offer_page_unavailable",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_unavailable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": "2026-11-14T16:37:51.084Z",
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.usmobile.com/plans"
+      "lastCatalogReference": "2026-11-23",
+      "link": "https://my.redpocket.com/plans"
     },
     {
       "id": "cricket-a37",
@@ -824,98 +1921,6 @@
       "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal"
     },
     {
-      "id": "cricket-motog",
-      "carrier": "Cricket",
-      "offer": "Moto G 2026",
-      "kind": "phone",
-      "priority": "medium",
-      "score": 45,
-      "reasonCodes": [
-        "documented_stock_hold",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream"
-    },
-    {
-      "id": "cricket-power",
-      "carrier": "Cricket",
-      "offer": "Moto G Power 2026",
-      "kind": "phone",
-      "priority": "medium",
-      "score": 45,
-      "reasonCodes": [
-        "documented_stock_hold",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue"
-    },
-    {
-      "id": "cricket-razr",
-      "carrier": "Cricket",
-      "offer": "Motorola razr 2025",
-      "kind": "phone",
-      "priority": "medium",
-      "score": 45,
-      "reasonCodes": [
-        "documented_stock_hold",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": null,
-      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-razr-2025-parfait-pink"
-    },
-    {
-      "id": "cricket-s25fe",
-      "carrier": "Cricket",
-      "offer": "Samsung Galaxy S25 FE",
-      "kind": "phone",
-      "priority": "medium",
-      "score": 45,
-      "reasonCodes": [
-        "documented_stock_hold",
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "This dated stock hold needs fresh inventory confirmation before the offer can be recommended.",
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": null,
-      "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-s25-fe-jetblack"
-    },
-    {
       "id": "boost",
       "carrier": "Boost Mobile",
       "offer": "Unlimited",
@@ -933,386 +1938,8 @@
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
+      "lastCatalogReference": "2026-11-23",
       "link": "https://www.boostmobile.com/plans"
-    },
-    {
-      "id": "boost-16e",
-      "carrier": "Boost Mobile",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.boostmobile.com/shop/iphone-16e.html"
-    },
-    {
-      "id": "boost-a17",
-      "carrier": "Boost Mobile",
-      "offer": "Samsung Galaxy A17 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.boostmobile.com/shop/galaxy-a17-5g.html"
-    },
-    {
-      "id": "boost-gplay",
-      "carrier": "Boost Mobile",
-      "offer": "Moto G Play 2026",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.boostmobile.com/shop/moto-g-play-002722.html"
-    },
-    {
-      "id": "boost-motog",
-      "carrier": "Boost Mobile",
-      "offer": "Moto G 2026",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.boostmobile.com/shop/moto-g-2026.html"
-    },
-    {
-      "id": "boost-p10a",
-      "carrier": "Boost Mobile",
-      "offer": "Google Pixel 10a",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.boostmobile.com/shop/pixel-10a-002729.html"
-    },
-    {
-      "id": "boost-razr",
-      "carrier": "Boost Mobile",
-      "offer": "Motorola razr 2025",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.boostmobile.com/shop/razr-2025.html"
-    },
-    {
-      "id": "boost-stylus",
-      "carrier": "Boost Mobile",
-      "offer": "Moto G Stylus 2025",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.boostmobile.com/shop/moto-g-stylus-2025.html"
-    },
-    {
-      "id": "cricket-16e",
-      "carrier": "Cricket",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": null,
-      "link": "https://www.cricketwireless.com/shop/smartphones/apple-iphone-16e-128gb-black"
-    },
-    {
-      "id": "cricket-25",
-      "carrier": "Cricket",
-      "offer": "12-Month Unlimited BYOD — $300 prepaid",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.cricketwireless.com/shop/cell-phone-plans/select"
-    },
-    {
-      "id": "cricket-a17",
-      "carrier": "Cricket",
-      "offer": "Samsung Galaxy A17 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": null,
-      "link": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a17-5g-black"
-    },
-    {
-      "id": "cricket-stylus",
-      "carrier": "Cricket",
-      "offer": "Moto G Stylus 5G 2025",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": null,
-      "link": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea"
-    },
-    {
-      "id": "cricket-supreme",
-      "carrier": "Cricket",
-      "offer": "Supreme Unlimited",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.cricketwireless.com"
-    },
-    {
-      "id": "good2go-annual1",
-      "carrier": "Good2Go Mobile",
-      "offer": "Annual 1GB (pay $60 upfront)",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://annualplans.good2gomobile.com/home-page"
-    },
-    {
-      "id": "good2go-annual3",
-      "carrier": "Good2Go Mobile",
-      "offer": "Annual 3GB (pay $120 upfront)",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://annualplans.good2gomobile.com/home-page"
-    },
-    {
-      "id": "good2go-annual5",
-      "carrier": "Good2Go Mobile",
-      "offer": "Annual 5GB (pay $240 upfront)",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://annualplans.good2gomobile.com/home-page"
-    },
-    {
-      "id": "helium-air",
-      "carrier": "Helium Mobile",
-      "offer": "Air 10GB",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
-    },
-    {
-      "id": "helium-infinity",
-      "carrier": "Helium Mobile",
-      "offer": "Infinity Unlimited (36GB high-speed)",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
-    },
-    {
-      "id": "metro",
-      "carrier": "Metro by T-Mobile",
-      "offer": "Unlimited, bring your phone",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.metrobyt-mobile.com/phone-plans"
     },
     {
       "id": "metro-16e",
@@ -1336,48 +1963,6 @@
       "link": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
     },
     {
-      "id": "metro-a17",
-      "carrier": "Metro by T-Mobile",
-      "offer": "Samsung Galaxy A17 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a17-5g"
-    },
-    {
-      "id": "metro-a37",
-      "carrier": "Metro by T-Mobile",
-      "offer": "Samsung Galaxy A37 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a37-5g"
-    },
-    {
       "id": "metro-motog",
       "carrier": "Metro by T-Mobile",
       "offer": "Moto G 2026",
@@ -1399,111 +1984,6 @@
       "link": "https://www.metrobyt-mobile.com/cell-phone/motorola-moto-g-2026"
     },
     {
-      "id": "metro-premium",
-      "carrier": "Metro by T-Mobile",
-      "offer": "Unlimited Premium 5G Data",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.metrobyt-mobile.com/phone-plans"
-    },
-    {
-      "id": "mobilex-unlimited10",
-      "carrier": "MobileX",
-      "offer": "Unlimited 10 (10GB high-speed)",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://mymobilex.com/all-faqs/"
-    },
-    {
-      "id": "mobilex-unlimited30",
-      "carrier": "MobileX",
-      "offer": "Unlimited 30 (30GB high-speed)",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://mymobilex.com/all-faqs/"
-    },
-    {
-      "id": "st-a17",
-      "carrier": "Straight Talk",
-      "offer": "Samsung Galaxy A17 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid"
-    },
-    {
-      "id": "st-stylus",
-      "carrier": "Straight Talk",
-      "offer": "Motorola moto g stylus 2025",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid"
-    },
-    {
       "id": "straighttalk",
       "carrier": "Straight Talk",
       "offer": "StraightSavings Unlimited",
@@ -1521,50 +2001,8 @@
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
+      "lastCatalogReference": "2026-11-23",
       "link": "https://www.straighttalk.com/whyst/bring-your-own-phone"
-    },
-    {
-      "id": "total-16e",
-      "carrier": "Total Wireless",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.totalwireless.com/buy/phones/apple-iphone-16e-prepaid"
-    },
-    {
-      "id": "total-a17",
-      "carrier": "Total Wireless",
-      "offer": "Samsung Galaxy A17 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": null,
-      "link": "https://www.totalwireless.com/buy/smartphones/samsung-galaxy-a17-5g-prepaid"
     },
     {
       "id": "total-a27",
@@ -1584,7 +2022,7 @@
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
+      "lastCatalogReference": "2026-11-23",
       "link": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid"
     },
     {
@@ -1605,29 +2043,8 @@
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
+      "lastCatalogReference": "2026-11-23",
       "link": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid"
-    },
-    {
-      "id": "total-all-access",
-      "carrier": "Total Wireless",
-      "offer": "Total ALL ACCESS",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.totalwireless.com/m/plans"
     },
     {
       "id": "total-max",
@@ -1647,197 +2064,8 @@
       "officialResearchState": "published_match",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.totalwireless.com/m/plans"
-    },
-    {
-      "id": "total-stylus",
-      "carrier": "Total Wireless",
-      "offer": "Moto G Stylus 5G 2025",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.totalwireless.com/buy/phones/moto-g-stylus-5g-2025-prepaid"
-    },
-    {
-      "id": "tracfone",
-      "carrier": "Tracfone",
-      "offer": "Freedom Unlimited",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.tracfone.com/plans/tracfone-freedom-30-days"
-    },
-    {
-      "id": "tracfone-a17",
-      "carrier": "Tracfone",
-      "offer": "Samsung Galaxy A17 5G",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid"
-    },
-    {
-      "id": "vzpre-16e",
-      "carrier": "Verizon Prepaid",
-      "offer": "iPhone 16e",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/"
-    },
-    {
-      "id": "vzpre-a17",
-      "carrier": "Verizon Prepaid",
-      "offer": "Galaxy A17 5G or Moto G Play 2026",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.verizon.com/prepaid/deals/"
-    },
-    {
-      "id": "visible",
-      "carrier": "Visible",
-      "offer": "Visible",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.visible.com/m/deals"
-    },
-    {
-      "id": "visible-18pro",
-      "carrier": "Visible",
-      "offer": "iPhone 18 Pro",
-      "kind": "phone",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": null,
-      "link": "https://www.visible.com/m/deals"
-    },
-    {
-      "id": "visible-plus",
-      "carrier": "Visible",
-      "offer": "Visible+",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.visible.com/plans"
-    },
-    {
-      "id": "visible-pro",
-      "carrier": "Visible",
-      "offer": "Visible+ Pro",
-      "kind": "plan",
-      "priority": "routine",
-      "score": 20,
-      "reasonCodes": [
-        "full_terms_not_verified"
-      ],
-      "reasons": [
-        "Full offer terms do not have a current independent manual review."
-      ],
-      "officialEvidenceState": null,
-      "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
-      "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
-      "lastCatalogReference": "2026-11-02",
-      "link": "https://www.visible.com/plans"
+      "lastCatalogReference": "2026-11-23",
+      "link": "https://www.totalwireless.com/m/plans/smartphone"
     }
   ]
 }

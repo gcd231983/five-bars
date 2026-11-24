@@ -1,17 +1,19 @@
 {
   "schema": 1,
-  "asOf": "2026-11-23",
+  "asOf": "2026-11-24",
   "researchObservedOn": "2026-11-02",
+  "latestPriceRecheckOn": "2026-11-23",
   "scope": "Public official pages and consumer labels only; NOT checkout validation, actual product eligibility, complete terms or guaranteed pricing.",
   "summary": {
+    "latestPublishedPriceRechecks": 51,
     "offers": 78,
     "researched": 76,
-    "publishedPriceMatches": 72,
+    "publishedPriceMatches": 12,
     "publishedPartial": 4,
     "listingHolds": 3,
     "retailerObservations": 3,
-    "conflictingOrInvalid": 0,
-    "aged": 0,
+    "conflictingOrInvalid": 1,
+    "aged": 59,
     "notResearched": 2,
     "manuallyFullyReviewed": 0,
     "needingFullTerms": 78,
@@ -31,11 +33,15 @@
       "catalogPrice": 25,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.usmobile.com/broadband-facts"
+      },
       "sourceUrls": [
         "https://www.usmobile.com/broadband-facts",
         "https://www.usmobile.com/plans",
@@ -56,11 +62,15 @@
       "catalogPrice": 44,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.usmobile.com/broadband-facts"
+      },
       "sourceUrls": [
         "https://www.usmobile.com/broadband-facts",
         "https://www.usmobile.com/plans",
@@ -76,19 +86,24 @@
       "availability": null,
       "availabilityObservedOn": null,
       "listingHold": null,
-      "listedUrl": "https://www.visible.com/m/deals",
+      "listedUrl": "https://www.visible.com/plans",
       "retailerObservation": null,
       "catalogPrice": 25,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.visible.com/plans"
+      },
       "sourceUrls": [
         "https://www.visible.com/buy/plans",
-        "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html"
+        "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html",
+        "https://www.visible.com/plans"
       ]
     },
     {
@@ -104,14 +119,19 @@
       "catalogPrice": 35,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.visible.com/plans"
+      },
       "sourceUrls": [
         "https://www.visible.com/buy/plans",
-        "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html"
+        "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html",
+        "https://www.visible.com/plans"
       ]
     },
     {
@@ -127,14 +147,19 @@
       "catalogPrice": 45,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.visible.com/plans"
+      },
       "sourceUrls": [
         "https://www.visible.com/buy/plans",
-        "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html"
+        "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html",
+        "https://www.visible.com/plans"
       ]
     },
     {
@@ -145,18 +170,22 @@
       "availability": null,
       "availabilityObservedOn": null,
       "listingHold": null,
-      "listedUrl": "https://www.totalwireless.com/m/plans",
+      "listedUrl": "https://www.totalwireless.com/m/plans/smartphone",
       "retailerObservation": null,
-      "catalogPrice": 20,
+      "catalogPrice": 25,
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchLabel": "Official published baseline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.totalwireless.com/m/plans/smartphone"
+      },
       "sourceUrls": [
-        "https://www.totalwireless.com/m/plans",
+        "https://www.totalwireless.com/m/plans/smartphone",
         "https://www.totalwireless.com/m/byop"
       ]
     },
@@ -173,8 +202,8 @@
       "catalogPrice": 60,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -195,15 +224,20 @@
       "catalogPrice": 30,
       "billingMonths": 12,
       "billingUpfront": 360,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.mintmobile.com/phone-plans/12-month-plans/?selected=MINT-UNLIMITED-12"
+      },
       "sourceUrls": [
         "https://www.mintmobile.com/phone-plans/12-month-plans/",
         "https://www.mintmobile.com/phone-plans/3-month-plans/",
-        "https://www.mintmobile.com/help/what-is-mint-mobiles-switch-to-mint-and-get-3-6-or-12-months-of-premium-wireless-for-15-mo-any-plan-promotion/"
+        "https://www.mintmobile.com/help/what-is-mint-mobiles-switch-to-mint-and-get-3-6-or-12-months-of-premium-wireless-for-15-mo-any-plan-promotion/",
+        "https://www.mintmobile.com/phone-plans/12-month-plans/?selected=MINT-UNLIMITED-12"
       ]
     },
     {
@@ -219,8 +253,8 @@
       "catalogPrice": 25,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -241,8 +275,8 @@
       "catalogPrice": 60,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -264,10 +298,14 @@
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchLabel": "Official published baseline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.boostmobile.com/plans"
+      },
       "sourceUrls": [
         "https://www.boostmobile.com/plans"
       ]
@@ -286,12 +324,15 @@
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchLabel": "Official published baseline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.straighttalk.com/whyst/bring-your-own-phone"
+      },
       "sourceUrls": [
-        "https://www.straighttalk.com/devices/byop-simkit",
         "https://www.straighttalk.com/whyst/bring-your-own-phone"
       ]
     },
@@ -308,11 +349,15 @@
       "catalogPrice": 25,
       "billingMonths": 12,
       "billingUpfront": 300,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/cell-phone-plans/select"
+      },
       "sourceUrls": [
         "https://www.cricketwireless.com/shop/cell-phone-plans/select"
       ]
@@ -325,20 +370,25 @@
       "availability": null,
       "availabilityObservedOn": null,
       "listingHold": null,
-      "listedUrl": "https://www.cricketwireless.com",
+      "listedUrl": "https://www.cricketwireless.com/plans/phone",
       "retailerObservation": null,
       "catalogPrice": 60,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/cell-phone-plans/select"
+      },
       "sourceUrls": [
         "https://www.cricketwireless.com/support/plans-and-features/plans",
         "https://qrcricket.cricketwireless.com/en_US/unl50.html",
-        "https://qrcricket.cricketwireless.com/en_US/rate-plan-mutli.html"
+        "https://qrcricket.cricketwireless.com/en_US/rate-plan-mutli.html",
+        "https://www.cricketwireless.com/shop/cell-phone-plans/select"
       ]
     },
     {
@@ -354,11 +404,15 @@
       "catalogPrice": 45,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.tracfone.com/plans/tracfone-freedom-30-days"
+      },
       "sourceUrls": [
         "https://www.tracfone.com/plans/tracfone-freedom-30-days"
       ]
@@ -376,11 +430,15 @@
       "catalogPrice": 49,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.ultramobile.com/product/unlimited-prepaid-plan/"
+      },
       "sourceUrls": [
         "https://www.ultramobile.com/product/unlimited-prepaid-plan/"
       ]
@@ -398,11 +456,15 @@
       "catalogPrice": 35,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://fi.google.com/about/plans"
+      },
       "sourceUrls": [
         "https://fi.google.com/about/plans"
       ]
@@ -420,11 +482,15 @@
       "catalogPrice": 10,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.usmobile.com/broadband-facts"
+      },
       "sourceUrls": [
         "https://www.usmobile.com/broadband-facts",
         "https://www.usmobile.com/plans"
@@ -443,11 +509,15 @@
       "catalogPrice": 19,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.ultramobile.com/product/4gb-prepaid-plan/"
+      },
       "sourceUrls": [
         "https://www.ultramobile.com/product/4gb-prepaid-plan/"
       ]
@@ -465,11 +535,15 @@
       "catalogPrice": 15,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://tello.com/buy/custom_plans"
+      },
       "sourceUrls": [
         "https://tello.com/buy/custom_plans",
         "https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/",
@@ -489,11 +563,15 @@
       "catalogPrice": 20,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.consumercellular.com/shopping/choose/plan"
+      },
       "sourceUrls": [
         "https://www.consumercellular.com/shopping/choose/plan",
         "https://www.consumercellular.com/shopping/choose/plan"
@@ -512,11 +590,15 @@
       "catalogPrice": 10,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://tello.com/buy/custom_plans"
+      },
       "sourceUrls": [
         "https://tello.com/buy/custom_plans",
         "https://tello.com/buy/custom_plans?plan=2000-unlimited"
@@ -535,11 +617,15 @@
       "catalogPrice": 20,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://tello.com/buy/custom_plans"
+      },
       "sourceUrls": [
         "https://tello.com/buy/custom_plans",
         "https://tello.com/buy/custom_plans?plan=unlimited-unlim-unlim"
@@ -558,15 +644,20 @@
       "catalogPrice": 25,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://tello.com/buy/custom_plans"
+      },
       "sourceUrls": [
         "https://tello.com/buy/custom_plans",
         "https://tello.com/buy/custom_plans?plan=unlimited-unlim-unlim",
-        "https://tello.com/buy/custom_plans?plan=0-unlimited-unlimited"
+        "https://tello.com/buy/custom_plans?plan=0-unlimited-unlimited",
+        "https://tello.com/help_center/plans-pricing/how-much-is-the-unlimited-plan"
       ]
     },
     {
@@ -582,11 +673,15 @@
       "catalogPrice": 20,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.h2owireless.com/plan/monthly"
+      },
       "sourceUrls": [
         "https://www.h2owireless.com/plan/monthly"
       ]
@@ -604,11 +699,15 @@
       "catalogPrice": 30,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.h2owireless.com/plan/monthly"
+      },
       "sourceUrls": [
         "https://www.h2owireless.com/plan/monthly"
       ]
@@ -626,11 +725,15 @@
       "catalogPrice": 15,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
+      },
       "sourceUrls": [
         "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
       ]
@@ -648,11 +751,15 @@
       "catalogPrice": 30,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
+      },
       "sourceUrls": [
         "https://support.hellohelium.com/en/articles/17734883-plans-pricing"
       ]
@@ -670,11 +777,15 @@
       "catalogPrice": 14.88,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://mymobilex.com/all-faqs/"
+      },
       "sourceUrls": [
         "https://mymobilex.com/all-faqs/"
       ]
@@ -692,11 +803,15 @@
       "catalogPrice": 24.88,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://mymobilex.com/all-faqs/"
+      },
       "sourceUrls": [
         "https://mymobilex.com/all-faqs/"
       ]
@@ -714,11 +829,15 @@
       "catalogPrice": 10,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://my.redpocket.com/plans"
+      },
       "sourceUrls": [
         "https://my.redpocket.com/plans"
       ]
@@ -737,12 +856,17 @@
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchLabel": "Official published baseline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://my.redpocket.com/plans"
+      },
       "sourceUrls": [
-        "https://my.redpocket.com/plans"
+        "https://my.redpocket.com/plans",
+        "https://www.redpocket.com/"
       ]
     },
     {
@@ -759,12 +883,17 @@
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchLabel": "Official published baseline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://my.redpocket.com/plans"
+      },
       "sourceUrls": [
-        "https://my.redpocket.com/plans"
+        "https://my.redpocket.com/plans",
+        "https://www.redpocket.com/"
       ]
     },
     {
@@ -780,11 +909,15 @@
       "catalogPrice": 5,
       "billingMonths": 12,
       "billingUpfront": 60,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://annualplans.good2gomobile.com/home-page"
+      },
       "sourceUrls": [
         "https://annualplans.good2gomobile.com/home-page"
       ]
@@ -802,11 +935,15 @@
       "catalogPrice": 10,
       "billingMonths": 12,
       "billingUpfront": 120,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://annualplans.good2gomobile.com/home-page"
+      },
       "sourceUrls": [
         "https://annualplans.good2gomobile.com/home-page"
       ]
@@ -824,11 +961,15 @@
       "catalogPrice": 20,
       "billingMonths": 12,
       "billingUpfront": 240,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://annualplans.good2gomobile.com/home-page"
+      },
       "sourceUrls": [
         "https://annualplans.good2gomobile.com/home-page"
       ]
@@ -846,11 +987,15 @@
       "catalogPrice": 16,
       "billingMonths": 12,
       "billingUpfront": 192,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.h2owireless.com/plan/monthly"
+      },
       "sourceUrls": [
         "https://www.h2owireless.com/plan/monthly"
       ]
@@ -868,11 +1013,15 @@
       "catalogPrice": 24,
       "billingMonths": 12,
       "billingUpfront": 288,
-      "researchState": "published_match",
-      "researchLabel": "Official published baseline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.h2owireless.com/plan/monthly"
+      },
       "sourceUrls": [
         "https://www.h2owireless.com/plan/monthly"
       ]
@@ -891,12 +1040,16 @@
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchLabel": "Official conditional device headline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.metrobyt-mobile.com/deals/free-phones"
+      },
       "sourceUrls": [
-        "https://www.metrobyt-mobile.com/cell-phone/motorola-moto-g-2026"
+        "https://www.metrobyt-mobile.com/deals/free-phones"
       ]
     },
     {
@@ -912,14 +1065,19 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.metrobyt-mobile.com/deals/free-phones"
+      },
       "sourceUrls": [
         "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a17-5g",
-        "https://www.metrobyt-mobile.com/deals/40period"
+        "https://www.metrobyt-mobile.com/deals/40period",
+        "https://www.metrobyt-mobile.com/deals/free-phones"
       ]
     },
     {
@@ -935,14 +1093,19 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.metrobyt-mobile.com/deals"
+      },
       "sourceUrls": [
         "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a37-5g",
-        "https://www.metrobyt-mobile.com/deals/40period"
+        "https://www.metrobyt-mobile.com/deals/40period",
+        "https://www.metrobyt-mobile.com/deals"
       ]
     },
     {
@@ -959,12 +1122,15 @@
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchLabel": "Official conditional device headline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
+      },
       "sourceUrls": [
-        "https://www.metrobyt-mobile.com/deals/apple",
         "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e"
       ]
     },
@@ -981,11 +1147,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue"
+      },
       "sourceUrls": [
         "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue",
         "https://www.cricketwireless.com/plans/phone"
@@ -1004,11 +1174,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream"
+      },
       "sourceUrls": [
         "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream",
         "https://www.cricketwireless.com/plans/phone"
@@ -1027,8 +1201,8 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1049,11 +1223,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea"
+      },
       "sourceUrls": [
         "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea"
       ]
@@ -1071,8 +1249,8 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1094,8 +1272,8 @@
       "catalogPrice": 29.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1116,8 +1294,8 @@
       "catalogPrice": 29.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1135,14 +1313,18 @@
       "listingHold": null,
       "listedUrl": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal",
       "retailerObservation": null,
-      "catalogPrice": 59.99,
+      "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchLabel": "Official conditional device headline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal"
+      },
       "sourceUrls": [
         "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal"
       ]
@@ -1157,16 +1339,21 @@
       "listingHold": null,
       "listedUrl": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html",
       "retailerObservation": null,
-      "catalogPrice": 39.99,
+      "catalogPrice": 9.99,
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchLabel": "Official conditional device headline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html"
+      },
       "sourceUrls": [
-        "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html"
+        "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html",
+        "https://www.att.com/buy/prepaid-phones/browse/motorola/"
       ]
     },
     {
@@ -1182,8 +1369,8 @@
       "catalogPrice": 29.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1204,8 +1391,8 @@
       "catalogPrice": 49.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1226,8 +1413,8 @@
       "catalogPrice": 29.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1248,11 +1435,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.boostmobile.com/deals"
+      },
       "sourceUrls": [
         "https://www.boostmobile.com/deals"
       ]
@@ -1270,11 +1461,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.boostmobile.com/deals"
+      },
       "sourceUrls": [
         "https://www.boostmobile.com/deals"
       ]
@@ -1292,11 +1487,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.boostmobile.com/deals"
+      },
       "sourceUrls": [
         "https://www.boostmobile.com/deals"
       ]
@@ -1314,8 +1513,8 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1337,8 +1536,8 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1359,8 +1558,8 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1379,17 +1578,21 @@
       "listingHold": null,
       "listedUrl": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid",
       "retailerObservation": null,
-      "catalogPrice": 0,
+      "catalogPrice": 39.99,
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchLabel": "Official conditional device headline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid"
+      },
       "sourceUrls": [
         "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid",
-        "https://www.totalwireless.com/m/plans"
+        "https://www.totalwireless.com/m/bundles"
       ]
     },
     {
@@ -1406,13 +1609,17 @@
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchLabel": "Official conditional device headline matched on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid"
+      },
       "sourceUrls": [
         "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid",
-        "https://www.totalwireless.com/m/plans"
+        "https://www.totalwireless.com/m/bundles"
       ]
     },
     {
@@ -1428,8 +1635,8 @@
       "catalogPrice": 199.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1451,8 +1658,8 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1474,8 +1681,8 @@
       "catalogPrice": 349.99,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1564,11 +1771,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid"
+      },
       "sourceUrls": [
         "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid",
         "https://www.straighttalk.com/all-plans"
@@ -1587,11 +1798,15 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
+      "publishedPriceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid"
+      },
       "sourceUrls": [
         "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid",
         "https://www.straighttalk.com/all-plans"
@@ -1610,8 +1825,8 @@
       "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
@@ -1661,18 +1876,19 @@
       "availability": null,
       "availabilityObservedOn": null,
       "listingHold": null,
-      "listedUrl": "https://www.mintmobile.com/devices/google-pixel-11/13630805/",
+      "listedUrl": "https://www.mintmobile.com/deals/",
       "retailerObservation": null,
       "catalogPrice": 579,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
       "sourceUrls": [
-        "https://www.mintmobile.com/devices/google-pixel-11/13630805/"
+        "https://www.mintmobile.com/devices/google-pixel-11/13630805/",
+        "https://www.mintmobile.com/deals/"
       ]
     },
     {
@@ -1683,18 +1899,19 @@
       "availability": "out_of_stock",
       "availabilityObservedOn": "2026-11-02",
       "listingHold": null,
-      "listedUrl": "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/",
+      "listedUrl": "https://www.mintmobile.com/deals/",
       "retailerObservation": null,
       "catalogPrice": 480,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
+      "researchState": "aged",
+      "researchLabel": "Published evidence is 22 days old; reconfirm",
       "issues": [],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
       "sourceUrls": [
-        "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/"
+        "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/",
+        "https://www.mintmobile.com/deals/"
       ]
     },
     {
@@ -1705,18 +1922,18 @@
       "availability": null,
       "availabilityObservedOn": null,
       "listingHold": null,
-      "listedUrl": "https://www.usmobile.com/pixel-promo",
+      "listedUrl": "https://app.usmobile.com/shop/product/google-pixel-11",
       "retailerObservation": null,
       "catalogPrice": 539,
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_partial",
-      "researchLabel": "Official conditional device facts published; qualifying service cash remains unpriced on 2026-11-02",
+      "researchLabel": "Official conditional device facts published; qualifying service cash remains unpriced on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
       "sourceUrls": [
-        "https://www.usmobile.com/pixel-promo"
+        "https://app.usmobile.com/shop/product/google-pixel-11"
       ]
     },
     {
@@ -1727,19 +1944,22 @@
       "availability": null,
       "availabilityObservedOn": null,
       "listingHold": null,
-      "listedUrl": "https://www.visible.com/m/deals",
+      "listedUrl": "https://www.visible.com/buy/smartphones/iphone-18-pro",
       "retailerObservation": null,
       "catalogPrice": 1199,
       "billingMonths": 1,
       "billingUpfront": null,
-      "researchState": "published_match",
-      "researchLabel": "Official conditional device headline matched on 2026-11-02",
-      "issues": [],
+      "researchState": "conflict",
+      "researchLabel": "Current advertised price needs review",
+      "issues": [
+        "Visible’s live iPhone 18 Pro product and deals pages no longer corroborate the historical $480 iPhone-specific service credit. Hold shopping estimates and confirm the exact current offer."
+      ],
       "manualReview": "unverified",
       "researchedOn": "2026-11-02",
       "sourceUrls": [
         "https://www.visible.com/buy/phones/iphone-18-pro",
-        "https://www.visible.com/m/deals"
+        "https://www.visible.com/m/deals",
+        "https://www.visible.com/buy/smartphones/iphone-18-pro"
       ]
     },
     {
@@ -1752,16 +1972,17 @@
       "listingHold": null,
       "listedUrl": "https://www.t-mobile.com/offers/apple-iphone-deals",
       "retailerObservation": null,
-      "catalogPrice": 199.99,
+      "catalogPrice": 0,
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_partial",
-      "researchLabel": "Official conditional device facts published; qualifying service cash remains unpriced on 2026-11-02",
+      "researchLabel": "Official conditional device facts published; qualifying service cash remains unpriced on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
       "sourceUrls": [
-        "https://www.t-mobile.com/offers/apple-iphone-deals"
+        "https://www.t-mobile.com/offers/promotional-offer-details/?msockid=2793d0ace9df64da067ac653e87665dc",
+        "https://www.t-mobile.com/responsibility/consumer-info/policies/sim-unlock-policy"
       ]
     },
     {
@@ -1778,12 +1999,14 @@
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_partial",
-      "researchLabel": "Official conditional device facts published; qualifying service cash remains unpriced on 2026-11-02",
+      "researchLabel": "Official conditional device facts published; qualifying service cash remains unpriced on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
       "sourceUrls": [
-        "https://www.verizon.com/about/news/iphone-duo-verizon-offers"
+        "https://www.verizon.com/support/pro-plus-early-upgrade-faqs/",
+        "https://www.verizon.com/about/news/iphone-duo-verizon-offers",
+        "https://www.verizon.com/support/verizon-simplicity-faqs/"
       ]
     },
     {
@@ -1800,11 +2023,12 @@
       "billingMonths": 1,
       "billingUpfront": null,
       "researchState": "published_partial",
-      "researchLabel": "Official conditional device facts published; qualifying service cash remains unpriced on 2026-11-02",
+      "researchLabel": "Official conditional device facts published; qualifying service cash remains unpriced on 2026-11-23",
       "issues": [],
       "manualReview": "unverified",
-      "researchedOn": "2026-11-02",
+      "researchedOn": "2026-11-23",
       "sourceUrls": [
+        "https://www.att.com/cfd/wireless/",
         "https://www.att.com/buy/phones/apple-iphone-18-pro.html"
       ]
     }
