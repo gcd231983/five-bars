@@ -547,6 +547,7 @@ body{background:radial-gradient(ellipse 85% 420px at 50% 0%,#153b4b 0%,var(--pap
 
 .fb-catalog-freshness{padding:13px 16px;border:1px solid #d5a14a;border-radius:12px;background:#392d17;color:#ffe5a9;font-weight:650;line-height:1.5;margin:12px 0 20px}
 .fb-catalog-freshness[hidden]{display:none!important}
+.fb-catalog-freshness a{color:inherit;text-decoration:underline}
 .fb-release-notice{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:13px 16px;border:1px solid #587ca0;border-radius:12px;background:#182e45;color:#eaf4ff;line-height:1.5;margin:12px 0 20px}
 .fb-release-notice[hidden]{display:none!important}
 .fb-release-notice p{margin:0;flex:1 1 290px}
@@ -853,7 +854,7 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
 </nav>
 
 <main class="wrap" id="main-content" tabindex="-1">
-  <p id="fb-catalog-freshness" class="fb-catalog-freshness" role="status" hidden></p>
+  <p id="fb-catalog-freshness" class="fb-catalog-freshness" role="status" hidden><span id="fb-catalog-freshness-copy"></span> <a href="source-research.html">See which offers were checked</a></p>
   <aside id="fb-release-notice" class="fb-release-notice" role="status" aria-live="polite" hidden>
     <p><strong>A newer Five Bars release is available.</strong> This open tab may show older deals or review information. Reload to see the latest published information; confirm final prices at carrier checkout. Unsaved form entries may be lost.</p>
     <button id="fb-release-reload" type="button">Reload latest deals</button>
@@ -1444,7 +1445,7 @@ function renderPhones(){
       d.listingHold ? "Retail promotion under review — qualifying price not documented" : null,
       d.availability==="out_of_stock" ? "Observed OUT OF STOCK on "+(d.availabilityObservedOn||"an undated source") : null,
       d.fullRetailRequired ? "Full retail purchase required; financing excluded" : null,
-      d.lock ? (d.lock>=12 ? "Locked " + d.lock + " months" : "Unlocks after " + (d.lock*30) + " days") : "Sold unlocked"
+      d.lockUnknown===true ? "Unlock timing: check carrier" : d.lock ? (d.lock>=12 ? "Locked " + d.lock + " months" : "Unlocks after " + (d.lock*30) + " days") : "Sold unlocked"
     ].filter(Boolean);
     const ends = c.ei;
     return el("li",{class:"row", id:"r-"+d.id, style:"--net:"+n.c},
@@ -1681,7 +1682,18 @@ function renderCatalogFreshness(){
   const scanAge=Number.isFinite(scanTime)?(Date.now()-scanTime)/86400000:null;
   const messages=[];
   if(days===null||days<0)messages.push("Catalog review date is unavailable or invalid.");
-  else if(days>7)messages.push("Catalog prices were last reviewed "+days+" days ago ("+CHECKED+"). Treat offers as potentially outdated.");
+  else if(days>7){
+    messages.push("Full catalog review: "+CHECKED+" ("+days+" days ago).");
+    const audit=typeof RESEARCH_AUDIT==="undefined"?null:RESEARCH_AUDIT;
+    const recent=audit?.summary?.latestPublishedPriceRechecks;
+    const reviewed=audit?.latestPriceRecheckOn;
+    const recheckAge=typeof easternDay==="function"&&reviewed===easternDay()?0:catalogAgeDays(reviewed);
+    if(Number.isInteger(recent)&&recent>0&&recent<=PLANS.length+PHONES.length&&
+       recheckAge!==null&&recheckAge>=0&&recheckAge<=21&&reviewed>CHECKED)
+      messages.push("Published prices rechecked for "+recent+" of "+(PLANS.length+PHONES.length)+
+        " offers on "+reviewed+". Other listings may be outdated.");
+    else messages.push("Some offers may be outdated.");
+  }
   if(scanAge===null||scanAge<0)messages.push("Automatic source scan recency is unconfirmed.");
   else if(scanAge>2)messages.push("Last automatic source scan is over 48 hours old.");
   const health=AUTO_STATUS?.summary;
@@ -1690,7 +1702,8 @@ function renderCatalogFreshness(){
     messages.push("Public-source monitoring blackout: no monitored source was reachable. Catalog prices have NOT been revalidated; known published expirations are still enforced.");
   }
   node.hidden=messages.length===0;
-  node.textContent=messages.join(" ")+" Carrier checkout determines current prices, taxes and eligibility.";
+  const copy=$("#fb-catalog-freshness-copy");
+  (copy||node).textContent=messages.join(" ")+" Carrier checkout determines current prices, taxes and eligibility.";
 }
 function renderSources(){
 $("#src-date").textContent = "Catalog reference date " + new Date(CHECKED+"T12:00:00").toLocaleDateString("en-US",{month:"long", day:"numeric", year:"numeric"}) + ". Always confirm current prices, eligibility and taxes on the carrier’s site.";

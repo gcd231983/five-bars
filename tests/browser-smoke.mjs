@@ -224,8 +224,13 @@ try {
     assert.ok(freshness.text.includes('Carrier checkout')||freshness.hidden,
       'Stale-data warning must explain that checkout prices are not verified');
     const checkedAge=Math.floor((Date.now()-Date.parse('2026-10-29T12:00:00Z'))/86400000);
-    if(checkedAge>7)assert.equal(freshness.hidden,false,
-      'Catalog older than seven days must show a visible warning');
+    if(checkedAge>7){
+      assert.equal(freshness.hidden,false,'Catalog older than seven days must show a visible warning');
+      assert.match(freshness.text,/Full catalog review: 2026-10-29/);
+      assert.equal(await page.locator('#fb-catalog-freshness a').getAttribute('href'),'source-research.html');
+      if(auditSummary.latestPublishedPriceRechecks>0)
+        assert.match(freshness.text,new RegExp('Published prices rechecked for '+auditSummary.latestPublishedPriceRechecks+' of 78 offers'));
+    }
 
     await page.waitForFunction(()=>
       document.querySelector('#fb-finder-form button[type="submit"]')?.disabled===false,
@@ -963,12 +968,12 @@ try {
     assert.match(await research.locator('[data-offer-id="tracfone-a17"]').innerText(),/\$135\.00 fixed upfront service total/);
     assert.match(await research.locator('[data-offer-id="total-a36"]').innerText(),/qualifying number transfer/);
     const visible=research.locator('[data-offer-id="visible-18pro"]');
-    assert.match(await visible.innerText(),/FULL RETAIL handset payment required; financing ineligible/);
-    assert.match(await visible.innerText(),/conditional service credits for 24 months NOT deducted/);
+    assert.match(await visible.innerText(),/Current advertised price needs review/);
+    assert.match(await visible.innerText(),/Rate WITHHELD/);
     const metroRecord=research.locator('[data-offer-id="metro"]');
     assert.match(await metroRecord.innerText(),/\$30\.00 first month/);
     const redPocket=research.locator('[data-offer-id="redpocket-plus"]');
-    assert.match(await redPocket.innerText(),/ONLY for eligible new customers/);
+    assert.match(await redPocket.innerText(),/generic new-line discounts are not assumed/i);
     assert.match(await research.locator('[data-offer-id="good2go-annual1"]').innerText(),/\$60\.00 due upfront/);
     const ultra=research.locator('[data-offer-id="ultra"]');
     assert.match(await ultra.innerText(),/\$49\.00 regular per month/);
@@ -976,8 +981,8 @@ try {
     assert.match(await research.locator('[data-offer-id="fi"]').innerText(),/Unlimited Essentials/);
     assert.match(await research.locator('[data-offer-id="tracfone"]').innerText(),/October 26, 2026/);
     assert.match(await research.locator('[data-offer-id="cc"]').innerText(),/\$5\.00\/mo documented provider fees/);
-    assert.match(await research.locator('[data-offer-id="straighttalk"]').innerText(),/not combinable with AutoPay discounts/i);
-    assert.match(await research.locator('[data-offer-id="metro-motog"]').innerText(),/\$60\.00 first service bill/);
+    assert.match(await research.locator('[data-offer-id="straighttalk"]').innerText(),/requires first-month Auto Pay/i);
+    assert.match(await research.locator('[data-offer-id="metro-motog"]').innerText(),/\$40\.00 first service bill/);
     assert.match(await research.locator('[data-offer-id="cricket-razr"]').innerText(),/OUT OF STOCK on recorded date/);
     assert.match(await research.locator('[data-offer-id="total-all-access"]').innerText(),/\$65\.00 first month/);
     const researchOverflow=await research.evaluate(()=>document.documentElement.scrollWidth);

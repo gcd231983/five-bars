@@ -9,7 +9,7 @@ import {checkoutFixture} from './helpers/checkout-fixtures.mjs';
 
 const read=path=>JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'utf8'));
 const catalog=read('site/data/deals.json'),research=read('site/data/research-evidence.json');
-const ledger={schema:1,offers:{}},today='2026-11-03';
+const ledger={schema:1,offers:{}},today='2026-11-23';
 const retailerEvidence=read('site/data/retailer-evidence.json');
 const device=id=>catalog.phones.find(p=>p.id===id);
 const plan=id=>catalog.plans.find(p=>p.id===id);
@@ -79,7 +79,7 @@ test('Audit accurately separates published matching baselines, partial financing
  const audit=buildResearchAudit({catalog,research,ledger,today});
  assert.deepEqual([audit.summary.offers,audit.summary.researched,audit.summary.publishedPriceMatches,
   audit.summary.publishedPartial,audit.summary.notResearched,audit.summary.listingHolds,audit.summary.manuallyFullyReviewed],
-  [78,76,72,4,2,3,0]);
+  [78,76,71,4,2,3,0]);
  assert.ok(['wm-vzpre-a17','wm-st-a17','simple-a16'].every(id=>
   audit.offers.some(x=>x.id===id&&x.researchState===(id==='wm-st-a17'?'published_match':'not_researched')&&x.listingHold)));
 });

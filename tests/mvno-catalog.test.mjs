@@ -20,7 +20,7 @@ test('catalog has expanded MVNO networks with unique IDs and official provenance
   for (const id of introduced) {
     const p=byId(id);
     assert.match(p.url,/^https:\/\//);
-    assert.equal(p.priceSourceDate,'2026-11-02','official price must have scoped date');
+    assert.equal(p.priceSourceDate,['redpocket-plus','redpocket-premium'].includes(id)?'2026-11-23':'2026-11-02','official price must have scoped date');
     assert.ok(['att','tmo','vzw','multi'].includes(p.net));
     assert.equal(p.pri,null,'do not invent priority data for new MVNO plans');
     assert.equal(p.tax,false,'fees and taxes must not be silently included');
@@ -32,9 +32,8 @@ test('prices and allowances follow dated official carrier listings',()=>{
   assert.deepEqual([byId('helium-air').price,byId('helium-infinity').price],[15,30]);
   assert.deepEqual([byId('mobilex-unlimited10').price,byId('mobilex-unlimited30').price],[14.88,24.88]);
   assert.deepEqual([byId('redpocket-essentials').price,byId('redpocket-plus').price,byId('redpocket-premium').price],[10,20,30]);
-  assert.equal(byId('redpocket-plus').promo.price,10);
-  assert.equal(byId('redpocket-plus').promo.months,1);
-  assert.equal(byId('redpocket-plus').promo.req,'new');
+  assert.equal(byId('redpocket-plus').promo,undefined,'separate port-in campaign must not be modeled as generic new line');
+  assert.equal(byId('redpocket-premium').promo,undefined,'conflicting promo amount is not regular service');
   assert.equal(byId('h2o-10gb').net,'att');
   assert.equal(byId('tello-max').hot,'10GB hotspot');
 });

@@ -11,7 +11,7 @@ const read=path=>JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'ut
 const catalog=read('site/data/deals.json');
 const research=read('site/data/research-evidence.json');
 const get=id=>catalog.phones.find(x=>x.id===id);
-const day='2026-11-02';
+const day='2026-11-23';
 const eligible={lines:1,currentMonthly:95,horizon:12,today:day,canPort:false,newCustomer:true};
 const run=(id,scenario=eligible)=>simulateSwitch({catalog,type:'phone',id,scenario,researchEvidence:research});
 
@@ -21,7 +21,7 @@ test('five new first-party handset records are published-only and material new-l
   const p=get(id),r=research.records[id];
   assert.equal(p.newLineRequired,true,id);
   assert.equal(r.publishedNewLineRequired,true,id);
-  assert.equal(r.observedOn,day);
+  assert.equal(r.observedOn,id==='att-pre-motog'?day:'2026-11-02');
   assert.equal(researchStatus(p,r,{today:day}).state,'published_match');
   assert.equal(researchStatus({...p,newLineRequired:false},r,{today:day}).state,'conflict');
   assert.notEqual(offerSignature(p),offerSignature({...p,newLineRequired:false}));
@@ -95,7 +95,8 @@ test('US Mobile Pixel annual price is unproven; retain device reference but no i
  assert.equal(phoneCost(p,{newCustomer:true}).year,null);
  assert.equal(rankMatches({plans:[],phones:[p]},{newCustomer:true},day).phoneMatches,0);
  assert.throws(()=>run('usm-p11'),/no reliable required monthly plan price/i);
- assert.match(p.note,/ended September 29, 2026/);
+ assert.equal(p.url,'https://app.usmobile.com/shop/product/google-pixel-11');
+ assert.equal(p.lockUnknown,true);
 });
 
 test('human checkout sign-off must document an actual new-line scenario for these device offers',()=>{

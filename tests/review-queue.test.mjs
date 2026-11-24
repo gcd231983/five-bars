@@ -84,17 +84,16 @@ test('queue output contains only public offer metadata, no scraped web page payl
 
 test('real catalog prioritizes partial research and held retailer paths without inventing checkouts',()=>{
  const liveCatalog=JSON.parse(readFileSync(new URL('../site/data/deals.json',import.meta.url),'utf8'));
- // Replay Nov 6 with Tello's dated Nov 9 promotion; the live catalog drops it after expiry.
- const catalog=withTelloPromo(liveCatalog);
+ const catalog=liveCatalog;
  const researchEvidence=JSON.parse(readFileSync(new URL('../site/data/research-evidence.json',import.meta.url),'utf8'));
- const doc=buildReviewQueue({catalog,researchEvidence,today:'2026-11-06',
-   generatedAt:'2026-11-06T15:00:00.000Z'});
+ const doc=buildReviewQueue({catalog,researchEvidence,today:'2026-11-23',
+   generatedAt:'2026-11-23T15:00:00.000Z'});
  assert.equal(doc.summary.offers,78);
  assert.equal(doc.summary.withoutCurrentManualReview,78);
  assert.equal(doc.summary.retailerHolds,3);
  assert.equal(doc.summary.stockHolds,6);
  assert.deepEqual(doc.summary.publicationEvidence,{
-   publishedMatches:72,partial:4,unresearched:2,aged:0,conflictsOrInvalid:0
+   publishedMatches:71,partial:4,unresearched:2,aged:0,conflictsOrInvalid:1
  });
  const missing=doc.items.find(x=>x.id==='wm-vzpre-a17');
  assert.ok(missing.reasonCodes.includes('published_research_missing'));
@@ -107,7 +106,7 @@ test('real catalog prioritizes partial research and held retailer paths without 
  const stock=doc.items.find(x=>x.reasonCodes.includes('documented_stock_hold'));
  assert.ok(stock);
  assert.ok(stock.reasonCodes.includes('full_terms_not_verified'));
- assert.equal(doc.items[0].id,'tello','near-deadline published promotion remains highest review priority');
+ assert.equal(doc.items[0].id,'visible-18pro','unresolved current price takes priority over ordinary rechecks');
  assert.equal(liveCatalog.checked,'2026-10-29','automatic source research must not modify the human catalog review date');
 });
 

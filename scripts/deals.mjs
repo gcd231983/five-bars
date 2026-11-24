@@ -147,6 +147,8 @@ function validate(d, prev) {
           p.planDiscountCondition!=='autopay' || p.bundle || p.postpaid)
         errs.push(at + ': phone AutoPay discount requires a valid undiscounted monthly plan rate');
     }
+    if(p.lockUnknown!==undefined&&(p.lockUnknown!==true||p.lock!==0))
+      errs.push(at + ': unknown lock timing requires lockUnknown=true and lock=0');
     if (p.listingHold!=null && (typeof p.listingHold!=='string'||p.listingHold.length<30))
       errs.push(at + ': listingHold requires a documented editorial hold reason');
     if (p.grossRetailPrice!=null && (!p.postpaid||!isNum(p.grossRetailPrice,0,5000)))
