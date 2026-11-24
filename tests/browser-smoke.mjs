@@ -630,11 +630,15 @@ try {
     assert.match(await page.locator('#r-cc .price .now').innerText(),/\$25/);
     await page.getByRole('button',{name:'Unlimited data',exact:true}).click();
     await page.locator('#carrier').selectOption('Boost Mobile');
-    assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/);
+    assert.match(await page.locator('#r-boost .price .now').innerText(),/\$30/);
     await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
-    assert.match(await page.locator('#r-boost .price .now').innerText(),/\$10/);
+    assert.match(await page.locator('#r-boost .price .now').innerText(),/\$30/,
+      'Confirming new line must not restore the retired $10 promotion');
     await page.getByRole('button',{name:'I qualify for a new-customer or eligible new-line offer'}).click();
-    assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/);
+    await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
+    assert.match(await page.locator('#r-boost .price .now').innerText(),/\$25/,
+      'Only confirmed AutoPay unlocks the published Boost discount');
+    await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
     await page.locator('#carrier').selectOption('US Mobile');
     assert.match(await page.locator('#r-usm-starter .price .now').innerText(),/\$25/);
     await page.getByRole('button',{name:'I confirm eligible number transfer'}).click();
@@ -1063,13 +1067,13 @@ try {
     assert.match(await page.locator('#r-total-max').innerText(),/Estimated first payment \$30(?:\.00)?/i);
     assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$360/);
     await page.getByRole('button',{name:'I meet AutoPay / eBilling / Auto-Refill conditions'}).click();
-    assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$250/);
+    assert.match(await page.locator('#r-total-max').innerText(),/12 months \(est\.\): \$305/);
     await openSection(page,'switch');
     await page.locator('#fb-switch-offer').selectOption('total-max');
     await page.locator('#fb-switch-discountqualified').check();
     await page.locator('#fb-switch-form button[type="submit"]').click();
-    assert.match(await page.locator('#fb-switch-results').innerText(),/\$250\.00/);
-    assert.match(await page.locator('#fb-switch-results').innerText(),/\$490\.00/);
+    assert.match(await page.locator('#fb-switch-results').innerText(),/\$305\.00/);
+    assert.match(await page.locator('#fb-switch-results').innerText(),/\$605\.00/);
     await page.locator('#t-plans').click();
     await page.locator('#carrier').selectOption('any');
     await page.locator('#net').selectOption('any');
