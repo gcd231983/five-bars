@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {Script,runInNewContext} from 'node:vm';
-import {buildResearchAudit,researchStatus,renderResearchPage}
+import {buildResearchAudit,researchStatus,renderResearchPage,publishedPriceRecheck}
  from '../scripts/source-research.mjs';
 import {planCost,phoneCost,rankMatches,verificationState,offerSignature} from '../site/value-core.mjs';
 import {simulateSwitch} from '../site/switch-core.mjs';
@@ -12,7 +12,7 @@ const read=file=>readFileSync(new URL('../'+file,import.meta.url),'utf8');
 const catalog=JSON.parse(read('site/data/deals.json'));
 const research=JSON.parse(read('site/data/research-evidence.json'));
 const ledger={schema:1,offers:{}};
-const date='2026-11-03';
+const date='2026-11-23';
 const build=(changes={})=>buildResearchAudit({catalog,ledger,research,today:date,...changes});
 const get=id=>catalog.plans.find(p=>p.id===id);
 test('38 plan baselines and 38 device headlines remain separate from checkout verification',()=>{
@@ -24,15 +24,15 @@ test('38 plan baselines and 38 device headlines remain separate from checkout ve
  assert.equal(audit.summary.availabilityHolds,6);
  assert.equal(audit.summary.publishedPartial,4);
  assert.equal(audit.summary.listingHolds,3);
- assert.equal(audit.summary.conflictingOrInvalid,0);
- assert.equal(audit.summary.publishedPriceMatches,72);
+ assert.equal(audit.summary.conflictingOrInvalid,1);
+ assert.equal(audit.summary.publishedPriceMatches,71);
  assert.equal(audit.summary.manuallyFullyReviewed,0);
  assert.equal(audit.summary.needingFullTerms,78);
  assert.ok(audit.offers.every(x=>x.manualReview!=='verified'));
  assert.ok(audit.offers.some(x=>x.id==='tello'&&x.researchState==='published_match'));
  assert.ok(audit.offers.some(x=>x.id==='wm-st-a17'&&x.researchState==='published_match'&&x.listingHold));
  assert.ok(audit.offers.some(x=>x.id==='boost-motog'&&x.researchState==='published_match'));
- assert.ok(audit.offers.some(x=>x.id==='visible-18pro'&&x.researchState==='published_match'));
+ assert.ok(audit.offers.some(x=>x.id==='visible-18pro'&&x.researchState==='conflict'));
  assert.ok(audit.offers.some(x=>x.id==='metro-16e'&&x.researchState==='published_match'));
  assert.ok(audit.offers.some(x=>x.id==='cricket-16e'&&x.researchState==='published_match'));
  assert.ok(audit.offers.some(x=>x.id==='total-a17'&&x.researchState==='published_match'));
@@ -182,10 +182,10 @@ test('static public source audit prints 76 dated source cards and 2 unresearched
  assert.match(html,/report\.html\?offer=usm-starter/);
  assert.match(html,/Report a correction to this listing/);
  assert.match(html,/OUT OF STOCK on recorded date; no live checkout quote/);
- assert.match(html,/\$10\.00\/mo for first 6 month\(s\) ONLY for eligible new customers/);
+ assert.match(html,/51 advertised prices rechecked on 2026-11-23/);
  assert.match(html,/id="research-redpocket-plus"/);
- assert.match(html,/FULL RETAIL handset payment required; financing ineligible/);
- assert.match(html,/\$20\.00\/mo conditional service credits for 24 months NOT deducted/);
+ assert.match(html,/Current advertised price needs review/);
+ assert.match(html,/51 advertised prices rechecked/);
  assert.match(html,/Official conditional DEVICE HEADLINE \(not checkout\)/);
  assert.match(html,/\$100\.00 conditional later reward NOT deducted/);
  assert.doesNotMatch(html,/100% verified|Guaranteed savings|affiliate commission available/);
@@ -216,15 +216,15 @@ test('Total BYO first month is modeled once across standalone and Switch & Save 
  assert.equal(unconfirmed.monthTotal,30);
  assert.equal(unconfirmed.year,360);
  const cost=planCost(p,1,{today:date,discountQualified:true});
- assert.equal(cost.monthTotal,20);
+ assert.equal(cost.monthTotal,25);
  assert.equal(cost.upfrontDue,30);
- assert.equal(cost.year,250);
+ assert.equal(cost.year,305);
  const report=simulateSwitch({catalog,type:'plan',id:'total-max',researchEvidence:research,
   scenario:{lines:1,currentMonthly:60,horizon:12,today:date,discountQualified:true}});
  assert.equal(report.chosen.upfrontDue,30);
- assert.equal(report.results[12].serviceTotal,250);
- assert.equal(report.results[24].serviceTotal,490);
- assert.equal(report.results[36].serviceTotal,730);
+ assert.equal(report.results[12].serviceTotal,305);
+ assert.equal(report.results[24].serviceTotal,605);
+ assert.equal(report.results[36].serviceTotal,905);
  const page=read('site/index.html');
  const start=page.indexOf('function planCalc(p){');
  const end=page.indexOf('function planVisible(p){',start);
@@ -232,7 +232,7 @@ test('Total BYO first month is modeled once across standalone and Switch & Save 
  const calc=page.slice(start,end);
  const main=runInNewContext(calc+'; planCalc(p);',{p,state:{lines:1,t:{discountqualified:true}},endInfo:()=>null});
  assert.equal(main.upfrontDue,30);
- assert.equal(main.year,250);
+ assert.equal(main.year,305);
  assert.ok(renderResearchPage({catalog,ledger,research,today:date}).includes('$30.00 first month'));
  const bad={...p,firstMonthPrice:20};
  assert.equal(researchStatus(bad,research.records['total-max'],{today:date}).state,'conflict');
@@ -247,40 +247,27 @@ test('published handset conditions do not certify checkout and changed terms blo
  assert.equal(researchStatus({...cricket,price:49.99},research.records['cricket-16e'],{today:date}).state,'conflict');
  const report=simulateSwitch({catalog,type:'phone',id:'metro-16e',researchEvidence:research,
   scenario:{lines:1,currentMonthly:80,canPort:true,today:date,horizon:12}});
- assert.equal(report.chosen.upfrontDue,154.99);
- assert.equal(report.chosen.serviceTotal,605);
- assert.equal(report.chosen.newTotal,704.99);
+ assert.equal(report.chosen.upfrontDue,159.99);
+ assert.equal(report.chosen.serviceTotal,720);
+ assert.equal(report.chosen.newTotal,819.99);
  assert.equal(report.confidence,'indicative_not_fully_verified');
  assert.ok(report.warnings.some(w=>w.includes('conditional device headline')));
  const old=catalog.phones.find(p=>p.id==='metro-16e');
- const wrong={...old,firstMonthPlanPrice:50};
+ const wrong={...old,firstMonthPlanPrice:55};
  assert.equal(researchStatus(wrong,research.records['metro-16e'],{today:date}).state,'conflict');
  assert.throws(()=>simulateSwitch({catalog:{...catalog,phones:catalog.phones.map(p=>p.id===old.id?wrong:p)},
   type:'phone',id:old.id,researchEvidence:research,
   scenario:{lines:1,currentMonthly:80,canPort:true,today:date,horizon:12}}),/official published-source research conflicts/i);
 });
-test('Visible retail-only $480 bill credit is noncash and materially checked against official publication',()=>{
+test('unreconfirmed Visible iPhone credits cannot leak through raw costs or public evidence',()=>{
  const offer=catalog.phones.find(x=>x.id==='visible-18pro');
- const record=research.records['visible-18pro'];
- assert.equal(offer.fullRetailRequired,true);
- assert.equal(record.publishedFullRetailRequired,true);
- assert.equal(record.publishedCreditMonthly,20);
- assert.equal(record.publishedCreditMonths,24);
- assert.equal(researchStatus(offer,record,{today:date}).state,'published_match');
- const report=simulateSwitch({catalog,type:'phone',id:offer.id,researchEvidence:research,
-  scenario:{lines:1,currentMonthly:80,canPort:false,today:date,horizon:12}});
- assert.equal(report.chosen.upfrontDue,1244);
- assert.equal(report.results[12].newTotal,1739);
- assert.equal(report.results[24].newTotal,2279);
- assert.ok(report.warnings.some(x=>x.includes('conditional device headline')));
- assert.equal(report.confidence,'indicative_not_fully_verified');
- for(const changed of [{credit:15},{creditMonths:12},{fullRetailRequired:false}]){
-  const wrong={...offer,...changed};
-  assert.equal(researchStatus(wrong,record,{today:date}).state,'conflict');
-  assert.throws(()=>simulateSwitch({catalog:{...catalog,phones:catalog.phones.map(x=>x.id===offer.id?wrong:x)},
-    type:'phone',id:offer.id,researchEvidence:research,
-    scenario:{lines:1,currentMonthly:80,today:date,horizon:12}}),/official published-source research conflicts/i);
- }
+ const record=research.records[offer.id];
+ assert.equal(offer.credit,undefined,'unsupported live credit removed from raw catalog');
+ assert.equal(phoneCost(offer).due,null);
+ assert.equal(researchStatus(offer,record,{today:date}).state,'conflict');
+ assert.equal(build().offers.find(x=>x.id===offer.id).publishedPriceRecheck,undefined);
+ assert.throws(()=>simulateSwitch({catalog,type:'phone',id:offer.id,researchEvidence:research,
+  scenario:{lines:1,currentMonthly:80,today:date,horizon:12}}),/published-source research conflicts/i);
 });
 test('Boost razr prepaid service is documented without promoting an online headline to a checkout sign-off',()=>{
  const offer=catalog.phones.find(x=>x.id==='boost-razr');
@@ -302,19 +289,15 @@ test('Metro first bill and optional new-line Boost/Red Pocket discounts are chec
  assert.equal(planCost(premium,1,{today:date,discountQualified:true}).year,725);
  assert.equal(researchStatus(metro,research.records.metro,{today:date}).state,'published_match');
  assert.equal(researchStatus({...metro,firstMonthPrice:25},research.records.metro,{today:date}).state,'conflict');
- for(const [id,regular,discounted] of [['boost',300,210],['redpocket-plus',240,230],['redpocket-premium',360,345]]){
-  const offer=get(id),r=research.records[id];
-  assert.equal(researchStatus(offer,r,{today:date}).state,'published_match');
-  assert.equal(planCost(offer,1,{today:date}).year,regular,'new-only discount is not automatic for '+id);
-  assert.equal(planCost(offer,1,{today:date,newCustomer:true}).year,discounted);
-  assert.equal(researchStatus({...offer,promo:{...offer.promo,req:'port'}},r,{today:date}).state,'conflict');
+ for(const [id,expected] of [['boost',360],['redpocket-plus',240],['redpocket-premium',360]]){
+  const offer=get(id),record=research.records[id];
+  assert.equal(offer.promo,undefined,'old generic promotion is no longer published');
+  assert.equal(researchStatus(offer,record,{today:date}).state,'published_match');
+  assert.equal(planCost(offer,1,{today:date,newCustomer:true}).year,expected);
  }
  const report=simulateSwitch({catalog,type:'plan',id:'boost',researchEvidence:research,
-  scenario:{currentMonthly:80,lines:1,horizon:12,today:date,newCustomer:false}});
+  scenario:{currentMonthly:80,lines:1,horizon:12,today:date,discountQualified:true}});
  assert.equal(report.chosen.serviceTotal,300);
- const newReport=simulateSwitch({catalog,type:'plan',id:'boost',researchEvidence:research,
-  scenario:{currentMonthly:80,lines:1,horizon:12,today:date,newCustomer:true}});
- assert.equal(newReport.chosen.serviceTotal,210);
 });
 test('US Mobile selected port-in headline requires confirmed transfer AND AutoPay qualification',()=>{
  for(const [id,regular,discounted] of [
@@ -366,7 +349,7 @@ test('remaining official source records never imply autopay or customer-specific
 });
 test('published non-discount pricing and fixed provider charges are independently signed and cannot be altered silently',()=>{
  for(const [id,standard,qualified] of [
-  ['metro',360,305],['metro-premium',780,725],['total-max',360,250],
+  ['metro',360,305],['metro-premium',780,725],['total-max',360,305],
   ['cc',370,310],['tracfone',600,545]]){
   const p=get(id),r=research.records[id];
   assert.equal(researchStatus(p,r,{today:date}).state,'published_match',id);
@@ -399,12 +382,12 @@ test('Total ALL ACCESS identity and Metro Moto G first bill are published as cho
  assert.equal(planCost(plan,4,{today:date}),null);
  assert.equal(researchStatus(plan,research.records['total-all-access'],{today:date}).state,'published_match');
  const phone=catalog.phones.find(x=>x.id==='metro-motog');
- assert.equal(phone.planPrice,60);
- assert.equal(phone.firstMonthPlanPrice,60);
+ assert.equal(phone.planPrice,40);
+ assert.equal(phone.firstMonthPlanPrice,40);
  assert.equal(researchStatus(phone,research.records['metro-motog'],{today:date}).state,'published_match');
- assert.equal(phoneCost(phone).due,60);
- assert.equal(phoneCost(phone).year,720);
- const mismatch={...phone,firstMonthPlanPrice:40};
+ assert.equal(phoneCost(phone).due,40);
+ assert.equal(phoneCost(phone).year,480);
+ const mismatch={...phone,firstMonthPlanPrice:60};
  assert.equal(researchStatus(mismatch,research.records['metro-motog'],{today:date}).state,'conflict');
  assert.throws(()=>simulateSwitch({catalog:{...catalog,phones:catalog.phones.map(x=>x.id===phone.id?mismatch:x)},
   type:'phone',id:phone.id,researchEvidence:research,
@@ -446,4 +429,26 @@ test('unrelated phone offers remain not researched; official source research doe
  const fake=structuredClone(research);
  fake.records['missing-fake']={observedOn:date,publishedMonthly:0,sources:[]};
  assert.throws(()=>build({research:fake}),/missing offer/);
+});
+
+
+test('scoped advertised price recheck is fresh, bound to exact amounts, and never advances full terms or checkout',()=>{
+ const offer=get('mint'),record=research.records.mint;
+ assert.equal(publishedPriceRecheck(offer,record,date)?.observedOn,date);
+ assert.equal(publishedPriceRecheck({...offer,billingUpfront:180},record,date),null);
+ assert.equal(publishedPriceRecheck(offer,{...record,priceRecheck:{...record.priceRecheck,sourceUrl:'https://example.com/'}},date),null);
+ assert.equal(publishedPriceRecheck(offer,record,'2026-12-15'),null);
+ const audit=build();
+ assert.equal(audit.latestPriceRecheckOn,date);
+ assert.equal(audit.summary.latestPublishedPriceRechecks,51);
+ assert.equal(audit.offers.find(x=>x.id==='mint').researchedOn,'2026-11-02');
+ assert.equal(audit.summary.manuallyFullyReviewed,0);
+ assert.equal(catalog.checked,'2026-10-29');
+});
+
+test('documented expired devices leave active catalog and report without breaking the audit',()=>{
+ const reduced={...catalog,phones:catalog.phones.filter(x=>x.id!=='metro-motog')};
+ assert.throws(()=>build({catalog:reduced,today:'2026-12-07'}),/references missing offer/);
+ assert.ok(!build({catalog:reduced,today:'2026-12-08'}).offers.some(x=>x.id==='metro-motog'));
+ assert.doesNotMatch(renderResearchPage({catalog:reduced,ledger,research,today:'2026-12-08'}),/data-offer-id="metro-motog"/);
 });

@@ -12,7 +12,7 @@ const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const catalog=JSON.parse(read('site/data/deals.json'));
 const research=JSON.parse(read('site/data/research-evidence.json'));
 const get=id=>catalog.phones.find(p=>p.id===id);
-const today='2026-11-02';
+const today='2026-11-23';
 const scenario={lines:1,currentMonthly:100,canPort:true,today,horizon:12};
 const switchFor=(offer,extra={})=>simulateSwitch({catalog:{plans:[],phones:[offer]},type:'phone',
  id:offer.id,researchEvidence:research,scenario:{...scenario,...extra}});
@@ -75,7 +75,7 @@ test('fixed service blocks are charged once, independently of later monthly rene
  assert.equal(report.results[36].serviceTotal,1785);
  assert.ok(report.warnings.some(w=>w.includes('confirm the actual renewal interval')));
  assert.equal(phoneCost({...offer,stay:6}).commitment,285);
- const quote=checkoutFixture(offer);
+ const quote={...checkoutFixture(offer),observedAt:today};
  assert.ok(checkoutEvidenceIssues(offer,{...quote,upfrontCents:13499},today).some(x=>x.includes('fixed prepaid')));
  assert.deepEqual(checkoutEvidenceIssues(offer,{...quote,upfrontCents:13500},today),[]);
 });
@@ -83,7 +83,7 @@ test('fixed service blocks are charged once, independently of later monthly rene
 test('removing mandatory transfer eligibility never creates a cheaper free Total A36 recommendation',()=>{
  const offer=get('total-a36');
  assert.equal(offer.port,true);
- assert.equal(phoneCost(offer).due,165);
+ assert.equal(phoneCost(offer).due,110);
  assert.equal(rankMatches({plans:[],phones:[offer]},{canPort:false},today).phoneMatches,0);
  assert.equal(rankMatches({plans:[],phones:[offer]},{canPort:true},today).phoneMatches,1);
  assert.throws(()=>switchFor(offer,{canPort:false}),/transfer|port/i);

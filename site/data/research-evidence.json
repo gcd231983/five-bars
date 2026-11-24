@@ -11,7 +11,7 @@
       "sources": [
         {
           "url": "https://www.usmobile.com/broadband-facts",
-          "supports": "FCC-style broadband label: Starter $25 monthly regular, taxes/fees included, no contract"
+          "supports": "US Mobile’s broadband label publishes the regular monthly rate with plan taxes and fees included; separate introductory/annual campaigns are not compared here."
         },
         {
           "url": "https://www.usmobile.com/plans",
@@ -41,7 +41,12 @@
       "observedOn": "2026-11-02",
       "publishedPromoPrice": 15,
       "publishedPromoMonths": 6,
-      "publishedPromoRequirement": "port"
+      "publishedPromoRequirement": "port",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.usmobile.com/broadband-facts",
+        "price": 25
+      }
     },
     "usm-premium": {
       "carrier": "US Mobile",
@@ -50,7 +55,7 @@
       "sources": [
         {
           "url": "https://www.usmobile.com/broadband-facts",
-          "supports": "Premium non-introductory $44/mo label, taxes/fees included"
+          "supports": "US Mobile’s broadband label publishes the regular monthly rate with plan taxes and fees included; separate introductory/annual campaigns are not compared here."
         },
         {
           "url": "https://www.usmobile.com/plans",
@@ -80,7 +85,12 @@
       "observedOn": "2026-11-02",
       "publishedPromoPrice": 25,
       "publishedPromoMonths": 6,
-      "publishedPromoRequirement": "port"
+      "publishedPromoRequirement": "port",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.usmobile.com/broadband-facts",
+        "price": 44
+      }
     },
     "usm-light": {
       "carrier": "US Mobile",
@@ -89,7 +99,7 @@
       "sources": [
         {
           "url": "https://www.usmobile.com/broadband-facts",
-          "supports": "Light 2GB $10/mo standard broadband label; taxes/fees included"
+          "supports": "US Mobile’s broadband label publishes the regular monthly rate with plan taxes and fees included; separate introductory/annual campaigns are not compared here."
         },
         {
           "url": "https://www.usmobile.com/plans",
@@ -106,7 +116,12 @@
         "Confirm data after 2GB and hotspot allowance, top-ups and any bundle discounts",
         "Confirm activation, payment and taxes for the intended line"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.usmobile.com/broadband-facts",
+        "price": 10
+      }
     },
     "visible": {
       "carrier": "Visible",
@@ -120,6 +135,10 @@
         {
           "url": "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html",
           "supports": "Verizon network and up-to-5Mbps unlimited hotspot"
+        },
+        {
+          "url": "https://www.visible.com/plans",
+          "supports": "Visible publishes the regular monthly service rate with service taxes and fees included; holiday codes are separate."
         }
       ],
       "supportedFacts": [
@@ -132,7 +151,12 @@
         "Check device eSIM/IMEI, exact coverage and any speed-prioritization limitations",
         "Confirm checkout and any activation or optional add-on charges"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.visible.com/plans",
+        "price": 25
+      }
     },
     "visible-plus": {
       "carrier": "Visible",
@@ -146,6 +170,10 @@
         {
           "url": "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html",
           "supports": "Visible+ hotspot up to 10Mbps, streaming and roaming conditions"
+        },
+        {
+          "url": "https://www.visible.com/plans",
+          "supports": "Visible publishes the regular monthly service rate with service taxes and fees included; holiday codes are separate."
         }
       ],
       "supportedFacts": [
@@ -159,7 +187,12 @@
         "Verify premium data policy on the intended device and coverage",
         "Check smartwatch, international and activation/checkout details"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.visible.com/plans",
+        "price": 35
+      }
     },
     "visible-pro": {
       "carrier": "Visible",
@@ -173,6 +206,10 @@
         {
           "url": "https://www.visible.com/content/value/visible/en/help/about-visible/plan-features.html",
           "supports": "Visible+ Pro unlimited hotspot up to 15Mbps and feature tiers"
+        },
+        {
+          "url": "https://www.visible.com/plans",
+          "supports": "Visible publishes the regular monthly service rate with service taxes and fees included; holiday codes are separate."
         }
       ],
       "supportedFacts": [
@@ -186,7 +223,12 @@
         "Check 5G Ultra Wideband coverage, international availability and smartwatch conditions",
         "Confirm checkout charges and plan feature conditions"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.visible.com/plans",
+        "price": 45
+      }
     },
     "tello": {
       "carrier": "Tello",
@@ -195,7 +237,7 @@
       "sources": [
         {
           "url": "https://tello.com/buy/custom_plans",
-          "supports": "Official Everyday 10GB plan: $10 per month for the first three qualifying months; $15 regular monthly renewal"
+          "supports": "Tello’s plan selection publishes this regular 30-day service rate; eligibility and location-based charges are separate."
         },
         {
           "url": "https://blog.tello.com/news/halloween-deal-10gb-for-10-mo-first-3-months/",
@@ -219,7 +261,12 @@
         "Observe exact first bill and renewal checkout totals, including location-specific taxes and any applicable cost-recovery charge (up to $0.30, not a confirmed fixed fee)",
         "Confirm SIM/eSIM and IMEI compatibility, coverage and other account-specific conditions"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://tello.com/buy/custom_plans",
+        "price": 15
+      }
     },
     "tello-starter": {
       "carrier": "Tello",
@@ -228,7 +275,7 @@
       "sources": [
         {
           "url": "https://tello.com/buy/custom_plans",
-          "supports": "Starter 2GB unlimited talk/text at standard $10/mo and broadband consumer facts"
+          "supports": "Tello’s plan selection publishes this regular 30-day service rate; eligibility and location-based charges are separate."
         },
         {
           "url": "https://tello.com/buy/custom_plans?plan=2000-unlimited",
@@ -245,7 +292,12 @@
         "Confirm 2GB high-speed use and what happens afterward",
         "Confirm device compatibility and coverage"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://tello.com/buy/custom_plans",
+        "price": 10
+      }
     },
     "tello-power": {
       "carrier": "Tello",
@@ -254,7 +306,7 @@
       "sources": [
         {
           "url": "https://tello.com/buy/custom_plans",
-          "supports": "Power 20GB plan at $20/mo, hotspot shared with plan data"
+          "supports": "Tello’s plan selection publishes this regular 30-day service rate; eligibility and location-based charges are separate."
         },
         {
           "url": "https://tello.com/buy/custom_plans?plan=unlimited-unlim-unlim",
@@ -271,7 +323,12 @@
         "Confirm local taxes, cost-recovery charges and actual bill",
         "Confirm device and coverage suitability"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://tello.com/buy/custom_plans",
+        "price": 20
+      }
     },
     "tello-max": {
       "carrier": "Tello",
@@ -280,7 +337,7 @@
       "sources": [
         {
           "url": "https://tello.com/buy/custom_plans",
-          "supports": "Max unlimited $25 standard plan, hotspot included"
+          "supports": "Tello’s plan selection publishes this regular 30-day service rate; eligibility and location-based charges are separate."
         },
         {
           "url": "https://tello.com/buy/custom_plans?plan=unlimited-unlim-unlim",
@@ -289,6 +346,10 @@
         {
           "url": "https://tello.com/buy/custom_plans?plan=0-unlimited-unlimited",
           "supports": "Published Unlimited broadband disclosure lists 50GB high-speed then throttled; may be dynamically rendered"
+        },
+        {
+          "url": "https://tello.com/help_center/plans-pricing/how-much-is-the-unlimited-plan",
+          "supports": "Tello’s own support page lists 50 GB full-speed data and 10 GB hotspot; the secondary plan terms were reviewed separately."
         }
       ],
       "supportedFacts": [
@@ -302,7 +363,12 @@
         "Confirm actual taxes/cost-recovery and any current new-line price",
         "Confirm device compatibility and hotspot policies"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://tello.com/buy/custom_plans",
+        "price": 25
+      }
     },
     "mint": {
       "carrier": "Mint Mobile",
@@ -322,6 +388,10 @@
         {
           "url": "https://www.mintmobile.com/help/what-is-mint-mobiles-switch-to-mint-and-get-3-6-or-12-months-of-premium-wireless-for-15-mo-any-plan-promotion/",
           "supports": "New customers may qualify for temporary $15/month equivalent and $180 upfront for 12 months"
+        },
+        {
+          "url": "https://www.mintmobile.com/phone-plans/12-month-plans/?selected=MINT-UNLIMITED-12",
+          "supports": "After an eligible first-term signup offer, the published regular 12-month Unlimited renewal is $360 upfront, equivalent to $30/mo."
         }
       ],
       "supportedFacts": [
@@ -335,7 +405,13 @@
         "Confirm taxes/fees, refund/cancellation rules, renewal rate and family payment plans",
         "Confirm IMEI/eSIM and account eligibility; do not assume household monthly billing"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.mintmobile.com/phone-plans/12-month-plans/?selected=MINT-UNLIMITED-12",
+        "price": 30,
+        "upfront": 360
+      }
     },
     "cricket-supreme": {
       "carrier": "Cricket",
@@ -353,6 +429,10 @@
         {
           "url": "https://qrcricket.cricketwireless.com/en_US/rate-plan-mutli.html",
           "supports": "Multi-line Supreme price tables assume AutoPay discount starting second month"
+        },
+        {
+          "url": "https://www.cricketwireless.com/shop/cell-phone-plans/select",
+          "supports": "The published Supreme Unlimited baseline is $60/mo; qualified AutoPay can reduce later single-line bills to $55."
         }
       ],
       "supportedFacts": [
@@ -366,37 +446,45 @@
         "Confirm store versus online activation charges and device promotion requirements",
         "Confirm international, cancellation and phone unlocking terms"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/cell-phone-plans/select",
+        "price": 60
+      }
     },
     "total-max": {
       "carrier": "Total Wireless",
-      "publishedMonthly": 20,
-      "term": "monthly_with_autopay",
+      "publishedMonthly": 25,
+      "term": "conditional_byo_first_payment_autopay",
       "sources": [
         {
-          "url": "https://www.totalwireless.com/m/plans",
-          "supports": "MAX 5G BYO: $20 with AutoPay and $30 for the first month"
+          "url": "https://www.totalwireless.com/m/plans/smartphone",
+          "supports": "Official national grid shows $25 advertised AutoPay rate for qualifying MAX bring-your-own-phone service."
         },
         {
           "url": "https://www.totalwireless.com/m/byop",
-          "supports": "BYO eligibility, $20 recurring AutoPay rate and $30 first month"
+          "supports": "Official BYO page contains the $30 first bill and a separate $20 AutoPay offer under its specific eligibility rules."
         }
       ],
       "supportedFacts": [
-        "Published eligible single-line BYO plan costs $30 for the first month, then $20/month with AutoPay",
-        "First-year modeled service cost is $250 rather than $240, excluding unknown additions",
-        "Plan requires a qualifying new BYO activation, compatible device and AutoPay for the discounted recurring rate"
+        "$30 first month and $25 recurring with qualifying AutoPay in the national plan grid.",
+        "A dedicated BYO purchase page advertises $20 with separate terms; use only after checking the exact channel and eligibility. Device-bundle MAX terms are a different plan path."
       ],
       "unresolved": [
-        "Confirm AutoPay enrollment, first-month checkout and taxes",
-        "Confirm new-line and IMEI/eSIM eligibility, including prior Verizon-brand devices",
-        "Confirm exact roaming, network coverage, extra charges and renewal conditions",
-        "Confirm the qualifying payment/billing enrollment before assuming the discounted recurring rate; the full rate is the conservative default."
+        "Confirm exact selected channel, unlocked device eligibility, continued AutoPay and actual amount due.",
+        "Confirm initial checkout charges and local taxes.",
+        "Confirm offer eligibility and duration for the selected new line and device."
       ],
-      "observedOn": "2026-11-02",
+      "observedOn": "2026-11-23",
       "publishedFirstMonthPrice": 30,
       "publishedUndiscountedPrice": 30,
-      "publishedDiscountCondition": "autopay"
+      "publishedDiscountCondition": "autopay",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.totalwireless.com/m/plans/smartphone",
+        "price": 25
+      }
     },
     "h2o-10gb": {
       "carrier": "H2O Wireless",
@@ -405,7 +493,7 @@
       "sources": [
         {
           "url": "https://www.h2owireless.com/plan/monthly",
-          "supports": "10GB monthly card lists $20 standard, $18 AutoPay, 2GB hotspot"
+          "supports": "H2O’s official selector lists the regular plan rate and distinguishes the complete annual prepayment from monthly AutoPay option."
         }
       ],
       "supportedFacts": [
@@ -418,7 +506,12 @@
         "Confirm taxes, activation, renewal and any roaming fees",
         "Confirm device acceptance, coverage and high-speed/hotspot terms"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.h2owireless.com/plan/monthly",
+        "price": 20
+      }
     },
     "h2o-unlimited": {
       "carrier": "H2O Wireless",
@@ -427,7 +520,7 @@
       "sources": [
         {
           "url": "https://www.h2owireless.com/plan/monthly",
-          "supports": "Unlimited monthly card lists $30 standard, $27 AutoPay, speeds reduced after 30GB"
+          "supports": "H2O’s official selector lists the regular plan rate and distinguishes the complete annual prepayment from monthly AutoPay option."
         }
       ],
       "supportedFacts": [
@@ -440,38 +533,48 @@
         "Confirm taxes, activation and extra international charges",
         "Confirm handset, underlying network and coverage"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.h2owireless.com/plan/monthly",
+        "price": 30
+      }
     },
     "metro-16e": {
       "kind": "phone",
       "carrier": "Metro by T-Mobile",
       "publishedDevicePrice": 99.99,
-      "publishedPlanMonthly": 50,
+      "publishedPlanMonthly": 55,
       "publishedPortRequired": true,
-      "publishedFirstMonthPlanPrice": 55,
+      "publishedFirstMonthPlanPrice": 60,
       "publishedConditionalRebate": 100,
       "term": "conditional_public_offer_selection_not_checkout",
       "sources": [
         {
-          "url": "https://www.metrobyt-mobile.com/deals/apple",
-          "supports": "Official $99.99 handset, $55 first bill, $50 with AutoPay, conditional $100 virtual Mastercard"
-        },
-        {
           "url": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e",
-          "supports": "Selected iPhone 16e purchase and service options"
+          "supports": "Metro handset purchase terms describe the device price, $60 first month/$55 AutoPay and the $100 delayed virtual card."
         }
       ],
       "supportedFacts": [
-        "Selected online price $99.99 plus qualifying new-line port-in and first service bill",
-        "Published $55 first month and eligible $50 AutoPay service after first bill",
-        "The $100 virtual Mastercard is only available after three paid months and claim form, with no cash access"
+        "Selected advertised device cash price is $99.99, plus device tax and first-month service.",
+        "$60 is the first service month; $55 ongoing requires qualifying AutoPay.",
+        "$100 virtual prepaid card requires three paid months and a claim form; never deducted from signup price."
       ],
       "unresolved": [
         "Check port eligibility and device stock, service and taxes in actual checkout",
         "Verify $100 reward eligibility, claim process, time limit and account standing",
         "Verify device lock terms, identity restrictions and carrier exclusions"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-23",
+      "publishedUndiscountedPlanPrice": 60,
+      "publishedPlanDiscountCondition": "autopay",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e",
+        "price": 99.99,
+        "planPrice": 55,
+        "firstMonthPrice": 60
+      }
     },
     "total-a17": {
       "kind": "phone",
@@ -540,7 +643,7 @@
       "sources": [
         {
           "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea",
-          "supports": "Selected online $0 Motorola stylus plus two prepaid $60 service months and port-in"
+          "supports": "Cricket’s selected device page publishes the advertised device price and qualifying service; this recheck does not confirm stock."
         }
       ],
       "supportedFacts": [
@@ -553,7 +656,13 @@
         "Verify taxes, service first payment, device stock and actual checkout",
         "Confirm device unlock policy and rate plan restrictions"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea",
+        "price": 0,
+        "planPrice": 60
+      }
     },
     "cricket-a17": {
       "kind": "phone",
@@ -646,7 +755,7 @@
       "sources": [
         {
           "url": "https://www.boostmobile.com/deals",
-          "supports": "Official online moto g 2026 listed FREE with $60 Unlimited Premium and number transfer"
+          "supports": "Boost’s official device and service headline confirms the advertised device/required plan price and separately describes AutoPay."
         }
       ],
       "supportedFacts": [
@@ -661,7 +770,13 @@
       ],
       "observedOn": "2026-11-02",
       "publishedUndiscountedPlanPrice": 65,
-      "publishedPlanDiscountCondition": "autopay"
+      "publishedPlanDiscountCondition": "autopay",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.boostmobile.com/deals",
+        "price": 0,
+        "planPrice": 60
+      }
     },
     "visible-18pro": {
       "kind": "phone",
@@ -681,6 +796,10 @@
         {
           "url": "https://www.visible.com/m/deals",
           "supports": "Official separate iPhone 18 Pro offer: $480 in 24 conditional monthly service credits on Visible+ Pro with FULL RETAIL purchase; financing disqualified"
+        },
+        {
+          "url": "https://www.visible.com/buy/smartphones/iphone-18-pro",
+          "supports": "Selected iPhone 18 Pro official product page; current public terms do not corroborate the older iPhone-specific service credit."
         }
       ],
       "supportedFacts": [
@@ -694,7 +813,12 @@
         "Check Visible+ Pro eligibility, credit posting, promotional exclusivity, activation timing and whether offer remains available",
         "Confirm sales taxes, carrier checkout total, unlocking terms and any separate financing selection"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "currentPriceHold": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.visible.com/buy/smartphones/iphone-18-pro",
+        "reason": "Visible’s live iPhone 18 Pro product and deals pages no longer corroborate the historical $480 iPhone-specific service credit. Hold shopping estimates and confirm the exact current offer."
+      }
     },
     "helium-air": {
       "carrier": "Helium Mobile",
@@ -715,7 +839,12 @@
         "Check tax/fees, eligibility and exact checkout amount.",
         "Verify hotspot/data top-up, roaming and renewal conditions."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+        "price": 15
+      }
     },
     "helium-infinity": {
       "carrier": "Helium Mobile",
@@ -736,7 +865,12 @@
         "Confirm hotspot limits and how post-36GB speed management works.",
         "Confirm taxes, activation, roaming and any extra data fees."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
+        "price": 30
+      }
     },
     "h2o-annual10": {
       "carrier": "H2O Wireless",
@@ -745,7 +879,7 @@
       "sources": [
         {
           "url": "https://www.h2owireless.com/plan/monthly",
-          "supports": "Official H2O Wireless page documents Carrier 10GB 12-month plan is $16 per-month equivalent only when $192 is paid in advance.; After 10GB high-speed data speeds reduce, and the selected plan includes 2GB hotspot."
+          "supports": "H2O’s official selector lists the regular plan rate and distinguishes the complete annual prepayment from monthly AutoPay option."
         }
       ],
       "supportedFacts": [
@@ -759,7 +893,13 @@
       ],
       "observedOn": "2026-11-02",
       "billingMonths": 12,
-      "billingUpfront": 192
+      "billingUpfront": 192,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.h2owireless.com/plan/monthly",
+        "price": 16,
+        "upfront": 192
+      }
     },
     "h2o-annual30": {
       "carrier": "H2O Wireless",
@@ -768,7 +908,7 @@
       "sources": [
         {
           "url": "https://www.h2owireless.com/plan/monthly",
-          "supports": "Official H2O Wireless page documents Carrier's 30GB high-speed unlimited 12-month selection is $24 monthly equivalent with $288 paid upfront.; After 30GB high-speed data speed is reduced; 5GB hotspot is included."
+          "supports": "H2O’s official selector lists the regular plan rate and distinguishes the complete annual prepayment from monthly AutoPay option."
         }
       ],
       "supportedFacts": [
@@ -782,7 +922,13 @@
       ],
       "observedOn": "2026-11-02",
       "billingMonths": 12,
-      "billingUpfront": 288
+      "billingUpfront": 288,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.h2owireless.com/plan/monthly",
+        "price": 24,
+        "upfront": 288
+      }
     },
     "good2go-annual1": {
       "carrier": "Good2Go Mobile",
@@ -805,7 +951,13 @@
       ],
       "observedOn": "2026-11-02",
       "billingMonths": 12,
-      "billingUpfront": 60
+      "billingUpfront": 60,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://annualplans.good2gomobile.com/home-page",
+        "price": 5,
+        "upfront": 60
+      }
     },
     "good2go-annual3": {
       "carrier": "Good2Go Mobile",
@@ -828,7 +980,13 @@
       ],
       "observedOn": "2026-11-02",
       "billingMonths": 12,
-      "billingUpfront": 120
+      "billingUpfront": 120,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://annualplans.good2gomobile.com/home-page",
+        "price": 10,
+        "upfront": 120
+      }
     },
     "good2go-annual5": {
       "carrier": "Good2Go Mobile",
@@ -851,7 +1009,13 @@
       ],
       "observedOn": "2026-11-02",
       "billingMonths": 12,
-      "billingUpfront": 240
+      "billingUpfront": 240,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://annualplans.good2gomobile.com/home-page",
+        "price": 20,
+        "upfront": 240
+      }
     },
     "redpocket-essentials": {
       "carrier": "Red Pocket Mobile",
@@ -872,55 +1036,72 @@
         "Check taxes, activation and any discounted first month conditions.",
         "Confirm renewal, hotspot and international usage policies."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://my.redpocket.com/plans",
+        "price": 10
+      }
     },
     "redpocket-plus": {
       "carrier": "Red Pocket Mobile",
       "publishedMonthly": 20,
-      "term": "monthly_with_optional_new_line_intro",
+      "term": "monthly_standard_excludes_port_in_sale",
       "sources": [
         {
           "url": "https://my.redpocket.com/plans",
-          "supports": "Official Red Pocket Mobile page documents Red Pocket Plus regular service costs $20 monthly; eligible new lines may pay $10 the first month.; The monthly offer includes 20GB of premium high-speed data; the new-customer discount is conditional."
+          "supports": "Official plan details and published regular baseline."
+        },
+        {
+          "url": "https://www.redpocket.com/",
+          "supports": "Separate qualifying number transfer promotion; conflicting amounts or eligibility cannot be imported into baseline quotes."
         }
       ],
       "supportedFacts": [
-        "Red Pocket Plus regular service costs $20 monthly; eligible new lines may pay $10 the first month.",
-        "The monthly offer includes 20GB of premium high-speed data; the new-customer discount is conditional."
+        "The official broadband label publishes a $20 regular monthly rate.",
+        "Current separate portal promotions are conditional; generic new-line discounts are not assumed."
       ],
       "unresolved": [
-        "Confirm selected new-line eligibility before applying a $10 first-month discount.",
-        "Verify taxes, activation and $20 renewal timing.",
-        "Confirm chosen network, SIM/eSIM and data-speed/hotspot rules."
+        "Confirm the network, exact coverage and eligibility for selected plan.",
+        "Confirm port-in channel and exact discount at checkout.",
+        "Confirm first payment, monthly fees, taxes and activation terms."
       ],
-      "observedOn": "2026-11-02",
-      "publishedPromoPrice": 10,
-      "publishedPromoMonths": 1,
-      "publishedPromoRequirement": "new"
+      "observedOn": "2026-11-23",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://my.redpocket.com/plans",
+        "price": 20
+      }
     },
     "redpocket-premium": {
       "carrier": "Red Pocket Mobile",
       "publishedMonthly": 30,
-      "term": "monthly_with_optional_new_line_intro",
+      "term": "monthly_standard_excludes_port_in_sale",
       "sources": [
         {
           "url": "https://my.redpocket.com/plans",
-          "supports": "Official Red Pocket Mobile page documents Red Pocket Premium has a published $30 regular monthly rate and conditional $15 first month for qualifying new lines.; The published unlimited-labeled plan includes 50GB premium data and 10GB of premium hotspot."
+          "supports": "Official plan details and published regular baseline."
+        },
+        {
+          "url": "https://www.redpocket.com/",
+          "supports": "Separate qualifying number transfer promotion; conflicting amounts or eligibility cannot be imported into baseline quotes."
         }
       ],
       "supportedFacts": [
-        "Red Pocket Premium has a published $30 regular monthly rate and conditional $15 first month for qualifying new lines.",
-        "The published unlimited-labeled plan includes 50GB premium data and 10GB of premium hotspot."
+        "The official broadband label publishes a $30 regular monthly rate.",
+        "Current separate portal promotions are conditional; generic new-line discounts are not assumed."
       ],
       "unresolved": [
-        "Confirm qualifying new line and selected plan/SIM.",
-        "Check taxes, activation and when $30 renewals begin.",
-        "Verify eligible network, phone support and 50GB speed limits."
+        "Confirm the network, exact coverage and eligibility for selected plan.",
+        "Confirm port-in channel and exact discount at checkout.",
+        "Confirm first payment, monthly fees, taxes and activation terms."
       ],
-      "observedOn": "2026-11-02",
-      "publishedPromoPrice": 15,
-      "publishedPromoMonths": 1,
-      "publishedPromoRequirement": "new"
+      "observedOn": "2026-11-23",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://my.redpocket.com/plans",
+        "price": 30
+      }
     },
     "metro": {
       "carrier": "Metro by T-Mobile",
@@ -975,26 +1156,31 @@
     "boost": {
       "carrier": "Boost Mobile",
       "publishedMonthly": 25,
-      "term": "monthly_with_conditional_new_intro",
+      "term": "monthly_standard_with_autopay",
       "sources": [
         {
           "url": "https://www.boostmobile.com/plans",
-          "supports": "Official Boost Mobile page documents Boost Unlimited lists $25 per month with AutoPay after any eligible introductory period.; Qualifying new customers can receive a $10 monthly rate for six months, then $25; taxes and fees are additional."
+          "supports": "Official plan lists $30 regular monthly service or $25 with qualifying AutoPay; the new-customer sale and its conditions are shown separately."
         }
       ],
       "supportedFacts": [
-        "Boost Unlimited lists $25 per month with AutoPay after any eligible introductory period.",
-        "Qualifying new customers can receive a $10 monthly rate for six months, then $25; taxes and fees are additional."
+        "$30/mo without AutoPay; $25/mo with qualifying AutoPay. The older $10 for six months is no longer advertised for the selected plan.",
+        "The current carrier site separately advertises an eligible new-customer BYOD sale; it is not part of the regular plan estimate.",
+        "Boost advertises 30 GB of high-speed data; speeds may slow after that allowance."
       ],
       "unresolved": [
-        "Confirm qualifying new customer and offer channel before assuming the $10 rate.",
-        "Check actual taxes, first payment and AutoPay enrollment.",
-        "Confirm 30GB speed-threshold behavior, hotspot and device compatibility."
+        "Verify actual taxes/fees, initial billing, and plan selection on the intended device and ZIP.",
+        "Confirm AutoPay before relying on the lower recurring rate; family pricing is not assumed.",
+        "Confirm initial checkout charges and local taxes."
       ],
-      "observedOn": "2026-11-02",
-      "publishedPromoPrice": 10,
-      "publishedPromoMonths": 6,
-      "publishedPromoRequirement": "new"
+      "observedOn": "2026-11-23",
+      "publishedUndiscountedPrice": 30,
+      "publishedDiscountCondition": "autopay",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.boostmobile.com/plans",
+        "price": 25
+      }
     },
     "ultra": {
       "carrier": "Ultra Mobile",
@@ -1016,7 +1202,12 @@
         "Confirm service activation, taxes, regulatory charges and full amount before purchase.",
         "Confirm mobile data policies, SIM/eSIM support and any international features."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.ultramobile.com/product/unlimited-prepaid-plan/",
+        "price": 49
+      }
     },
     "ultra-4": {
       "carrier": "Ultra Mobile",
@@ -1038,7 +1229,12 @@
         "Confirm SIM/eSIM device eligibility, activation and network acceptance.",
         "Confirm taxes, fees, current total and service renewal terms."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.ultramobile.com/product/4gb-prepaid-plan/",
+        "price": 19
+      }
     },
     "mobilex-unlimited10": {
       "carrier": "MobileX",
@@ -1059,7 +1255,12 @@
         "Confirm unlocked-phone compatibility and any eSIM/SIM eligibility restrictions.",
         "Confirm usage/speed policy, video optimization and network coverage."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://mymobilex.com/all-faqs/",
+        "price": 14.88
+      }
     },
     "mobilex-unlimited30": {
       "carrier": "MobileX",
@@ -1080,7 +1281,12 @@
         "Confirm taxes, activation and all checkout charges.",
         "Confirm current speed-management, video limitations and plan renewal conditions."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://mymobilex.com/all-faqs/",
+        "price": 24.88
+      }
     },
     "fi": {
       "carrier": "Google Fi",
@@ -1102,7 +1308,12 @@
         "Verify exact taxes, activation charges and any separately advertised Pixel offer deadline.",
         "Confirm international roaming, multi-line price and use-case limits compared with Fi Premium."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://fi.google.com/about/plans",
+        "price": 35
+      }
     },
     "cc": {
       "carrier": "Consumer Cellular",
@@ -1134,7 +1345,12 @@
       "publishedUndiscountedPrice": 25,
       "publishedDiscountCondition": "autopay_ebilling",
       "publishedKnownMonthlyFee": 5,
-      "publishedKnownActivationFee": 10
+      "publishedKnownActivationFee": 10,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.consumercellular.com/shopping/choose/plan",
+        "price": 20
+      }
     },
     "tracfone": {
       "carrier": "Tracfone",
@@ -1143,7 +1359,7 @@
       "sources": [
         {
           "url": "https://www.tracfone.com/plans/tracfone-freedom-30-days",
-          "supports": "Official Freedom $45/month with Auto-Refill, $50 without; older anniversary offer expired October 26."
+          "supports": "Tracfone’s Freedom public pricing lists $50 per 30 days without Auto-Refill, or $45 when the discount applies."
         }
       ],
       "supportedFacts": [
@@ -1161,35 +1377,39 @@
       "observedOn": "2026-11-02",
       "publishedUndiscountedPrice": 50,
       "publishedDiscountCondition": "auto_refill",
-      "publishedFirstMonthPrice": 50
+      "publishedFirstMonthPrice": 50,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.tracfone.com/plans/tracfone-freedom-30-days",
+        "price": 45
+      }
     },
     "straighttalk": {
       "carrier": "Straight Talk",
       "publishedMonthly": 25,
-      "term": "conditional_new_byop_25_no_autopay_stack",
+      "term": "conditional_new_byop_25_optional_separate_20_promotion",
       "sources": [
         {
-          "url": "https://www.straighttalk.com/devices/byop-simkit",
-          "supports": "Carrier's StraightSAVINGS selected BYOP $25/month; $29.88 physical SIM starter bundle; explicitly cannot combine with AutoPay discount."
-        },
-        {
           "url": "https://www.straighttalk.com/whyst/bring-your-own-phone",
-          "supports": "Selected $25/mo BYOP new-line offer, device history/eligibility and $50 conditional later credit."
+          "supports": "Straight Talk publishes $25 baseline, separate $20 BYOP promotion and specific enrollment/channel conditions."
         }
       ],
       "supportedFacts": [
-        "Selected StraightSAVINGS! plan costs $25 per month only for a qualifying new BYOP line and compatible unlocked device.",
-        "Carrier says StraightSAVINGS is not combinable with AutoPay discounts; the previous suggested $20 AutoPay amount is withdrawn.",
-        "Online physical SIM starter bundle lists $29.88 including $25 service and $4.88 physical SIM; extra taxes/fees and conditions may apply.",
-        "Potential $50 device credit arrives only after 12 months of eligible active service and qualifying rewards registration."
+        "The standard qualifying StraightSAVINGS new-line rate is $25, before taxes and fees.",
+        "Separate published $20 BYOP promotion requires first-month Auto Pay for ongoing $20 pricing; canceling eligibility can permanently end the discount.",
+        "Published promotional enrollment period ends April 4, 2027. Physical SIM kit is $4.88 if needed."
       ],
       "unresolved": [
-        "Confirm the actual eligible new-line and prior-device usage criteria with an IMEI at checkout.",
-        "Confirm whether the shopper needs a physical SIM bundle or can activate by eSIM without its $4.88 charge.",
-        "Verify checkout taxes/fees and whether the promotional plan remains offered for the device/ZIP.",
-        "Confirm exact credit redemption conditions; no delayed device credit is included in base estimates."
+        "Confirm eligible line, compatible IMEI, prior 12 months of device activity, and the selected offer channel at checkout.",
+        "Confirm first payment, SIM type, taxes and the exact continuation requirements before assuming a discount.",
+        "Confirm initial checkout charges and local taxes."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-23",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.straighttalk.com/whyst/bring-your-own-phone",
+        "price": 25
+      }
     },
     "total-all-access": {
       "carrier": "Total Wireless",
@@ -1220,27 +1440,35 @@
       "kind": "phone",
       "carrier": "Metro by T-Mobile",
       "publishedDevicePrice": 0,
-      "publishedPlanMonthly": 60,
+      "publishedPlanMonthly": 40,
       "publishedPortRequired": true,
-      "publishedFirstMonthPlanPrice": 60,
-      "term": "conditional_port_device_with_60_regular_plan_and_unmodeled_55_autopay",
+      "publishedFirstMonthPlanPrice": 40,
+      "term": "conditional_port_device_40_period",
       "sources": [
         {
-          "url": "https://www.metrobyt-mobile.com/cell-phone/motorola-moto-g-2026",
-          "supports": "Official selected Moto G 2026: $0 with eligible transfer, $60 first and standard monthly service, $55/month only if eligible AutoPay is enabled"
+          "url": "https://www.metrobyt-mobile.com/deals/free-phones",
+          "supports": "Metro explicitly names the Moto G 2026, both service price paths, eligibility and its seasonal offer deadline."
         }
       ],
       "supportedFacts": [
-        "The selected Moto G 2026 promotional handset headline is $0 with qualifying number transfer; sales taxes and activation can still apply.",
-        "The carrier lists $55/month only when qualifying AutoPay enrollment is in effect, with $60 for the first month; Five Bars uses $60 monthly as its conservative unconfirmed default rather than assuming an AutoPay discount."
+        "$0 device after instant discount with eligible transfer on Metro’s $40 Period plan, plus applicable device sales tax.",
+        "The first service payment is $40 on the selected plan. The new-number plan has different upfront and AutoPay rates.",
+        "The carrier advertises the device offer through December 7, 2026 at 11:59 p.m. Central while supplies last."
       ],
       "unresolved": [
-        "Confirm that the selected $0 price and port-in qualify with this customer's IMEI/number",
-        "Verify $60 first service payment, carrier/device taxes and any $25 store activation",
-        "Verify device locking, in-stock ZIP and how eligible AutoPay is established",
-        "Determine whether the visitor will receive the lower $55 recurring rate through eligible AutoPay; do not assume the recurring discount without confirmation."
+        "Verify eligible port, prior-carrier restrictions, stock, taxes, first payment and unlock terms before purchasing.",
+        "Carrier availability can end before the published deadline if supplies run out.",
+        "Confirm initial checkout charges and local taxes."
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-23",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.metrobyt-mobile.com/deals/free-phones",
+        "price": 0,
+        "planPrice": 40,
+        "firstMonthPrice": 40
+      },
+      "publishedEndDate": "2026-12-07"
     },
     "boost-16e": {
       "kind": "phone",
@@ -1279,7 +1507,7 @@
       "sources": [
         {
           "url": "https://www.boostmobile.com/deals",
-          "supports": "Boost Galaxy A17 5G free phone headline with qualifying transfer and $50 Unlimited+ plan"
+          "supports": "Boost’s official device and service headline confirms the advertised device/required plan price and separately describes AutoPay."
         }
       ],
       "supportedFacts": [
@@ -1294,7 +1522,13 @@
       ],
       "observedOn": "2026-11-02",
       "publishedUndiscountedPlanPrice": 55,
-      "publishedPlanDiscountCondition": "autopay"
+      "publishedPlanDiscountCondition": "autopay",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.boostmobile.com/deals",
+        "price": 0,
+        "planPrice": 50
+      }
     },
     "boost-gplay": {
       "kind": "phone",
@@ -1306,7 +1540,7 @@
       "sources": [
         {
           "url": "https://www.boostmobile.com/deals",
-          "supports": "Boost free Moto G Play 2026 on $50 Unlimited+ with number transfer"
+          "supports": "Boost’s official device and service headline confirms the advertised device/required plan price and separately describes AutoPay."
         }
       ],
       "supportedFacts": [
@@ -1321,7 +1555,13 @@
       ],
       "observedOn": "2026-11-02",
       "publishedUndiscountedPlanPrice": 55,
-      "publishedPlanDiscountCondition": "autopay"
+      "publishedPlanDiscountCondition": "autopay",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.boostmobile.com/deals",
+        "price": 0,
+        "planPrice": 50
+      }
     },
     "cricket-s25fe": {
       "kind": "phone",
@@ -1380,7 +1620,7 @@
     "cricket-a37": {
       "kind": "phone",
       "carrier": "Cricket",
-      "publishedDevicePrice": 59.99,
+      "publishedDevicePrice": 0,
       "publishedPlanMonthly": 60,
       "publishedPortRequired": true,
       "publishedAvailability": "out_of_stock",
@@ -1388,20 +1628,25 @@
       "sources": [
         {
           "url": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal",
-          "supports": "Official Galaxy A37 5G carrier page lists $59.99 with new number-transfer line and Supreme Unlimited $60; currently out of stock"
+          "supports": "Selected carrier product page publishes the updated $0 device with eligible transfer and $60 Supreme Unlimited."
         }
       ],
       "supportedFacts": [
-        "Selected Galaxy A37 5G price is $59.99 requiring a new line with eligible number transfer and Supreme Unlimited plan.",
-        "Cricket's Supreme Unlimited plan is $60/month before separate discounts; page advertises first service payment and taxes at sale.",
-        "The selected device is currently out of stock on the carrier page; no available checkout has been certified."
+        "Cricket advertises $0 for the selected Galaxy A37 5G with eligible number transfer and new $60/month Supreme Unlimited service.",
+        "First month and device tax are due. The November 2 out-of-stock hold remains; current inventory was not verified."
       ],
       "unresolved": [
         "Confirm stock, port-in requirement and exact 128GB device SKU",
         "Verify online tax, service bill and any in-store activation fee",
         "Verify device unlock rules and current promotional terms"
       ],
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-23",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal",
+        "price": 0,
+        "planPrice": 60
+      }
     },
     "metro-a17": {
       "carrier": "Metro by T-Mobile",
@@ -1419,6 +1664,10 @@
         {
           "url": "https://www.metrobyt-mobile.com/deals/40period",
           "supports": "Selected $40 Period promotion, transfer eligibility and initial service payment."
+        },
+        {
+          "url": "https://www.metrobyt-mobile.com/deals/free-phones",
+          "supports": "Metro publishes a $0 handset price after instant discount with eligible transfer and a $40 first service charge on its $40 Period plan."
         }
       ],
       "supportedFacts": [
@@ -1430,7 +1679,14 @@
         "Confirm device taxes, activation, shipping and other mandatory charges.",
         "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
       ],
-      "publishedFirstMonthPlanPrice": 40
+      "publishedFirstMonthPlanPrice": 40,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.metrobyt-mobile.com/deals/free-phones",
+        "price": 0,
+        "planPrice": 40,
+        "firstMonthPrice": 40
+      }
     },
     "metro-a37": {
       "carrier": "Metro by T-Mobile",
@@ -1448,6 +1704,10 @@
         {
           "url": "https://www.metrobyt-mobile.com/deals/40period",
           "supports": "Selected $40 Period promotion, transfer eligibility and initial service payment."
+        },
+        {
+          "url": "https://www.metrobyt-mobile.com/deals",
+          "supports": "Metro publishes a $0 handset price after instant discount with eligible transfer and a $40 first service charge on its $40 Period plan."
         }
       ],
       "supportedFacts": [
@@ -1459,7 +1719,14 @@
         "Confirm device taxes, activation, shipping and other mandatory charges.",
         "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
       ],
-      "publishedFirstMonthPlanPrice": 40
+      "publishedFirstMonthPlanPrice": 40,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.metrobyt-mobile.com/deals",
+        "price": 0,
+        "planPrice": 40,
+        "firstMonthPrice": 40
+      }
     },
     "cricket-power": {
       "carrier": "Cricket",
@@ -1472,7 +1739,7 @@
       "sources": [
         {
           "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue",
-          "supports": "Conditional free handset, initial service payment and restock messaging."
+          "supports": "Cricket’s selected device page publishes the advertised device price and qualifying service; this recheck does not confirm stock."
         },
         {
           "url": "https://www.cricketwireless.com/plans/phone",
@@ -1488,7 +1755,13 @@
         "Confirm device taxes, activation, shipping and other mandatory charges.",
         "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
       ],
-      "publishedAvailability": "out_of_stock"
+      "publishedAvailability": "out_of_stock",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue",
+        "price": 0,
+        "planPrice": 60
+      }
     },
     "cricket-motog": {
       "carrier": "Cricket",
@@ -1501,7 +1774,7 @@
       "sources": [
         {
           "url": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream",
-          "supports": "Conditional free handset, initial service payment and restock messaging."
+          "supports": "Cricket’s selected device page publishes the advertised device price and qualifying service; this recheck does not confirm stock."
         },
         {
           "url": "https://www.cricketwireless.com/plans/phone",
@@ -1517,7 +1790,13 @@
         "Confirm device taxes, activation, shipping and other mandatory charges.",
         "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
       ],
-      "publishedAvailability": "out_of_stock"
+      "publishedAvailability": "out_of_stock",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream",
+        "price": 0,
+        "planPrice": 60
+      }
     },
     "total-stylus": {
       "carrier": "Total Wireless",
@@ -1550,36 +1829,43 @@
     "total-a27": {
       "carrier": "Total Wireless",
       "kind": "phone",
-      "observedOn": "2026-11-02",
-      "publishedDevicePrice": 0,
+      "observedOn": "2026-11-23",
+      "publishedDevicePrice": 39.99,
       "publishedPlanMonthly": 55,
       "publishedPortRequired": true,
       "term": "conditional_device_headline",
       "sources": [
         {
           "url": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid",
-          "supports": "Selected switcher offer and required service block; separate finance options excluded."
+          "supports": "Official selected handset and required two-month service block."
         },
         {
-          "url": "https://www.totalwireless.com/m/plans",
-          "supports": "Regular MAX 5G and ALL ACCESS rates before optional AutoPay discounts."
+          "url": "https://www.totalwireless.com/m/bundles",
+          "supports": "Ordinary MAX 5G service is $55/month before eligible AutoPay."
         }
       ],
       "supportedFacts": [
-        "Selected handset price is $0.00 when switching with the required Total MAX 5G plan.",
-        "The selected offer requires 2 service month(s); the regular service reference is $55/month. Optional AutoPay savings are not assumed."
+        "The selected carrier product headline names a $39.99 device cash price with two months of Total MAX 5G or higher.",
+        "Ordinary Total MAX 5G publishes a $55 undiscounted monthly service rate; the separate BYO discount does not apply to this device estimate.",
+        "Five Bars keeps the transfer eligibility safeguard until an exact offer checkout is documented."
       ],
       "unresolved": [
         "Confirm the selected customer and number-transfer eligibility at checkout.",
         "Confirm device taxes, activation, shipping and other mandatory charges.",
         "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
       ],
-      "publishedPrepayMonths": 2
+      "publishedPrepayMonths": 2,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid",
+        "price": 39.99,
+        "planPrice": 55
+      }
     },
     "total-a36": {
       "carrier": "Total Wireless",
       "kind": "phone",
-      "observedOn": "2026-11-02",
+      "observedOn": "2026-11-23",
       "publishedDevicePrice": 0,
       "publishedPlanMonthly": 55,
       "publishedPortRequired": true,
@@ -1587,23 +1873,30 @@
       "sources": [
         {
           "url": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid",
-          "supports": "Selected switcher offer and required service block; separate finance options excluded."
+          "supports": "Official selected handset and required two-month service block."
         },
         {
-          "url": "https://www.totalwireless.com/m/plans",
-          "supports": "Regular MAX 5G and ALL ACCESS rates before optional AutoPay discounts."
+          "url": "https://www.totalwireless.com/m/bundles",
+          "supports": "Ordinary MAX 5G service is $55/month before eligible AutoPay."
         }
       ],
       "supportedFacts": [
-        "Selected handset price is $0.00 when switching with the required Total MAX 5G plan.",
-        "The selected offer requires 3 service month(s); the regular service reference is $55/month. Optional AutoPay savings are not assumed."
+        "The selected carrier product headline names a $0.00 device cash price with two months of Total MAX 5G or higher.",
+        "Ordinary Total MAX 5G publishes a $55 undiscounted monthly service rate; the separate BYO discount does not apply to this device estimate.",
+        "Five Bars keeps the transfer eligibility safeguard until an exact offer checkout is documented."
       ],
       "unresolved": [
         "Confirm the selected customer and number-transfer eligibility at checkout.",
         "Confirm device taxes, activation, shipping and other mandatory charges.",
         "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
       ],
-      "publishedPrepayMonths": 3
+      "publishedPrepayMonths": 2,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid",
+        "price": 0,
+        "planPrice": 55
+      }
     },
     "total-16e": {
       "carrier": "Total Wireless",
@@ -1645,7 +1938,7 @@
       "sources": [
         {
           "url": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid",
-          "supports": "Free device headline tied to Silver Unlimited activation."
+          "supports": "Provider’s selected page names Silver Unlimited or higher for the $0 headline and a January 10, 2027 deadline; store eligibility and inventory are separate."
         },
         {
           "url": "https://www.straighttalk.com/all-plans",
@@ -1660,7 +1953,14 @@
         "Confirm the selected customer and number-transfer eligibility at checkout.",
         "Confirm device taxes, activation, shipping and other mandatory charges.",
         "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
-      ]
+      ],
+      "publishedEndDate": "2027-01-10",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid",
+        "price": 0,
+        "planPrice": 45
+      }
     },
     "st-stylus": {
       "carrier": "Straight Talk",
@@ -1673,7 +1973,7 @@
       "sources": [
         {
           "url": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid",
-          "supports": "Free device headline tied to Silver Unlimited activation."
+          "supports": "Provider’s selected page names Silver Unlimited or higher for the $0 headline and a January 10, 2027 deadline; store eligibility and inventory are separate."
         },
         {
           "url": "https://www.straighttalk.com/all-plans",
@@ -1688,7 +1988,14 @@
         "Confirm the selected customer and number-transfer eligibility at checkout.",
         "Confirm device taxes, activation, shipping and other mandatory charges.",
         "Confirm live inventory, renewal terms, unlock policy and early-exit consequences."
-      ]
+      ],
+      "publishedEndDate": "2027-01-10",
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid",
+        "price": 0,
+        "planPrice": 45
+      }
     },
     "tracfone-a17": {
       "carrier": "Tracfone",
@@ -1757,28 +2064,38 @@
     },
     "att-pre-motog": {
       "kind": "phone",
-      "observedOn": "2026-11-02",
+      "observedOn": "2026-11-23",
       "term": "conditional_device_headline",
       "publishedPortRequired": false,
       "carrier": "AT&T Prepaid",
-      "publishedDevicePrice": 39.99,
+      "publishedDevicePrice": 9.99,
       "publishedPlanMonthly": 45,
       "sources": [
         {
           "url": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html",
-          "supports": "AT&T Prepaid moto g 2026 $39.99 selected new-line promotion and first $45 service payment"
+          "supports": "The direct official handset page has a named Moto G 2026 $9.99 offer with $45+ new-line requirement."
+        },
+        {
+          "url": "https://www.att.com/buy/prepaid-phones/browse/motorola/",
+          "supports": "The carrier Motorola directory independently lists the same handset and promotional terms."
         }
       ],
       "supportedFacts": [
-        "Official selected prepaid handset headline $39.99 requires activating a new AT&T Prepaid line on a $45/month or higher plan.",
-        "The $45 first service charge is additional to the handset purchase, before possible device/service taxes and fees."
+        "$9.99 device after selected AT&T Prepaid promotion, not the different Motivate Pro 2 5G offer.",
+        "Requires activation on a new prepaid line with $45/month or higher plan; first service payment and applicable tax are separate."
       ],
       "unresolved": [
         "Confirm specific new-line/customer eligibility, selected checkout channel and stock before purchase.",
         "Observe actual first bill, compulsory taxes/fees, service renewal and any plan discounts at checkout.",
         "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions."
       ],
-      "publishedNewLineRequired": true
+      "publishedNewLineRequired": true,
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html",
+        "price": 9.99,
+        "planPrice": 45
+      }
     },
     "vzpre-a17": {
       "kind": "phone",
@@ -1810,7 +2127,8 @@
         "Observe actual first bill, compulsory taxes/fees, service renewal and any plan discounts at checkout.",
         "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions."
       ],
-      "publishedNewLineRequired": true
+      "publishedNewLineRequired": true,
+      "publishedEndDate": "2027-01-31"
     },
     "vzpre-16e": {
       "kind": "phone",
@@ -1845,7 +2163,8 @@
         "Verify device/SIM compatibility, number-transfer requirements where applicable, unlock restrictions and early-exit conditions.",
         "Confirm exactly when credits begin and whether selected new-line channel remains eligible."
       ],
-      "publishedNewLineRequired": true
+      "publishedNewLineRequired": true,
+      "publishedEndDate": "2027-01-31"
     },
     "mint-p11": {
       "kind": "phone",
@@ -1859,6 +2178,10 @@
         {
           "url": "https://www.mintmobile.com/devices/google-pixel-11/13630805/",
           "supports": "Mint Google Pixel 11 selected new-customer bundle itemizes $399 handset and $180 prepaid 12-month Unlimited plan"
+        },
+        {
+          "url": "https://www.mintmobile.com/deals/",
+          "supports": "Current carrier offers page publishes the conditional phone discount with prepaid 12-month Unlimited; device-specific product page remains the stock reference."
         }
       ],
       "supportedFacts": [
@@ -1888,6 +2211,10 @@
         {
           "url": "https://www.mintmobile.com/devices/samsung-galaxy-s26-fe/13893739/",
           "supports": "Mint Samsung Galaxy S26 FE new-customer $300 device + $180 annual service bundle, showing an out-of-stock selected device"
+        },
+        {
+          "url": "https://www.mintmobile.com/deals/",
+          "supports": "Current carrier offers page publishes the conditional phone discount with prepaid 12-month Unlimited; device-specific product page remains the stock reference."
         }
       ],
       "supportedFacts": [
@@ -1914,7 +2241,7 @@
       "sources": [
         {
           "url": "https://www.cricketwireless.com/shop/cell-phone-plans/select",
-          "supports": "Carrier's prepaid Unlimited BYOD rate displayed as $25 monthly equivalent when $300 is paid for 12 months, subject to new-account terms"
+          "supports": "Published regular BYOD plan bills $300 upfront for 12 months of service; other dated holiday campaigns are separate."
         }
       ],
       "supportedFacts": [
@@ -1925,10 +2252,16 @@
         "Confirm actual annual Unlimited BYOD plan selection, new-line eligibility and payment in checkout.",
         "Confirm taxes, SIM/eSIM, activation-channel charges and current availability before ordering.",
         "Confirm plan's high-speed/hotspot features and the subsequent annual renewal rate/terms."
-      ]
+      ],
+      "priceRecheck": {
+        "observedOn": "2026-11-23",
+        "sourceUrl": "https://www.cricketwireless.com/shop/cell-phone-plans/select",
+        "price": 25,
+        "upfront": 300
+      }
     },
     "usm-p11": {
-      "observedOn": "2026-11-02",
+      "observedOn": "2026-11-23",
       "carrier": "US Mobile",
       "kind": "phone",
       "term": "device_headline_with_unpriced_required_annual_service",
@@ -1939,13 +2272,13 @@
       "publishedNewLineRequired": true,
       "sources": [
         {
-          "url": "https://www.usmobile.com/pixel-promo",
-          "supports": "US Mobile conditional Pixel 11 $539 purchase with a new Unlimited annual plan; current required annual-plan cash total not established"
+          "url": "https://app.usmobile.com/shop/product/google-pixel-11",
+          "supports": "Exact official Pixel 11 handset listing; the older campaign URL now shows a different handset."
         }
       ],
       "supportedFacts": [
-        "Selected Pixel 11 $539 handset headline is conditional on purchase with a newly activated annual plan, rather than a verified standalone cash device price.",
-        "An earlier $199 annual Starter deal ended September 29, 2026; its former annual service cost cannot be carried forward as current checkout cash."
+        "Exact base Google Pixel 11 product publication advertises $539 with a newly purchased annual plan or $624 without.",
+        "The page selects a locked device configuration. Exact lock duration and annual service amount remain unresolved."
       ],
       "unresolved": [
         "Verify current eligible new annual-plan selection and exact annual service prepayment, not an expired code.",
@@ -1954,26 +2287,30 @@
       ]
     },
     "tmo-18pro": {
-      "observedOn": "2026-11-02",
+      "observedOn": "2026-11-23",
       "carrier": "T-Mobile",
       "kind": "phone",
       "term": "conditional_financed_net_headline_not_checkout",
-      "publishedDevicePrice": 199.99,
+      "publishedDevicePrice": 0,
       "publishedPlanMonthly": null,
       "publishedServiceUnpriced": true,
       "publishedPortRequired": false,
       "publishedGrossRetailPrice": 1199.99,
       "publishedFinancingMonths": 36,
-      "publishedMaxBillCredits": 1000,
+      "publishedMaxBillCredits": 1200,
       "sources": [
         {
-          "url": "https://www.t-mobile.com/offers/apple-iphone-deals",
-          "supports": "Official carrier promotion and financing conditions for an iPhone 18 Pro with carrier-specific qualifying service and future monthly credits"
+          "url": "https://www.t-mobile.com/offers/promotional-offer-details/?msockid=2793d0ace9df64da067ac653e87665dc",
+          "supports": "Provider’s official R863 holiday trade-in offer and 36-month credit ceiling."
+        },
+        {
+          "url": "https://www.t-mobile.com/responsibility/consumer-info/policies/sim-unlock-policy",
+          "supports": "Carrier payoff and active-service unlocking conditions."
         }
       ],
       "supportedFacts": [
-        "Carrier advertises conditional up-to-$1,000 device bill credits over a qualifying installment/activation arrangement; selected net headline is not cash payable at sale.",
-        "Gross handset retail is $1,199.99 before conditional monthly credits; required plan payment and any credit eligibility are not documented as customer-specific cash."
+        "Official Experience Beyond trade-in promotion R863 publishes up to $1,200 in 36 monthly bill credits.",
+        "Device retail is $1,199.99; bill credits do not guarantee a $0 checkout. Exact service cost and plan options are not independently documented."
       ],
       "unresolved": [
         "Verify exact eligibility, device/storage choice, activation channel and real-time availability at carrier checkout.",
@@ -1981,29 +2318,38 @@
         "Confirm credit timing, plan renewal, unlock conditions, cancellations and early-exit balances using the actual offer agreement.",
         "Obtain actual agreement showing financed amount, trade-in valuation, credit schedule and remaining balance if the line or plan changes."
       ],
-      "publishedNewLineRequired": true
+      "publishedNewLineRequired": false
     },
     "vz-18pro": {
-      "observedOn": "2026-11-02",
+      "observedOn": "2026-11-23",
       "carrier": "Verizon",
       "kind": "phone",
       "term": "conditional_financed_net_headline_not_checkout",
       "publishedDevicePrice": 0,
       "publishedPlanMonthly": null,
       "publishedServiceUnpriced": true,
-      "publishedPortRequired": true,
+      "publishedPortRequired": false,
       "publishedGrossRetailPrice": 1199.99,
       "publishedFinancingMonths": 36,
       "publishedMaxBillCredits": 1200,
       "sources": [
         {
+          "url": "https://www.verizon.com/support/pro-plus-early-upgrade-faqs/",
+          "supports": "Verizon official FAQ documents selected add-on pricing and device benefit."
+        },
+        {
           "url": "https://www.verizon.com/about/news/iphone-duo-verizon-offers",
-          "supports": "Official carrier promotion and financing conditions for an iPhone 18 Pro with carrier-specific qualifying service and future monthly credits"
+          "supports": "Specific handset credit terms and new or upgraded line eligibility."
+        },
+        {
+          "url": "https://www.verizon.com/support/verizon-simplicity-faqs/",
+          "supports": "Base Simplicity service choices and eligible Auto Pay conditions."
         }
       ],
       "supportedFacts": [
-        "Carrier advertises device retail financing and conditional up-to-$1,200 credits; the earlier $80 all-inclusive service quote was not established for the selected buyer.",
-        "Gross handset retail is $1,199.99 before conditional monthly credits; required plan payment and any credit eligibility are not documented as customer-specific cash."
+        "The official Simplicity Pro add-on costs $50/month and supports up to $1,200 in eligible device credits over 36 months.",
+        "Verizon’s selected publication references qualifying new or upgraded lines; it does not establish that port-in is required for this base scenario.",
+        "The qualifying service path and exact costs are unverified; base and add-on are separate."
       ],
       "unresolved": [
         "Verify exact eligibility, device/storage choice, activation channel and real-time availability at carrier checkout.",
@@ -2011,10 +2357,10 @@
         "Confirm credit timing, plan renewal, unlock conditions, cancellations and early-exit balances using the actual offer agreement.",
         "Obtain actual agreement showing financed amount, trade-in valuation, credit schedule and remaining balance if the line or plan changes."
       ],
-      "publishedNewLineRequired": true
+      "publishedNewLineRequired": false
     },
     "att-18pro": {
-      "observedOn": "2026-11-02",
+      "observedOn": "2026-11-23",
       "carrier": "AT&T",
       "kind": "phone",
       "term": "conditional_financed_net_headline_not_checkout",
@@ -2027,13 +2373,17 @@
       "publishedMaxBillCredits": 1200,
       "sources": [
         {
+          "url": "https://www.att.com/cfd/wireless/",
+          "supports": "Detailed official offer shows the qualifying plan and trade-in ceiling, and distinguishes lower credit tiers."
+        },
+        {
           "url": "https://www.att.com/buy/phones/apple-iphone-18-pro.html",
-          "supports": "Official carrier promotion and financing conditions for an iPhone 18 Pro with carrier-specific qualifying service and future monthly credits"
+          "supports": "Exact iPhone 18 Pro product selection and retail pricing."
         }
       ],
       "supportedFacts": [
-        "Carrier advertises an up-to-$1,200 trade-in/bill-credit offer and a 36-month installment agreement; an as-low-as $0 net device payment is conditional, not a free checkout.",
-        "Gross handset retail is $1,199.99 before conditional monthly credits; required plan payment and any credit eligibility are not documented as customer-specific cash."
+        "AT&T’s current detailed terms publish up to $1,200 in bill credits over 36 months with a qualifying $230+ trade and Premium 2.0 or eligible retired plan.",
+        "Other device/trade tiers receive smaller credits. Exact service and financing cash remain unpriced."
       ],
       "unresolved": [
         "Verify exact eligibility, device/storage choice, activation channel and real-time availability at carrier checkout.",
@@ -2069,7 +2419,8 @@
         "Confirm the chosen Walmart store actually participates, has the Galaxy A17 in stock and accepts the shopper's specific activation scenario.",
         "Obtain an itemized in-store quote for the phone, required first service payment and all mandatory taxes and activation fees before calculating checkout totals.",
         "Confirm the particular customer's eligibility, plan renewal amount, unlocking terms and any cancellation consequences."
-      ]
+      ],
+      "publishedEndDate": "2027-01-10"
     }
   }
 }

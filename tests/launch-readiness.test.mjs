@@ -10,7 +10,7 @@ const research=read('site/data/research-evidence.json');
 const retailerEvidence=read('site/data/retailer-evidence.json');
 const ledger={schema:1,offers:{}};
 const status=read('site/data/status.json');
-const today='2026-11-03';
+const today='2026-11-23';
 const model=()=>assessReadiness({catalog,research,retailerEvidence,ledger,status,today});
 
 test('new-line finder forwards confirmed eligibility into phone cost and does not invent unconfirmed savings',()=>{
@@ -34,7 +34,7 @@ test('public beta report uses repository evidence, not product page impressions 
  assert.equal(r.commercialStage,'blocked_pending_external_evidence');
  assert.deepEqual([r.source.total,r.source.researched,r.source.matched,r.source.partial,
   r.source.unresearched,r.source.retailerHolds,r.checkout.reviewed],
-  [78,76,72,4,2,3,0]);
+  [78,76,71,4,2,3,0]);
  assert.equal(r.checkout.unverified,78);
  assert.equal(r.ownerGates.length,6);
  assert.ok(r.ownerGates.every(g=>g.state!=='complete'));

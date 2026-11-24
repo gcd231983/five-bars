@@ -77,7 +77,7 @@ test('home page displays visible blackout warning even when the failed scan is r
  assert.ok(age && render,'read actual homepage freshness code');
  const node={hidden:true,textContent:''};
  runInNewContext(age+'\n'+render+'\nrenderCatalogFreshness();',{
-  $:id=>{assert.equal(id,'#fb-catalog-freshness');return node;},
+  $:id=>{assert.ok(['#fb-catalog-freshness','#fb-catalog-freshness-copy'].includes(id));return node;},
   CHECKED:'2026-10-29',
   AUTO_STATUS:{
    generatedAt:new Date().toISOString(),

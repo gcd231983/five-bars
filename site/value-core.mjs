@@ -26,6 +26,7 @@ export function offerSignature(offer) {
     'billingMonths','billingUpfront','firstMonthPrice','firstMonthPlanPrice','fullRetailRequired',
     'availability','availabilityObservedOn','listingHold','grossRetailPrice','financingMonths','maxBillCredits','newLineRequired','bundleRenewalUnverified','undiscountedPlanPrice','planDiscountCondition','prepaidServiceTotal',
     'undiscountedPrice','discountCondition','knownMonthlyFee','knownActivationFee','priceSourceDate'];
+  if(offer.lockUnknown!==undefined)fields.push('lockUnknown');
   return JSON.stringify(fields.map(key => [key, offer[key] === undefined ? null : offer[key]]));
 }
 // Anonymous, scenario-specific carrier checkout evidence. Never store billing

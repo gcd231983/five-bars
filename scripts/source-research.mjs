@@ -63,7 +63,18 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
     record.sources.some(v=>!officialUrl(v?.url))||
     !Array.isArray(record.supportedFacts)||!Array.isArray(record.unresolved))
   return {state:'invalid',label:'Evidence structure incomplete',issues:['missing or unsafe official source facts']};
+ const hold=record.currentPriceHold;
+ if(hold!==undefined){
+  const source=officialUrl(hold?.sourceUrl);
+  if(!validDay(hold?.observedOn)||hold.observedOn<record.observedOn||hold.observedOn>today||
+     !source||!record.sources.some(x=>officialUrl(x.url)===source)||
+     typeof hold.reason!=='string'||hold.reason.trim().length<30)
+   return {state:'invalid',label:'Invalid documented price hold',issues:['Unsupported price hold']};
+  return {state:'conflict',label:'Current advertised price needs review',issues:[hold.reason]};
+ }
  const issues=[];
+ if(record.publishedEndDate!==undefined&&(!validDay(record.publishedEndDate)||offer.ends!==record.publishedEndDate))
+  issues.push('published end date does not match the selected offer');
  if(kind==='phone'){
   if(!num(offer?.price)||Math.abs(offer.price-record.publishedDevicePrice)>0.0001)
    issues.push('advertised handset price differs from official conditional headline');
@@ -130,12 +141,14 @@ export function researchStatus(offer,record,{today=localDay(),maxAgeDays=21}={})
   return {state:'published_partial',label:'Official conditional device facts published; qualifying service cash remains unpriced on '+record.observedOn,issues:[]};
  return {state:'published_match',label:(kind==='phone'?'Official conditional device headline matched on ':'Official published baseline matched on ')+record.observedOn,issues:[]};
 }
-export function validateRetailerEvidence({catalog,retailerEvidence}){
+export function validateRetailerEvidence({catalog,retailerEvidence,archivedOffers=new Set()}){
  if(!retailerEvidence)return {records:{},count:0};
  if(retailerEvidence.schema!==1||!retailerEvidence.records||typeof retailerEvidence.records!=='object'||Array.isArray(retailerEvidence.records))
   throw Error('Invalid separate retailer observation ledger');
  const byId=new Map((catalog?.phones||[]).map(p=>[p.id,p]));
+ const current={};
  for(const [id,r] of Object.entries(retailerEvidence.records)){
+  if(archivedOffers.has(id))continue;
   const p=byId.get(id);
   if(!p||!p.listingHold||!validDay(r?.observedOn)||r.observedOn>localDay(new Date())||
      r.selectedPromotionVerified!==false||!['retailer_online_listing','carrier_dynamic_page_inconclusive'].includes(r.sourceType)||
@@ -144,23 +157,48 @@ export function validateRetailerEvidence({catalog,retailerEvidence}){
      (r.observedOnlineDevicePrice!==null&&(!num(r.observedOnlineDevicePrice)||r.sourceType!=='retailer_online_listing'))||
      (r.sourceType==='carrier_dynamic_page_inconclusive'&&r.observedOnlineDevicePrice!==null))
    throw Error('Retailer record '+id+' cannot be treated as independently verified promotion evidence');
+  current[id]=r;
  }
- return {records:retailerEvidence.records,count:Object.keys(retailerEvidence.records).length};
+ return {records:current,count:Object.keys(current).length};
+}
+// A scoped editorial price recheck never extends the age of the original
+// material terms, overrides a checkout/stock hold, or signs the ledger.
+export function publishedPriceRecheck(offer,record,today=localDay()){
+ const check=record?.priceRecheck;
+ const source=officialUrl(check?.sourceUrl);
+ if(!source||!validDay(today)||!validDay(check.observedOn)||
+    check.observedOn>today||check.observedOn<record.observedOn||dayGap(today,check.observedOn)>21||
+    !num(check.price)||check.price!==offer.price)return null;
+ const allowed=(record.sources||[]).some(s=>officialUrl(s.url)===source);
+ if(!allowed)return null;
+ if(offer.phone){
+  if(!num(check.planPrice)||check.planPrice!==offer.planPrice||
+     (offer.firstMonthPlanPrice!==undefined&&check.firstMonthPrice!==offer.firstMonthPlanPrice))return null;
+ }else if(offer.billingMonths===12&&check.upfront!==offer.billingUpfront)return null;
+ return {observedOn:check.observedOn,sourceUrl:source};
 }
 export function buildResearchAudit({catalog,ledger={},research,retailerEvidence,today=localDay()}){
  if(!validDay(today)||!catalog||!Array.isArray(catalog.plans)||!Array.isArray(catalog.phones)||
   !research||research.schema!==1||!validDay(research.observedOn)||
   !research.records||typeof research.records!=='object'||Array.isArray(research.records))
   throw Error('Invalid catalog or official research ledger');
- const retailer=validateRetailerEvidence({catalog,retailerEvidence});
  const offers=[...catalog.plans.map(p=>({...p,kind:'plan'})),...catalog.phones.map(p=>({...p,kind:'phone'}))];
- const ids=new Set(offers.map(p=>p.id));
+ const ids=new Set(offers.map(p=>p.id)),archivedOffers=new Set();
  for(const key of Object.keys(research.records)){
-  if(!ids.has(key))throw Error('Official-source research references missing offer '+key);
+  if(!ids.has(key)){
+   const row=research.records[key];
+   // Keep source records after normal documented expiry without presenting
+   // them as live prices; arbitrary missing evidence IDs still fail closed.
+   if(row?.kind!=='phone'||!validDay(row.publishedEndDate)||row.publishedEndDate>=today)
+    throw Error('Official-source research references missing offer '+key);
+   archivedOffers.add(key);
+  }
  }
+ const retailer=validateRetailerEvidence({catalog,retailerEvidence,archivedOffers});
  const entries=offers.map(o=>{
   const record=research.records[o.id]||null;
   const state=researchStatus(o,record,{today});
+  const recheck=!['conflict','invalid'].includes(state.state)?publishedPriceRecheck(o,record,today):null;
   const review=verificationState(o,ledger.offers?.[o.id],today);
   return {
    id:o.id,carrier:o.carrier,offer:o.plan||o.phone,kind:o.kind,
@@ -171,10 +209,14 @@ export function buildResearchAudit({catalog,ledger={},research,retailerEvidence,
    researchState:state.state,researchLabel:state.label,
    issues:state.issues,manualReview:review.status,
    researchedOn:record?.observedOn||null,
+   ...(recheck?{publishedPriceRecheck:recheck}:{}),
    sourceUrls:record?.sources?.map(s=>s.url)||[]
   };
  });
+ const latestPriceRecheckOn=entries.map(x=>x.publishedPriceRecheck?.observedOn).filter(Boolean).sort().at(-1)||null;
  const counts={
+  latestPublishedPriceRechecks:latestPriceRecheckOn?
+   entries.filter(x=>x.publishedPriceRecheck?.observedOn===latestPriceRecheckOn).length:0,
   offers:entries.length,
   researched:entries.filter(x=>x.researchState!=='not_researched').length,
   publishedPriceMatches:entries.filter(x=>x.researchState==='published_match').length,
@@ -189,7 +231,7 @@ export function buildResearchAudit({catalog,ledger={},research,retailerEvidence,
   availabilityHolds:entries.filter(x=>x.availability==='out_of_stock').length
  };
  return {
-  schema:1,asOf:today,researchObservedOn:research.observedOn,
+  schema:1,asOf:today,researchObservedOn:research.observedOn,latestPriceRecheckOn,
   scope:'Public official pages and consumer labels only; NOT checkout validation, actual product eligibility, complete terms or guaranteed pricing.',
   summary:counts,offers:entries
  };
@@ -218,7 +260,11 @@ export function renderResearchPage({catalog,ledger,research,retailerEvidence,tod
    safe(research.observedOn)+'; each offer shows its own observation date. Status calculated for '+safe(today)+'. Currently '+
    sum.manuallyFullyReviewed+' of '+sum.offers+
    ' listings have valid, documented human checkout-scenario reviews. Those reviews do not guarantee another shopper’s price or eligibility.</div>',
-  '<section><h2>Evidence coverage</h2><div class="guides">'+
+  '<section><h2>Evidence coverage</h2>'+
+   (sum.latestPublishedPriceRechecks?'<p><strong>'+sum.latestPublishedPriceRechecks+
+    ' advertised prices rechecked on '+safe(audit.latestPriceRecheckOn)+
+    '.</strong> This was a partial pass, not a catalog-wide or checkout review.</p>':'')+
+   '<div class="guides">'+
    '<div class="guide"><h3>'+sum.publishedPriceMatches+'</h3>Partial official plan and device headlines within 21 days (not full checkout)</div>'+
    '<div class="guide"><h3>'+sum.publishedPartial+'</h3>Partial official phone facts; required service checkout still unpriced</div>'+ 
    '<div class="guide"><h3>'+sum.aged+'</h3>Published baselines over 21 days old</div>'+ 
@@ -262,6 +308,8 @@ export function renderResearchPage({catalog,ledger,research,retailerEvidence,tod
    '<h3>'+safe(item.carrier)+' — '+safe(item.offer)+'</h3>'+
    '<p><strong>'+safe(item.researchLabel)+'</strong> · Manual full-terms review: '+safe(item.manualReview)+'</p>'+
    '<p><strong>'+(isPhone?'Official conditional DEVICE HEADLINE (not checkout)':'Official published baseline')+':</strong> '+safe(rate)+'</p>');
+  if(item.publishedPriceRecheck)sections.push('<p><strong>Advertised price rechecked '+safe(item.publishedPriceRecheck.observedOn)+'</strong> · '+
+    href(item.publishedPriceRecheck.sourceUrl,'Read the official pricing source')+' · Not checkout verified.</p>');
   if(issues.length)sections.push('<p><strong>Material conflict:</strong> '+safe(issues.join('; '))+'</p>');
   sections.push('<h4>What carrier publications support</h4><ul>');
   for(const x of record.supportedFacts)sections.push('<li>'+safe(x)+'</li>');
