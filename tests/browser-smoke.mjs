@@ -12,7 +12,8 @@ import {TELLO_NOV9_PROMO} from './helpers/tello-promo-fixture.mjs';
 
 const site=process.env.FIVE_BARS_SITE_DIR?resolve(process.env.FIVE_BARS_SITE_DIR):
   resolve(dirname(fileURLToPath(import.meta.url)),'../site');
-const auditSummary=JSON.parse(await readFile(join(site,'data/research-audit.json'),'utf8')).summary;
+const researchAudit=JSON.parse(await readFile(join(site,'data/research-audit.json'),'utf8'));
+const auditSummary=researchAudit.summary;
 const mime={'.html':'text/html; charset=utf-8','.json':'application/json; charset=utf-8','.mjs':'text/javascript; charset=utf-8',
   '.css':'text/css; charset=utf-8','.xml':'application/xml; charset=utf-8','.txt':'text/plain; charset=utf-8'};
 const server=createServer(async (req,res)=>{
@@ -612,9 +613,17 @@ try {
     assert.match(await disputed.locator('.price .now').innerText(),/Price under review/);
     assert.equal(await disputed.locator('button[data-compare-type]').count(),0,'disputed plan cannot be compared at stale price');
     assert.match(await disputed.locator('[data-verification]').innerText(),/Official plan rate differs/);
-    assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Official plan rate matches/);
-    assert.match(await page.locator('#r-h2o-unlimited [data-verification]').innerText(),/Dated carrier source.*partial/i);
-    assert.match(await page.locator('#r-h2o-unlimited [data-verification] a').getAttribute('href'),/research-h2o-unlimited/);
+    const h2oEvidence=page.locator('#r-h2o-unlimited [data-verification]');
+    assert.match(await h2oEvidence.innerText(),/Official plan rate matches/);
+    // Actual release evidence can already be aged, or can cross its boundary
+    // while this test runs. The focused midnight replay below checks both labels.
+    const h2oSource=h2oEvidence.getByRole('link');
+    const h2oArtifact=researchAudit.offers.find(x=>x.id==='h2o-unlimited');
+    assert.ok(['published_match','aged'].includes(h2oArtifact?.researchState),'release must contain dated H2O source evidence');
+    if(h2oArtifact.researchState==='aged')assert.equal((await h2oSource.innerText()).trim(),'Carrier source outdated');
+    assert.equal(await h2oSource.getAttribute('href'),'source-research.html#research-h2o-unlimited');
+    assert.match(await h2oSource.getAttribute('title'),/NOT independent checkout validation/);
+    assert.match(await h2oEvidence.innerText(),/Offer not independently verified/);
     // Earlier in this test we deliberately cleared all catalog filters.
     // Reapply Unlimited-only before checking that its toggle reveals capped plans.
     await page.locator('#fb-plans-show-unlimited').click();
@@ -1167,10 +1176,52 @@ try {
     assert.doesNotMatch(await expiredCompare.locator('#fb-compare-root').innerText(),
       /Google Pixel 10a/i,'manual comparison attempts must not bypass expiry');
     await expiredCompare.close();
+
+    // Replay release evidence that was generated before the Eastern midnight.
+    // The real UI must age that still-open artifact locally and keep recent
+    // scoped price evidence separate from the old broader source record.
+    const evidenceContext=await browser.newContext({viewport,locale:'en-US'});
+    evidenceContext.on('response',observeResponse);
+    try {
+      const aged=await evidenceContext.newPage();
+      aged.on('pageerror',e=>errors.push(view+' evidence rollover: '+e.message));
+      await aged.clock.setFixedTime(new Date('2026-11-24T04:58:00Z'));
+      let auditFetches=0;
+      const fixture=structuredClone(researchAudit);
+      fixture.asOf='2026-11-23';
+      const row=fixture.offers.find(x=>x.id==='h2o-unlimited');
+      assert.ok(row,'H2O evidence fixture must refer to an actual release catalog row');
+      Object.assign(row,{researchedOn:'2026-11-02',researchState:'published_match',
+        researchLabel:'Official published baseline matched on 2026-11-02',
+        publishedPriceRecheck:{observedOn:'2026-11-23',sourceUrl:'https://www.h2owireless.com/plan/monthly'}});
+      await aged.route('**/data/research-audit.json',route=>{
+        auditFetches++;
+        return route.fulfill({json:fixture});
+      });
+      await aged.route('**/data/verifications.json',route=>route.fulfill({json:{schema:1,offers:{}}}));
+      await aged.goto(new URL('#plans',base).href,{waitUntil:'domcontentloaded'});
+      const evidence=aged.locator('#r-h2o-unlimited [data-verification]');
+      const source=evidence.getByRole('link');
+      await source.filter({hasText:'Dated carrier source · partial'}).waitFor();
+      assert.match(await evidence.innerText(),/Offer not independently verified/);
+      assert.equal(await source.getAttribute('href'),'source-research.html#research-h2o-unlimited');
+      const originalFetches=auditFetches;
+      await aged.clock.setFixedTime(new Date('2026-11-24T05:02:00Z'));
+      await aged.evaluate(()=>window.dispatchEvent(new Event('focus')));
+      await source.filter({hasText:'Carrier source outdated'}).waitFor();
+      assert.doesNotMatch(await evidence.innerText(),/Dated carrier source/);
+      assert.match(await evidence.innerText(),/Offer not independently verified/);
+      assert.equal(auditFetches,originalFetches,'cutoff must use the already-open research evidence without a refetch');
+    } finally {
+      await evidenceContext.close();
+    }
+
     // Simulate a tab left open across the published Eastern midnight.
     // The catalog still contains the expired intro until the next scan;
     // local date logic must stop advertising it immediately.
-    const rollover=await context.newPage();
+    const rolloverContext=await browser.newContext({viewport,locale:'en-US'});
+    rolloverContext.on('response',observeResponse);
+    const rollover=await rolloverContext.newPage();
     rollover.on('pageerror',e=>errors.push(view+' calendar rollover: '+e.message));
     await rollover.clock.install({time:new Date('2026-11-10T04:58:00Z')});
     // The live catalog drops the promo once the daily scan expires it, so
@@ -1198,7 +1249,7 @@ try {
     await rollover.evaluate(()=>window.dispatchEvent(new Event('focus')));
     assert.match(await rollover.locator('#r-tello .price .now').innerText(),/\$15/,
       'the already-open page must remove expired intro rate after midnight Eastern');
-    await rollover.close();
+    await rolloverContext.close();
     // Restore deliberately stale local-storage comparisons: held retailer,
     // sold-out device, newly disputed official headline, and one safe offer.
     const cachePage=await context.newPage();
