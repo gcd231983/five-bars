@@ -62,6 +62,58 @@ try {
       }
     };
     context.on('response',observeResponse);
+    // Run the new public shopping paths in a fresh browser context so their
+    // preferences do not affect the catalog/evidence fixtures below.
+    const journeyContext=await browser.newContext({viewport,locale:'en-US'});
+    journeyContext.on('response',observeResponse);
+    const journey=await journeyContext.newPage();
+    journey.on('pageerror',e=>errors.push(view+' shopping paths: '+e.message));
+    await journey.goto(base);
+    const goals=journey.getByRole('navigation',{name:'What would you like to do?'});
+    await goals.getByRole('link',{name:/Lower my bill/}).click();
+    assert.equal(await journey.locator('#p-plans').isVisible(),true);
+    assert.equal(await journey.locator('#fb-plans-order').inputValue(),'reg');
+    await journey.locator('#fb-plans-network').selectOption('tmo');
+    await journey.locator('#fb-plans-search').fill('Tello');
+    const planButtons=journey.locator('#plans-list [data-compare-id]');
+    assert.ok(await planButtons.count()>=2,'Choose from more than one matching Tello plan');
+    const firstId=await planButtons.first().getAttribute('data-compare-id');
+    await planButtons.first().click();
+    const tray=journey.locator('#fb-compare-tray');
+    assert.equal(await journey.locator('#p-plans').isVisible(),true,'First pick does not move shoppers off their filtered results');
+    assert.match(await tray.innerText(),/1 of 3 selected/);
+    assert.ok(await journey.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),view+': selected tray fits the page');
+    await tray.getByRole('button',{name:'Add another',exact:true}).click();
+    assert.equal(await journey.locator('#fb-compare-search').isVisible(),true);
+    await journey.getByRole('button',{name:'Keep browsing'}).click();
+    assert.equal(await journey.locator('#p-plans').isVisible(),true);
+    assert.equal(await journey.locator('#fb-plans-search').inputValue(),'Tello');
+    assert.equal(await journey.locator('#fb-plans-network').inputValue(),'tmo');
+    assert.equal(await journey.locator('#fb-plans-order').inputValue(),'reg');
+    assert.equal(await journey.locator(`[data-compare-id="${firstId}"]:visible`).first().getAttribute('aria-pressed'),'true');
+    await planButtons.nth(1).click();
+    await tray.getByRole('button',{name:'Compare 2 offers'}).click();
+    assert.equal(await journey.locator('.fb-compare-highlight').count(),2);
+    await journey.locator('.fb-compare-clear').click();
+    await journey.locator('#t-finder').click();
+    await goals.getByRole('link',{name:/Keep my phone and switch/}).click();
+    assert.equal(await journey.locator('#p-switch').isVisible(),true);
+    assert.equal(await journey.locator('#fb-switch-type').inputValue(),'plan');
+    await journey.locator('#fb-switch-type').selectOption('phone');
+    await journey.locator('#t-finder').click();
+    await goals.getByRole('link',{name:/Keep my phone and switch/}).click();
+    assert.equal(await journey.locator('#fb-switch-type').inputValue(),'plan','Explicit keep-phone choice overrides a previous device selection');
+    await journey.locator('#t-finder').click();
+    await goals.getByRole('link',{name:/Get a new phone/}).click();
+    assert.equal(await journey.locator('#p-phones').isVisible(),true);
+    assert.equal(await journey.locator('#sort').inputValue(),'due');
+    assert.ok(await journey.locator('#phones-list .row').count()>0);
+    await journey.locator('#t-finder').click();
+    await journey.getByRole('link',{name:/Browse all plans Open the full catalog/}).click();
+    assert.equal(await journey.locator('#fb-plans-network').inputValue(),'any');
+    assert.equal(await journey.locator('#fb-plans-search').inputValue(),'');
+    assert.equal(await journey.locator('#fb-plans-order').inputValue(),'year');
+    await journeyContext.close();
     // Playwright clock is shared by every page in a context. Keep the seasonal
     // rollover test isolated from live-date scan freshness fixtures below.
     const holidayContext=await browser.newContext({viewport,locale:'en-US'});
@@ -501,7 +553,7 @@ try {
     assert.equal(await page.locator('#p-finder').isVisible(),true,
       'Adding a first offer must leave the shopper browsing, not jump to a one-column table');
     assert.equal(await page.locator('#fb-compare-tray').isVisible(),true);
-    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 chosen/i);
+    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 selected/i);
     await page.locator('#fb-compare-tray .fb-tray-open').click();
     assert.equal(await page.locator('#p-compare').isVisible(),true);
     assert.equal(await page.locator('#fb-compare-root table').count(),0,
@@ -540,7 +592,7 @@ try {
     await options.first().getByRole('button',{name:/Add to compare/i}).click();
     assert.equal(await page.locator('#p-finder').isVisible(),true,
       'Adding a third offer must not interrupt browsing');
-    assert.match(await page.locator('#fb-compare-tray').innerText(),/3 of 3 chosen/i);
+    assert.match(await page.locator('#fb-compare-tray').innerText(),/3 of 3 selected/i);
     await page.locator('#fb-compare-tray .fb-tray-open').click();
     assert.equal(await page.locator('#p-compare').isVisible(),true);
     assert.equal(await page.locator('.fb-compare-highlight').count(),3,
@@ -671,7 +723,7 @@ try {
     await page.locator('#plans-list .fb-compare-btn').first().click();
     assert.equal(await page.locator('#p-plans').isVisible(),true);
     assert.equal(await page.locator('#fb-compare-tray').isVisible(),true);
-    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 chosen/i);
+    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 selected/i);
     await page.evaluate(()=>window.fiveBarsCompare('phone','boost-motog'));
     assert.match(await page.locator('#fb-compare-tray').innerText(),/You are comparing plans/i,
       'Selecting a different product type must not silently erase the plan selection');

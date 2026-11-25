@@ -211,20 +211,27 @@ function renderCompareTray(){
   compareTray.replaceChildren();
   if(!visible)return;
   const info=element('div',null,'fb-tray-info');
-  info.append(element('strong',selected.length+' of '+MAX_COMPARE+' chosen','fb-tray-title'));
+  info.append(element('strong',selected.length+' of '+MAX_COMPARE+' selected','fb-tray-title'));
   const names=selected.map(item=>{
     const offer=(item.type==='phone'?catalog.phones:catalog.plans).find(p=>p.id===item.id);
     return offer?offer.carrier:'Offer';
   }).join(' · ');
   info.append(element('span',names+(selected.length===1?' · Choose one more to compare':''),'fb-tray-names'));
-  if(compareNotice)info.append(element('span',compareNotice,'fb-compare-notice'));
+  if(compareNotice){
+    const notice=element('span',compareNotice,'fb-compare-notice');
+    notice.setAttribute('role','status');
+    info.append(notice);
+  }
   const actions=element('div',null,'fb-tray-actions');
-  actions.append(button(selected.length===1?'Add another / Compare': 'Compare '+selected.length+' offers',()=>{
+  actions.append(button(selected.length===1?'Add another':'Compare '+selected.length+' offers',()=>{
+    const choosing=selected.length===1;
     compareNotice='';
     window.showTab?.('compare');
     renderCompareTray();
-    document.getElementById('p-compare')?.scrollIntoView({block:'start',behavior:'smooth'});
-    document.getElementById('fb-compare-search')?.focus({preventScroll:true});
+    const panel=document.getElementById('p-compare');
+    panel?.scrollIntoView({block:'start'});
+    const target=choosing?document.getElementById('fb-compare-search'):panel?.querySelector('h2');
+    if(target){if(!choosing)target.tabIndex=-1;target.focus({preventScroll:true});}
   },'btn fb-tray-open'));
   actions.append(button('Clear',()=>{
     selected=[];compareNotice='';compareQuery='';compareExpanded=false;saveCompare();renderCompare();
@@ -681,9 +688,12 @@ function renderCompare(){
   workspace.append(modeRow);
   const line=element('div',null,'fb-compare-progress');
   line.append(element('strong',selected.length+' of '+MAX_COMPARE+' selected'));
+  const manage=element('div',null,'fb-compare-manage');
+  manage.append(button('Keep browsing',()=>window.fiveBarsBackToBrowse?.(mode),'btn ghost fb-compare-browse'));
   if(selected.length){
-    line.append(button('Clear all',()=>{selected=[];compareNotice='';compareQuery='';compareExpanded=false;saveCompare();renderCompare();},'fb-compare-clear'));
+    manage.append(button('Clear all',()=>{selected=[];compareNotice='';compareQuery='';compareExpanded=false;saveCompare();renderCompare();},'fb-compare-clear'));
   }
+  line.append(manage);
   workspace.append(line);
   const chips=element('div',null,'fb-compare-chips');
   for(let i=0;i<MAX_COMPARE;i++){

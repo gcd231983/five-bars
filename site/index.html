@@ -774,22 +774,18 @@ button[data-compare-type][aria-pressed="true"]{border-color:var(--accent)!import
       <p class="fb-eyebrow">COMPARE WITH CONFIDENCE</p>
       <h2>Better wireless. <span>Less guesswork.</span></h2>
       <p class="fb-hero-subhead">Find unlimited or limited-data plans, compare real upfront requirements and see estimated first-year costs—without getting lost in the fine print.</p>
-      <div class="fb-quick-actions">
-        <button type="button" onclick="document.getElementById('t-finder').click();document.getElementById('fb-finder-root').scrollIntoView({block:'start',behavior:'smooth'});">Find my plan</button>
-        <button type="button" class="fb-secondary-action" onclick="window.fiveBarsBrowsePlans?.('unlimited')">Browse unlimited plans</button>
-      </div>
       <small>Free to compare · No account required · Carrier checkout determines final prices</small>
     </div>
-    <div class="fb-hero-steps" aria-label="What you can do">
-      <div><span class="fb-step-numeral">01</span><strong>Choose what matters</strong><span>Coverage, data and budget</span></div>
-      <div><span class="fb-step-numeral">02</span><strong>See the full picture</strong><span>Monthly, upfront and annual costs</span></div>
-      <div><span class="fb-step-numeral">03</span><strong>Check the source</strong><span>Original offer and review status</span></div>
-    </div>
+    <nav class="fb-shop-goals" aria-label="What would you like to do?">
+      <p class="fb-shop-goals-label">What would you like to do?</p>
+      <a href="./#plans" data-shop-goal="lower-bill"><strong>Lower my bill</strong><span>See plans sorted by regular monthly service price.</span></a>
+      <a href="./#switch" data-shop-goal="keep-phone"><strong>Keep my phone and switch</strong><span>Compare an offer with what you pay now.</span></a>
+      <a href="./#phones" data-shop-goal="new-phone"><strong>Get a new phone</strong><span>Browse deals by estimated amount due today.</span></a>
+    </nav>
   </section>
-  <div class="fb-home-shortcuts" aria-label="Quick paths">
-    <a href="./#plans" onclick="document.getElementById('t-plans').click();return false"><strong>Browse all plans</strong><span>Unlimited and limited-data options</span></a>
-    <a href="./#phones" onclick="document.getElementById('t-phones').click();return false"><strong>Find a phone deal</strong><span>See required service and upfront costs</span></a>
-    <a href="./#compare" onclick="document.getElementById('t-compare').click();return false"><strong>Compare side by side</strong><span>Keep up to three offers together</span></a>
+  <div class="fb-home-shortcuts" aria-label="Browse without a starting point">
+    <a href="./#plans" data-shop-goal="all-plans"><strong>Browse all plans</strong><span>Open the full catalog, including limited-data plans</span></a>
+    <a href="./#compare" data-shop-goal="compare"><strong>Compare side by side</strong><span>Keep up to three offers together</span></a>
   </div>
   <p class="fb-home-trust">Independent catalog estimates, not carrier checkout quotes. See <a href="disclosures.html">how prices are calculated</a>.</p>
   <details class="fb-advanced-filters"><summary>Refine results <span>Lines, network, provider &amp; eligibility</span></summary><div class="fb-filter-body">
@@ -1500,7 +1496,7 @@ function renderPhones(){
 // Explicit browse actions are independent of Finder budget/provider filters.
  // Returning to the full catalog intentionally uses one line, because some
  // annual prepaid and retail plans have no documented multi-line quote.
-function browsePlans(mode="all"){
+function browsePlans(mode="all",{reveal=true,sort="year"}={}){
   // "Browse all" means all—not an unnoticed search left from the last visit.
   planBrowseQuery="";
   $("#fb-plans-search").value="";
@@ -1509,9 +1505,9 @@ function browsePlans(mode="all"){
   state.provider="any";
   state.t=mode==="unlimited"?{unl:true}:{};
   state.mode="byop";
-  state.sort="year";
+  state.sort=sort;
   showTab("plans");
-  document.getElementById("fb-plans-catalog-count")?.scrollIntoView({block:"start",behavior:"smooth"});
+  if(reveal)document.getElementById("fb-plans-catalog-count")?.scrollIntoView({block:"start",behavior:"smooth"});
 }
 window.fiveBarsBrowsePlans=browsePlans;
 
@@ -1522,6 +1518,53 @@ function emptyState(){
 }
 
 /* ---------- tabs and shareable section URLs ---------- */
+const compareBrowseTabs=new Set(['finder','plans','phones']);
+let lastCompareBrowse=null;
+window.fiveBarsBackToBrowse=(type)=>{
+  const safeDefault=type==='phone'?'phones':'plans';
+  const origin=lastCompareBrowse;
+  const tab=origin?.tab||safeDefault;
+  showTab(tab);
+  // Restore browsing position after the tab's own navigation scroll. Filters
+  // and searches are untouched; this is deliberately not browsePlans().
+  if(origin){
+    const panel=document.getElementById('p-'+tab);
+    if(panel){panel.tabIndex=-1;panel.focus({preventScroll:true});}
+    window.scrollTo({top:origin.top,behavior:'instant'});
+  } else {
+    focusShoppingPanel(tab);
+  }
+};
+function focusShoppingPanel(tab){
+  const panel=document.getElementById('p-'+tab);
+  if(!panel)return;
+  panel.tabIndex=-1;
+  panel.focus({preventScroll:true});
+  panel.scrollIntoView({block:'start'});
+}
+for(const link of document.querySelectorAll('[data-shop-goal]')){
+  link.addEventListener('click',event=>{
+    if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+    event.preventDefault();
+    const goal=link.dataset.shopGoal;
+    if(goal==='lower-bill'||goal==='all-plans'){
+      browsePlans('all',{reveal:false,sort:goal==='lower-bill'?'reg':'year'});
+      focusShoppingPanel('plans');
+    } else if(goal==='keep-phone'){
+      window.fiveBarsSetSwitchMode?.('plan');
+      showTab('switch');
+      focusShoppingPanel('switch');
+    } else if(goal==='new-phone'){
+      state.sort='due';
+      showTab('phones');
+      focusShoppingPanel('phones');
+    } else if(goal==='compare'){
+      showTab('compare');
+      focusShoppingPanel('compare');
+    }
+  });
+}
+
 const PANEL_TABS=['finder','plans','phones','compare','switch','watchlist','pricewatch','sources'];
 function tabFromHash(hash=location.hash){
   const raw=String(hash||'').replace(/^#/,'');
@@ -1532,6 +1575,8 @@ function tabFromHash(hash=location.hash){
 function showTab(t,{route='push'}={}){
   if(!PANEL_TABS.includes(t))return;
   const previous=state.tab;
+  if(t==='compare'&&compareBrowseTabs.has(previous)&&document.body.dataset.activeTab===previous)
+    lastCompareBrowse={tab:previous,top:window.scrollY};
   state.tab = t;
   // Write the selected section to the URL without navigating or scrolling to
   // an invisible tab panel. This preserves any ?switch= share scenario.
