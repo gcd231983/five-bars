@@ -71,6 +71,14 @@ function pick(type,id,open=true){
   notice('Offer selected. Enter your current total monthly bill to estimate savings.');
 }
 window.fiveBarsSwitch=pick;
+window.fiveBarsSetSwitchMode=type=>{
+  if(!['plan','phone'].includes(type)||choose('type').value===type)return;
+  pending=null;
+  choose('type').value=type;
+  choose('offer').value='';
+  updateOptions();
+  notice('');
+};
 function addCardActions(){
   if(!catalog)return;
   for(const [type,items] of [['plan',catalog.plans],['phone',catalog.phones]]){

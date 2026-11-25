@@ -331,3 +331,31 @@ body[data-active-tab="finder"] .fb-mobile-evidence:not([open])>summary{color:#c3
  .fb-results-grid{grid-template-columns:minmax(0,1fr)}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}button{transition:none}}
+
+/* Shopping goals and comparison navigation: no pricing or eligibility changes. */
+.fb-shop-goals{display:grid;gap:8px;min-width:0;padding:13px;border:1px solid #355a63;border-radius:16px;background:#0c222c}
+.fb-shop-goals-label{margin:0 4px 2px;font-size:.88rem;font-weight:720;color:#b4cbd2}
+.fb-shop-goals a{display:grid;gap:3px;min-height:54px;padding:10px 12px;border:1px solid #355a63;border-radius:10px;background:#142d38;text-decoration:none;color:#f2f8fa}
+.fb-shop-goals strong{font-size:.98rem;line-height:1.3}
+.fb-shop-goals span{font-size:.84rem;color:#c3d7df;line-height:1.4}
+.fb-shop-goals a:hover,.fb-shop-goals a:focus-visible{border-color:var(--accent);background:#1b4148}
+.fb-shop-goals a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fb-home-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fb-home-shortcuts a:last-child{grid-column:auto}
+.fb-compare-manage{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.fb-compare-progress{flex-wrap:wrap}
+.fb-compare-browse{min-height:44px}
+@media(max-width:680px){
+  .fb-shop-goals{padding:9px;gap:6px}
+  .fb-shop-goals a{padding:8px 10px}
+  .fb-home-shortcuts a,.fb-home-shortcuts a:last-child{min-height:72px}
+  .fb-compare-tray{flex-direction:row;align-items:center;gap:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);padding:8px 9px;border-radius:12px}
+  .fb-tray-actions{width:auto}
+  .fb-tray-actions button{padding:6px 9px;font-size:.82rem}
+  .fb-tray-title{font-size:.88rem}
+  .fb-tray-names{font-size:.74rem}
+  .fb-compare-tray:has(.fb-compare-notice){align-items:stretch;flex-direction:column}
+  .fb-compare-tray:has(.fb-compare-notice) .fb-tray-actions{width:100%}
+  body.fb-has-compare-tray #main-content{padding-bottom:150px}
+}
+@media(max-width:355px){.fb-tray-names{display:none}}

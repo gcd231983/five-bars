@@ -104,7 +104,7 @@ try{
     await ready(page);
     await page.evaluate(()=>window.fiveBarsBrowsePlans('all'));
     await page.locator('#r-usm-starter button[data-compare-type="plan"][data-compare-id="usm-starter"]').click();
-    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 chosen/);
+    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 selected/);
     await changeTab(page,'compare');
     await page.locator('#fb-compare-search').fill('Tello');
     await page.locator('.fb-compare-pick-add').first().click();
@@ -203,7 +203,7 @@ try{
     await page.evaluate(()=>window.fiveBarsBrowsePlans('all'));
     assert.equal(await page.locator('#plans-list .row').count(),38);
     await page.locator('#r-usm-starter button[data-compare-type="plan"][data-compare-id="usm-starter"]').click();
-    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 chosen/);
+    assert.match(await page.locator('#fb-compare-tray').innerText(),/1 of 3 selected/);
     await changeTab(page,'watchlist');
     assert.match(await page.locator('#fb-watchlist-root').innerText(),/local storage|saved watchlist|Stored on this device/i);
   });
