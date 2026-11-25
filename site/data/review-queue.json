@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-24T20:41:45.267Z",
-  "today": "2026-11-24",
+  "generatedAt": "2026-11-25T17:21:59.126Z",
+  "today": "2026-11-25",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
   "summary": {
@@ -16,10 +16,10 @@
     "retailerHolds": 3,
     "stockHolds": 6,
     "publicationEvidence": {
-      "publishedMatches": 12,
+      "publishedMatches": 11,
       "partial": 4,
       "unresearched": 2,
-      "aged": 59,
+      "aged": 60,
       "conflictsOrInvalid": 1
     },
     "blockedProviders": 10
@@ -324,17 +324,19 @@
       "score": 75,
       "reasonCodes": [
         "retailer_listing_hold",
+        "published_research_aged",
         "catalog_price_stale",
         "full_terms_not_verified"
       ],
       "reasons": [
         "This retailer-specific purchase path remains on evidence hold. Do not present a checkout quote or clear the hold automatically.",
+        "The dated official publication research is over 21 days old; review the original carrier terms.",
         "The catalog price reference is more than 21 days old; confirm and refresh it.",
         "Full offer terms do not have a current independent manual review."
       ],
       "officialEvidenceState": null,
       "sourceStatus": "source_reachable",
-      "officialResearchState": "published_match",
+      "officialResearchState": "aged",
       "manualReviewStatus": "unverified",
       "linkUnavailableSince": null,
       "lastCatalogReference": "2026-11-02",
