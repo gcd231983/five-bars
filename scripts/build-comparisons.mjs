@@ -6,6 +6,7 @@ import {readFile,mkdir,writeFile,readdir,rm} from 'node:fs/promises';
 import {GUIDES,renderGuide,renderHub,renderSitemap} from './comparison-pages.mjs';
 import {renderSeoPages} from './seo-pages.mjs';
 import {GUIDE_DIR,CARRIER_DIR} from './seo-guides.mjs';
+import {ARTICLE_INDEX,articlePath,readArticleIndex,renderArticleIndex} from './article-pages.mjs';
 
 const root=new URL('../',import.meta.url);
 const read=async path=>JSON.parse(await readFile(new URL(path,root),'utf8'));
@@ -36,7 +37,10 @@ for(const dir of [GUIDE_DIR,CARRIER_DIR]){
 }
 for(const [path,html] of Object.entries(seo))await writeFile(new URL('site/'+path,root),html,'utf8');
 
-await writeFile(new URL('site/sitemap.xml',root),renderSitemap(data),'utf8');
+const articles=readArticleIndex();
+for(const {slug} of articles)await readFile(new URL('site/'+articlePath(slug),root));
+await writeFile(new URL('site/'+ARTICLE_INDEX,root),renderArticleIndex(articles),'utf8');
+await writeFile(new URL('site/sitemap.xml',root),renderSitemap(data,articles),'utf8');
 console.log(JSON.stringify({
  guides:GUIDES.map(g=>g.slug),seoPages:Object.keys(seo).length,catalogDate:data.catalog.checked,
  sourceScan:data.status.generatedAt,manuallyReviewed:Object.keys(data.ledger?.offers||{}).length

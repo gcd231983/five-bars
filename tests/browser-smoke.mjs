@@ -900,6 +900,20 @@ try {
     const articleOverflow=await articles.evaluate(()=>document.documentElement.scrollWidth);
     assert.ok(articleOverflow<=viewport.width+2,'Comparison page must fit '+view+' viewport');
     await articles.screenshot({path:join(output,view+'-carrier-comparison.png'),fullPage:true});
+    await articles.goto(base,{waitUntil:'domcontentloaded'});
+    await articles.getByRole('navigation',{name:'Site navigation'}).getByRole('link',{name:'Articles',exact:true}).click();
+    assert.equal(await articles.getByRole('heading',{name:'Articles',exact:true}).isVisible(),true);
+    await articles.getByRole('link',{name:'Is a $0 phone worth switching plans for?'}).click();
+    assert.equal(await articles.getByRole('heading',{name:'The 24-month receipt'}).isVisible(),true);
+    assert.ok(await articles.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),view+': Switch Receipt must fit viewport');
+    const workbook=articles.getByRole('link',{name:'Download Excel workbook'});
+    assert.notEqual(await workbook.getAttribute('download'),null);
+    const workbookResponse=await context.request.get(new URL(await workbook.getAttribute('href'),articles.url()).href);
+    assert.ok(workbookResponse.ok(),view+': download should be served');
+    assert.equal((await workbookResponse.body()).subarray(0,4).toString('hex'),'504b0304');
+    await articles.getByRole('link',{name:'Open Switch & Save'}).click();
+    await articles.locator('#p-switch').waitFor({state:'visible'});
+
     await articles.goto(new URL('about.html',base).href,{waitUntil:'domcontentloaded'});
     const aboutBrand=await articles.locator('header nav a').first().evaluate(node=>({
       image:getComputedStyle(node,'::before').backgroundImage,

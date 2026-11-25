@@ -286,7 +286,7 @@ body[data-active-tab="finder"] .fb-mobile-evidence:not([open])>summary{color:#c3
  .fb-site-brand{gap:9px}
  .fb-site-brand .fb-original-bars{width:31px;height:29px}
  .fb-site-brand .fb-brand-name{font-size:1.34rem}
- .fb-topnav-links{display:flex;gap:1px;flex-wrap:nowrap}
+ .fb-topnav-links{display:flex;gap:1px;flex-wrap:wrap;min-width:0}
  .fb-topnav-links a{font-size:.76rem;padding:6px 7px;min-height:42px}
  .fb-topnav-links a:nth-child(2),.fb-topnav-links a:nth-child(3){display:none}
  .fb-topnav-links a.fb-help-link{padding:6px 9px}

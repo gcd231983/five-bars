@@ -4,6 +4,7 @@
 import {planCost,verificationState,localDay,validDay,pastEnd,usd} from '../site/value-core.mjs';
 import {researchStatus} from './source-research.mjs';
 import {seoPagePaths,carrierSlug} from './seo-guides.mjs';
+import {ARTICLE_INDEX,articlePath,readArticleIndex} from './article-pages.mjs';
 
 const BASE='https://fivebars.info/';
 const COLLISION=/^(?:javascript|data|file|ftp):/i;
@@ -248,16 +249,17 @@ export function renderHub(data){
  html.push('</main>');html.push(pageEnd());
  return html.join('');
 }
-export function renderSitemap(data){
+export function renderSitemap(data,articles=readArticleIndex()){
  const day=validDay(data?.catalog?.checked)?data.catalog.checked:'2026-10-29';
  // Internal evidence/audit pages (source-research, launch-readiness) stay
  // public but are noindex, so they are intentionally left out of the sitemap.
  const urls=['','about.html','contact.html','editorial.html','privacy.html','disclosures.html','switching-guide.html',
   'carrier-comparisons.html','phone-deals.html','black-friday-2026.html','satellite.html','report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html'),
   ...seoPagePaths(data?.catalog)];
+ const editorial=[[ARTICLE_INDEX,articles[0]?.published||day],...articles.map(a=>[articlePath(a.slug),a.published])];
  const xmlEscape=escapeHtml;
  return '<?xml version="1.0" encoding="UTF-8"?>\n'+
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+
-  urls.map(path=>'  <url><loc>'+xmlEscape(BASE+path)+'</loc><lastmod>'+day+'</lastmod></url>').join('\n')+
+  [...urls.map(path=>[path,day]),...editorial].map(([path,lastmod])=>'  <url><loc>'+xmlEscape(BASE+path)+'</loc><lastmod>'+lastmod+'</lastmod></url>').join('\n')+
   '\n</urlset>\n';
 }
