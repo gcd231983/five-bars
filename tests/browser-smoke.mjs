@@ -965,6 +965,14 @@ try {
     assert.equal((await workbookResponse.body()).subarray(0,4).toString('hex'),'504b0304');
     await articles.getByRole('link',{name:'Open Switch & Save'}).click();
     await articles.locator('#p-switch').waitFor({state:'visible'});
+    await articles.locator('#t-finder').click();
+    const feature=articles.locator('.fb-featured-receipt');
+    assert.equal(await feature.isVisible(),true,view+': first receipt is featured on the homepage');
+    await feature.getByRole('link',{name:'Is a $0 phone worth switching plans for?'}).click();
+    await articles.getByRole('link',{name:'Browse advertised free-phone deals'}).click();
+    await articles.getByRole('link',{name:'Read the 24-month free-phone vs. unlocked example'}).click();
+    assert.equal(await articles.getByRole('heading',{name:'The 24-month receipt'}).isVisible(),true);
+    assert.ok(await articles.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),view+': cross-linked article must fit viewport');
 
     await articles.goto(new URL('about.html',base).href,{waitUntil:'domcontentloaded'});
     const aboutBrand=await articles.locator('header nav a').first().evaluate(node=>({

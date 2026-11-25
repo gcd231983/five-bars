@@ -419,6 +419,10 @@ export function renderSeoGuide(guide,data,{today=localDay(),affiliates=null}={})
  html.push('<h1>'+e(title)+'</h1>'+byline(data,prefix)+DISCLOSURE_SLOT);
  html.push('<p class="lede">'+e(guide.intro)+'</p>');
  html.push('<div class="answer" role="note"><p class="answer-label">Quick answer</p><p>'+quick+'</p></div>');
+ if(guide.slug==='free-phone-deals')html.push(
+  '<section aria-labelledby="switch-receipt"><h2 id="switch-receipt">Is the free phone worth the plan upgrade?</h2>'+
+  '<p>Compare the required plan and any bill credits with what you would pay to keep your phone or buy it unlocked. '+
+  '<a href="../articles/free-phone-vs-unlocked.html">Read the 24-month free-phone vs. unlocked example</a> and download the worksheet to run your numbers.</p></section>');
  html.push(...body);
  html.push('<section aria-labelledby="tips"><h2 id="tips">What to know before you switch</h2><ul class="tips">'+guide.tips.map(t=>'<li>'+e(t)+'</li>').join('')+'</ul></section>');
  html.push(methodSection(prefix,guide.kind));
