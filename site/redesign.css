@@ -359,3 +359,12 @@ body[data-active-tab="finder"] .fb-mobile-evidence:not([open])>summary{color:#c3
   body.fb-has-compare-tray #main-content{padding-bottom:150px}
 }
 @media(max-width:355px){.fb-tray-names{display:none}}
+
+.fb-featured-receipt{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem 1.25rem;margin:10px 0 0;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;background:var(--surface)}
+.fb-featured-receipt h2{margin:.2rem 0 .3rem;font-size:clamp(1rem,3vw,1.14rem);line-height:1.35}
+.fb-featured-receipt h2 a{color:var(--ink);text-underline-offset:.2em}
+.fb-featured-receipt p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.4}
+.fb-featured-receipt .fb-featured-label{color:var(--accent);font-size:.8rem;font-weight:750;letter-spacing:.04em}
+.fb-featured-all{color:var(--accent);font-size:.9rem;padding:10px 0}
+.fb-featured-receipt a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+body:not([data-active-tab="finder"]) .fb-featured-receipt{display:none}
