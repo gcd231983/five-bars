@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {GUIDES,renderGuide,renderHub,renderSitemap} from '../scripts/comparison-pages.mjs';
 import {seoPagePaths} from '../scripts/seo-guides.mjs';
+import {articlePath,readArticleIndex} from '../scripts/article-pages.mjs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const data={
@@ -14,9 +15,9 @@ const data={
 const fixed={today:'2026-11-02'};
 const expected=['','about.html','contact.html','editorial.html','privacy.html','disclosures.html',
   'switching-guide.html','carrier-comparisons.html','phone-deals.html','black-friday-2026.html','satellite.html',
-  'report.html',...GUIDES.map(g=>'compare/'+g.slug+'.html'),...seoPagePaths(data.catalog)];
+  'report.html','articles.html',...readArticleIndex().map(row=>articlePath(row.slug)),...GUIDES.map(g=>'compare/'+g.slug+'.html'),...seoPagePaths(data.catalog)];
 
-test('sitemap contains every required public guide exactly once with safe canonical URLs',()=>{
+test('sitemap contains every required public guide and article exactly once with safe canonical URLs',()=>{
   const sitemap=renderSitemap(data);
   const urls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
   assert.equal(urls.length,expected.length);
