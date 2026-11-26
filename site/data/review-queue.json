@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-25T19:58:02.296Z",
-  "today": "2026-11-25",
+  "generatedAt": "2026-11-26T19:41:41.753Z",
+  "today": "2026-11-26",
   "scope": "Review priorities only. Source reachability and partial price evidence do not verify all carrier terms.",
   "method": "Deterministic dated rules; no AI, no hidden prices, no user tracking, no automated manual verification.",
   "summary": {
@@ -22,7 +22,7 @@
       "aged": 60,
       "conflictsOrInvalid": 1
     },
-    "blockedProviders": 10
+    "blockedProviders": 11
   },
   "blockedProviders": [
     {
@@ -53,6 +53,15 @@
         "usm-starter",
         "usm-p11",
         "usm-light"
+      ]
+    },
+    {
+      "carrier": "Good2Go Mobile",
+      "affected": 3,
+      "offerIds": [
+        "good2go-annual1",
+        "good2go-annual3",
+        "good2go-annual5"
       ]
     },
     {
@@ -804,18 +813,22 @@
       "reasonCodes": [
         "published_research_aged",
         "catalog_price_stale",
+        "offer_page_unavailable",
+        "official_evidence_missing",
         "full_terms_not_verified"
       ],
       "reasons": [
         "The dated official publication research is over 21 days old; review the original carrier terms.",
         "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Scoped official price source could not be read. This is not a confirmed price change.",
         "Full offer terms do not have a current independent manual review."
       ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
+      "officialEvidenceState": "source_unavailable",
+      "sourceStatus": "source_unavailable",
       "officialResearchState": "aged",
       "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
+      "linkUnavailableSince": "2026-11-26T19:41:41.753Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://annualplans.good2gomobile.com/home-page"
     },
@@ -829,18 +842,22 @@
       "reasonCodes": [
         "published_research_aged",
         "catalog_price_stale",
+        "offer_page_unavailable",
+        "official_evidence_missing",
         "full_terms_not_verified"
       ],
       "reasons": [
         "The dated official publication research is over 21 days old; review the original carrier terms.",
         "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Scoped official price source could not be read. This is not a confirmed price change.",
         "Full offer terms do not have a current independent manual review."
       ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
+      "officialEvidenceState": "source_unavailable",
+      "sourceStatus": "source_unavailable",
       "officialResearchState": "aged",
       "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
+      "linkUnavailableSince": "2026-11-26T19:41:41.753Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://annualplans.good2gomobile.com/home-page"
     },
@@ -854,18 +871,22 @@
       "reasonCodes": [
         "published_research_aged",
         "catalog_price_stale",
+        "offer_page_unavailable",
+        "official_evidence_missing",
         "full_terms_not_verified"
       ],
       "reasons": [
         "The dated official publication research is over 21 days old; review the original carrier terms.",
         "The catalog price reference is more than 21 days old; confirm and refresh it.",
+        "The official offer or purchase page could not be checked automatically; confirm purchase details with the carrier.",
+        "Scoped official price source could not be read. This is not a confirmed price change.",
         "Full offer terms do not have a current independent manual review."
       ],
-      "officialEvidenceState": "headline_matched",
-      "sourceStatus": "source_reachable",
+      "officialEvidenceState": "source_unavailable",
+      "sourceStatus": "source_unavailable",
       "officialResearchState": "aged",
       "manualReviewStatus": "unverified",
-      "linkUnavailableSince": null,
+      "linkUnavailableSince": "2026-11-26T19:41:41.753Z",
       "lastCatalogReference": "2026-11-02",
       "link": "https://annualplans.good2gomobile.com/home-page"
     },
