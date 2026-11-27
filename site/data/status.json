@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-26T19:41:41.753Z",
+  "generatedAt": "2026-11-27T19:30:02.304Z",
   "timezone": "America/New_York",
   "lastFullReview": "2026-10-29",
   "method": "Deterministic public-source monitoring (no AI). HTTP availability does not prove a deal is valid.",
@@ -9,7 +9,7 @@
     "sourcesReachable": 8,
     "sourceBlackout": false,
     "sourcesAccessBlocked": 7,
-    "sourcesUnavailableFor7Days": 7,
+    "sourcesUnavailableFor7Days": 8,
     "offerLinksChecked": 60,
     "offerLinksReachable": 46,
     "priceCandidatesForReview": 3,
@@ -39,10 +39,10 @@
       "status": 200,
       "note": "Fetched public page; deal terms are not independently confirmed",
       "changedSincePreviousScan": true,
-      "hash": "6b8e63d0d371fe2ca25649d3c6d52c1d255c390c3272066faebc2087f2970385",
+      "hash": "bae838d0c9eee5d40d637dfeaa3eef209d78095c95f359b6f826b1f8ad403c62",
       "failureReason": null,
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z"
+      "lastReachableAt": "2026-11-27T19:30:02.304Z"
     },
     {
       "name": "Clark.com new cell phone deals",
@@ -117,10 +117,10 @@
       "status": 200,
       "note": "Fetched public page; deal terms are not independently confirmed",
       "changedSincePreviousScan": true,
-      "hash": "b86fb0e79158a99fbaac54b1c36a0ec2f58fc7e4c3d2b81bae775001cf75ccdb",
+      "hash": "beae978ef37432a2a53152739d89090d92238e2ba6a81297127301f7b7410797",
       "failureReason": null,
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z"
+      "lastReachableAt": "2026-11-27T19:30:02.304Z"
     },
     {
       "name": "Visible deals",
@@ -133,7 +133,7 @@
       "hash": "a4171aa19f867d866f0a120e8f86760c78fb793ae7c186abbad86bc1ed5c72c9",
       "failureReason": null,
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z"
+      "lastReachableAt": "2026-11-27T19:30:02.304Z"
     },
     {
       "name": "Verizon Prepaid deals",
@@ -146,7 +146,7 @@
       "hash": "dff5c8b541a8af2174396b0414de16fcc6167bac5a87719fe540badc4657bc70",
       "failureReason": null,
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z"
+      "lastReachableAt": "2026-11-27T19:30:02.304Z"
     },
     {
       "name": "Boost Mobile deals",
@@ -159,7 +159,7 @@
       "hash": "9a843ff9361ba793581f352330788efc0149eba12ea6887299856512e8185ed9",
       "failureReason": null,
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z"
+      "lastReachableAt": "2026-11-27T19:30:02.304Z"
     },
     {
       "name": "Tello plans",
@@ -182,10 +182,10 @@
       "status": 200,
       "note": "Fetched public page; deal terms are not independently confirmed",
       "changedSincePreviousScan": true,
-      "hash": "da0e43578e41a497d34775a7a22f798f70ed1ae8eba4b752533d3ee9e62d28cf",
+      "hash": "12277c1beecd3d591853b45370bc67dda0b61a43b77226f012664fd239a83d47",
       "failureReason": null,
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z"
+      "lastReachableAt": "2026-11-27T19:30:02.304Z"
     },
     {
       "name": "MobileX plan FAQs",
@@ -198,7 +198,7 @@
       "hash": "18f87bdc03985f0ba5711f78b8dad1e468139db7037f107a083b3876982c4d18",
       "failureReason": null,
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z"
+      "lastReachableAt": "2026-11-27T19:30:02.304Z"
     },
     {
       "name": "Red Pocket monthly plans",
@@ -237,7 +237,7 @@
       "hash": "1b5873e2c488f2656ae72f167ecab465aeffaaf6ec8b3fb60679fe639e7a24ac",
       "failureReason": null,
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z"
+      "lastReachableAt": "2026-11-27T19:30:02.304Z"
     },
     {
       "name": "H2O Wireless official homepage rates",
@@ -256,7 +256,7 @@
   "offers": {
     "usm-starter": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.usmobile.com/plans",
       "unavailableSince": "2026-11-14T16:37:51.084Z",
       "lastReachableAt": "2026-11-13T17:48:32.417Z",
@@ -264,7 +264,7 @@
     },
     "usm-premium": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.usmobile.com/plans",
       "unavailableSince": "2026-11-14T16:37:51.084Z",
       "lastReachableAt": "2026-11-13T17:48:32.417Z",
@@ -272,47 +272,47 @@
     },
     "visible": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.visible.com/plans",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "visible-plus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.visible.com/plans",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "visible-pro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.visible.com/plans",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-max": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.totalwireless.com/m/plans/smartphone",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-all-access": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.totalwireless.com/m/plans",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "mint": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.mintmobile.com/plans/",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -320,63 +320,63 @@
     },
     "metro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.metrobyt-mobile.com/phone-plans",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "metro-premium": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.metrobyt-mobile.com/phone-plans",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "boost": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.boostmobile.com/plans",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "straighttalk": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.straighttalk.com/whyst/bring-your-own-phone",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-25": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/shop/cell-phone-plans/select",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-supreme": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/plans/phone",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "tracfone": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.tracfone.com/plans/tracfone-freedom-30-days",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "ultra": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.ultramobile.com/product/unlimited-prepaid-plan/",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -384,7 +384,7 @@
     },
     "fi": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://fi.google.com/about/plans",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -392,7 +392,7 @@
     },
     "usm-light": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.usmobile.com/plans",
       "unavailableSince": "2026-11-14T16:37:51.084Z",
       "lastReachableAt": "2026-11-13T17:48:32.417Z",
@@ -400,7 +400,7 @@
     },
     "ultra-4": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.ultramobile.com/product/4gb-prepaid-plan/",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -408,7 +408,7 @@
     },
     "tello": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://tello.com/buy/custom_plans",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -416,7 +416,7 @@
     },
     "cc": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.consumercellular.com/shopping/choose/plan",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -424,7 +424,7 @@
     },
     "tello-starter": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://tello.com/buy/custom_plans",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -432,7 +432,7 @@
     },
     "tello-power": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://tello.com/buy/custom_plans",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -440,7 +440,7 @@
     },
     "tello-max": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://tello.com/buy/custom_plans",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -448,7 +448,7 @@
     },
     "h2o-10gb": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.h2owireless.com/plan/monthly",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -459,7 +459,7 @@
     },
     "h2o-unlimited": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.h2owireless.com/plan/monthly",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -470,10 +470,10 @@
     },
     "helium-air": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -481,10 +481,10 @@
     },
     "helium-infinity": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://support.hellohelium.com/en/articles/17734883-plans-pricing",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -492,10 +492,10 @@
     },
     "mobilex-unlimited10": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://mymobilex.com/all-faqs/",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -503,10 +503,10 @@
     },
     "mobilex-unlimited30": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://mymobilex.com/all-faqs/",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified",
       "mvnoPriceEvidenceState": "headline_matched",
       "mvnoPriceEvidenceScope": "official_plan_rate_and_billing_term_headline",
@@ -514,7 +514,7 @@
     },
     "redpocket-essentials": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://my.redpocket.com/plans",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -522,7 +522,7 @@
     },
     "redpocket-plus": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://my.redpocket.com/plans",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -530,7 +530,7 @@
     },
     "redpocket-premium": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://my.redpocket.com/plans",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -538,7 +538,7 @@
     },
     "good2go-annual1": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://annualplans.good2gomobile.com/home-page",
       "unavailableSince": "2026-11-26T19:41:41.753Z",
       "lastReachableAt": "2026-11-25T19:58:02.296Z",
@@ -549,7 +549,7 @@
     },
     "good2go-annual3": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://annualplans.good2gomobile.com/home-page",
       "unavailableSince": "2026-11-26T19:41:41.753Z",
       "lastReachableAt": "2026-11-25T19:58:02.296Z",
@@ -560,7 +560,7 @@
     },
     "good2go-annual5": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://annualplans.good2gomobile.com/home-page",
       "unavailableSince": "2026-11-26T19:41:41.753Z",
       "lastReachableAt": "2026-11-25T19:58:02.296Z",
@@ -571,7 +571,7 @@
     },
     "h2o-annual10": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.h2owireless.com/plan/monthly",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -579,7 +579,7 @@
     },
     "h2o-annual30": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.h2owireless.com/plan/monthly",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -587,103 +587,103 @@
     },
     "metro-motog": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.metrobyt-mobile.com/cell-phone/motorola-moto-g-2026",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "metro-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a17-5g",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "metro-a37": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.metrobyt-mobile.com/cell-phone/samsung-galaxy-a37-5g",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "metro-16e": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.metrobyt-mobile.com/cell-phone/apple-iphone-16e",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-power": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-power-2026-evening-blue",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-motog": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-2026-slipstream",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a17-5g-black",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-stylus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-moto-g-stylus-2025-gibraltar-sea",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-16e": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/apple-iphone-16e-128gb-black",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-s25fe": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-s25-fe-jetblack",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-razr": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/motorola-razr-2025-parfait-pink",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "cricket-a37": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.cricketwireless.com/shop/smartphones/samsung-galaxy-a37-5g-awesome-charcoal",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "att-pre-motog": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.att.com/buy/prepaid-phones/motorola-moto-g-2026-prepaid.html",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
@@ -691,34 +691,34 @@
     },
     "boost-16e": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.boostmobile.com/shop/iphone-16e.html",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "boost-p10a": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.boostmobile.com/shop/pixel-10a-002729.html",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "boost-razr": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.boostmobile.com/shop/razr-2025.html",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "boost-motog": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.boostmobile.com/shop/moto-g-2026.html",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified; unverified price candidate requires manual review; catalog unchanged",
       "priceEvidenceState": "headline_matched",
       "priceEvidenceScope": "advertised_device_and_plan_headline",
@@ -727,10 +727,10 @@
     },
     "boost-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.boostmobile.com/shop/galaxy-a17-5g.html",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified; unverified price candidate requires manual review; catalog unchanged",
       "priceEvidenceState": "headline_matched",
       "priceEvidenceScope": "advertised_device_and_plan_headline",
@@ -739,10 +739,10 @@
     },
     "boost-gplay": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.boostmobile.com/shop/moto-g-play-002722.html",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified; unverified price candidate requires manual review; catalog unchanged",
       "priceEvidenceState": "headline_matched",
       "priceEvidenceScope": "advertised_device_and_plan_headline",
@@ -751,119 +751,119 @@
     },
     "boost-stylus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.boostmobile.com/shop/moto-g-stylus-2025.html",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.totalwireless.com/buy/smartphones/samsung-galaxy-a17-5g-prepaid",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-stylus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.totalwireless.com/buy/phones/moto-g-stylus-5g-2025-prepaid",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-a27": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a27-prepaid",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-a36": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.totalwireless.com/buy/phones/samsung-galaxy-a36-5g-prepaid",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "total-16e": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.totalwireless.com/buy/phones/apple-iphone-16e-prepaid",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "vzpre-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.verizon.com/prepaid/deals/",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "vzpre-16e": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.verizon.com/smartphones/apple-iphone-16e-prepaid/",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "wm-vzpre-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.walmart.com/ip/Verizon-Prepaid-Galaxy-A17-5G-128GB-Prepaid-Smartphone-Black/17874774562",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "wm-st-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.walmart.com/ip/ST-SAMSUNG-S176V-A17-5G-PIB-HANDSET-WALMART-POSA/17591873202",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "st-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.straighttalk.com/all-phones/samsung-galaxy-a17-5g-prepaid",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "st-stylus": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.straighttalk.com/all-phones/moto-g-stylus-5g-2025-prepaid",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "tracfone-a17": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.tracfone.com/phone/samsung-galaxy-a17-5g-prepaid",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "simple-a16": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://shop.simplemobile.com/shop/en/simplemobile/phones/sm-samsung-galaxy-a16-5g",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "mint-p11": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.mintmobile.com/deals/",
       "unavailableSince": "2026-11-24T05:10:41.693Z",
       "lastReachableAt": null,
@@ -871,7 +871,7 @@
     },
     "mint-s26fe": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.mintmobile.com/deals/",
       "unavailableSince": "2026-11-24T05:10:41.693Z",
       "lastReachableAt": null,
@@ -879,7 +879,7 @@
     },
     "usm-p11": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://app.usmobile.com/shop/product/google-pixel-11",
       "unavailableSince": "2026-11-24T05:10:41.693Z",
       "lastReachableAt": null,
@@ -887,31 +887,31 @@
     },
     "visible-18pro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.visible.com/buy/smartphones/iphone-18-pro",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "tmo-18pro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.t-mobile.com/offers/apple-iphone-deals",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "vz-18pro": {
       "state": "source_reachable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.verizon.com/about/news/iphone-duo-verizon-offers",
       "unavailableSince": null,
-      "lastReachableAt": "2026-11-26T19:41:41.753Z",
+      "lastReachableAt": "2026-11-27T19:30:02.304Z",
       "note": "Carrier or retailer page reachable; individual deal terms are not verified"
     },
     "att-18pro": {
       "state": "source_unavailable",
-      "checkedAt": "2026-11-26T19:41:41.753Z",
+      "checkedAt": "2026-11-27T19:30:02.304Z",
       "sourceUrl": "https://www.att.com/buy/phones/apple-iphone-18-pro.html",
       "unavailableSince": "2026-11-06T15:38:55.100Z",
       "lastReachableAt": null,
